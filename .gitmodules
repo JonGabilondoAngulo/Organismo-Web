@@ -7,3 +7,6 @@
 [submodule "jQuery-contextMenu"]
 	path = jQuery-contextMenu
 	url = https://github.com/swisnl/jQuery-contextMenu.git
+[submodule "jsoneditor"]
+	path = jsoneditor
+	url = https://github.com/JonGabilondoAngulo/jsoneditor.git
