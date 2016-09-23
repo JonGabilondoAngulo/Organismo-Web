@@ -1,3 +1,9 @@
 [submodule "bootstrap"]
 	path = bootstrap
 	url = https://github.com/twbs/bootstrap.git
+[submodule "three.js"]
+	path = three.js
+	url = https://github.com/mrdoob/three.js.git
+[submodule "jQuery-contextMenu"]
+	path = jQuery-contextMenu
+	url = https://github.com/swisnl/jQuery-contextMenu.git
