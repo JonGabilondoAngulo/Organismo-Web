@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+
+    <title>Organismo</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style2.css"/>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+    // Change JQueryUI plugin names to fix name collision with Bootstrap.
+    // http://www.ryadel.com/en/using-jquery-ui-bootstrap-togheter-web-page/
+    $.widget.bridge('uitooltip', $.ui.tooltip);
+    $.widget.bridge('uibutton', $.ui.button);
+    </script>
+
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' type="text/css" href='bootstrap/css/bootstrap.min.css'>
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/tooltips2.css"/>
+
+    <link rel="stylesheet" type="text/css" href="./jsoneditor/dist/jsoneditor.css"/>
+    <script type="text/javascript" src="./jsoneditor/dist/jsoneditor.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./jQuery-contextMenu/dist/jquery.contextMenu.min.css"/>
+    <script type="text/javascript" src="./jQuery-contextMenu/dist/jquery.contextMenu.min.js"></script>
+    <script type="text/javascript" src="./jQuery-contextMenu/dist/jquery.ui.position.min.js"></script>
+
+
+    <script type="text/javascript" src="js-libs/three.min.js"></script>
+    <script type="text/javascript" src="js/OrbitControls.js"></script>
+    <script type="text/javascript" src="js/KeyboardState.js"></script>
+    <script type="text/javascript" src="js/Tween.js"></script>
+    <script src="js-libs/loaders/OBJLoader.js"></script>
+    <script type="text/javascript" src='js-organismo/THREEx.WindowResize.js'></script>
+    <script type="text/javascript" src="js-organismo/ORGConstants.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGWebSocket.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGWebSocketDelegate.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDeviceConnection.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGUITreeModel.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGMouseListener.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGElementHiliter.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGTooltip.js"></script>
+    <script type="text/javascript" src="js-organismo/ORG3DScene.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGMessageBuilder.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGContextMenuManager.js"></script>
+
+</head>
+<body>
+
+<nav class='mynavbar navbar-inverse'>
+    <div class='mynavbar-container'>
+        <div class='mynavbar-header'>
+            <a class='nav-text' href='/'>
+                Device URL:
+            </a>
+            <input type="text" id="device-url" placeholder="localhost">
+            <button id="connect-button" class="btn btn-default">Connect</button>
+        </div>
+
+        <div>
+            <ul class='mynavbar-table'>
+                <li class='navbar-button-up'>
+                    <a class='nav-text' href=''>Organismo</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<main class='background'>
+
+    <div class="container-fluid">
+        <section id="scene-and-editor">
+            <div class="row">
+                <div id="threejs-canvas" class="col-md-9">
+                </div>
+
+                <div id="right-tabs" class="col-md-3">
+
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab">Settings</a>
+                        </li>
+                        <li><a href="#tab2" data-toggle="tab">Tree</a>
+                        </li>
+                     </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <input type="checkbox" id="show-floor" value="true" title="show-floor" checked/>Show floor
+                            <br/>
+                            <input type="checkbox" id="show-tooltips" value="true" title="show-tooltips" checked/>Show tooltips
+                            <br/>
+                            <input type="checkbox" id="show-private" value="true" title="show-private"/>Show private
+                            <br/>
+                            <input type="checkbox" id="hide-inactive" value="false" title="hide-inactive"/>Hide inactive
+                            <br/>
+                            <input type="checkbox" id="show-interactive" value="true" title="show-interactive" checked/>Show interactive controls
+                            <br/>
+                            <input type="checkbox" id="show-segues" value="true" title="show-segues" checked/>Show segues
+                            <br/>
+                            <input type="checkbox" id="show-gestures" value="true" title="show-gestures" checked/>Show gestures
+                            <br/>
+                            <input type="checkbox" id="live-screen" value="true" title="live-screen"  checked/>Live screen
+                            <br/>
+                            <input type="checkbox" id="show-wireframe" value="true" title="wireframe"  />Wireframe
+                            <br/>
+
+                            <button class="ui-button ui-widget ui-corner-all">Expand</button>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <div id="json-editor"></div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script type="text/javascript" src="js-organismo/ORGRaycaster.js"></script>
+<script type="text/javascript" src="js-organismo/ORGMain.js"></script>
+<script type="text/javascript" src="js-organismo/ORGUserControls.js"></script>
+<script type="text/javascript" src="js-organismo/ORGTreeEditor.js"></script>
+<script type="text/javascript" src="js-organismo/ORGSettingsControls.js"></script>
+
+</body>
+</html>
