@@ -67,3 +67,27 @@ label {
 #messages pre.sent {
 	color: #f63;
 }
+
+.checkboxDiv {
+	width: 100%;
+	margin: auto;
+	margin-top: 0px;
+	padding: 0;
+}
+
+.smallCheckboxDiv {
+	display: inline-block;
+	width: 40%;
+	padding-left: 0%;
+	padding-right: 0%;
+	padding-top: 1px;
+}
+
+.inlineCheckbox {
+	display: inline-block;
+}
+
+.inlineCheckboxLabel {
+	display: inline-block;
+	cursor: pointer;
+}

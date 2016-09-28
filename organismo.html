@@ -83,43 +83,75 @@
                 </div>
 
                 <div id="right-tabs" class="col-md-3">
+                    <div class="container">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#tab1" data-toggle="tab">Settings</a>
+                            </li>
+                            <li><a href="#tab2" data-toggle="tab">Tree</a>
+                            </li>
+                        </ul>
 
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#tab1" data-toggle="tab">Settings</a>
-                        </li>
-                        <li><a href="#tab2" data-toggle="tab">Tree</a>
-                        </li>
-                     </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab1">
 
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab1">
-                            <input type="checkbox" id="show-floor" value="true" title="show-floor" checked/>Show floor
-                            <br/>
-                            <input type="checkbox" id="show-tooltips" value="true" title="show-tooltips" checked/>Show tooltips
-                            <br/>
-                            <input type="checkbox" id="show-private" value="true" title="show-private"/>Show private
-                            <br/>
-                            <input type="checkbox" id="hide-inactive" value="false" title="hide-inactive"/>Hide inactive
-                            <br/>
-                            <input type="checkbox" id="show-interactive" value="true" title="show-interactive" checked/>Show interactive controls
-                            <br/>
-                            <input type="checkbox" id="show-segues" value="true" title="show-segues" checked/>Show segues
-                            <br/>
-                            <input type="checkbox" id="show-gestures" value="true" title="show-gestures" checked/>Show gestures
-                            <br/>
-                            <input type="checkbox" id="live-screen" value="true" title="live-screen"  checked/>Live screen
-                            <br/>
-                            <input type="checkbox" id="show-wireframe" value="true" title="wireframe"  />Wireframe
-                            <br/>
+                                <div class="container">
 
-                            <button class="ui-button ui-widget ui-corner-all">Expand</button>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type='checkbox' id="show-floor" value="true" title="show-floor" checked/>
+                                        <div class='inlineCheckboxLabel'>Show floor</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-tooltips" value="true" title="show-tooltips" checked/>
+                                        <div class='inlineCheckboxLabel'>Show tooltips</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-private" value="true" title="show-private"/>
+                                        <div class='inlineCheckboxLabel'>Show private</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="hide-inactive" value="false" title="hide-inactive"/>
+                                        <div class='inlineCheckboxLabel'>Hide inactive</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-interactive" value="true" title="show-interactive" checked/>
+                                        <div class='inlineCheckboxLabel'>Show interactive controls</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-segues" value="true" title="show-segues" checked/>
+                                        <div class='inlineCheckboxLabel'>Show segues</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-gestures" value="true" title="show-gestures" checked/>
+                                        <div class='inlineCheckboxLabel'>Show gestures</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="live-screen" value="true" title="live-screen"  checked/>
+                                        <div class='inlineCheckboxLabel'>Live video</div>
+                                    </div>
+                                    <br/>
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-wireframe" value="true" title="wireframe"/>
+                                        <div class='inlineCheckboxLabel'>Wireframe</div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <button class="ui-button ui-widget ui-corner-all" onclick="expandCollapse()">Expand</button>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab2">
+                                <div id="json-editor"></div>
+                            </div>
                         </div>
-                        <div class="tab-pane" id="tab2">
-                            <div id="json-editor"></div>
-                        </div>
-                      </div>
-                </div>
+                    </div>
+                 </div>
             </div>
         </section>
     </div>
