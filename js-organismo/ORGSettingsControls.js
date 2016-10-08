@@ -5,6 +5,7 @@ var checkButtonWireframe = $('#show-wireframe');
 var checkButtonShowPrivate = $('#show-private');
 var checkButtonShowTooltips = $('#show-tooltips');
 var checkButtonLiveScreen = $('#live-screen');
+var buttonExpand = $('#expand-button');
 
 checkButtonShowFloor.change(function(e) {
     if ($(this).is(':checked') == true) {
@@ -28,4 +29,22 @@ checkButtonShowTooltips.change(function(e) {
 
 checkButtonLiveScreen.change(function(e) {
     orgScene.setLiveScreen($(this).is(':checked'));
+});
+
+checkButtonWireframe.change(function(e) {
+    orgScene.setWireframeMode(checkButtonWireframe.is(':checked'));
+});
+
+
+buttonExpand.click(function(e) {
+
+    if (orgDeviceConnection.isConnected() == false) {
+        return;
+    }
+    if (orgScene.UIExpanded()) {
+        buttonExpand.text("Expand");
+    } else {
+        buttonExpand.text("Collapse");
+    }
+    orgScene.expandCollapse();
 });

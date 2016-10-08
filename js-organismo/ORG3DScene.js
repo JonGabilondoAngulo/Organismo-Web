@@ -2,8 +2,15 @@
  * Created by jongabilondo on 02/07/2016.
  */
 
-
-function ORG3DScene(domContainer, screenSize, showFloor) {
+/**
+ * The class that holds the 3D scene witht the GLRenderer.
+ * It provides all the methods to handle the operations on the Scene.
+ *
+ * @param domContainer The dom element where to create the 3D scene.
+ * @param screenSize An initial size for the 3D scene. It will be updated to the real size of the container once the scene has been created.
+ * @constructor
+ */
+function ORG3DScene(domContainer, screenSize) {
 
     var _zPosition = 20.0;
     var _threeFloor;
@@ -32,12 +39,17 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
     var _tooltiper = null;
     var _contextMenuManager = null;
 
-    _initialize(domContainer, screenSize, showFloor, this);
+    initialize(domContainer, screenSize, true, this);
 
-    this.updateScreenshot = function(image) {
+    /**
+     * Sets the Image that will be used to create the texture to set it to the device screen.
+     * It sets the image in a variable to be used in the next render cycle.
+     * @param image.
+     */
+    this.setScreenshotImage = function(image) {
         _screenshotImage = image;
         _screenshotNeedsUpdate = true;
-    }
+    };
 
     this.updateUITreeModel = function( treeJson ) {
 
@@ -57,11 +69,11 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
         // Activate mouse listener
         _mouseListener.addDelegate(_uiTreeModelRaycaster); // send the mouse events to the Raycaster
         _mouseListener.enable();
-    }
+    };
 
-     this.removeUITreeModel = function( ) {
+    this.removeUITreeModel = function( ) {
         _uiTreeModel.removeUITreeModel( _threeScene);
-    }
+    };
 
     this.createDeviceScreen = function(width, height, zPosition) {
         var geometry,material;
@@ -77,7 +89,7 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
         _threeScreenPlane.position.set( 0 ,  0, zPosition);
         _threeScreenPlane.name = "screen";
         _threeScene.add( _threeScreenPlane);
-    }
+    };
 
     this.setDeviceScreenSize = function(width, height) {
         if (_threeScreenPlane) {
@@ -86,30 +98,28 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
             this.createDeviceScreen(width, height, 0);
             this.positionFloorUnderDevice();
          }
-    }
+    };
 
     this.hideDeviceScreen = function() {
         if (_threeScreenPlane) {
             _threeScreenPlane.visible = false;
         }
-    }
+    };
 
     this.showDeviceScreen = function() {
         if (_threeScreenPlane) {
             _threeScreenPlane.visible = true;
         }
-    }
+    };
 
     this.createRaycasterForDeviceScreen = function() {
-        // Create a Raycaster for the device screen object
-
         _uiTreeModelRaycaster = new ORGRaycaster(_threeRendererDOMElement, _threeCamera, _threeScreenPlane);
         _uiTreeModelRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager
 
         // Activate mouse listener
         _mouseListener.addDelegate(_uiTreeModelRaycaster); // send the mouse events to the Raycaster
         _mouseListener.enable();
-    }
+    };
 
     this.removeRaycasterForDeviceScreen = function() {
 
@@ -119,11 +129,11 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
 
         // Destroy raycaster
         _uiTreeModelRaycaster = null;
-    }
+    };
 
     this.getDeviceScreenBoundingBox = function() {
         return _threeScreenPlane.geometry.boundingBox;
-    }
+    };
 
     this.positionFloorUnderDevice = function() {
         if (_threeScreenPlane && _threeFloor) {
@@ -132,11 +142,11 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
             var bBox = _threeScreenPlane.geometry.boundingBox;
             _threeFloor.position.set( 0, bBox.min.y - 50, 0 );
         }
-    }
+    };
 
     this.continuousScreenshot = function() {
         return _continuousScreenshot;
-    }
+    };
 
     this.setLiveScreen = function(live) {
         _continuousScreenshot = live;
@@ -145,7 +155,7 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
                 orgDeviceConnection.requestScreenshot();
             }
         }
-    }
+    };
 
     this.setShowTooltips = function(show) {
         _showTooltip=show;
@@ -166,26 +176,26 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
                 }
             }
         }
-    }
+    };
 
     this.showTooltip = function() {
         return _showTooltip;
-    }
+    };
 
     this.showPrivate = function() {
         return _showPrivate;
-    }
+    };
 
     this.setShowPrivate = function(showPrivate) {
         _showPrivate = showPrivate;
         if (_uiExpanded && _uiTreeModel) {
             _uiTreeModel.collapseAndExpandAnimated(orgScene);
         }
-    }
+    };
 
     this.UIExpanded = function() {
         return _uiExpanded;
-    }
+    };
 
     this.setShowFloor = function(showFloor) {
         if (showFloor) {
@@ -193,32 +203,47 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
         } else {
             this.hideFloor();
         }
-    }
+    };
 
     this.showFloor = function() {
         if (!_threeFloor) {
-            createFloor();
+            _threeFloor = createFloor();
+            _threeScene.add(_threeFloor);
         }
-    }
+    };
 
     this.hideFloor = function() {
         if (_threeFloor) {
             deleteFloor();
         }
-    }
+    };
 
     this.setWireframeMode = function(wireframe) {
         _hideTextures = wireframe;
         _uiTreeModel.hideTextures(_hideTextures);
-    }
+    };
 
     this.wireframeMode = function() {
         return _hideTextures;
-    }
+    };
+
+    this.expandCollapse = function() {
+        if (_uiExpanded) {
+            // we dont need the mouse listener and the raycaster anymore
+            _mouseListener.disable();
+            _mouseListener.removeDelegate(_uiTreeModelRaycaster);
+            _uiTreeModelRaycaster = null;
+            _tooltiper = null;
+            _uiTreeModel.collapseAndShowScreen( _threeScreenPlane );
+            _uiExpanded = false;
+        } else {
+            orgDeviceConnection.requestElementTree();
+        }
+    };
 
     // PRIVATE
 
-    function _initialize(domContainer, screenSize, showFloor, ORGScene) {
+    function initialize(domContainer, screenSize, showFloor, ORGScene) {
 
         _canvasDomElement = domContainer;
         var rendererCanvasWidth = _canvasDomElement.clientWidth;
@@ -226,7 +251,12 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
 
         _threeScene = new THREE.Scene();
         _threeCamera = new THREE.PerspectiveCamera(75, rendererCanvasWidth / rendererCanvasHeight, 0.1, 10000);
-        _threeRenderer = new THREE.WebGLRenderer({antialias: true});
+        _threeRenderer = new THREE.WebGLRenderer({antialias: true /*, alpha:true (if transparency wanted)*/});
+        _threeRenderer.domElement.style.position = 'absolute';
+        _threeRenderer.domElement.style.top = 0;
+        //_threeRenderer.domElement.style.zIndex = 0;
+        //_threeRenderer.setClearColor(0x000000);
+
 
         _threeRenderer.setSize(rendererCanvasWidth, rendererCanvasHeight);
         _canvasDomElement.appendChild(_threeRenderer.domElement);
@@ -238,7 +268,8 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
 
         _zPosition += 10;
         if (showFloor) {
-            createFloor();
+            _threeFloor = createFloor();
+            _threeScene.add(_threeFloor);
         }
 
         createLights();
@@ -283,12 +314,11 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
         _threeAxis.position.set(-2500,-450,-2500);
         _threeScene.add(_threeAxis);
 
-        _threeFloor = new THREE.GridHelper(2000, 100);
-        _threeFloor.setColors( new THREE.Color(0x666666), new THREE.Color(0x666666) );
-        _threeFloor.position.set( 0,-450,0 );
-        _threeScene.add(_threeFloor);
+        threeFloor = new THREE.GridHelper(2000, 50, new THREE.Color(0x666666), new THREE.Color(0x666666));
+        //_threeFloor.setColors( new THREE.Color(0x666666), new THREE.Color(0x666666) );
+        threeFloor.position.set( 0,-450,0 );
 
-
+        return threeFloor;
         /* Mesh
          var geometry = new THREE.PlaneGeometry( 1200, 1200, 20, 20 );
          var material = new THREE.MeshBasicMaterial( { wireframe: true, color: 0xcccccc } );
@@ -342,7 +372,7 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
         _threeScene.remove( iPhone5Object);
     }
 
-    function _updateScreenshot() {
+    function updateScreenshot() {
 
         if (_threeScreenPlane && _screenshotNeedsUpdate && _screenshotImage) {
             _screenshotNeedsUpdate = false;
@@ -363,17 +393,6 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
 
     function render () {
 
-//                if (rcmouse.x != 0 || rcmouse.y != 0) {
-//                    raycaster.setFromCamera( rcmouse, camera );
-//
-//                    // calculate objects intersecting the picking ray
-//                    var intersects = raycaster.intersectObject( screenPlane, false );
-//                    if (intersects.length) {
-//                        console.log("intersect obj", intersects[ 0].object);
-//                        intersects[ 0 ].object.material.color.set( 0xff0000 );
-//                    }
-//                }
-
         requestAnimationFrame( render );
         _threeRenderer.render( _threeScene, _threeCamera);
         _threeOrbitControls.update();
@@ -385,29 +404,18 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
     {
         //var t0 = clock.getElapsedTime();
         //var timeOffset = 0.125 * t0;
-        var delta = _threeClock.getDelta(); // seconds.
-        var moveDistance = 200 * delta; // 200 pixels per second
-        var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
-        var deviceMotionChanged = false;
+        //var delta = _threeClock.getDelta(); // seconds.
+        //var moveDistance = 200 * delta; // 200 pixels per second
+        //var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+        //var deviceMotionChanged = false;
 
-        _updateScreenshot();
-
+        updateScreenshot();
 
         _keyboardState.update();
 
         // Expand/Collapse UI
         if ( _keyboardState.down("E") ) {
-            if (_uiExpanded) {
-                // we dont need the mouse listener and the raycaster anymore
-                _mouseListener.disable();
-                _mouseListener.removeDelegate(_uiTreeModelRaycaster);
-                _uiTreeModelRaycaster = null;
-                _tooltiper = null;
-                _uiTreeModel.collapseAndShowScreen( _threeScreenPlane );
-                _uiExpanded = false;
-            } else {
-                orgDeviceConnection.requestElementTree();
-            }
+            orgScene.expandCollapse();
         }
         else if ( _keyboardState.down("F") ) {
             checkButtonShowFloor.click();
@@ -436,7 +444,6 @@ function ORG3DScene(domContainer, screenSize, showFloor) {
             checkButtonShowTooltips.click();
             orgScene.setShowTooltips(checkButtonShowTooltips.is(':checked'));
          }
-
 
         // rotate left/right/up/down
 

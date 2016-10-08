@@ -32,8 +32,13 @@
     <script type="text/javascript" src="./jQuery-contextMenu/dist/jquery.contextMenu.min.js"></script>
     <script type="text/javascript" src="./jQuery-contextMenu/dist/jquery.ui.position.min.js"></script>
 
+    <!--<script type="text/javascript" src="http://www.google.com/jsapi"></script>-->
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places"></script>-->
 
-    <script type="text/javascript" src="js-libs/three.min.js"></script>
+
+    <script type="text/javascript" src="three.js/build/three.min.js"></script>
+    <script type="text/javascript" src="three.js/examples/js/renderers/CSS3DRenderer.js"></script>
+
     <script type="text/javascript" src="js/OrbitControls.js"></script>
     <script type="text/javascript" src="js/KeyboardState.js"></script>
     <script type="text/javascript" src="js/Tween.js"></script>
@@ -50,7 +55,7 @@
     <script type="text/javascript" src="js-organismo/ORG3DScene.js"></script>
     <script type="text/javascript" src="js-organismo/ORGMessageBuilder.js"></script>
     <script type="text/javascript" src="js-organismo/ORGContextMenuManager.js"></script>
-
+    <script type="text/javascript" src="js-organismo/ORGFloorMap.js"></script>
 </head>
 <body>
 
@@ -77,25 +82,37 @@
 <main class='background'>
 
     <div class="container-fluid">
-        <section id="scene-and-editor">
-            <div class="row">
-                <div id="threejs-canvas" class="col-md-9">
+        <!--<section id="scene-and-editor">-->
+            <div class="row" >
+                <div class="col-md-9 nopadding">
+
+                    <div id="threejs-canvas">
+
+                    </div>
+<!--
+                    <div id="options2" class="hide2">
+                        <h1 style="color:blue;">How to use</h1>
+                        <h1 style="color:red;">How to use</h1>
+                    </div>
+                    -->
                 </div>
 
-                <div id="right-tabs" class="col-md-3">
-                    <div class="container">
+                <div id="right-tabs" class="col-md-3 nopadding">
+                    <div id="right-container" class="container-fluid ">
                         <ul class="nav nav-tabs">
                             <li class="active">
                                 <a href="#tab1" data-toggle="tab">Settings</a>
                             </li>
-                            <li><a href="#tab2" data-toggle="tab">Tree</a>
+                            <li><a href="#tab2" data-toggle="tab">Map</a>
+                            </li>
+                            <li><a href="#tab3" data-toggle="tab">UI Tree</a>
                             </li>
                         </ul>
 
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab1">
 
-                                <div class="container">
+                                <!--<div class="container-fluid">-->
 
                                     <div class='smallCheckboxDiv'>
                                         <input type='checkbox' id="show-floor" value="true" title="show-floor" checked/>
@@ -141,26 +158,29 @@
                                         <input type="checkbox" id="show-wireframe" value="true" title="wireframe"/>
                                         <div class='inlineCheckboxLabel'>Wireframe</div>
                                     </div>
-                                </div>
-                                <div class="container">
+                                <!--</div>-->
+                                <div class="container-fluid">
                                     <br/>
-                                    <button class="ui-button ui-widget ui-corner-all" onclick="expandCollapse()">Expand</button>
+                                    <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand</button>
                                 </div>
                             </div>
                             <div class="tab-pane" id="tab2">
+                                <div id=""></div>
+                            </div>
+                            <div class="tab-pane" id="tab3">
                                 <div id="json-editor"></div>
                             </div>
                         </div>
                     </div>
                  </div>
             </div>
-        </section>
+        <!--</section>-->
     </div>
 </main>
 
 <script type="text/javascript" src="js-organismo/ORGRaycaster.js"></script>
 <script type="text/javascript" src="js-organismo/ORGMain.js"></script>
-<script type="text/javascript" src="js-organismo/ORGUserControls.js"></script>
+<script type="text/javascript" src="js-organismo/ORGDeviceConnectionControls.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTreeEditor.js"></script>
 <script type="text/javascript" src="js-organismo/ORGSettingsControls.js"></script>
 

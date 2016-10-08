@@ -129,7 +129,7 @@ function ORGWebSocketDelegate() {
 		if (base64Img) {
 			var img = new Image();
 			img.src = "data:image/jpg;base64," + base64Img;
-			orgScene.updateScreenshot(img);
+			orgScene.setScreenshotImage(img);
 
 			// Ask for next screenshot
 			if (orgScene.continuousScreenshot() && !orgScene.UIExpanded()) {

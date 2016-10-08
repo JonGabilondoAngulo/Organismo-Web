@@ -4,9 +4,9 @@
 
 
 var connectButton = $('#connect-button');
-var serverUrl = $('#device-url');
 
 connectButton.click(function(e) {
+    var serverUrl = $('#device-url');
     if (orgDeviceConnection.isConnected()) {
         orgDeviceConnection.close();
     } else {

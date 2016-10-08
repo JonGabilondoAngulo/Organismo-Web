@@ -10,7 +10,7 @@ function ORGUITreeModel() {
 
     var _treeData = null; // json of ui element tree as arrived from device
     var _threeElementTreeGroup = null; // threejs group with all the ui elements.
-    var _useCubes = true;
+    //var _useCubes = true;
     var _flagShowHidden = false;
     var _flagShowHiddenOnly = false;
     var _showOutOfScreen = true;
@@ -27,7 +27,7 @@ function ORGUITreeModel() {
         _threeScene = threeScene;
 
         this._createUITreeModel(_treeData, _threeScene, _screenSize, orgScene.showPrivate(), !orgScene.wireframeMode());
-    }
+    };
 
 
     this.updateUITreeModel = function (treeTopLevelNodes, threeScene, screenshotImage, deviceScreenSize, orgScene) {
@@ -35,8 +35,8 @@ function ORGUITreeModel() {
         if (_treeData) {
             this.removeUITreeModel(threeScene); // remove existing first
         }
-        this.createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize, orgScene)
-    }
+        this.createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize, orgScene);
+    };
 
     //this.expand = function () {
     //    _collapseTweenCount = 0;
@@ -62,7 +62,7 @@ function ORGUITreeModel() {
             };
             collapseNodeAnimatedWithCompletion(treeNode, callback);
         }
-    }
+    };
 
     this.collapseAndShowScreen = function (threeScreenPlane) {
 
@@ -77,14 +77,14 @@ function ORGUITreeModel() {
                 }
             })
         }
-    }
+    };
 
     this.removeUITreeModel = function (threeScene) {
         if (_threeElementTreeGroup) {
             threeScene.remove(_threeElementTreeGroup);
             _threeElementTreeGroup = null;
         }
-    }
+    };
 
     this.hideTextures = function (hide) {
         if (_threeElementTreeGroup) {
@@ -105,7 +105,7 @@ function ORGUITreeModel() {
                 }
             });
         }
-    }
+    };
 
     this.hideNonInteractiveViews = function(hide) {
         if (_threeElementTreeGroup) {
@@ -124,7 +124,7 @@ function ORGUITreeModel() {
                 }
             });
         }
-    }
+    };
 
     this.showConnections = function( show , threeScene) {
         if (_threeElementTreeGroup) {
@@ -142,11 +142,11 @@ function ORGUITreeModel() {
                 }
             });
         }
-    }
+    };
 
     this.getTreeGroup = function() {
         return _threeElementTreeGroup;
-    }
+    };
 
     this._createUITreeModel = function(treeData, threeScene, deviceScreenSize, showPrivate, showScreenshots) {
 
@@ -157,7 +157,7 @@ function ORGUITreeModel() {
         _threeElementTreeGroup = new THREE.Group();
         createTreeModel(treeData, deviceScreenSize, showPrivate, showScreenshots); // add all the ui tree in threeElementTreeGroup
         threeScene.add(_threeElementTreeGroup);
-    }
+    };
 
 
     // PRIVATE
@@ -238,12 +238,12 @@ function ORGUITreeModel() {
             var elementBase64Image = treeNode.screenshot;
             if (elementBase64Image) {
                 var img = new Image();
-                img.src = "data:image/jpg;base64," + elementBase64Image;
+                img.src = "data:image/png;base64," + elementBase64Image;
                 threeScreenshotTexture = new THREE.Texture(img);
                 threeScreenshotTexture.minFilter = THREE.NearestFilter;
                 threeScreenshotTexture.needsUpdate = true;
             }
-            var drawAsCube = false;//mustDrawTreeObjectAsCube(treeJson[i], parentTreeObj);
+            //var drawAsCube = false;//mustDrawTreeObjectAsCube(treeJson[i], parentTreeObj);
 
             //if (drawAsCube) {
             // Create Texture for view
@@ -292,9 +292,9 @@ function ORGUITreeModel() {
         uiObjectWidth = uiObjectDescription.bounds.right - uiObjectDescription.bounds.left;
         uiObjectHeight = uiObjectDescription.bounds.bottom - uiObjectDescription.bounds.top;
         uiObjectLeft = uiObjectDescription.bounds.left;
-        uiObjectRight = uiObjectDescription.bounds.right;
+        //uiObjectRight = uiObjectDescription.bounds.right;
         uiObjectTop = uiObjectDescription.bounds.top;
-        uiObjectBottom = uiObjectDescription.bounds.bottom;
+        //uiObjectBottom = uiObjectDescription.bounds.bottom;
 
 
         // create obj at Z = 0. We will animate it to its real position.
@@ -304,7 +304,7 @@ function ORGUITreeModel() {
         threeObjPosition = new THREE.Vector3(-( screenSize.width / 2 - uiObjectLeft - uiObjectWidth / 2.0), screenSize.height / 2 - uiObjectTop - uiObjectHeight / 2.0, 0);
 
         if (showScreenshots && threeScreenshotTexture) {
-            threeMaterial = new THREE.MeshBasicMaterial({map: threeScreenshotTexture});
+            threeMaterial = new THREE.MeshBasicMaterial({map: threeScreenshotTexture, transparent: true, side: THREE.DoubleSide});
         } else {
             threeMaterial = new THREE.MeshBasicMaterial({
                 color: 0x000000,
@@ -481,14 +481,15 @@ function ORGUITreeModel() {
                         "right": (objMesh.geometry.boundingBox.max.x + objMesh.position.x + deviceScreenSize.width / 2),
                         "bottom": Math.abs(objMesh.geometry.boundingBox.min.y + objMesh.position.y - deviceScreenSize.height / 2)
                     };
-                } else {
-                    runningObjRect = {
-                        "left": (objMesh.geometry.boundingBox.min.x + deviceScreenSize.width / 2),
-                        "top": Math.abs(objMesh.geometry.boundingBox.max.y - deviceScreenSize.height / 2),
-                        "right": (objMesh.geometry.boundingBox.max.x + deviceScreenSize.width / 2),
-                        "bottom": Math.abs(objMesh.geometry.boundingBox.min.y - deviceScreenSize.height / 2)
-                    };
                 }
+                //else {
+                //    runningObjRect = {
+                //        "left": (objMesh.geometry.boundingBox.min.x + deviceScreenSize.width / 2),
+                //        "top": Math.abs(objMesh.geometry.boundingBox.max.y - deviceScreenSize.height / 2),
+                //        "right": (objMesh.geometry.boundingBox.max.x + deviceScreenSize.width / 2),
+                //        "bottom": Math.abs(objMesh.geometry.boundingBox.min.y - deviceScreenSize.height / 2)
+                //    };
+                //}
 
                 if ( !!newObjRect && !!runningObjRect && rectsIntersect(newObjRect, runningObjRect)) {
 

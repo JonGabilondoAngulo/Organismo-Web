@@ -91,3 +91,31 @@ label {
 	display: inline-block;
 	cursor: pointer;
 }
+
+#options2{
+	position: absolute;
+	top: 10px;
+	width: 300px;
+	left: 10px;
+	background-color: rgba(1,1,1,1);
+	border-radius: 3px;
+	padding: 10px;
+	overflow: auto;
+	z-index: 1;
+}
+
+.hide2{
+	opacity: 0.2;
+	-webkit-transition: opacity .5s ease-out;
+	-moz-transition: opacity .5s ease-out;
+	-o-transition: opacity .5s ease-out;
+}
+
+#right-container.container-fluid {
+	//background-color: black;
+}
+
+.nopadding {
+	padding: 4px !important;
+	margin: 0 !important;
+}
