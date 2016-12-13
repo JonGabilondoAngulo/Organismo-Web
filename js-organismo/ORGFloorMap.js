@@ -7,7 +7,7 @@
  * The combination of CSS3DRenderer with a WebGLRenderer is not fully integrated.
  * They both work separately, WebGLRenderer has to be marked as transparent to be able to see the CSS3DRenderer scene.
  * The original attempt was to set the map as a texture into the floor mesh, but it's not possible to get the map image from an 'offscreen' buffer.
- * A google map can't be displayed on a canvas, in order to create a texture from it. Therefore the tryout here is to use the CSS3DRenderer which can
+ * A google map can't be displayed on a canvas in order to create a texture from it. Therefore the tryout here is to use the CSS3DRenderer which can
  * display a iframe, in which the map has been created.
  * There is a good thing about CSS3DRenderer and an iFrame, it's possible to create a google map in a 3D scene and even to control it, zoom, pan.
  * But it is not useful for Organismo. It needs a better integration into a WebGLRenderer renderer.

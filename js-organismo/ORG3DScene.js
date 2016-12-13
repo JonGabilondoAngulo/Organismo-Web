@@ -30,6 +30,7 @@ function ORG3DScene(domContainer, screenSize) {
     var _hideNonInteractiveViews = false;
     var _continuousScreenshot = true;
     var _showTooltip = false;
+    var _showDevice = true;
     var _showPrivate = false;
     var _canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
     var _threeRendererDOMElement = null; // threejs scene is displayed in this element
@@ -38,8 +39,18 @@ function ORG3DScene(domContainer, screenSize) {
     var _mouseListener = null;
     var _tooltiper = null;
     var _contextMenuManager = null;
+    var _device3DModel = null;
 
     initialize(domContainer, screenSize, true, this);
+
+    /**
+     * Remove the Device from the scene. After device disconnection all models and data of device must be removed.
+     */
+    this.handleDeviceDisconnection = function() {
+        this.removeDeviceScreen();
+        this.removeUITreeModel();
+        this.hideDevice3DModel();
+    }
 
     /**
      * Sets the Image that will be used to create the texture to set it to the device screen.
@@ -82,19 +93,30 @@ function ORG3DScene(domContainer, screenSize) {
 
         geometry = new THREE.PlaneBufferGeometry( width, height, 1, 1);
         geometry.dynamic = true;
-        material = new THREE.MeshBasicMaterial({ map : null , color: 0xffffff});
+        material = new THREE.MeshBasicMaterial({ map : null , color: 0xffffff, side: THREE.DoubleSide});
         //material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide, map : null});
         //material = new THREE.MeshBasicMaterial( {color: 0x000000, map : null});
         _threeScreenPlane = new THREE.Mesh( geometry, material );
         _threeScreenPlane.position.set( 0 ,  0, zPosition);
         _threeScreenPlane.name = "screen";
         _threeScene.add( _threeScreenPlane);
+
+        if ( _showDevice ) {
+            this.showDevice3DModel();
+        }
     };
+
+    this.removeDeviceScreen = function() {
+        if (_threeScreenPlane) {
+            this.removeRaycasterForDeviceScreen();
+            _threeScene.remove(_threeScreenPlane);
+            _threeScreenPlane = null;
+        }
+    }
 
     this.setDeviceScreenSize = function(width, height) {
         if (_threeScreenPlane) {
-            _threeScene.remove(_threeScreenPlane);
-            _threeScreenPlane = null;
+            this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
             this.positionFloorUnderDevice();
          }
@@ -137,10 +159,17 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.positionFloorUnderDevice = function() {
         if (_threeScreenPlane && _threeFloor) {
-
-            _threeScreenPlane.geometry.computeBoundingBox ();
-            var bBox = _threeScreenPlane.geometry.boundingBox;
-            _threeFloor.position.set( 0, bBox.min.y - 50, 0 );
+            var bBox = null;
+            if ( _showDevice && _device3DModel ) {
+                bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
+            }
+            if ( !bBox) {
+                _threeScreenPlane.geometry.computeBoundingBox ();
+                bBox = _threeScreenPlane.geometry.boundingBox;
+            }
+            if ( bBox) {
+                _threeFloor.position.set(0, bBox.min.y - 50, 0);
+            }
         }
     };
 
@@ -169,7 +198,7 @@ function ORG3DScene(domContainer, screenSize) {
             } else {
                 if (_tooltiper) {
                     if (_uiTreeModelRaycaster) {
-                        _uiTreeModelRaycaster.removeDelegate(_tooltiper); // Detach it to the raycaster
+                        _uiTreeModelRaycaster.removeDelegate(_tooltiper); // Detach it from the raycaster
                     }
                     _tooltiper.destroy( );
                     _tooltiper = null;
@@ -241,6 +270,49 @@ function ORG3DScene(domContainer, screenSize) {
         }
     };
 
+    /**
+     * Locate the camera at default position.
+     */
+    this.resetCameraPosition = function() {
+
+        // Avoid flickering by stopping screen updates
+        var liveScreen = this.continuousScreenshot;
+        if ( liveScreen) {
+            orgScene.setLiveScreen( false);
+        }
+
+        new TWEEN.Tween( _threeCamera.position ).to( {
+            x: 0,
+            y: 0,
+            z: 900}, 600).start()
+            .easing( TWEEN.Easing.Linear.None)
+            .onComplete(function () {
+                if (liveScreen) {
+                    orgScene.setLiveScreen( true);
+                }
+            }).start();
+    }
+
+    this.addDevice3DModel = function( device3DModel ) {
+        _device3DModel = device3DModel;
+        _threeScene.add( _device3DModel );
+        this.positionFloorUnderDevice();
+    }
+
+    this.showDevice3DModel = function() {
+        this.hideDevice3DModel();
+        orgDevice.loadDevice3DModel( this ); // async. WHen loaded it will call "addDevice3DModel"
+    }
+
+    this.hideDevice3DModel = function() {
+
+        if ( !!_device3DModel ) {
+            _threeScene.remove( _device3DModel);
+            _device3DModel = null;
+        }
+        this.positionFloorUnderDevice();
+    }
+
     // PRIVATE
 
     function initialize(domContainer, screenSize, showFloor, ORGScene) {
@@ -273,7 +345,6 @@ function ORG3DScene(domContainer, screenSize) {
         }
 
         createLights();
-        //showDevice();
 
         _threeCamera.position.z = 900;
         _threeClock = new THREE.Clock();
@@ -287,7 +358,7 @@ function ORG3DScene(domContainer, screenSize) {
         _mouseListener.enable();
 
         render();
-        THREEx.WindowResize(_threeRenderer, _threeCamera, _canvasDomElement);
+        ORG.WindowResize(_threeRenderer, _threeCamera, _canvasDomElement);
     }
 
     function createFloor() {
@@ -356,20 +427,6 @@ function ORG3DScene(domContainer, screenSize) {
 
 //            var light2 = new THREE.AmbientLight(0xffffff);
 //            scene.add(light2);
-    }
-
-    function showDevice() {
-
-        var loader = new THREE.OBJLoader(  );
-        loader.load( "3DModels/iPhone5/iPhone5.obj", function ( object ) {
-            iPhone5Object = object;
-            iPhone5Object.scale.set(0.80,0.8,0.8);
-            _threeScene.add( iPhone5Object );
-        } );
-    }
-
-     function hideDevice() {
-        _threeScene.remove( iPhone5Object);
     }
 
     function updateScreenshot() {

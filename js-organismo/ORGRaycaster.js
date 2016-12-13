@@ -95,12 +95,12 @@ function ORGRaycaster(rendererDomElement, threeCamera, threeTargetObject) {
             intersectionPoint = intersects[0].point;
 
             // Make sure the object is the uiobj plane and not the edges helper
-            if (elementToHilite instanceof THREE.EdgesHelper) {
+            if (elementToHilite instanceof THREE.BoxHelper) {
                 var parent = elementToHilite.parent; // parent must be a group, holds edgesHelper and the uiobject plane
                 elementToHilite = null;
                 if (parent) {
                     for (var i in parent.children) {
-                        if (  (parent.children[i] instanceof THREE.EdgesHelper) == false) {
+                        if (  (parent.children[i] instanceof THREE.BoxHelper) == false) {
                             elementToHilite = parent.children[i];
                             break;
                         }

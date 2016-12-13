@@ -1,11 +1,10 @@
 
 .background {
     min-height: 100vh;
-
     background-color: #eeeeee;
     background-position: center center;
     background-size: cover;
-    padding-top: 5em;
+    padding-top: 62px;
 }
 
 .nav-text {

@@ -15,6 +15,7 @@ function ORGWebSocketDelegate() {
 		connectButton.text("Disconnect");
 
 		orgDeviceConnection.requestDeviceInfo();
+		orgDeviceConnection.requestAppInfo();
 	};
 
 	/**
@@ -24,6 +25,10 @@ function ORGWebSocketDelegate() {
 	this.onClose = function(ws) {
 		console.log('Delegate onClose.');
 		connectButton.text("Connect");
+		orgScene.handleDeviceDisconnection();
+		buttonExpand.text("Expand");
+		deviceNameLabel.text('');
+		deviceSystemVersionLabel.text('');
 	};
 
 	/**
@@ -46,10 +51,8 @@ function ORGWebSocketDelegate() {
 			} else if (messageJSON.type == "notification") {
 				processNotification(messageJSON.body);
 			} else if (messageJSON.command == "CoreMotionFeed") {
-				//alert(JSON.stringify(jsonData));
 				var motionMessage = messageJSON.content;
 				processMotionFeedMessage(motionMessage);
-
 			}
 		}
 	};
@@ -72,6 +75,8 @@ function ORGWebSocketDelegate() {
 	function processResponse(messageJSON) {
 		if ( messageJSON.request == ORGRequest_deviceInfo) {
 			processResponseDeviceInfo(messageJSON);
+		} else if ( messageJSON.request == ORGRequest_AppInfo) {
+			processResponseAppInfo(messageJSON);
 		} else if ( messageJSON.request == ORGRequest_screenshot) {
 			processReportScreenshot( messageJSON);
 		} else if ( messageJSON.request == ORGRequest_elementTree) {
@@ -108,7 +113,11 @@ function ORGWebSocketDelegate() {
 	 */
 	function processResponseDeviceInfo(messageJSON) {
 
-		// The connection to the device its on place. We got iforamtion about the device.
+		// The connection to the device its on place. We got information about the device.
+		orgDevice = new ORGDevice( messageJSON.data );
+		deviceNameLabel.text( orgDevice.name);
+		deviceSystemVersionLabel.text( orgDevice.systemVersion);
+		deviceModelLabel.text( orgDevice.productName);
 
 		orgScene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
 		orgScene.createRaycasterForDeviceScreen();
@@ -118,6 +127,19 @@ function ORGWebSocketDelegate() {
 
 		// ask for the first screenshot
 		orgDeviceConnection.requestScreenshot();
+	}
+
+	/**
+	 * Method to process a response with app info coming from the Device.
+	 * @param messageJSON
+	 */
+	function processResponseAppInfo(messageJSON) {
+
+		orgTestApp = new ORGTestApp( messageJSON.data );
+
+		testAppNameLabel.text( orgTestApp.name );
+		testAppVersionLabel.text( orgTestApp.version );
+		testAppBundleIdLabel.text( orgTestApp.bundleIdentifier );
 	}
 
 	/**

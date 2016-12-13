@@ -8,7 +8,17 @@ function ORGMessageBuilder() {
         var msg = {
             type: "request",
             data: {
-                request: "device-info"
+                request: ORGRequest_deviceInfo
+            }
+        };
+        return JSON.stringify(msg);
+    }
+
+    this.appInfo = function () {
+        var msg = {
+            type: "request",
+            data: {
+                request: ORGRequest_AppInfo
             }
         };
         return JSON.stringify(msg);
@@ -18,7 +28,7 @@ function ORGMessageBuilder() {
         var msg = {
             type: "request",
             data: {
-                request: "screenshot"
+                request: ORGRequest_screenshot
             }
         };
         return JSON.stringify(msg);
@@ -28,7 +38,7 @@ function ORGMessageBuilder() {
         var msg = {
             type: "request",
             data: {
-                request: "element-tree"
+                request: ORGRequest_elementTree
             }
         };
         return JSON.stringify(msg);

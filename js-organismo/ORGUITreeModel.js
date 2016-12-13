@@ -262,14 +262,14 @@ function ORGUITreeModel() {
                 if (mustHideTreeObject(treeNode)) {
                     threeGroupObj.visible = false;
                 } else {
-                    var mesh = threeGroupObj.children[0];
-                    if (mesh) {
+                    //var mesh = threeGroupObj;//.children[0];
+                    //if (mesh) {
                         // The final zPosition is in tree node, not in the mesh object which is at 0.
-                        var finalMeshPosition = {x: mesh.position.x, y: mesh.position.y, z: treeNode.zPosition};
-                        var tween = new TWEEN.Tween(mesh.position)
+                        var finalMeshPosition = {x: threeGroupObj.position.x, y: threeGroupObj.position.y, z: treeNode.zPosition};
+                        var tween = new TWEEN.Tween(threeGroupObj.position)
                             .to(finalMeshPosition, _extrudeDuration)
                             .start();
-                    }
+                    //}
                 }
                 _threeElementTreeGroup.add(threeGroupObj);
                 treeNode.threeObj = threeGroupObj;
@@ -300,7 +300,7 @@ function ORGUITreeModel() {
         // create obj at Z = 0. We will animate it to its real position.
 
         threeGeometry = new THREE.PlaneBufferGeometry(uiObjectWidth, uiObjectHeight, 1, 1);
-        uiObjectDescription.zPosition = zPosition; // keep it here
+        uiObjectDescription.zPosition = zPosition; // keep it here for later use
         threeObjPosition = new THREE.Vector3(-( screenSize.width / 2 - uiObjectLeft - uiObjectWidth / 2.0), screenSize.height / 2 - uiObjectTop - uiObjectHeight / 2.0, 0);
 
         if (showScreenshots && threeScreenshotTexture) {
@@ -314,10 +314,11 @@ function ORGUITreeModel() {
         }
         uiObject = new THREE.Mesh(threeGeometry, threeMaterial);
         uiObject.position.set(threeObjPosition.x, threeObjPosition.y, threeObjPosition.z);
+
         uiObject.ORGData = { threeScreenshotTexture : threeScreenshotTexture }; // keep a reference to make the show/hide of textures
 
         threeUIElementGroup.add(uiObject);
-        threeUIElementGroup.add(new THREE.EdgesHelper(uiObject, 0xffffff));
+        threeUIElementGroup.add(new THREE.BoxHelper(uiObject));
 
         return threeUIElementGroup;
     }
@@ -473,23 +474,13 @@ function ORGUITreeModel() {
                 objMesh.geometry.computeBoundingBox();
 
                 var runningObjRect;
-                if (true) {
 
-                    runningObjRect = {
-                        "left": (objMesh.geometry.boundingBox.min.x + objMesh.position.x + deviceScreenSize.width / 2),
-                        "top": Math.abs(objMesh.geometry.boundingBox.max.y + objMesh.position.y - deviceScreenSize.height / 2),
-                        "right": (objMesh.geometry.boundingBox.max.x + objMesh.position.x + deviceScreenSize.width / 2),
-                        "bottom": Math.abs(objMesh.geometry.boundingBox.min.y + objMesh.position.y - deviceScreenSize.height / 2)
-                    };
-                }
-                //else {
-                //    runningObjRect = {
-                //        "left": (objMesh.geometry.boundingBox.min.x + deviceScreenSize.width / 2),
-                //        "top": Math.abs(objMesh.geometry.boundingBox.max.y - deviceScreenSize.height / 2),
-                //        "right": (objMesh.geometry.boundingBox.max.x + deviceScreenSize.width / 2),
-                //        "bottom": Math.abs(objMesh.geometry.boundingBox.min.y - deviceScreenSize.height / 2)
-                //    };
-                //}
+                runningObjRect = {
+                    "left": (objMesh.geometry.boundingBox.min.x + objMesh.position.x + deviceScreenSize.width / 2),
+                    "top": Math.abs(objMesh.geometry.boundingBox.max.y + objMesh.position.y - deviceScreenSize.height / 2),
+                    "right": (objMesh.geometry.boundingBox.max.x + objMesh.position.x + deviceScreenSize.width / 2),
+                    "bottom": Math.abs(objMesh.geometry.boundingBox.min.y + objMesh.position.y - deviceScreenSize.height / 2)
+                };
 
                 if ( !!newObjRect && !!runningObjRect && rectsIntersect(newObjRect, runningObjRect)) {
 
@@ -533,13 +524,13 @@ function ORGUITreeModel() {
     }
 
     function hideNodeGroup(threeNodeGroup, hide) {
-        var mesh = threeNodeGroup.children[0]; // the first is the mesh, second is the edges helper
+        var mesh = threeNodeGroup.children[0]; // the first is the mesh, second is the BoxHelper
         if (mesh) {
             mesh.visible = !hide;
         }
-        var edgesHelper = threeNodeGroup.children[1]; // the first is the mesh, second is the edges helper
-        if (edgesHelper) {
-            edgesHelper.visible = !hide;
+        var boxHelper = threeNodeGroup.children[1]; // the first is the mesh, second is the BoxHelper
+        if (boxHelper) {
+            boxHelper.visible = !hide;
         }
     }
 }

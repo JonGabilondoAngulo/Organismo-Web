@@ -7,7 +7,8 @@
     <title>Organismo</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style2.css"/>
+    <link rel="stylesheet" type="text/css" href="css/navigator-bar.css"/>
+    <link rel="stylesheet" type="text/css" href="css/map.css"/>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
@@ -33,8 +34,7 @@
     <script type="text/javascript" src="./jQuery-contextMenu/dist/jquery.ui.position.min.js"></script>
 
     <!--<script type="text/javascript" src="http://www.google.com/jsapi"></script>-->
-    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places"></script>-->
-
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback=initMap""></script>-->
 
     <script type="text/javascript" src="three.js/build/three.min.js"></script>
     <script type="text/javascript" src="three.js/examples/js/renderers/CSS3DRenderer.js"></script>
@@ -43,7 +43,8 @@
     <script type="text/javascript" src="js/KeyboardState.js"></script>
     <script type="text/javascript" src="js/Tween.js"></script>
     <script src="js-libs/loaders/OBJLoader.js"></script>
-    <script type="text/javascript" src='js-organismo/THREEx.WindowResize.js'></script>
+    <script src="three.js/examples/js/loaders/OBJLoader.js"></script>
+    <script type="text/javascript" src='js-organismo/ORG.WindowResize.js'></script>
     <script type="text/javascript" src="js-organismo/ORGConstants.js"></script>
     <script type="text/javascript" src="js-organismo/ORGWebSocket.js"></script>
     <script type="text/javascript" src="js-organismo/ORGWebSocketDelegate.js"></script>
@@ -56,18 +57,33 @@
     <script type="text/javascript" src="js-organismo/ORGMessageBuilder.js"></script>
     <script type="text/javascript" src="js-organismo/ORGContextMenuManager.js"></script>
     <script type="text/javascript" src="js-organismo/ORGFloorMap.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGMap.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDevice.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGTestApp.js"></script>
 </head>
 <body>
 
 <nav class='mynavbar navbar-inverse'>
     <div class='mynavbar-container'>
         <div class='mynavbar-header'>
-            <a class='nav-text' href='/'>
+            <span class='nav-text'>
                 Device URL:
-            </a>
+            </span>
             <input type="text" id="device-url" placeholder="localhost">
             <button id="connect-button" class="btn btn-default">Connect</button>
         </div>
+
+        <div class='mynavbar-header'>
+            <span id='device-name-label' class="label label-success"></span>
+            <span id='device-system-version-label' class="label label-success"></span>
+            <span id='device-model-label' class="label label-success"></span>
+
+            <span id='testapp-name-label' class="label label-primary"></span>
+            <span id='testapp-version-label' class="label label-primary"></span>
+            <span id='testapp-bundleid-label' class="label label-primary"></span>
+
+        </div>
+
 
         <div>
             <ul class='mynavbar-table'>
@@ -98,62 +114,66 @@
                 </div>
 
                 <div id="right-tabs" class="col-md-3 nopadding">
-                    <div id="right-container" class="container-fluid ">
+                    <div id="right-container" >
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#tab1" data-toggle="tab">Settings</a>
+                                <a href="#tab-settings" data-toggle="tab">Settings</a>
                             </li>
-                            <li><a href="#tab2" data-toggle="tab">Map</a>
+                            <li><a href="#tab-map" data-toggle="tab">Map</a>
                             </li>
-                            <li><a href="#tab3" data-toggle="tab">UI Tree</a>
+                            <li><a href="#tab-tree" data-toggle="tab">UI Tree</a>
                             </li>
                         </ul>
 
                         <div class="tab-content">
-                            <div class="tab-pane active" id="tab1">
+                            <div class="tab-pane active" id="tab-settings">
 
                                 <!--<div class="container-fluid">-->
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type='checkbox' id="show-floor" value="true" title="show-floor" checked/>
-                                        <div class='inlineCheckboxLabel'>Show floor</div>
-                                    </div>
-                                    <br/>
+                                <div class='smallCheckboxDiv'>
+                                    <input type='checkbox' id="show-device" value="true" title="show-device" checked/>
+                                    <div class='inlineCheckboxLabel'>Show Device</div>
+                                </div>
+                                <div class='smallCheckboxDiv'>
+                                    <input type='checkbox' id="show-floor" value="true" title="show-floor" checked/>
+                                    <div class='inlineCheckboxLabel'>Show Floor</div>
+                                </div>
+
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-tooltips" value="true" title="show-tooltips" checked/>
                                         <div class='inlineCheckboxLabel'>Show tooltips</div>
                                     </div>
-                                    <br/>
+
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-private" value="true" title="show-private"/>
                                         <div class='inlineCheckboxLabel'>Show private</div>
                                     </div>
-                                    <br/>
+
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="hide-inactive" value="false" title="hide-inactive"/>
                                         <div class='inlineCheckboxLabel'>Hide inactive</div>
                                     </div>
-                                    <br/>
+
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-interactive" value="true" title="show-interactive" checked/>
                                         <div class='inlineCheckboxLabel'>Show interactive controls</div>
                                     </div>
-                                    <br/>
+
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-segues" value="true" title="show-segues" checked/>
                                         <div class='inlineCheckboxLabel'>Show segues</div>
                                     </div>
-                                    <br/>
+
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-gestures" value="true" title="show-gestures" checked/>
                                         <div class='inlineCheckboxLabel'>Show gestures</div>
                                     </div>
-                                    <br/>
+
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="live-screen" value="true" title="live-screen"  checked/>
                                         <div class='inlineCheckboxLabel'>Live video</div>
                                     </div>
-                                    <br/>
+                                    
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-wireframe" value="true" title="wireframe"/>
                                         <div class='inlineCheckboxLabel'>Wireframe</div>
@@ -161,28 +181,46 @@
                                 <!--</div>-->
                                 <div class="container-fluid">
                                     <br/>
-                                    <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand</button>
+                                    <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand UI</button>
+
+                                    <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all">Reset Camera</button>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="tab2">
-                                <div id=""></div>
+                            <div class="tab-pane" id="tab-map">
+                                <input id="pac-input" class="map-controls" type="text" placeholder="Search Box">
+                                <div id="map"></div>
+
+                                <!--Create Map on Tab selection-->
+                                <script>
+                                    $("a[href='#tab-map']").on('shown.bs.tab', function(e) {
+                                        //console.log('shown - after the tab has been shown');
+                                        if ( !orgMap.isCreated() ) {
+                                            orgMap.createMap();
+                                        }
+                                    });
+                                </script>
+
                             </div>
-                            <div class="tab-pane" id="tab3">
+                            <div class="tab-pane" id="tab-tree">
                                 <div id="json-editor"></div>
                             </div>
                         </div>
                     </div>
+
                  </div>
             </div>
         <!--</section>-->
     </div>
+
 </main>
+
 
 <script type="text/javascript" src="js-organismo/ORGRaycaster.js"></script>
 <script type="text/javascript" src="js-organismo/ORGMain.js"></script>
 <script type="text/javascript" src="js-organismo/ORGDeviceConnectionControls.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTreeEditor.js"></script>
 <script type="text/javascript" src="js-organismo/ORGSettingsControls.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback=" async defer ></script>
 
 </body>
 </html>

@@ -29,6 +29,10 @@ function ORGDeviceConnection() {
         orgWebSocket.send(orgMessageBuilder.deviceInfo());
     }
 
+    this.requestAppInfo = function() {
+        orgWebSocket.send(orgMessageBuilder.appInfo());
+    }
+
     this.requestScreenshot = function() {
         orgWebSocket.send( orgMessageBuilder.takeScreenshot());
     }

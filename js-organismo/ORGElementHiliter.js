@@ -6,7 +6,7 @@
  * A helper class to highlight the edges of the 3d UI elements when the UI is expanded.
  * When attached to a Raycaster as a delegate it will start to receive the "mouseOverElement" call and it will produce the highlight visual effect.
  * It implements the ORGRayscaster delegate method "mouseOverElement".
- * It is based in the usage of the THREE.EdgesHelper object that is grouped with the 3D UI object.
+ * It is based in the usage of the THREE.BoxHelper object that is grouped with the 3D UI object.
  * @constructor
  */
 function ORGElementHiliter( ) {
@@ -46,7 +46,7 @@ function ORGElementHiliter( ) {
 
     /**
      * Private function to highlight a 3D object.
-     * The highlight is performed using the THREE.EdgesHelper wichi is the sibling of the 3D UI object. To access the EdgesHelper we need to go the parent (which is a Group) and descend.
+     * The highlight is performed using the THREE.BoxHelper which is the sibling of the 3D UI object. To access the BoxHelper we need to go the parent (which is a Group) and descend.
      * @param threeUIElement
      * @param hilite
      */
@@ -58,7 +58,7 @@ function ORGElementHiliter( ) {
                 var parent = threeUIElement.parent; // parent must be a group, holds edgesHelper and the uiobject plane
                 if (parent) {
                     for (var i in parent.children) {
-                        if (parent.children[i] instanceof THREE.EdgesHelper) {
+                        if (parent.children[i] instanceof THREE.BoxHelper) {
                             var edgesHelperObject = parent.children[i];
                             edgesHelperObject.material.color.set( (hilite ?0xff0000 :0xffffff) );
                             edgesHelperObject.material.needsUpdate = true;
