@@ -1,64 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="- Removed deprecated EdgesHelper. Using BoxHelper.&#10;- Added camera position Reset.&#10;- Added Map&#10;- Added Connected device and App info to Web Front Page.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORGDevice.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORGMap.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORGTestApp.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/map.css" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/css/reset.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/AWDLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/AssimpJSONLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/BabylonLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/BinaryLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ColladaLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/DDSLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/MTLLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/OBJLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/OBJMTLLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/PDBLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/PLYLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/PVRLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/RGBELoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/STLLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/SVGLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/TGALoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/UTF8Loader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/VRMLLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/VTKLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ctm/CTMLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ctm/CTMWorker.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ctm/ctm.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ctm/license/OpenCTM.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ctm/license/js-lzma.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ctm/license/js-openctm.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/ctm/lzma.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/deprecated/SceneLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/gltf/glTF-parser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/gltf/glTFAnimation.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/gltf/glTFLoader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/loaders/gltf/glTFLoaderUtils.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/screen.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/screenshot.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/tree copy.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/tree.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/uiControls.js" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/css/style2.css" afterPath="$PROJECT_DIR$/css/navigator-bar.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js-organismo/THREEx.WindowResize.js" afterPath="$PROJECT_DIR$/js-organismo/ORG.WindowResize.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGConstants.js" afterPath="$PROJECT_DIR$/js-organismo/ORGConstants.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceConnection.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceConnection.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGElementHiliter.js" afterPath="$PROJECT_DIR$/js-organismo/ORGElementHiliter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGFloorMap.js" afterPath="$PROJECT_DIR$/js-organismo/ORGFloorMap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGRaycaster.js" afterPath="$PROJECT_DIR$/js-organismo/ORGRaycaster.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" afterPath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" afterPath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
+    <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
@@ -239,6 +182,7 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-2" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
@@ -543,7 +487,13 @@
       <option name="project" value="LOCAL" />
       <updated>1475951689399</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="- Removed deprecated EdgesHelper. Using BoxHelper.&#10;- Added camera position Reset.&#10;- Added Map&#10;- Added Connected device and App info to Web Front Page.">
+      <created>1481663433590</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1481663433590</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -556,7 +506,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="-2" y="23" width="1440" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1987315" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
