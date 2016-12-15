@@ -2,15 +2,48 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/device.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/floor.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/index.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/lights.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/notUsed/motion.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Bouton Diffuse 1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Bouton Diffuse 2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Body 1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Body 2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Screen.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/tex/Flash_02.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/tex/Gradient_04.tif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_Screen.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_diffuse.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_specular.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Thumbs.db" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Thumbs.db" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 3.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 4.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/tex/aniso.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/tex/home.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone 5 baksidan" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone 5.c4d" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.e3d" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.mtl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.obj" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone/iPhone 6.3ds" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone/iPhone 6.blend" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.e3d" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone5_screen.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone5_text.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/iPhone_6.c4d" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/tex/iPhone_Back_Gloss.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone/Textures/iphone-6-02 (1).jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/tex/octane_studio6.hdr" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/tex/speakergrill_b.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/tex/speakergrill_c.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone 5.obj" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone/iPhone 6.mtl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.mtl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.obj" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone_5.mtl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone/iPhone_6.obj" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/iPhone_6.obj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/three.js" afterPath="$PROJECT_DIR$/three.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
@@ -35,7 +68,7 @@
       <file leaf-file-name="organismo.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/organismo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.71925133">
+            <state vertical-scroll-proportion="0.72214764">
               <caret line="151" column="78" selection-start-line="151" selection-start-column="78" selection-end-line="151" selection-end-column="78" />
               <folding />
             </state>
@@ -261,6 +294,110 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="js-organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3DModels" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iPhone_6" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3DModels" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iPhone_5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3DModels" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iPhone 5S" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3DModels" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iPhone 5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3DModels" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iPhone" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -491,7 +628,13 @@
       <option name="project" value="LOCAL" />
       <updated>1481663878754</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="UI Expansion tree improvements.">
+      <created>1481816915550</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1481816915550</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -505,21 +648,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="126" y="27" width="1510" height="1138" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18938886" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18938886" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277849" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23815621" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23804972" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2498469" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23518164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23518164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277849" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25333333" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -570,7 +713,8 @@
     <MESSAGE value="Web control improvements" />
     <MESSAGE value="Web UI improvements" />
     <MESSAGE value="- Removed deprecated EdgesHelper. Using BoxHelper.&#10;- Added camera position Reset.&#10;- Added Map&#10;- Added Connected device and App info to Web Front Page." />
-    <option name="LAST_COMMIT_MESSAGE" value="- Removed deprecated EdgesHelper. Using BoxHelper.&#10;- Added camera position Reset.&#10;- Added Map&#10;- Added Connected device and App info to Web Front Page." />
+    <MESSAGE value="UI Expansion tree improvements." />
+    <option name="LAST_COMMIT_MESSAGE" value="UI Expansion tree improvements." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -977,7 +1121,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/organismo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.71925133">
+        <state vertical-scroll-proportion="0.72214764">
           <caret line="151" column="78" selection-start-line="151" selection-start-column="78" selection-end-line="151" selection-end-column="78" />
           <folding />
         </state>
