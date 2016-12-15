@@ -41,9 +41,8 @@
 
     <script type="text/javascript" src="js/OrbitControls.js"></script>
     <script type="text/javascript" src="js/KeyboardState.js"></script>
-    <script type="text/javascript" src="js/Tween.js"></script>
-    <script src="js-libs/loaders/OBJLoader.js"></script>
-    <script src="three.js/examples/js/loaders/OBJLoader.js"></script>
+    <script type="text/javascript" src="three.js/examples/js/loaders/OBJLoader.js"></script>
+    <script type="text/javascript" src="three.js/examples/js/libs/tween.min.js"></script>
     <script type="text/javascript" src='js-organismo/ORG.WindowResize.js'></script>
     <script type="text/javascript" src="js-organismo/ORGConstants.js"></script>
     <script type="text/javascript" src="js-organismo/ORGWebSocket.js"></script>
@@ -117,7 +116,7 @@
                     <div id="right-container" >
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#tab-settings" data-toggle="tab">Settings</a>
+                                <a href="#tab-settings" data-toggle="tab">Control</a>
                             </li>
                             <li><a href="#tab-map" data-toggle="tab">Map</a>
                             </li>
@@ -126,64 +125,88 @@
                         </ul>
 
                         <div class="tab-content">
-                            <div class="tab-pane active" id="tab-settings">
+                            <br class="tab-pane active" id="tab-settings">
 
-                                <!--<div class="container-fluid">-->
-
+                            <div class="container-fluid">
                                 <div class='smallCheckboxDiv'>
-                                    <input type='checkbox' id="show-device" value="true" title="show-device" checked/>
+                                    <input type='checkbox' id="show-device" value="true" title="show-device"
+                                           checked/>
+
                                     <div class='inlineCheckboxLabel'>Show Device</div>
                                 </div>
                                 <div class='smallCheckboxDiv'>
                                     <input type='checkbox' id="show-floor" value="true" title="show-floor" checked/>
+
                                     <div class='inlineCheckboxLabel'>Show Floor</div>
                                 </div>
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-tooltips" value="true" title="show-tooltips"
+                                           checked/>
+
+                                    <div class='inlineCheckboxLabel'>Show Tooltips</div>
+                                </div>
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="live-screen" value="true" title="live-screen"
+                                           checked/>
+
+                                    <div class='inlineCheckboxLabel'>Continuos Update</div>
+                                </div>
+                            </div>
+
+                            </br>
+
+                            <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all">Reset Camera</button>
+                            </br></br>
+
+
+                            <div class="panel panel-default">
+                                    <div class="panel-heading">UI Inspector</div>
+                                <div class="container-fluid">
+                                    <br/>
+                                    <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand UI</button>
+                                    <br/>
 
                                     <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-tooltips" value="true" title="show-tooltips" checked/>
-                                        <div class='inlineCheckboxLabel'>Show tooltips</div>
+                                        <input type="checkbox" id="show-textures" value="true" title="textures" checked/>
+                                        <div class='inlineCheckboxLabel'>Textures</div>
+                                    </div>
+
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-public-classes" title="show-public-classes" checked/>
+                                        <div class='inlineCheckboxLabel'>Public Classes</div>
                                     </div>
 
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-private" value="true" title="show-private"/>
-                                        <div class='inlineCheckboxLabel'>Show private</div>
-                                    </div>
-
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="hide-inactive" value="false" title="hide-inactive"/>
-                                        <div class='inlineCheckboxLabel'>Hide inactive</div>
+                                        <div class='inlineCheckboxLabel'>Private Classes</div>
                                     </div>
 
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-interactive" value="true" title="show-interactive" checked/>
-                                        <div class='inlineCheckboxLabel'>Show interactive controls</div>
+                                        <div class='inlineCheckboxLabel'>Interactive Cntrls</div>
+                                    </div>
+
+                                    <div class='smallCheckboxDiv'>
+                                        <input type="checkbox" id="show-non-interactive" value="true" title="show-non-interactive" checked/>
+                                        <div class='inlineCheckboxLabel'>Non-Interactive Cntrls</div>
                                     </div>
 
                                     <div class='smallCheckboxDiv'>
                                         <input type="checkbox" id="show-segues" value="true" title="show-segues" checked/>
-                                        <div class='inlineCheckboxLabel'>Show segues</div>
+                                        <div class='inlineCheckboxLabel'>Show Segues</div>
                                     </div>
 
                                     <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-gestures" value="true" title="show-gestures" checked/>
-                                        <div class='inlineCheckboxLabel'>Show gestures</div>
+                                        <input type="checkbox" id="show-gestures" value="true" title="show-gestures"
+                                               checked/>
+                                        <div class='inlineCheckboxLabel'>Show Gestures</div>
                                     </div>
 
                                     <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="live-screen" value="true" title="live-screen"  checked/>
-                                        <div class='inlineCheckboxLabel'>Live video</div>
+                                        <input type="checkbox" id="show-hidden-views" title="show-hidden-views"/>
+                                        <div class='inlineCheckboxLabel'>Hidden Views</div>
                                     </div>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-wireframe" value="true" title="wireframe"/>
-                                        <div class='inlineCheckboxLabel'>Wireframe</div>
-                                    </div>
-                                <!--</div>-->
-                                <div class="container-fluid">
-                                    <br/>
-                                    <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand UI</button>
-
-                                    <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all">Reset Camera</button>
                                 </div>
                             </div>
                             <div class="tab-pane" id="tab-map">

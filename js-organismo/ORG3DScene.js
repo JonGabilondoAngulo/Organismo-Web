@@ -26,8 +26,8 @@ function ORG3DScene(domContainer, screenSize) {
     var _screenshotNeedsUpdate = false;
     var _deviceScreenSize;
     var _uiExpanded = false;
-    var _hideTextures = false;
-    var _hideNonInteractiveViews = false;
+    var _showTextures = true;
+    var _showInteractiveControls = true;
     var _continuousScreenshot = true;
     var _showTooltip = false;
     var _showDevice = true;
@@ -169,6 +169,7 @@ function ORG3DScene(domContainer, screenSize) {
             }
             if ( bBox) {
                 _threeFloor.position.set(0, bBox.min.y - 50, 0);
+                _threeAxis.position.set(-2000,bBox.min.y,-2000);
             }
         }
     };
@@ -247,13 +248,15 @@ function ORG3DScene(domContainer, screenSize) {
         }
     };
 
-    this.setWireframeMode = function(wireframe) {
-        _hideTextures = wireframe;
-        _uiTreeModel.hideTextures(_hideTextures);
+    this.setShowTextures = function(flag) {
+        _showTextures = flag;
+        if ( _uiTreeModel ) {
+            _uiTreeModel.hideTextures(!_showTextures);
+        }
     };
 
-    this.wireframeMode = function() {
-        return _hideTextures;
+    this.getShowTextures = function() {
+        return !_showTextures;
     };
 
     this.expandCollapse = function() {
@@ -284,8 +287,8 @@ function ORG3DScene(domContainer, screenSize) {
         new TWEEN.Tween( _threeCamera.position ).to( {
             x: 0,
             y: 0,
-            z: 900}, 600).start()
-            .easing( TWEEN.Easing.Linear.None)
+            z: 900}, 600)
+            .easing( TWEEN.Easing.Quadratic.InOut)
             .onComplete(function () {
                 if (liveScreen) {
                     orgScene.setLiveScreen( true);
@@ -311,6 +314,22 @@ function ORG3DScene(domContainer, screenSize) {
             _device3DModel = null;
         }
         this.positionFloorUnderDevice();
+    }
+
+    this.setShowInteractive = function( flag ) {
+        _showInteractiveControls = flag;
+        _uiTreeModel.setShowInteractiveViews(flag);
+    }
+
+    this.setShowNonInteractive = function( flag ) {
+        _uiTreeModel.setShowNonInteractiveViews(flag);
+    }
+
+    this.setShowHiddenViews = function( flag) {
+        _uiTreeModel.setShowHiddenViews(flag);
+        if (_uiExpanded && _uiTreeModel) {
+            _uiTreeModel.collapseAndExpandAnimated(orgScene);
+        }
     }
 
     // PRIVATE
@@ -382,7 +401,7 @@ function ORG3DScene(domContainer, screenSize) {
          }*/
 
         _threeAxis = new THREE.AxisHelper(650);
-        _threeAxis.position.set(-2500,-450,-2500);
+        _threeAxis.position.set(-2000,-450,-2000);
         _threeScene.add(_threeAxis);
 
         threeFloor = new THREE.GridHelper(2000, 50, new THREE.Color(0x666666), new THREE.Color(0x666666));
@@ -403,8 +422,10 @@ function ORG3DScene(domContainer, screenSize) {
     function deleteFloor() {
         if (_threeFloor) {
             _threeScene.remove(_threeFloor);
+            _threeScene.remove(_threeAxis);
         }
         _threeFloor = null;
+        _threeAxis = null;
     }
 
     function createLights() {
@@ -477,17 +498,6 @@ function ORG3DScene(domContainer, screenSize) {
         else if ( _keyboardState.down("F") ) {
             checkButtonShowFloor.click();
             orgScene.setShowFloor(checkButtonShowFloor.is(':checked'));
-        }
-        else if ( _keyboardState.down("W") ) {
-            checkButtonWireframe.click();
-            orgScene.setWireframeMode(checkButtonWireframe.is(':checked'));
-        }
-        else if ( _keyboardState.down("A") ) {
-            if (_uiExpanded) {
-                _hideNonInteractiveViews = !_hideNonInteractiveViews;
-                _uiTreeModel.hideNonInteractiveViews(_hideNonInteractiveViews);
-                //_uiTreeModel.showConnections( true, _threeScene);
-            }
         }
         else if ( _keyboardState.down("P") ) {
             checkButtonShowPrivate.click();

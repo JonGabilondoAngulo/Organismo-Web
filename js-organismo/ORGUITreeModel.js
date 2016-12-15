@@ -11,10 +11,12 @@ function ORGUITreeModel() {
     var _treeData = null; // json of ui element tree as arrived from device
     var _threeElementTreeGroup = null; // threejs group with all the ui elements.
     //var _useCubes = true;
+    var _flagShowInteractiveViews = true;
+    var _flagShowNonInteractiveViews = true;
     var _flagShowHidden = false;
     var _flagShowHiddenOnly = false;
     var _showOutOfScreen = true;
-    var _extrudeDuration = 400; // ms
+    var _extrudeDuration = 500; // ms
     var _screenSize = null;
     var _threeScene = null;
     var _collapseTweenCount = 0; // collapse animation counter
@@ -26,7 +28,7 @@ function ORGUITreeModel() {
         _treeData = treeTopLevelNodes;
         _threeScene = threeScene;
 
-        this._createUITreeModel(_treeData, _threeScene, _screenSize, orgScene.showPrivate(), !orgScene.wireframeMode());
+        this._createUITreeModel(_treeData, _threeScene, _screenSize, orgScene.showPrivate(), !orgScene.getShowTextures());
     };
 
 
@@ -58,7 +60,7 @@ function ORGUITreeModel() {
             var treeNode = _treeData[i];
             var thisTreeModelObj = this;
             var callback = function () {
-                thisTreeModelObj._createUITreeModel(_treeData, _threeScene, _screenSize, orgScene.showPrivate(), !orgScene.wireframeMode());
+                thisTreeModelObj._createUITreeModel(_treeData, _threeScene, _screenSize, orgScene.showPrivate(), !orgScene.getShowTextures());
             };
             collapseNodeAnimatedWithCompletion(treeNode, callback);
         }
@@ -92,7 +94,7 @@ function ORGUITreeModel() {
                 if (child instanceof THREE.Mesh) {
                     if (hide) {
                         child.material.map = null;
-                        child.material.color = 0x000000;
+                        child.material.color = new THREE.Color(0x000000);
                         //child.material.opacity = 1.0;
                         //child.material.transparent = false;
                     } else {
@@ -106,6 +108,20 @@ function ORGUITreeModel() {
             });
         }
     };
+
+    this.setShowInteractiveViews = function( flag) {
+        _flagShowInteractiveViews = flag;
+        modelVisualizationChanged();
+    }
+
+    this.setShowNonInteractiveViews = function( flag) {
+        _flagShowNonInteractiveViews = flag;
+        modelVisualizationChanged();
+    }
+
+    this.setShowHiddenViews = function(flag) {
+        _flagShowHidden = flag;
+    }
 
     this.hideNonInteractiveViews = function(hide) {
         if (_threeElementTreeGroup) {
@@ -163,18 +179,16 @@ function ORGUITreeModel() {
     // PRIVATE
 
     function collapseNodeAnimatedWithCompletion(node, completionFunction) {
-        var threeObj = node.threeObj;
+        var threeObj = node.threeObj; // the obj is a THREE.Group
         if (threeObj) {
-            var mesh = threeObj.children[0];
-            var tween = new TWEEN.Tween(mesh.position)
-                .to({x: mesh.position.x, y: mesh.position.y, z: 0}, _extrudeDuration)
+            var tween = new TWEEN.Tween(threeObj.position)
+                .to({x: threeObj.position.x, y: threeObj.position.y, z: 0}, _extrudeDuration)
                 .onStart( function() {
                     _collapseTweenCount++;
                 })
                 .onComplete( function() {
                     hideNodeGroup(threeObj, true);
                     node.zPosition = 0;
-
 
                     if (--_collapseTweenCount <= 0 ) {
                         _collapseTweenCount = 0;
@@ -259,21 +273,19 @@ function ORGUITreeModel() {
             var threeGroupObj = createUIObject(treeNode, threeScreenshotTexture, deviceScreenSize, zPosition, showScreenshots);
             if (threeGroupObj) {
 
-                if (mustHideTreeObject(treeNode)) {
-                    threeGroupObj.visible = false;
-                } else {
-                    //var mesh = threeGroupObj;//.children[0];
-                    //if (mesh) {
-                        // The final zPosition is in tree node, not in the mesh object which is at 0.
-                        var finalMeshPosition = {x: threeGroupObj.position.x, y: threeGroupObj.position.y, z: treeNode.zPosition};
-                        var tween = new TWEEN.Tween(threeGroupObj.position)
-                            .to(finalMeshPosition, _extrudeDuration)
-                            .start();
-                    //}
-                }
                 _threeElementTreeGroup.add(threeGroupObj);
                 treeNode.threeObj = threeGroupObj;
                 threeGroupObj.userData = treeNode;
+
+                if (mustHideTreeObject(treeNode)) {
+                    threeGroupObj.visible = false;
+                } else {
+                    // The final zPosition is in treeNode, not in the mesh object which is at 0.
+                    var finalMeshPosition = {x: threeGroupObj.position.x, y: threeGroupObj.position.y, z: treeNode.zPosition};
+                    var tween = new TWEEN.Tween(threeGroupObj.position)
+                        .to(finalMeshPosition, _extrudeDuration)
+                        .start();
+                }
             }
         } else {
             console.log("what is this ?", i, upperTreeNodes[i]);
@@ -318,63 +330,79 @@ function ORGUITreeModel() {
         uiObject.ORGData = { threeScreenshotTexture : threeScreenshotTexture }; // keep a reference to make the show/hide of textures
 
         threeUIElementGroup.add(uiObject);
-        threeUIElementGroup.add(new THREE.BoxHelper(uiObject));
+        threeUIElementGroup.add(new THREE.BoxHelper(uiObject, 0xffffff));
 
         return threeUIElementGroup;
     }
 
-    function modelChangeShowHidden( treeJson, showHidden) {
 
-        // Show/Hide Hidden objects
-        for (var i in treeJson) {
-            if (typeof(treeJson[i])=="object") {
-                if (treeJson[i].hidden) {
-                    console.log("UI Element hidden: ", treeJson[i]);
-                    var threeObj = treeJson[i].threeObj;
-                    if (threeObj) {
-                        if (showHidden) {
-                            threeObj.visible = true;
-                        } else {
-                            threeObj.visible = false;
-                        }
-                        threeObj.needsUpdate = true;
-                    } else {
-                        console.log("UI Hidden Element has no THREE OBJ !!");
+    function modelVisualizationChanged() {
+        if (_threeElementTreeGroup) {
+            _threeElementTreeGroup.traverse(function (child) {
+                if (child instanceof THREE.Group) {
+
+                    var nodeData = child.userData;
+                    if (nodeData) {
+                        hideNodeGroup(child, mustHideTreeObject( nodeData));
                     }
                 }
-                modelChangeShowHidden(treeJson[i].subviews, showHidden);
-            }
+            });
         }
     }
 
-    function modelChangeShowHiddenOnly( treeJson, showHidden, showHiddenOnly) {
 
-        // Show/Hide Hidden objects
-        for (var i in treeJson) {
-            if (!!treeJson[i]==true && typeof(treeJson[i])=="object") {
-                var mesh = treeJson[i].threeObj;
-                if (mesh) {
-                    if (treeJson[i].hidden) {
-                        if (showHidden || showHiddenOnly) {
-                            mesh.visible = true;
-                        } else {
-                            mesh.visible = false;
-                        }
-                        mesh.needsUpdate = true;
-                    } else {
-                        // Not hidden ui obj
-                        if (showHiddenOnly) {
-                            mesh.visible = false;
-                        } else {
-                            mesh.visible = true;
-                        }
-                        mesh.needsUpdate = true;
-                    }
-                }
-                modelChangeShowHiddenOnly(treeJson[i].subviews, showHidden, showHidden);
-            }
-        }
-    }
+    //function modelChangeShowHidden( treeJson, showHidden) {
+    //
+    //    // Show/Hide Hidden objects
+    //    for (var i in treeJson) {
+    //        if (typeof(treeJson[i])=="object") {
+    //            if (treeJson[i].hidden) {
+    //                console.log("UI Element hidden: ", treeJson[i]);
+    //                var threeObj = treeJson[i].threeObj;
+    //                if (threeObj) {
+    //                    if (showHidden) {
+    //                        threeObj.visible = true;
+    //                    } else {
+    //                        threeObj.visible = false;
+    //                    }
+    //                    threeObj.needsUpdate = true;
+    //                } else {
+    //                    console.log("UI Hidden Element has no THREE OBJ !!");
+    //                }
+    //            }
+    //            modelChangeShowHidden(treeJson[i].subviews, showHidden);
+    //        }
+    //    }
+    //}
+    //
+    //function modelChangeShowHiddenOnly( treeJson, showHidden, showHiddenOnly) {
+    //
+    //    // Show/Hide Hidden objects
+    //    for (var i in treeJson) {
+    //        if (!!treeJson[i]==true && typeof(treeJson[i])=="object") {
+    //            var mesh = treeJson[i].threeObj;
+    //            if (mesh) {
+    //                if (treeJson[i].hidden) {
+    //                    if (showHidden || showHiddenOnly) {
+    //                        mesh.visible = true;
+    //                    } else {
+    //                        mesh.visible = false;
+    //                    }
+    //                    mesh.needsUpdate = true;
+    //                } else {
+    //                    // Not hidden ui obj
+    //                    if (showHiddenOnly) {
+    //                        mesh.visible = false;
+    //                    } else {
+    //                        mesh.visible = true;
+    //                    }
+    //                    mesh.needsUpdate = true;
+    //                }
+    //            }
+    //            modelChangeShowHiddenOnly(treeJson[i].subviews, showHidden, showHidden);
+    //        }
+    //    }
+    //}
 
     function changeOpacity(treeJson, opacity) {
         //console.log("change obj to solid:", treeJson);
@@ -416,13 +444,24 @@ function ORGUITreeModel() {
         //treeJson.nativeClass != "UITransitionView");
     }
 
-    function mustHideTreeObject(treeJson) {
+
+    /**
+     * Returns true if the given UI element must be hidden, not displayed in Expanded UI.
+     * @param nodeData The UI element info as sent by the device.
+     * @returns {boolean}
+     */
+    function mustHideTreeObject( nodeData ) {
         var mustBeHidden = false;
-        if (treeJson.hidden && !_flagShowHidden) {
+        if (nodeData.hidden && !_flagShowHidden) {
             mustBeHidden = true;
-        } else if (treeJson.hidden==false && _flagShowHiddenOnly) {
+        } else if (nodeData.hidden==false && _flagShowHiddenOnly) {
             mustBeHidden = true;
+        } else if (nodeIsInteractive(nodeData)) {
+            mustBeHidden = !_flagShowInteractiveViews;
+        } else {
+            mustBeHidden = !_flagShowNonInteractiveViews;
         }
+
         return mustBeHidden;
     }
 
@@ -528,7 +567,7 @@ function ORGUITreeModel() {
         if (mesh) {
             mesh.visible = !hide;
         }
-        var boxHelper = threeNodeGroup.children[1]; // the first is the mesh, second is the BoxHelper
+        var boxHelper = threeNodeGroup.children[1];
         if (boxHelper) {
             boxHelper.visible = !hide;
         }
