@@ -14,10 +14,10 @@
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 
     <script type="text/javascript">
-    // Change JQueryUI plugin names to fix name collision with Bootstrap.
-    // http://www.ryadel.com/en/using-jquery-ui-bootstrap-togheter-web-page/
-    $.widget.bridge('uitooltip', $.ui.tooltip);
-    $.widget.bridge('uibutton', $.ui.button);
+        // Change JQueryUI plugin names to fix name collision with Bootstrap.
+        // http://www.ryadel.com/en/using-jquery-ui-bootstrap-togheter-web-page/
+        $.widget.bridge('uitooltip', $.ui.tooltip);
+        $.widget.bridge('uibutton', $.ui.button);
     </script>
 
     <script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
@@ -97,35 +97,26 @@
 <main class='background'>
 
     <div class="container-fluid">
-        <!--<section id="scene-and-editor">-->
-            <div class="row" >
-                <div class="col-md-9 nopadding">
 
-                    <div id="threejs-canvas">
+        <div class="row">
+            <div class="col-md-9 nopadding">
+                <div id="threejs-canvas"></div>
+            </div>
 
-                    </div>
-<!--
-                    <div id="options2" class="hide2">
-                        <h1 style="color:blue;">How to use</h1>
-                        <h1 style="color:red;">How to use</h1>
-                    </div>
-                    -->
-                </div>
+            <div id="right-tabs" class="col-md-3 nopadding">
+                <div id="right-container">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab-settings" data-toggle="tab">Control</a>
+                        </li>
+                        <li><a href="#tab-map" data-toggle="tab">Map</a>
+                        </li>
+                        <li><a href="#tab-tree" data-toggle="tab">UI Tree</a>
+                        </li>
+                    </ul>
 
-                <div id="right-tabs" class="col-md-3 nopadding">
-                    <div id="right-container" >
-                        <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#tab-settings" data-toggle="tab">Control</a>
-                            </li>
-                            <li><a href="#tab-map" data-toggle="tab">Map</a>
-                            </li>
-                            <li><a href="#tab-tree" data-toggle="tab">UI Tree</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content">
-                            <br class="tab-pane active" id="tab-settings">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-settings">
 
                             <div class="container-fluid">
                                 <div class='smallCheckboxDiv'>
@@ -151,90 +142,98 @@
 
                                     <div class='inlineCheckboxLabel'>Continuos Update</div>
                                 </div>
-                            </div>
+                                </br></br>
 
-                            </br>
+                                <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all">Reset Camera
+                                </button>
+                                <!--</div>-->
 
-                            <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all">Reset Camera</button>
-                            </br></br>
 
+                                </br></br>
 
-                            <div class="panel panel-default">
-                                    <div class="panel-heading">UI Inspector</div>
-                                <div class="container-fluid">
-                                    <br/>
-                                    <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand UI</button>
-                                    <br/>
+                                <!--<div class="container-fluid">-->
+                                <br/>
+                                <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand UI</button>
+                                <br/>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-textures" value="true" title="textures" checked/>
-                                        <div class='inlineCheckboxLabel'>Textures</div>
-                                    </div>
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-textures" value="true" title="textures" checked/>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-public-classes" title="show-public-classes" checked/>
-                                        <div class='inlineCheckboxLabel'>Public Classes</div>
-                                    </div>
+                                    <div class='inlineCheckboxLabel'>Textures</div>
+                                </div>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-private" value="true" title="show-private"/>
-                                        <div class='inlineCheckboxLabel'>Private Classes</div>
-                                    </div>
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-public-classes" title="show-public-classes"
+                                           checked/>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-interactive" value="true" title="show-interactive" checked/>
-                                        <div class='inlineCheckboxLabel'>Interactive Cntrls</div>
-                                    </div>
+                                    <div class='inlineCheckboxLabel'>Public Classes</div>
+                                </div>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-non-interactive" value="true" title="show-non-interactive" checked/>
-                                        <div class='inlineCheckboxLabel'>Non-Interactive Cntrls</div>
-                                    </div>
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-private" value="true" title="show-private"/>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-segues" value="true" title="show-segues" checked/>
-                                        <div class='inlineCheckboxLabel'>Show Segues</div>
-                                    </div>
+                                    <div class='inlineCheckboxLabel'>Private Classes</div>
+                                </div>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-gestures" value="true" title="show-gestures"
-                                               checked/>
-                                        <div class='inlineCheckboxLabel'>Show Gestures</div>
-                                    </div>
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-interactive" value="true" title="show-interactive"
+                                           checked/>
 
-                                    <div class='smallCheckboxDiv'>
-                                        <input type="checkbox" id="show-hidden-views" title="show-hidden-views"/>
-                                        <div class='inlineCheckboxLabel'>Hidden Views</div>
-                                    </div>
+                                    <div class='inlineCheckboxLabel'>Interactive Cntrls</div>
+                                </div>
 
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-non-interactive" value="true"
+                                           title="show-non-interactive" checked/>
+
+                                    <div class='inlineCheckboxLabel'>Non-Interactive Cntrls</div>
+                                </div>
+
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-segues" value="true" title="show-segues" checked/>
+
+                                    <div class='inlineCheckboxLabel'>Show Segues</div>
+                                </div>
+
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-gestures" value="true" title="show-gestures"
+                                           checked/>
+
+                                    <div class='inlineCheckboxLabel'>Show Gestures</div>
+                                </div>
+
+                                <div class='smallCheckboxDiv'>
+                                    <input type="checkbox" id="show-hidden-views" title="show-hidden-views"/>
+
+                                    <div class='inlineCheckboxLabel'>Hidden Views</div>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="tab-map">
-                                <input id="pac-input" class="map-controls" type="text" placeholder="Search Box">
-                                <div id="map"></div>
-
-                                <!--Create Map on Tab selection-->
-                                <script>
-                                    $("a[href='#tab-map']").on('shown.bs.tab', function(e) {
-                                        //console.log('shown - after the tab has been shown');
-                                        if ( !orgMap.isCreated() ) {
-                                            orgMap.createMap();
-                                        }
-                                    });
-                                </script>
-
-                            </div>
-                            <div class="tab-pane" id="tab-tree">
-                                <div id="json-editor"></div>
-                            </div>
                         </div>
+                        <div class="tab-pane" id="tab-map">
+                            <input id="pac-input" class="map-controls" type="text" placeholder="Search Box">
+
+                            <div id="map"></div>
+
+                            <!--Create Map on Tab selection-->
+                            <script>
+                                $("a[href='#tab-map']").on('shown.bs.tab', function (e) {
+                                    //console.log('shown - after the tab has been shown');
+                                    if (!orgMap.isCreated()) {
+                                        orgMap.createMap();
+                                    }
+                                });
+                            </script>
+
+                        </div>
+                        <div class="tab-pane" id="tab-tree">
+                            <div id="json-editor"></div>
+                        </div>
+                        <!--</div>-->
                     </div>
-
-                 </div>
+                </div>
             </div>
-        <!--</section>-->
+        </div>
     </div>
-
 </main>
 
 
@@ -243,7 +242,8 @@
 <script type="text/javascript" src="js-organismo/ORGDeviceConnectionControls.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTreeEditor.js"></script>
 <script type="text/javascript" src="js-organismo/ORGSettingsControls.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback=" async defer ></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback="
+        async defer></script>
 
 </body>
 </html>
