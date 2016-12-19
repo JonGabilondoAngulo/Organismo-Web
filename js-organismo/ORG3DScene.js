@@ -219,7 +219,7 @@ function ORG3DScene(domContainer, screenSize) {
     this.setShowPrivate = function(showPrivate) {
         _showPrivate = showPrivate;
         if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.collapseAndExpandAnimated(orgScene);
+            _uiTreeModel.collapseAndExpandAnimated(ORG.scene);
         }
     };
 
@@ -267,9 +267,10 @@ function ORG3DScene(domContainer, screenSize) {
             _uiTreeModelRaycaster = null;
             _tooltiper = null;
             _uiTreeModel.collapseAndShowScreen( _threeScreenPlane );
+            this.createRaycasterForDeviceScreen();
             _uiExpanded = false;
         } else {
-            orgDeviceConnection.requestElementTree();
+            orgDeviceConnection.requestElementTree( {statusBar:true, keyboard:true, alert:true, normal:true} );
         }
     };
 
@@ -281,7 +282,7 @@ function ORG3DScene(domContainer, screenSize) {
         // Avoid flickering by stopping screen updates
         var liveScreen = this.continuousScreenshot;
         if ( liveScreen) {
-            orgScene.setLiveScreen( false);
+            ORG.scene.setLiveScreen( false);
         }
 
         new TWEEN.Tween( _threeCamera.position ).to( {
@@ -291,7 +292,7 @@ function ORG3DScene(domContainer, screenSize) {
             .easing( TWEEN.Easing.Quadratic.InOut)
             .onComplete(function () {
                 if (liveScreen) {
-                    orgScene.setLiveScreen( true);
+                    ORG.scene.setLiveScreen( true);
                 }
             }).start();
     }
@@ -304,7 +305,7 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.showDevice3DModel = function() {
         this.hideDevice3DModel();
-        orgDevice.loadDevice3DModel( this ); // async. WHen loaded it will call "addDevice3DModel"
+        ORG.device.loadDevice3DModel( this ); // async. WHen loaded it will call "addDevice3DModel"
     }
 
     this.hideDevice3DModel = function() {
@@ -328,7 +329,7 @@ function ORG3DScene(domContainer, screenSize) {
     this.setShowHiddenViews = function( flag) {
         _uiTreeModel.setShowHiddenViews(flag);
         if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.collapseAndExpandAnimated(orgScene);
+            _uiTreeModel.collapseAndExpandAnimated(ORG.scene);
         }
     }
 
@@ -493,23 +494,23 @@ function ORG3DScene(domContainer, screenSize) {
 
         // Expand/Collapse UI
         if ( _keyboardState.down("E") ) {
-            orgScene.expandCollapse();
+            ORG.scene.expandCollapse();
         }
         else if ( _keyboardState.down("F") ) {
             checkButtonShowFloor.click();
-            orgScene.setShowFloor(checkButtonShowFloor.is(':checked'));
+            ORG.scene.setShowFloor(checkButtonShowFloor.is(':checked'));
         }
         else if ( _keyboardState.down("P") ) {
             checkButtonShowPrivate.click();
-            orgScene.setShowPrivate(checkButtonShowPrivate.is(':checked'));
+            ORG.scene.setShowPrivate(checkButtonShowPrivate.is(':checked'));
         }
         else if ( _keyboardState.down("L") ) {
             checkButtonLiveScreen.click();
-            orgScene.setLiveScreen(checkButtonLiveScreen.is(':checked'));
+            ORG.scene.setLiveScreen(checkButtonLiveScreen.is(':checked'));
          }
         else if ( _keyboardState.down("T") ) {
             checkButtonShowTooltips.click();
-            orgScene.setShowTooltips(checkButtonShowTooltips.is(':checked'));
+            ORG.scene.setShowTooltips(checkButtonShowTooltips.is(':checked'));
          }
 
         // rotate left/right/up/down

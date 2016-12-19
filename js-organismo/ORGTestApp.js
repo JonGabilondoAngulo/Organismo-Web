@@ -16,4 +16,4 @@ function ORGTestApp( appInfo ) {
     }
 }
 
-var orgTestApp = null;
+ORG.testApp = null;

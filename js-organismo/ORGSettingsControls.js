@@ -14,50 +14,50 @@ var buttonResetCamera = $('#reset-camera-button');
 
 checkButtonShowFloor.change(function(e) {
     if ($(this).is(':checked') == true) {
-        orgScene.showFloor();
+        ORG.scene.showFloor();
     }else{
-        orgScene.hideFloor();
+        ORG.scene.hideFloor();
     }
 });
 
 checkButtonShowDevice.change(function(e) {
     if ($(this).is(':checked') == true) {
-        orgScene.showDevice3DModel();
+        ORG.scene.showDevice3DModel();
     }else{
-        orgScene.hideDevice3DModel();
+        ORG.scene.hideDevice3DModel();
     }
 });
 
 checkButtonShowTextures.change(function(e) {
-    orgScene.setShowTextures($(this).is(':checked'));
+    ORG.scene.setShowTextures($(this).is(':checked'));
 });
 
 checkButtonShowInteractive.change(function(e) {
-    orgScene.setShowInteractive($(this).is(':checked'));
+    ORG.scene.setShowInteractive($(this).is(':checked'));
 });
 
 checkButtonShowNonInteractive.change(function(e) {
-    orgScene.setShowNonInteractive($(this).is(':checked'));
+    ORG.scene.setShowNonInteractive($(this).is(':checked'));
 });
 
 checkButtonShowPrivate.change(function(e) {
-    orgScene.setShowPrivate($(this).is(':checked'));
+    ORG.scene.setShowPrivate($(this).is(':checked'));
 });
 
 checkButtonShowTooltips.change(function(e) {
-    orgScene.setShowTooltips($(this).is(':checked'));
+    ORG.scene.setShowTooltips($(this).is(':checked'));
 });
 
 checkButtonShowHiddenViews.change(function(e) {
-    orgScene.setShowHiddenViews($(this).is(':checked'));
+    ORG.scene.setShowHiddenViews($(this).is(':checked'));
 });
 
 checkButtonLiveScreen.change(function(e) {
-    orgScene.setLiveScreen($(this).is(':checked'));
+    ORG.scene.setLiveScreen($(this).is(':checked'));
 });
 
 buttonResetCamera.click(function(e) {
-    orgScene.resetCameraPosition();
+    ORG.scene.resetCameraPosition();
 });
 
 buttonExpand.click(function(e) {
@@ -65,10 +65,10 @@ buttonExpand.click(function(e) {
     if (orgDeviceConnection.isConnected() == false) {
         return;
     }
-    if (orgScene.UIExpanded()) {
+    if (ORG.scene.UIExpanded()) {
         buttonExpand.text("Expand");
     } else {
         buttonExpand.text("Collapse");
     }
-    orgScene.expandCollapse();
+    ORG.scene.expandCollapse( );
 });

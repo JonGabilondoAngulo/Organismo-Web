@@ -84,4 +84,4 @@ function ORGMap() {
     }
 }
 
-var orgMap = new ORGMap();
+ORG.map = new ORGMap();

@@ -10,11 +10,11 @@
  * @param domElement
  * @constructor
  */
-function ORGContextMenuManager(orgScene) {
+function ORGContextMenuManager(scene) {
 
     var _selectedThreeObject = null; // the three obj where the mouse is on.
     var _intersectionPoint = null;
-    var _ORGScene = orgScene; // We will need to get information from some objects in the scene
+    var _ORGScene = scene; // We will need to get information from some objects in the scene
 
     /**
      * Instantiate the context menu
@@ -91,6 +91,10 @@ function ORGContextMenuManager(orgScene) {
 
         switch (menuOptionKey) {
             case 'tap' : {
+                orgDeviceConnection.sendRequest(orgMessageBuilder.gesture(menuOptionKey, parameters));
+            } break;
+            case 'long-press' : {
+                parameters.duration = 0.5;
                 orgDeviceConnection.sendRequest(orgMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
         }

@@ -1,6 +1,5 @@
-//
 
-var threejsCanvas = document.getElementById('threejs-canvas');
-var motionActive = false;
-var showVideo = false;
-var orgScene = new ORG3DScene(threejsCanvas, {"width":320, "height":568});
+var ORG = ORG || {};
+
+ORG.canvasDomElem = document.getElementById('threejs-canvas');
+ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});

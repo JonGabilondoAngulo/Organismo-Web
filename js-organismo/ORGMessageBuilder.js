@@ -34,11 +34,12 @@ function ORGMessageBuilder() {
         return JSON.stringify(msg);
     }
 
-    this.elementTree = function () {
+    this.elementTree = function (parameters) {
         var msg = {
             type: "request",
             data: {
-                request: ORGRequest_elementTree
+                request: ORGRequest_elementTree,
+                parameters: parameters
             }
         };
         return JSON.stringify(msg);
@@ -48,7 +49,7 @@ function ORGMessageBuilder() {
         var msg = {
             type: "request",
             data: {
-                request: "tap",
+                request: gesture,
                 parameters:parameters
             }
         };

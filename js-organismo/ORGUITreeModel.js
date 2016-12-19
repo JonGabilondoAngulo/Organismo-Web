@@ -15,29 +15,33 @@ function ORGUITreeModel() {
     var _flagShowNonInteractiveViews = true;
     var _flagShowHidden = false;
     var _flagShowHiddenOnly = false;
+    var _flagShowPrivateClasses = false;
+    var _flagShowTextures = true;
     var _showOutOfScreen = true;
     var _extrudeDuration = 500; // ms
     var _screenSize = null;
     var _threeScene = null;
     var _collapseTweenCount = 0; // collapse animation counter
 
-    this.createUITreeModel = function (treeTopLevelNodes, threeScene, deviceScreenSize, orgScene) {
+    this.createUITreeModel = function (treeTopLevelNodes, threeScene, deviceScreenSize, scene) {
 
         _collapseTweenCount = 0;
         _screenSize = deviceScreenSize;
         _treeData = treeTopLevelNodes;
         _threeScene = threeScene;
+        _flagShowPrivateClasses = scene.showPrivate();
+        _flagShowTextures = scene.getShowTextures();
 
-        this._createUITreeModel(_treeData, _threeScene, _screenSize, orgScene.showPrivate(), !orgScene.getShowTextures());
+        this._createUITreeModel(_treeData, _threeScene, _screenSize, _flagShowPrivateClasses, !_flagShowTextures);
     };
 
 
-    this.updateUITreeModel = function (treeTopLevelNodes, threeScene, screenshotImage, deviceScreenSize, orgScene) {
+    this.updateUITreeModel = function (treeTopLevelNodes, threeScene, screenshotImage, deviceScreenSize, scene) {
 
         if (_treeData) {
             this.removeUITreeModel(threeScene); // remove existing first
         }
-        this.createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize, orgScene);
+        this.createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize, scene);
     };
 
     //this.expand = function () {
@@ -52,15 +56,15 @@ function ORGUITreeModel() {
      * Call it when some visualization property change requires to rebuild the tree.
      * It animates the collapse/expand.
      * e.g. When hidding/showing the private classes.
-     * @param orgScene the ORG scene to take the new parameters
+     * @param scene the ORG scene to take the new parameters
      */
-    this.collapseAndExpandAnimated = function (orgScene) {
+    this.collapseAndExpandAnimated = function (scene) {
 
         for (var i in _treeData) {
             var treeNode = _treeData[i];
             var thisTreeModelObj = this;
             var callback = function () {
-                thisTreeModelObj._createUITreeModel(_treeData, _threeScene, _screenSize, orgScene.showPrivate(), !orgScene.getShowTextures());
+                thisTreeModelObj._createUITreeModel(_treeData, _threeScene, _screenSize, scene.showPrivate(), !scene.getShowTextures());
             };
             collapseNodeAnimatedWithCompletion(treeNode, callback);
         }
@@ -74,7 +78,7 @@ function ORGUITreeModel() {
                 if (threeScreenPlane) {
                     threeScreenPlane.visible = true;
                 }
-                if (orgScene.continuousScreenshot()) {
+                if (ORG.scene.continuousScreenshot()) {
                     orgDeviceConnection.requestScreenshot(); // keep updating screenshot
                 }
             })
@@ -171,7 +175,7 @@ function ORGUITreeModel() {
         }
 
         _threeElementTreeGroup = new THREE.Group();
-        createTreeModel(treeData, deviceScreenSize, showPrivate, showScreenshots); // add all the ui tree in threeElementTreeGroup
+        createTreeModel(treeData, deviceScreenSize, showScreenshots); // add all the ui tree in threeElementTreeGroup
         threeScene.add(_threeElementTreeGroup);
     };
 
@@ -213,40 +217,20 @@ function ORGUITreeModel() {
         }
     }
 
-    function createTreeModel(tree, deviceScreenSize, showPrivate, showScreenshots) {
+    function createTreeModel(tree, deviceScreenSize, showScreenshots) {
         for (var i in tree) {
-            createTreeNodeModel(tree[i], deviceScreenSize, showPrivate, showScreenshots);
-            createTreeModel(tree[i].subviews, deviceScreenSize, showPrivate, showScreenshots);
+            createTreeNodeModel(tree[i], deviceScreenSize, showScreenshots);
+            createTreeModel(tree[i].subviews, deviceScreenSize, showScreenshots);
         }
     }
 
-    function createTreeNodeModel(treeNode, deviceScreenSize, showPrivate, showScreenshots) {
+    function createTreeNodeModel(treeNode, deviceScreenSize, showScreenshots) {
 
         if (typeof( treeNode) == "object") {
 
-            if (!showPrivate) {
-                if (treeNode.private && treeNode.private == true) {
-                    return;
-                }
-            }
-            if (treeNode.class == "UITextEffectsWindow") {
+            if ( !mustCreateTreeObject(treeNode)) {
                 return;
             }
-            if (!_showOutOfScreen) {
-                if (treeObjectIsOutOfScreen(treeNode, deviceScreenSize)) {
-                    return;
-                }
-            }
-            if (mustHideTreeObject(treeNode)) {
-                return;
-            }
-            if (isStatusBarWindow(treeNode)) {
-                return;
-            }
-            if (isKeyboardWindow(treeNode)) {
-                return;
-            }
-
 
             var threeScreenshotTexture = null;
             var elementBase64Image = treeNode.screenshot;
@@ -308,8 +292,7 @@ function ORGUITreeModel() {
         uiObjectTop = uiObjectDescription.bounds.top;
         //uiObjectBottom = uiObjectDescription.bounds.bottom;
 
-
-        // create obj at Z = 0. We will animate it to its real position.
+        // create obj at Z = 0. We will animate it to its real position later.
 
         threeGeometry = new THREE.PlaneBufferGeometry(uiObjectWidth, uiObjectHeight, 1, 1);
         uiObjectDescription.zPosition = zPosition; // keep it here for later use
@@ -335,12 +318,10 @@ function ORGUITreeModel() {
         return threeUIElementGroup;
     }
 
-
     function modelVisualizationChanged() {
         if (_threeElementTreeGroup) {
             _threeElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
-
                     var nodeData = child.userData;
                     if (nodeData) {
                         hideNodeGroup(child, mustHideTreeObject( nodeData));
@@ -349,7 +330,6 @@ function ORGUITreeModel() {
             });
         }
     }
-
 
     //function modelChangeShowHidden( treeJson, showHidden) {
     //
@@ -461,8 +441,40 @@ function ORGUITreeModel() {
         } else {
             mustBeHidden = !_flagShowNonInteractiveViews;
         }
-
         return mustBeHidden;
+    }
+
+    /**
+     * Returns true if the ui element must be created as a 3D object.
+     * This is different than 'mustHideTreeObject'. An object can be created but might be set hidden.
+     * e.g the visualization flags may require not to visualize the non interactive views, but they still have to be created and shown ans invisible.
+     * @param nodeData
+     */
+    function mustCreateTreeObject ( nodeData ) {
+
+        if (!_flagShowPrivateClasses) {
+            if (nodeData.private && nodeData.private == true) {
+                return false;
+            }
+        }
+        if (nodeData.class == "UITextEffectsWindow") {
+            return false;
+        }
+        if (!_showOutOfScreen) {
+            if (treeObjectIsOutOfScreen(nodeData, deviceScreenSize)) {
+                return false;
+            }
+        }
+        //if (mustHideTreeObject(nodeData)) {
+        //    return;
+        //}
+        if (isStatusBarWindow(nodeData)) {
+            return false;
+        }
+        if (isKeyboardWindow(nodeData)) {
+            return false;
+        }
+        return true;
     }
 
     function isStatusBarWindow( inUIElement) {
@@ -474,6 +486,7 @@ function ORGUITreeModel() {
         }
         return false;
     }
+
     function isKeyboardWindow( inUIElement) {
         if (inUIElement.nativeClass == "UIAWindow") {
             var child = inUIElement.subviews[0];
@@ -483,7 +496,6 @@ function ORGUITreeModel() {
         }
         return false;
     }
-
 
     function removeScreenshotFromScreen() {
         screenPlane.material.color = 0x000000;
@@ -558,6 +570,12 @@ function ORGUITreeModel() {
             return true;
         }
         if (treeNode.class == "UITextField" && treeNode.userInteractionEnabled) {
+            return true;
+        }
+        if (treeNode.class == "MKMapView" && treeNode.userInteractionEnabled) {
+            return true;
+        }
+        if (treeNode.class == "_MKUserTrackingButton" && treeNode.userInteractionEnabled) {
             return true;
         }
     }

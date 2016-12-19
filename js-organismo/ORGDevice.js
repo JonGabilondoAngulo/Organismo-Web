@@ -20,7 +20,7 @@ function ORGDevice( deviceInfo ) {
     /**
      * Asynchronous load of a 3D model object for the corresponding device.
      * When load is finished it will call to the organismo scene to add the model to the three.js scene.
-     * @param scene the orgScene to add the 3D model to.
+     * @param scene the ORG.scene to add the 3D model to.
      */
     this.loadDevice3DModel = function( scene ) {
         if ( this.productName.startsWith('iPhone 5')) {
@@ -51,4 +51,4 @@ function ORGDevice( deviceInfo ) {
     }
 }
 
-var orgDevice = null;
+ORG.device = null;

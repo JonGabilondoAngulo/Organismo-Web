@@ -25,7 +25,7 @@ function ORGWebSocketDelegate() {
 	this.onClose = function(ws) {
 		console.log('Delegate onClose.');
 		connectButton.text("Connect");
-		orgScene.handleDeviceDisconnection();
+		ORG.scene.handleDeviceDisconnection();
 		buttonExpand.text("Expand");
 		deviceNameLabel.text('');
 		deviceSystemVersionLabel.text('');
@@ -102,7 +102,7 @@ function ORGWebSocketDelegate() {
 		if (notificationParameters) {
 			var newSize = notificationParameters.screenSize;
 			if (newSize) {
-				orgScene.setDeviceScreenSize(newSize.width, newSize.height);
+				ORG.scene.setDeviceScreenSize(newSize.width, newSize.height);
 			}
 		}
 	}
@@ -114,16 +114,16 @@ function ORGWebSocketDelegate() {
 	function processResponseDeviceInfo(messageJSON) {
 
 		// The connection to the device its on place. We got information about the device.
-		orgDevice = new ORGDevice( messageJSON.data );
-		deviceNameLabel.text( orgDevice.name);
-		deviceSystemVersionLabel.text( orgDevice.systemVersion);
-		deviceModelLabel.text( orgDevice.productName);
+		ORG.device = new ORGDevice( messageJSON.data );
+		deviceNameLabel.text( ORG.device.name);
+		deviceSystemVersionLabel.text( ORG.device.systemVersion);
+		deviceModelLabel.text( ORG.device.productName);
 
-		orgScene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
-		orgScene.createRaycasterForDeviceScreen();
+		ORG.scene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
+		ORG.scene.createRaycasterForDeviceScreen();
 
 		// make sure the floor is at the right height
-		orgScene.positionFloorUnderDevice();
+		ORG.scene.positionFloorUnderDevice();
 
 		// ask for the first screenshot
 		orgDeviceConnection.requestScreenshot();
@@ -135,11 +135,11 @@ function ORGWebSocketDelegate() {
 	 */
 	function processResponseAppInfo(messageJSON) {
 
-		orgTestApp = new ORGTestApp( messageJSON.data );
+		ORG.testApp = new ORGTestApp( messageJSON.data );
 
-		testAppNameLabel.text( orgTestApp.name );
-		testAppVersionLabel.text( orgTestApp.version );
-		testAppBundleIdLabel.text( orgTestApp.bundleIdentifier );
+		testAppNameLabel.text( ORG.testApp.name );
+		testAppVersionLabel.text( ORG.testApp.version );
+		testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
 	}
 
 	/**
@@ -151,10 +151,10 @@ function ORGWebSocketDelegate() {
 		if (base64Img) {
 			var img = new Image();
 			img.src = "data:image/jpg;base64," + base64Img;
-			orgScene.setScreenshotImage(img);
+			ORG.scene.setScreenshotImage(img);
 
 			// Ask for next screenshot
-			if (orgScene.continuousScreenshot() && !orgScene.UIExpanded()) {
+			if (ORG.scene.continuousScreenshot() && !ORG.scene.UIExpanded()) {
 				orgDeviceConnection.requestScreenshot();
 			}
 		}
@@ -168,7 +168,7 @@ function ORGWebSocketDelegate() {
 		var jsonTree = reportData.data;
 		if (!!jsonTree) {
 			orgTreeEditor.set( jsonTree );
-			orgScene.updateUITreeModel( jsonTree );
+			ORG.scene.updateUITreeModel( jsonTree );
 		}
 	}
 }

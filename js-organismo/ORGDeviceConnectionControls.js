@@ -19,7 +19,7 @@ connectButton.click(function(e) {
         orgDeviceConnection.close();
 
         // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
-        orgScene.handleDeviceDisconnection();
+        ORG.scene.handleDeviceDisconnection();
         connectButton.text("Connect");
         buttonExpand.text("Expand");
         deviceNameLabel.text('');
