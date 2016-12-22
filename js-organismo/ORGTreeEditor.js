@@ -14,7 +14,7 @@ var jse_options = {
 var jse_json = { screenshot: "1234567890", other:"hello", class:"UIWindow" ,
     "subviews" : [{screenshot: "1234567890", other:"hello2", class:"UIView" }, {screenshot: "1234567890", other:"hello3", class:"UIButton" }]};
 
-var orgTreeEditor = new JSONEditor(jse_container, jse_options, jse_json);
+ORG.treeEditor = new JSONEditor(jse_container, jse_options, jse_json);
 
 function sortTreeNodes(nodes) {
     var sortedNodes = [];

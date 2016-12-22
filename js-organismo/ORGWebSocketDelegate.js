@@ -14,8 +14,8 @@ function ORGWebSocketDelegate() {
 		connected = true;
 		connectButton.text("Disconnect");
 
-		orgDeviceConnection.requestDeviceInfo();
-		orgDeviceConnection.requestAppInfo();
+		ORG.deviceConnection.requestDeviceInfo();
+		ORG.deviceConnection.requestAppInfo();
 	};
 
 	/**
@@ -126,7 +126,7 @@ function ORGWebSocketDelegate() {
 		ORG.scene.positionFloorUnderDevice();
 
 		// ask for the first screenshot
-		orgDeviceConnection.requestScreenshot();
+		ORG.deviceConnection.requestScreenshot();
 	}
 
 	/**
@@ -155,7 +155,7 @@ function ORGWebSocketDelegate() {
 
 			// Ask for next screenshot
 			if (ORG.scene.continuousScreenshot() && !ORG.scene.UIExpanded()) {
-				orgDeviceConnection.requestScreenshot();
+				ORG.deviceConnection.requestScreenshot();
 			}
 		}
 	}
@@ -167,7 +167,7 @@ function ORGWebSocketDelegate() {
 	function processReportElementTree(reportData) {
 		var jsonTree = reportData.data;
 		if (!!jsonTree) {
-			orgTreeEditor.set( jsonTree );
+			ORG.treeEditor.set( jsonTree );
 			ORG.scene.updateUITreeModel( jsonTree );
 		}
 	}

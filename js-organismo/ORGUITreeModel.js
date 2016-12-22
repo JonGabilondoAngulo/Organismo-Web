@@ -79,7 +79,7 @@ function ORGUITreeModel() {
                     threeScreenPlane.visible = true;
                 }
                 if (ORG.scene.continuousScreenshot()) {
-                    orgDeviceConnection.requestScreenshot(); // keep updating screenshot
+                    ORG.deviceConnection.requestScreenshot(); // keep updating screenshot
                 }
             })
         }
@@ -301,11 +301,7 @@ function ORGUITreeModel() {
         if (showScreenshots && threeScreenshotTexture) {
             threeMaterial = new THREE.MeshBasicMaterial({map: threeScreenshotTexture, transparent: true, side: THREE.DoubleSide});
         } else {
-            threeMaterial = new THREE.MeshBasicMaterial({
-                color: 0x000000,
-                side: THREE.DoubleSide,
-                opacity: 1.0
-            });
+            threeMaterial = new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide, transparent:false });
         }
         uiObject = new THREE.Mesh(threeGeometry, threeMaterial);
         uiObject.position.set(threeObjPosition.x, threeObjPosition.y, threeObjPosition.z);

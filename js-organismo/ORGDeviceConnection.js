@@ -37,8 +37,8 @@ function ORGDeviceConnection() {
         orgWebSocket.send( orgMessageBuilder.takeScreenshot());
     }
 
-    this.requestElementTree = function() {
-        orgWebSocket.send( orgMessageBuilder.elementTree());
+    this.requestElementTree = function( parameters ) {
+        orgWebSocket.send( orgMessageBuilder.elementTree( parameters));
     }
 
     this.sendRequest = function(request) {
@@ -46,4 +46,4 @@ function ORGDeviceConnection() {
     }
 }
 
-var orgDeviceConnection = new ORGDeviceConnection();
+ORG.deviceConnection = new ORGDeviceConnection();

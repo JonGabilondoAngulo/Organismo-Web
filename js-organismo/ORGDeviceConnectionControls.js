@@ -13,10 +13,10 @@ var testAppBundleIdLabel = $('#testapp-bundleid-label');
 connectButton.click(function(e) {
     var serverUrl = $('#device-url');
 
-    if (orgDeviceConnection.isConnected()) {
+    if (ORG.deviceConnection.isConnected()) {
 
         // Disconnect
-        orgDeviceConnection.close();
+        ORG.deviceConnection.close();
 
         // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
         ORG.scene.handleDeviceDisconnection();
@@ -36,6 +36,6 @@ connectButton.click(function(e) {
         if (deviceURL == "") {
             deviceURL = "localhost";
         }
-        orgDeviceConnection.open(deviceURL);
+        ORG.deviceConnection.open(deviceURL);
     }
 });
