@@ -10,13 +10,25 @@ var testAppNameLabel = $('#testapp-name-label');
 var testAppVersionLabel = $('#testapp-version-label');
 var testAppBundleIdLabel = $('#testapp-bundleid-label');
 
+$('.dropdown-menu a').click(function(){
+    $('#selected').text($(this).text());
+});
+
 connectButton.click(function(e) {
     var serverUrl = $('#device-url');
 
-    if (ORG.deviceConnection.isConnected()) {
+    var deviceURL = serverUrl.val();
+    if (deviceURL == "") {
+        deviceURL = "localhost";
+    }
 
-        // Disconnect
-        ORG.deviceConnection.close();
+    if (ORG.deviceController == null) {
+        //ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
+        ORG.deviceController = new ORGDeviceController(deviceURL, 5567);
+    }
+
+    if (ORG.deviceController.isConnected) {
+        ORG.deviceController.closeSession(); // Disconnect
 
         // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
         ORG.scene.handleDeviceDisconnection();
@@ -30,12 +42,6 @@ connectButton.click(function(e) {
         testAppVersionLabel.text('');
 
     } else {
-        
-        // Connect
-        var deviceURL = serverUrl.val();
-        if (deviceURL == "") {
-            deviceURL = "localhost";
-        }
-        ORG.deviceConnection.open(deviceURL);
+        ORG.deviceController.openSession();  // Connect
     }
 });

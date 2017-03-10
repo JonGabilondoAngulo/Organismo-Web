@@ -1,8 +1,5 @@
 
-
-//(function() {
-
-    // Settings UI Controls
+// Settings UI Controls
 var checkButtonShowFloor = $('#show-floor');
 var checkButtonShowDevice = $('#show-device');
 var checkButtonShowTextures = $('#show-textures');
@@ -19,75 +16,75 @@ var buttonExpand = $('#expand-button');
 var buttonResetCamera = $('#reset-camera-button');
 
 
-    checkButtonShowDevice.change(function(e) {
-        if ($(this).is(':checked') == true) {
-            ORG.scene.showDevice3DModel();
-        }else{
-            ORG.scene.hideDevice3DModel();
-        }
-    });
+checkButtonShowDevice.change(function (e) {
+    if ($(this).is(':checked') == true) {
+        ORG.scene.showDevice3DModel();
+    } else {
+        ORG.scene.hideDevice3DModel();
+    }
+});
 
-    checkButtonShowTextures.change(function(e) {
-        ORG.scene.setShowTextures($(this).is(':checked'));
-    });
+checkButtonShowTextures.change(function (e) {
+    ORG.scene.setShowTextures($(this).is(':checked'));
+});
 
-    checkButtonShowInteractive.change(function(e) {
-        ORG.scene.setShowInteractive($(this).is(':checked'));
-    });
+checkButtonShowInteractive.change(function (e) {
+    ORG.scene.setShowInteractive($(this).is(':checked'));
+});
 
-    checkButtonShowNonInteractive.change(function(e) {
-        ORG.scene.setShowNonInteractive($(this).is(':checked'));
-    });
+checkButtonShowNonInteractive.change(function (e) {
+    ORG.scene.setShowNonInteractive($(this).is(':checked'));
+});
 
-    checkButtonShowPrivate.change(function(e) {
-        ORG.scene.setShowPrivate($(this).is(':checked'));
-    });
+checkButtonShowPrivate.change(function (e) {
+    ORG.scene.setShowPrivate($(this).is(':checked'));
+});
 
-    checkButtonShowTooltips.change(function(e) {
-        ORG.scene.setShowTooltips($(this).is(':checked'));
-    });
+checkButtonShowTooltips.change(function (e) {
+    ORG.scene.setShowTooltips($(this).is(':checked'));
+});
 
-    checkButtonShowHiddenViews.change(function(e) {
-        ORG.scene.setShowHiddenViews($(this).is(':checked'));
-    });
+checkButtonShowHiddenViews.change(function (e) {
+    ORG.scene.setShowHiddenViews($(this).is(':checked'));
+});
 
-    checkButtonLiveScreen.change(function(e) {
-        ORG.scene.setLiveScreen($(this).is(':checked'));
-    });
-checkButtonShowNormalWindow.change(function(e) {
+checkButtonLiveScreen.change(function (e) {
+    ORG.scene.setLiveScreen($(this).is(':checked'));
+});
+checkButtonShowNormalWindow.change(function (e) {
     ORG.scene.setShowNormalWindow($(this).is(':checked'));
 });
-checkButtonShowKeyboardWindow.change(function(e) {
+checkButtonShowKeyboardWindow.change(function (e) {
     ORG.scene.setShowKeyboardWindow($(this).is(':checked'));
 });
-checkButtonShowAlertWindow.change(function(e) {
+checkButtonShowAlertWindow.change(function (e) {
     ORG.scene.setShowAlertWindow($(this).is(':checked'));
 });
 
-    buttonResetCamera.click(function(e) {
-        ORG.scene.resetCameraPosition();
-    });
+buttonResetCamera.click(function (e) {
+    ORG.scene.resetCameraPosition();
+});
 
-    buttonExpand.click(function(e) {
+buttonExpand.click(function (e) {
 
-        if (ORG.deviceConnection.isConnected() == false) {
-            return;
-        }
-        if (ORG.scene.UIExpanded()) {
-            buttonExpand.text("Expand");
-        } else {
-            buttonExpand.text("Collapse");
-        }
-        ORG.scene.expandCollapse( );
-    });
+    if ( !ORG.deviceController.isConnected) {
+        return;
+    }
+    if (ORG.scene.UIExpanded()) {
+        buttonExpand.text("Expand");
+    } else {
+        buttonExpand.text("Collapse");
+    }
+    ORG.scene.expandCollapse();
+});
 
-    checkButtonShowFloor.change(function(e) {
-        if ($(this).is(':checked') == true) {
-            ORG.scene.showFloor();
-        }else{
-            ORG.scene.hideFloor();
-        }
-    });
-//})();
+checkButtonShowFloor.change(function (e) {
+    if ($(this).is(':checked') == true) {
+        ORG.scene.showFloor();
+    } else {
+        ORG.scene.hideFloor();
+    }
+});
+
 
 

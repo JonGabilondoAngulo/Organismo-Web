@@ -3,14 +3,9 @@
  */
 
 
-function ORGDevice( deviceInfo ) {
+class ORGDevice {
 
-    this.name = null;
-    this.model = null;
-    this.systemVersion = null;
-    this.productName = null;
-
-    if ( deviceInfo ) {
+    constructor(deviceInfo) {
         this.name = deviceInfo.name;
         this.model = deviceInfo.model;
         this.systemVersion = deviceInfo.systemVersion;
@@ -22,17 +17,17 @@ function ORGDevice( deviceInfo ) {
      * When load is finished it will call to the organismo scene to add the model to the three.js scene.
      * @param scene the ORG.scene to add the 3D model to.
      */
-    this.loadDevice3DModel = function( scene ) {
+    loadDevice3DModel( scene ) {
         if ( this.productName.startsWith('iPhone 5')) {
-            load_iPhone_5( scene );
+            this.load_iPhone_5( scene );
         } else if ( this.productName.startsWith('iPhone 6')) {
-            load_iPhone_6( scene );
+            this.load_iPhone_6( scene );
         }
     }
 
     // PRIVATE
 
-    function load_iPhone_6( scene ) {
+    load_iPhone_6( scene ) {
         var loader = new THREE.OBJLoader(  );
         loader.load( "3DModels/iPhone/iPhone_6.obj", function ( object ) {
             object.position.set(0,-480,-24);
@@ -41,7 +36,7 @@ function ORGDevice( deviceInfo ) {
         } );
     }
 
-    function load_iPhone_5( scene ) {
+    load_iPhone_5( scene ) {
         var loader = new THREE.OBJLoader(  );
         loader.load( "3DModels/iPhone_5/iPhone5.obj", function ( object ) {
             object.scale.set(0.8,0.8,0.8);

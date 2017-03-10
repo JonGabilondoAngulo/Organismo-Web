@@ -2,9 +2,12 @@
  * Created by jongabilondo on 01/07/2016.
  */
 
-function ORGMessageBuilder() {
+/**
+ * ORGMessageBuilder. Utilities class to create JSON requests to Organismo driver.
+ */
+class ORGMessageBuilder {
 
-    this.deviceInfo = function () {
+    static deviceInfo() {
         var msg = {
             type: "request",
             data: {
@@ -14,7 +17,7 @@ function ORGMessageBuilder() {
         return JSON.stringify(msg);
     }
 
-    this.appInfo = function () {
+    static appInfo() {
         var msg = {
             type: "request",
             data: {
@@ -24,7 +27,7 @@ function ORGMessageBuilder() {
         return JSON.stringify(msg);
     }
 
-    this.takeScreenshot = function () {
+    static takeScreenshot() {
         var msg = {
             type: "request",
             data: {
@@ -34,7 +37,7 @@ function ORGMessageBuilder() {
         return JSON.stringify(msg);
     }
 
-    this.elementTree = function (parameters) {
+    static elementTree(parameters) {
         var msg = {
             type: "request",
             data: {
@@ -45,7 +48,7 @@ function ORGMessageBuilder() {
         return JSON.stringify(msg);
     }
 
-    this.gesture = function(gesture, parameters) {
+    static gesture(gesture, parameters) {
         var msg = {
             type: "request",
             data: {
@@ -56,5 +59,3 @@ function ORGMessageBuilder() {
         return JSON.stringify(msg);
     }
 }
-
-var orgMessageBuilder = new ORGMessageBuilder();

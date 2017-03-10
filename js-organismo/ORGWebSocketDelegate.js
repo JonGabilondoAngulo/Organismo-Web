@@ -14,8 +14,8 @@ function ORGWebSocketDelegate() {
 		connected = true;
 		connectButton.text("Disconnect");
 
-		ORG.deviceConnection.requestDeviceInfo();
-		ORG.deviceConnection.requestAppInfo();
+		ORG.deviceController.requestDeviceInfo();
+		ORG.deviceController.requestAppInfo();
 	};
 
 	/**
@@ -126,7 +126,8 @@ function ORGWebSocketDelegate() {
 		ORG.scene.positionFloorUnderDevice();
 
 		// ask for the first screenshot
-		ORG.deviceConnection.requestScreenshot();
+		//ORG.deviceConnection.requestScreenshot();
+		ORG.deviceController.requestScreenshot();
 	}
 
 	/**
@@ -155,7 +156,8 @@ function ORGWebSocketDelegate() {
 
 			// Ask for next screenshot
 			if (ORG.scene.continuousScreenshot() && !ORG.scene.UIExpanded()) {
-				ORG.deviceConnection.requestScreenshot();
+				//ORG.deviceConnection.requestScreenshot();
+				ORG.deviceController.requestScreenshot();
 			}
 		}
 	}

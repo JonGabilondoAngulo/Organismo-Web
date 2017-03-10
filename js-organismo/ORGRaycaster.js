@@ -4,7 +4,7 @@
 
 /**
  * Class to detect the THREE object the mouse is on.
- * It calls its delegates to to inform them that the THREE obj the mouse is over.
+ * It calls its delegates to inform them the THREE obj the mouse is onto.
  * If the mouse is not over any obj then it passes a null.
  * The Delegate must implement mouseOverElement.
  *
@@ -109,7 +109,7 @@ function ORGRaycaster(rendererDomElement, threeCamera, threeTargetObject) {
             }
         }
 
-        // Inform delegates about the intersected element, null is as well sent
+        // Inform delegates about the intersected element, null is sent as well.
         for (var i=0; i<_delegates.length; i++) {
             if (_delegates[i].mouseOverElement) {
                 _delegates[i].mouseOverElement( elementToHilite, intersectionPoint );

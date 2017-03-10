@@ -47,7 +47,7 @@
     <script type="text/javascript" src="js-organismo/ORGConstants.js"></script>
     <script type="text/javascript" src="js-organismo/ORGWebSocket.js"></script>
     <script type="text/javascript" src="js-organismo/ORGWebSocketDelegate.js"></script>
-    <script type="text/javascript" src="js-organismo/ORGDeviceConnection.js"></script>
+    <!--<script type="text/javascript" src="js-organismo/ORGDeviceConnection.js"></script>-->
     <script type="text/javascript" src="js-organismo/ORGUITreeModel.js"></script>
     <script type="text/javascript" src="js-organismo/ORGMouseListener.js"></script>
     <script type="text/javascript" src="js-organismo/ORGElementHiliter.js"></script>
@@ -59,6 +59,9 @@
     <script type="text/javascript" src="js-organismo/ORGMap.js"></script>
     <script type="text/javascript" src="js-organismo/ORGDevice.js"></script>
     <script type="text/javascript" src="js-organismo/ORGTestApp.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDeviceBaseController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDeviceWDAController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDeviceController.js"></script>
 </head>
 <body>
 
@@ -73,23 +76,48 @@
         </div>
 
         <div class='mynavbar-header'>
-            <span id='device-name-label' class="label label-success"></span>
-            <span id='device-system-version-label' class="label label-success"></span>
-            <span id='device-model-label' class="label label-success"></span>
+            <span class='nav-text'>
+                Driver:
+            </span>
+        </div>
 
-            <span id='testapp-name-label' class="label label-primary"></span>
-            <span id='testapp-version-label' class="label label-primary"></span>
-            <span id='testapp-bundleid-label' class="label label-primary"></span>
-
+        <div class='mynavbar-header'>
+            <div class="btn-group">
+                <button id="selected" type="button" class="btn btn-default">WDA</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">WDA</a></li>
+                    <li><a href="#">Organismo</a></li>
+                </ul>
+            </div>
         </div>
 
 
-        <div>
-            <ul class='mynavbar-table'>
-                <li class='navbar-button-up'>
-                    <a class='nav-text' href=''>Organismo</a></li>
-            </ul>
+        <div class='mynavbar-header'>
+            <div class="input-group">
+                <span id='device-name-label' class="label label-success"></span>
+                <span id='device-system-version-label' class="label label-success"></span>
+                <span id='device-model-label' class="label label-success"></span>
+
+                <span id='testapp-name-label' class="label label-primary"></span>
+                <span id='testapp-version-label' class="label label-primary"></span>
+                <span id='testapp-bundleid-label' class="label label-primary"></span>
+            </div>
         </div>
+    </div>
+
+
+
+
+    <div>
+        <ul class='mynavbar-table'>
+            <li class='navbar-button-up'>
+                <a class='nav-text' href=''>Organismo</a></li>
+        </ul>
+    </div>
     </div>
 </nav>
 

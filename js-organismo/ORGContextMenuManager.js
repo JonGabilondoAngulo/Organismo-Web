@@ -91,11 +91,11 @@ function ORGContextMenuManager(scene) {
 
         switch (menuOptionKey) {
             case 'tap' : {
-                ORG.deviceConnection.sendRequest(orgMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case 'long-press' : {
                 parameters.duration = 0.5;
-                ORG.deviceConnection.sendRequest(orgMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
         }
 

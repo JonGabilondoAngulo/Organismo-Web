@@ -19,7 +19,7 @@ function ORGWebSocket() {
 		serverURL = inServerURL;
 		delegate = inDelegate;
 
-		var url = "ws://" + serverURL + ":5567/main";
+		var url = "ws://" + serverURL + "/main";
 		ws = new WebSocket(url);
 		ws.onopen = onOpen;
 		ws.onclose = onClose;

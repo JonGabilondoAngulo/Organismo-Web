@@ -9,45 +9,47 @@
  * @param domElement where the mouse will be tracked
  * @constructor
  */
-function ORGMouseListener(domElement) {
+class ORGMouseListener {
 
-    var _domElement = domElement;
-    var _delegates = [];
+    constructor( domElement ) {
+        this._domElement = domElement;
+        this._delegates = [];
+    }
 
     /**
      * Activates the mouse events listening and informs the delegates.
      */
-    this.enable = function(  ) {
+    enable(  ) {
 
-        $(_domElement).bind("mousedown", function (event) {
-            for (var i=0; i<_delegates.length; i++) {
-                if (_delegates[i].onMouseDown) {
-                    _delegates[i].onMouseDown( event );
+        $(this._domElement).bind("mousedown", function (event) {
+            for (var i=0; i<this._delegates.length; i++) {
+                if (this._delegates[i].onMouseDown) {
+                    this._delegates[i].onMouseDown( event );
                 }
             }
         });
 
-        $(_domElement).bind("mouseup", function (event) {
-            for (var i=0; i<_delegates.length; i++) {
-                if (_delegates[i].onMouseUp) {
-                    _delegates[i].onMouseUp( event );
+        $(this._domElement).bind("mouseup", function (event) {
+            for (var i=0; i<this._delegates.length; i++) {
+                if (this._delegates[i].onMouseUp) {
+                    this._delegates[i].onMouseUp( event );
                 }
             }
         });
 
-        $(_domElement).bind("mousemove", function (event) {
-            for (var i=0; i<_delegates.length; i++) {
-                if (_delegates[i].onMouseMove) {
-                    _delegates[i].onMouseMove( event );
+        $(this._domElement).bind("mousemove", function (event) {
+            for (var i=0; i<this._delegates.length; i++) {
+                if (this._delegates[i].onMouseMove) {
+                    this._delegates[i].onMouseMove( event );
                 }
             }
         });
 
-        $(_domElement).bind("contextmenu",function(event){
+        $(this._domElement).bind("contextmenu",function(event){
             event.preventDefault();
-            for (var i=0; i<_delegates.length; i++) {
-                if (_delegates[i].onContextMenu) {
-                    _delegates[i].onContextMenu( event );
+            for (var i=0; i<this._delegates.length; i++) {
+                if (this._delegates[i].onContextMenu) {
+                    this._delegates[i].onContextMenu( event );
                 }
             }
         });
@@ -56,8 +58,8 @@ function ORGMouseListener(domElement) {
     /**
      * Stops listening to mouse events.
      */
-    this.disable = function() {
-        $(_domElement).unbind();
+    disable() {
+        $(this._domElement).unbind();
     }
 
     /**
@@ -65,18 +67,18 @@ function ORGMouseListener(domElement) {
      * The delegate must implement onMouseDown, onMouseUp, onMouseMove
      * @param delegate
      */
-    this.addDelegate = function( delegate ) {
-        _delegates.push( delegate );
+    addDelegate( delegate ) {
+        this._delegates.push( delegate );
     }
 
     /**
      * Remove the delegate from the list.
      * @param delegate
      */
-    this.removeDelegate = function( delegate ) {
-        for (var i=0; i<_delegates.length; i++) {
-            if ( _delegates[i] == delegate) {
-                _delegates.splice( i, 0);
+    removeDelegate( delegate ) {
+        for (var i=0; i<this._delegates.length; i++) {
+            if ( this._delegates[i] == delegate) {
+                this._delegates.splice( i, 0);
             }
         }
     }

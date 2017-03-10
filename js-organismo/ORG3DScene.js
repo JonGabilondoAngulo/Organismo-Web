@@ -44,8 +44,8 @@ function ORG3DScene(domContainer, screenSize) {
     var _tooltiper = null;
     var _contextMenuManager = null;
     var _device3DModel = null;
-
     var _visualFlags = _visualization.SHOW_FLOOR | _visualization.SHOW_DEVICE | _visualization.CONTINUOUS_UPDATE;
+    var _treeVisualFlags = _uiTreeModel.visualization.SHOW_NORMAL_WINDOW
 
     initialize(domContainer, screenSize, _visualFlags&_visualization.SHOW_FLOOR, this);
 
@@ -192,7 +192,8 @@ function ORG3DScene(domContainer, screenSize) {
         }
         if (_threeScreenPlane) {
             if ((_visualFlags & _visualization.CONTINUOUS_UPDATE) && !_uiExpanded) {
-                ORG.deviceConnection.requestScreenshot();
+                //ORG.deviceConnection.requestScreenshot();
+                ORG.deviceController.requestScreenshot();
             }
         }
     };
@@ -284,7 +285,8 @@ function ORG3DScene(domContainer, screenSize) {
             this.createRaycasterForDeviceScreen();
             _uiExpanded = false;
         } else {
-            ORG.deviceConnection.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
+            //ORG.deviceConnection.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
+            ORG.deviceController.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
         }
     };
 
@@ -293,7 +295,7 @@ function ORG3DScene(domContainer, screenSize) {
      */
     this.resetCameraPosition = function() {
 
-        // Avoid flickering by stopping screen updates
+        // Avoi flickering by stopping screen updates
         var liveScreen = this.continuousScreenshot;
         if ( liveScreen) {
             ORG.scene.setLiveScreen( false);
