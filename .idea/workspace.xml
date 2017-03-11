@@ -106,7 +106,7 @@
       <file leaf-file-name="ORGRaycaster.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js-organismo/ORGRaycaster.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.86003375">
               <caret line="67" column="7" selection-start-line="67" selection-start-column="7" selection-end-line="67" selection-end-column="7" />
               <folding />
             </state>
@@ -594,7 +594,13 @@
       <option name="project" value="LOCAL" />
       <updated>1489184056471</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Refactoring , refactoring to classes.">
+      <created>1489184329453</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1489184329453</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1104,7 +1110,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORGRaycaster.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.86003375">
           <caret line="67" column="7" selection-start-line="67" selection-start-column="7" selection-end-line="67" selection-end-column="7" />
           <folding />
         </state>
