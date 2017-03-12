@@ -21,35 +21,37 @@ class ORGMouseListener {
      */
     enable(  ) {
 
+        var this_backup = this;
+
         $(this._domElement).bind("mousedown", function (event) {
-            for (var i=0; i<this._delegates.length; i++) {
-                if (this._delegates[i].onMouseDown) {
-                    this._delegates[i].onMouseDown( event );
+            for (var i=0; i<this_backup._delegates.length; i++) {
+                if (this_backup._delegates[i].onMouseDown) {
+                    this_backup._delegates[i].onMouseDown( event );
                 }
             }
         });
 
         $(this._domElement).bind("mouseup", function (event) {
-            for (var i=0; i<this._delegates.length; i++) {
-                if (this._delegates[i].onMouseUp) {
-                    this._delegates[i].onMouseUp( event );
+            for (var i=0; i<this_backup._delegates.length; i++) {
+                if (this_backup._delegates[i].onMouseUp) {
+                    this_backup._delegates[i].onMouseUp( event );
                 }
             }
         });
 
         $(this._domElement).bind("mousemove", function (event) {
-            for (var i=0; i<this._delegates.length; i++) {
-                if (this._delegates[i].onMouseMove) {
-                    this._delegates[i].onMouseMove( event );
+            for (var i=0; i<this_backup._delegates.length; i++) {
+                if (this_backup._delegates[i].onMouseMove) {
+                    this_backup._delegates[i].onMouseMove( event );
                 }
             }
         });
 
         $(this._domElement).bind("contextmenu",function(event){
             event.preventDefault();
-            for (var i=0; i<this._delegates.length; i++) {
-                if (this._delegates[i].onContextMenu) {
-                    this._delegates[i].onContextMenu( event );
+            for (var i=0; i<this_backup._delegates.length; i++) {
+                if (this_backup._delegates[i].onContextMenu) {
+                    this_backup._delegates[i].onContextMenu( event );
                 }
             }
         });

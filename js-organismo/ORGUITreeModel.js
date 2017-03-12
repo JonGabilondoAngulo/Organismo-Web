@@ -315,7 +315,7 @@ function ORGUITreeModel() {
         threeObjPosition = new THREE.Vector3(-( screenSize.width / 2 - uiObjectLeft - uiObjectWidth / 2.0), screenSize.height / 2 - uiObjectTop - uiObjectHeight / 2.0, 0);
 
         if (showScreenshots && threeScreenshotTexture) {
-            threeMaterial = new THREE.MeshBasicMaterial({map: threeScreenshotTexture, transparent: true, side: THREE.DoubleSide});
+            threeMaterial = new THREE.MeshBasicMaterial({map: threeScreenshotTexture, transparent: false, side: THREE.DoubleSide});
         } else {
             threeMaterial = new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide, transparent:false });
         }

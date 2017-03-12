@@ -12,26 +12,30 @@
  * It implements onMouseDown, onMouseUp, onMouseMove to receive the mouse events.
  * @constructor
  */
-function ORGRaycaster(rendererDomElement, threeCamera, threeTargetObject) {
+class ORGRaycaster {
 
-    var _raycaster = new THREE.Raycaster();
-    var _rcmouse = new THREE.Vector2();
-    var _hilitedObj = null;
-    var _myMouseDown = false; // It will help us to ignore the mousemoves while mousedown.
-    var _threeTargetObject = threeTargetObject; // The threejs object to raycast on
-    var _rendererDomElement = rendererDomElement;
-    var _threeCamera = threeCamera;
-    var _delegates = [];
-    var _enabled = true;
-
-    this.addDelegate = function( delegate ) {
-        _delegates.push( delegate );
+    constructor(rendererDomElement, threeCamera, threeTargetObject) {
+        this._raycaster = new THREE.Raycaster();
+        this._rcmouse = new THREE.Vector2();
+        this._hilitedObj = null;
+        this._myMouseDown = false; // It will help us to ignore the mousemoves while mousedown.
+        this._threeTargetObject = threeTargetObject; // The threejs object to raycast on
+        this._rendererDomElement = rendererDomElement;
+        this._threeCamera = threeCamera;
+        this._delegates = [];
+        this._enabled = true;
     }
 
-    this.removeDelegate = function( delegate ) {
-        for (var i=0; i<_delegates.length; i++) {
-            if ( _delegates[i] == delegate) {
-                _delegates.splice( i, 0);
+
+    addDelegate( delegate ) {
+        this._delegates.push( delegate );
+    }
+
+    removeDelegate( delegate ) {
+        for (var i=0; i<this._delegates.length; i++) {
+            if ( this._delegates[i] == delegate) {
+                this._delegates.splice( i, 1);
+                break;
             }
         }
     }
@@ -42,11 +46,11 @@ function ORGRaycaster(rendererDomElement, threeCamera, threeTargetObject) {
      * ORGMouseListener informs of event
      * @param event
      */
-    this.onMouseDown = function (event) {
-        _myMouseDown = true;
+    onMouseDown(event) {
+        this._myMouseDown = true;
 
-        if (_hilitedObj) {
-            var uiElement = _hilitedObj.object.parent.userData;
+        if (this._hilitedObj) {
+            var uiElement = this._hilitedObj.object.parent.userData;
             var uiElementForEditor = {};
             for (var key in uiElement) {
                 if (key != "threeObj" && key != "children") {
@@ -60,33 +64,33 @@ function ORGRaycaster(rendererDomElement, threeCamera, threeTargetObject) {
      * ORGMouseListener informs of event
      * @param event
      */
-    this.onMouseUp = function (event) {
-        _myMouseDown = false;
+    onMouseUp(event) {
+        this._myMouseDown = false;
     }
 
     /**
      * ORGMouseListener informs of event
      * @param event
      */
-    this.onMouseMove = function (event) {
+    onMouseMove(event) {
 
-        if (_myMouseDown) {
+        if (this._myMouseDown) {
             return;
         }
-        if (!_threeTargetObject) {
+        if (!this._threeTargetObject) {
             return;
         }
-        var canvasW = $(_rendererDomElement).width();
-        var canvasH = $(_rendererDomElement).height();
-        var canvasOffset = $(_rendererDomElement).offset();
+        var canvasW = $(this._rendererDomElement).width();
+        var canvasH = $(this._rendererDomElement).height();
+        var canvasOffset = $(this._rendererDomElement).offset();
 
         // calculate mouse position in normalized device coordinates
         // (-1 to +1) for both components
-        _rcmouse.x = ( (event.clientX - canvasOffset.left) / canvasW ) * 2 - 1;
-        _rcmouse.y = - ( (event.clientY - canvasOffset.top) / canvasH ) * 2 + 1;
+        this._rcmouse.x = ( (event.clientX - canvasOffset.left) / canvasW ) * 2 - 1;
+        this._rcmouse.y = - ( (event.clientY - canvasOffset.top) / canvasH ) * 2 + 1;
 
-        _raycaster.setFromCamera( _rcmouse, _threeCamera );
-        var intersects = _raycaster.intersectObject( _threeTargetObject, true ); // return alwaay an array. The first one is the closest object.
+        this._raycaster.setFromCamera( this._rcmouse, this._threeCamera );
+        var intersects = this._raycaster.intersectObject( this._threeTargetObject, true ); // return alwaay an array. The first one is the closest object.
 
         var elementToHilite = null;
         var intersectionPoint = null;
@@ -110,9 +114,9 @@ function ORGRaycaster(rendererDomElement, threeCamera, threeTargetObject) {
         }
 
         // Inform delegates about the intersected element, null is sent as well.
-        for (var i=0; i<_delegates.length; i++) {
-            if (_delegates[i].mouseOverElement) {
-                _delegates[i].mouseOverElement( elementToHilite, intersectionPoint );
+        for (var i=0; i<this._delegates.length; i++) {
+            if (this._delegates[i].mouseOverElement) {
+                this._delegates[i].mouseOverElement( elementToHilite, intersectionPoint );
             }
         }
     }
