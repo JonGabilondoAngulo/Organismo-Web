@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMain.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMain.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" afterPath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
@@ -566,7 +561,13 @@
       <option name="project" value="LOCAL" />
       <updated>1489336390192</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Visualization flags added to UI tree model.">
+      <created>1490084833706</created>
+      <option name="number" value="00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1490084833706</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView">
@@ -584,6 +585,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18852027" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290653" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277849" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20444034" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -594,7 +596,6 @@
       <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17668825" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277849" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25333333" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -651,7 +652,8 @@
     <MESSAGE value="Refactoring , encapsulation globals." />
     <MESSAGE value="Refactoring , encapsulating globals." />
     <MESSAGE value="Refactoring , refactoring to classes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring , refactoring to classes." />
+    <MESSAGE value="Visualization flags added to UI tree model." />
+    <option name="LAST_COMMIT_MESSAGE" value="Visualization flags added to UI tree model." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
