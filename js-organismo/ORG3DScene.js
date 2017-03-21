@@ -12,7 +12,7 @@
  */
 function ORG3DScene(domContainer, screenSize) {
 
-    const _visualization = {
+    const SceneVisualizationMask = {
         SHOW_FLOOR : 0x1,
         SHOW_DEVICE : 0x2,
         SHOW_TOOLTIPS : 0x4,
@@ -33,7 +33,6 @@ function ORG3DScene(domContainer, screenSize) {
     var _screenshotNeedsUpdate = false;
     var _deviceScreenSize;
     var _uiExpanded = false;
-    var _showTextures = true;
     var _canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
     var _threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
     var _uiTreeModelRaycaster = null;
@@ -41,19 +40,19 @@ function ORG3DScene(domContainer, screenSize) {
     var _tooltiper = null;
     var _contextMenuManager = null;
     var _device3DModel = null;
-    var _visualFlags = _visualization.SHOW_FLOOR | _visualization.SHOW_DEVICE | _visualization.CONTINUOUS_UPDATE;
+    var _visualFlags = SceneVisualizationMask.SHOW_FLOOR | SceneVisualizationMask.SHOW_DEVICE | SceneVisualizationMask.CONTINUOUS_UPDATE;
 
-    var _treeVisualizationFlags = TreeVisualizationEnum.ShowNormalWindow |
-        TreeVisualizationEnum.ShowAlertWindow |
-        TreeVisualizationEnum.ShowKeyboardWindow |
-        TreeVisualizationEnum.ShowOutOfScreen |
-        TreeVisualizationEnum.ShowInteractiveViews |
-        TreeVisualizationEnum.ShowNonInteractiveViews |
-        TreeVisualizationEnum.ShowScreenshots;
+    var _treeVisualizationFlags = TreeVisualizationMask.ShowNormalWindow |
+        TreeVisualizationMask.ShowAlertWindow |
+        TreeVisualizationMask.ShowKeyboardWindow |
+        TreeVisualizationMask.ShowOutOfScreen |
+        TreeVisualizationMask.ShowInteractiveViews |
+        TreeVisualizationMask.ShowNonInteractiveViews |
+        TreeVisualizationMask.ShowScreenshots;
 
 
     var _uiTreeModel = new ORGUITreeModel(_treeVisualizationFlags);
-    initialize(domContainer, screenSize, _visualFlags&_visualization.SHOW_FLOOR, this);
+    initialize(domContainer, screenSize, _visualFlags&SceneVisualizationMask.SHOW_FLOOR, this);
 
     /**
      * Remove the Device from the scene. After device disconnection all models and data of device must be removed.
@@ -113,7 +112,7 @@ function ORG3DScene(domContainer, screenSize) {
         _threeScreenPlane.name = "screen";
         _threeScene.add( _threeScreenPlane);
 
-        if ( _visualFlags & _visualization.SHOW_DEVICE ) {
+        if ( _visualFlags & SceneVisualizationMask.SHOW_DEVICE ) {
             this.showDevice3DModel();
         }
     };
@@ -172,7 +171,7 @@ function ORG3DScene(domContainer, screenSize) {
     this.positionFloorUnderDevice = function() {
         if (_threeScreenPlane && _threeFloor) {
             var bBox = null;
-            if ( (_visualFlags&_visualization.SHOW_DEVICE) && _device3DModel ) {
+            if ( (_visualFlags&SceneVisualizationMask.SHOW_DEVICE) && _device3DModel ) {
                 bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
             }
             if ( !bBox) {
@@ -187,17 +186,17 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.continuousScreenshot = function() {
-        return _visualFlags & _visualization.CONTINUOUS_UPDATE;
+        return _visualFlags & SceneVisualizationMask.CONTINUOUS_UPDATE;
     };
 
     this.setLiveScreen = function(live) {
         if (live) {
-            _visualFlags |= _visualization.CONTINUOUS_UPDATE;
+            _visualFlags |= SceneVisualizationMask.CONTINUOUS_UPDATE;
         } else {
-            _visualFlags &= ~_visualization.CONTINUOUS_UPDATE;
+            _visualFlags &= ~SceneVisualizationMask.CONTINUOUS_UPDATE;
         }
         if (_threeScreenPlane) {
-            if ((_visualFlags & _visualization.CONTINUOUS_UPDATE) && !_uiExpanded) {
+            if ((_visualFlags & SceneVisualizationMask.CONTINUOUS_UPDATE) && !_uiExpanded) {
                 //ORG.deviceConnection.requestScreenshot();
                 ORG.deviceController.requestScreenshot();
             }
@@ -206,13 +205,13 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowTooltips = function(show) {
         if (show) {
-            _visualFlags |= _visualization.SHOW_TOOLTIPS;
+            _visualFlags |= SceneVisualizationMask.SHOW_TOOLTIPS;
         } else {
-            _visualFlags &= ~_visualization.SHOW_TOOLTIPS;
+            _visualFlags &= ~SceneVisualizationMask.SHOW_TOOLTIPS;
         }
 
         if (_threeScreenPlane) {
-            if (_visualFlags & _visualization.SHOW_TOOLTIPS) {
+            if (_visualFlags & SceneVisualizationMask.SHOW_TOOLTIPS) {
                 _tooltiper = new ORGTooltip(_threeRendererDOMElement);
                 if (_uiTreeModelRaycaster) {
                     _uiTreeModelRaycaster.addDelegate(_tooltiper); // Attach it to the raycaster
@@ -230,18 +229,18 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.showTooltip = function() {
-        return _visualFlags & _visualization.SHOW_TOOLTIPS;
+        return _visualFlags & SceneVisualizationMask.SHOW_TOOLTIPS;
     };
 
     this.showPrivate = function() {
-        return (_treeVisualizationFlags & TreeVisualizationEnum.ShowPrivate);
+        return (_treeVisualizationFlags & TreeVisualizationMask.ShowPrivate);
     };
 
     this.setShowPrivate = function(flag) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationEnum.ShowPrivate;
+            _treeVisualizationFlags |= TreeVisualizationMask.ShowPrivate;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationEnum.ShowPrivate;
+            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowPrivate;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
 
@@ -273,17 +272,6 @@ function ORG3DScene(domContainer, screenSize) {
         if (_threeFloor) {
             deleteFloor();
         }
-    };
-
-    this.setShowTextures = function(flag) {
-        _showTextures = flag;
-        if ( _uiTreeModel ) {
-            _uiTreeModel.hideTextures(!_showTextures);
-        }
-    };
-
-    this.getShowTextures = function() {
-        return !_showTextures;
     };
 
     this.expandCollapse = function() {
@@ -345,11 +333,24 @@ function ORG3DScene(domContainer, screenSize) {
         this.positionFloorUnderDevice();
     }
 
+    this.setShowTextures = function(flag) {
+        if (flag) {
+            _treeVisualizationFlags |= TreeVisualizationMask.ShowScreenshots;
+        } else {
+            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowScreenshots;
+        }
+        _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
+
+        if ( _uiTreeModel ) {
+            _uiTreeModel.hideTextures(!flag);
+        }
+    };
+
     this.setShowInteractive = function( flag ) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationEnum.ShowInteractiveViews;
+            _treeVisualizationFlags |= TreeVisualizationMask.ShowInteractiveViews;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationEnum.ShowInteractiveViews;
+            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowInteractiveViews;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -359,9 +360,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowNonInteractive = function( flag ) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationEnum.ShowNonInteractiveViews;
+            _treeVisualizationFlags |= TreeVisualizationMask.ShowNonInteractiveViews;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationEnum.ShowNonInteractiveViews;
+            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowNonInteractiveViews;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -371,9 +372,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowHiddenViews = function( flag) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationEnum.ShowHiddenViews;
+            _treeVisualizationFlags |= TreeVisualizationMask.ShowHiddenViews;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationEnum.ShowHiddenViews;
+            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowHiddenViews;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -382,14 +383,13 @@ function ORG3DScene(domContainer, screenSize) {
     }
 
     this.setShowNormalWindow = function(flag) {
-        _flagShowMask = (flag ?(_flagShowMask & ORG.mask.show.showWindowNormal) :(_flagShowMask & ~ORG.mask.show.showWindowNormal));
     }
 
     this.setShowKeyboardWindow = function(flag) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationEnum.ShowKeyboardWindow;
+            _treeVisualizationFlags |= TreeVisualizationMask.ShowKeyboardWindow;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationEnum.ShowKeyboardWindow;
+            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowKeyboardWindow;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -398,7 +398,6 @@ function ORG3DScene(domContainer, screenSize) {
     }
 
     this.setShowAlertWindow = function(flag) {
-        _flagShowMask = (flag ?(_flagShowMask & ORG.mask.show.showWindowAlert) :(_flagShowMask & ~ORG.mask.show.showWindowAlert));
     }
 
     // PRIVATE
@@ -557,7 +556,7 @@ function ORG3DScene(domContainer, screenSize) {
         //var deviceMotionChanged = false;
 
         updateScreenshot();
-
+/*
         _keyboardState.update();
 
         // Expand/Collapse UI
@@ -580,7 +579,7 @@ function ORG3DScene(domContainer, screenSize) {
             checkButtonShowTooltips.click();
             ORG.scene.setShowTooltips(checkButtonShowTooltips.is(':checked'));
          }
-
+*/
         // rotate left/right/up/down
 
         //if ( keyboard.down("left") ) {

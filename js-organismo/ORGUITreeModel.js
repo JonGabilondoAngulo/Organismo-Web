@@ -7,7 +7,7 @@
  * @constructor
  */
 
-const TreeVisualizationEnum = {
+const TreeVisualizationMask = {
     ShowNormalWindow : 0x1,
     ShowAlertWindow : 0x2,
     ShowKeyboardWindow : 0x4,
@@ -576,28 +576,28 @@ function ORGUITreeModel( visualizationFlag ) {
     }
 
     function mustShowKeyboard() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowKeyboardWindow);
+        return (_visualizationFlags & TreeVisualizationMask.ShowKeyboardWindow);
     }
     function mustShowPrivate() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowPrivate);
+        return (_visualizationFlags & TreeVisualizationMask.ShowPrivate);
     }
     function mustShowHiddenViews() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowHiddenViews);
+        return (_visualizationFlags & TreeVisualizationMask.ShowHiddenViews);
     }
     function mustShowHiddenViewsOnly() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowHiddenViewsOnly);
+        return (_visualizationFlags & TreeVisualizationMask.ShowHiddenViewsOnly);
     }
     function mustShowOutOfScreen() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowOutOfScreen);
+        return (_visualizationFlags & TreeVisualizationMask.ShowOutOfScreen);
     }
     function mustShowInteractiveViews() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowInteractiveViews);
+        return (_visualizationFlags & TreeVisualizationMask.ShowInteractiveViews);
     }
     function mustShowNonInteractiveViews() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowNonInteractiveViews);
+        return (_visualizationFlags & TreeVisualizationMask.ShowNonInteractiveViews);
     }
     function mustShowScreenshots() {
-        return (_visualizationFlags & TreeVisualizationEnum.ShowScreenshots);
+        return (_visualizationFlags & TreeVisualizationMask.ShowScreenshots);
     }
 
 }
