@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
@@ -36,8 +38,18 @@
       <file leaf-file-name="organismo.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/organismo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6452703">
-              <caret line="238" column="45" selection-start-line="238" selection-start-column="45" selection-end-line="238" selection-end-column="45" />
+            <state vertical-scroll-proportion="-0.36824325">
+              <caret line="160" column="88" selection-start-line="160" selection-start-column="88" selection-end-line="160" selection-end-column="88" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="79" column="13" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -104,7 +116,6 @@
         <option value="$PROJECT_DIR$/js-organismo/THREEx.WindowResize.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG.WindowResize.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGFloorMap.js" />
-        <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/simple-map.html" />
         <option value="$PROJECT_DIR$/css/map.css" />
         <option value="$PROJECT_DIR$/css/style2.css" />
@@ -135,6 +146,7 @@
         <option value="$PROJECT_DIR$/js-organismo/ORGMain.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
+        <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/organismo.html" />
       </list>
     </option>
@@ -599,7 +611,13 @@
       <option name="project" value="LOCAL" />
       <updated>1490127745783</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Visualization flags improved.">
+      <created>1490127755808</created>
+      <option name="number" value="00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1490127755808</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView">
@@ -861,13 +879,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="124" column="18" selection-start-line="124" selection-start-column="18" selection-end-line="124" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/navigator-bar.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1099,10 +1110,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="79" column="13" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/organismo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6452703">
-          <caret line="238" column="45" selection-start-line="238" selection-start-column="45" selection-end-line="238" selection-end-column="45" />
+        <state vertical-scroll-proportion="-0.36824325">
+          <caret line="160" column="88" selection-start-line="160" selection-start-column="88" selection-end-line="160" selection-end-column="88" />
           <folding />
         </state>
       </provider>
