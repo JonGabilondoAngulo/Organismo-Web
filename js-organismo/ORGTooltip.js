@@ -43,6 +43,7 @@ function ORGTooltip( canvasDomElement) {
             }
 
             if ( mustShowTip ) {
+                console.log(threeElement.parent.userData.class);
                 show( threeElement.parent.userData );
             }
 
