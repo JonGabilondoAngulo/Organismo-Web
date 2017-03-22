@@ -20,8 +20,7 @@ function ORG3DScene(domContainer, screenSize) {
     }
 
     var _zPosition = 20.0;
-    var _threeFloor;
-    var _threeAxis;
+    var _sceneFloor;
     var _threeScene;
     var _threeCamera;
     var _threeRenderer;
@@ -36,6 +35,7 @@ function ORG3DScene(domContainer, screenSize) {
     var _canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
     var _threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
     var _uiTreeModelRaycaster = null;
+    var _screenRaycaster = null;
     var _mouseListener = null;
     var _tooltiper = null;
     var _contextMenuManager = null;
@@ -146,22 +146,21 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.createRaycasterForDeviceScreen = function() {
-        _uiTreeModelRaycaster = new ORGRaycaster(_threeRendererDOMElement, _threeCamera, _threeScreenPlane);
-        _uiTreeModelRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager
+        _screenRaycaster = new ORGRaycaster(_threeRendererDOMElement, _threeCamera, _threeScreenPlane);
+        _screenRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager
 
         // Activate mouse listener
-        _mouseListener.addDelegate(_uiTreeModelRaycaster); // send the mouse events to the Raycaster
+        _mouseListener.addDelegate(_screenRaycaster); // send the mouse events to the Raycaster
         _mouseListener.enable();
     };
 
     this.removeRaycasterForDeviceScreen = function() {
-
         // Deactivate mouse listener
         _mouseListener.disable();
-        _mouseListener.removeDelegate(_uiTreeModelRaycaster); // send the mouse events to the Raycaster
+        _mouseListener.removeDelegate(_screenRaycaster); // send the mouse events to the Raycaster
 
         // Destroy raycaster
-        _uiTreeModelRaycaster = null;
+        _screenRaycaster = null;
     };
 
     this.getDeviceScreenBoundingBox = function() {
@@ -169,7 +168,7 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.positionFloorUnderDevice = function() {
-        if (_threeScreenPlane && _threeFloor) {
+        if (_threeScreenPlane && _sceneFloor) {
             var bBox = null;
             if ( (_visualFlags&SceneVisualizationMask.SHOW_DEVICE) && _device3DModel ) {
                 bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
@@ -179,8 +178,7 @@ function ORG3DScene(domContainer, screenSize) {
                 bBox = _threeScreenPlane.geometry.boundingBox;
             }
             if ( bBox) {
-                _threeFloor.position.set(0, bBox.min.y - 50, 0);
-                _threeAxis.position.set(-2000,bBox.min.y,-2000);
+                _sceneFloor.setPosition(0, bBox.min.y - 50, 0);
             }
         }
     };
@@ -262,14 +260,13 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.showFloor = function() {
-        if (!_threeFloor) {
-            _threeFloor = createFloor();
-            _threeScene.add(_threeFloor);
+        if (!_sceneFloor) {
+            _sceneFloor = createFloor();
         }
     };
 
     this.hideFloor = function() {
-        if (_threeFloor) {
+        if (_sceneFloor) {
             deleteFloor();
         }
     };
@@ -285,7 +282,6 @@ function ORG3DScene(domContainer, screenSize) {
             this.createRaycasterForDeviceScreen();
             _uiExpanded = false;
         } else {
-            //ORG.deviceConnection.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
             ORG.deviceController.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
         }
     };
@@ -321,7 +317,7 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.showDevice3DModel = function() {
         this.hideDevice3DModel();
-        ORG.device.loadDevice3DModel( this ); // async. WHen loaded it will call "addDevice3DModel"
+        ORG3DDeviceModelLoader.loadDevice3DModel( ORG.device, this ); // async. WHen loaded it will call "addDevice3DModel"
     }
 
     this.hideDevice3DModel = function() {
@@ -427,8 +423,7 @@ function ORG3DScene(domContainer, screenSize) {
 
         _zPosition += 10;
         if (showFloor) {
-            _threeFloor = createFloor();
-            _threeScene.add(_threeFloor);
+            _sceneFloor = createFloor(_threeScene);
         }
 
         createLights();
@@ -448,52 +443,15 @@ function ORG3DScene(domContainer, screenSize) {
         ORG.WindowResize(_threeRenderer, _threeCamera, _canvasDomElement);
     }
 
-    function createFloor() {
-
-        /*var geometry = new THREE.Geometry();
-         geometry.vertices.push(new THREE.Vector3( - 2500, -450, 0 ) );
-         geometry.vertices.push(new THREE.Vector3( 2500, -450, 0 ) );
-
-         var linesMaterial = new THREE.LineBasicMaterial( { color: 0x787878, opacity: .2, linewidth: .1 } );
-
-         for ( var i = 0; i <= 100; i ++ ) {
-
-         var line = new THREE.Line( geometry, linesMaterial );
-         line.position.z = ( i * 50 ) - 2500;
-         inScene.add( line );
-
-         var line = new THREE.Line( geometry, linesMaterial );
-         line.position.x = ( i * 50 ) - 2500;
-         line.rotation.y = 90 * Math.PI / 180;
-         inScene.add( line );
-         }*/
-
-        _threeAxis = new THREE.AxisHelper(650);
-        _threeAxis.position.set(-2000,-450,-2000);
-        _threeScene.add(_threeAxis);
-
-        threeFloor = new THREE.GridHelper(2000, 50, new THREE.Color(0x666666), new THREE.Color(0x666666));
-        //_threeFloor.setColors( new THREE.Color(0x666666), new THREE.Color(0x666666) );
-        threeFloor.position.set( 0,-450,0 );
-
-        return threeFloor;
-        /* Mesh
-         var geometry = new THREE.PlaneGeometry( 1200, 1200, 20, 20 );
-         var material = new THREE.MeshBasicMaterial( { wireframe: true, color: 0xcccccc } );
-         var floor = new THREE.Mesh( geometry, material );
-         floor.material.side = THREE.DoubleSide;
-         floor.translateY(-450);
-         floor.rotation.x = 90 * (Math.PI/180);
-         return floor;*/
+    function createFloor( threeScene ) {
+        return new ORG3DSceneFloor(4000, 50, true, threeScene);
     }
 
     function deleteFloor() {
-        if (_threeFloor) {
-            _threeScene.remove(_threeFloor);
-            _threeScene.remove(_threeAxis);
+        if (_sceneFloor) {
+            _sceneFloor.remove();
         }
-        _threeFloor = null;
-        _threeAxis = null;
+        _sceneFloor = null;
     }
 
     function createLights() {

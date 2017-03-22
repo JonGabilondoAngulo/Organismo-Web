@@ -62,6 +62,9 @@
     <script type="text/javascript" src="js-organismo/ORGDeviceBaseController.js"></script>
     <script type="text/javascript" src="js-organismo/ORGDeviceWDAController.js"></script>
     <script type="text/javascript" src="js-organismo/ORGDeviceController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORG3DSceneFloor.js"></script>
+    <script type="text/javascript" src="js-organismo/ORG3DDeviceModelLoader.js"></script>
+
 </head>
 <body>
 
@@ -83,14 +86,14 @@
 
         <div class='mynavbar-header'>
             <div class="btn-group">
-                <button id="selected" type="button" class="btn btn-default">WDA</button>
+                <button id="selected" type="button" class="btn btn-default">Organismo</button>
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#">WDA</a></li>
                     <li><a href="#">Organismo</a></li>
+                    <li><a href="#">WDA</a></li>
                 </ul>
             </div>
         </div>
@@ -172,7 +175,7 @@
                                             <div class='inlineCheckboxLabel'>Continuos Update</div>
                                         </div>
                                         </br>
-                                        <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all">Reset Camera
+                                        <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all not-focusable">Reset Camera
                                         </button>
                                     </div>
                                 </div>
@@ -185,7 +188,7 @@
 
                                         <!--<div class="container-fluid">-->
 
-                                        <button id='expand-button' class="ui-button ui-widget ui-corner-all">Expand</button>
+                                        <button id='expand-button' class="ui-button ui-widget ui-corner-all not-focusable">Expand</button>
                                         <br/>
 
                                         <div class='smallCheckboxDiv'>

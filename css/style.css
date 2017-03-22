@@ -119,6 +119,10 @@ label {
 	padding: 4px !important;
 	margin: 0 !important;
 }
+.not-focusable:focus {
+	outline: none;
+	box-shadow: none;
+}
 
 #map {
 	width: 100%;
