@@ -101,8 +101,9 @@ function ORGWebSocketDelegate() {
 	function processNotificationOrientationChanged(notificationParameters) {
 		if (notificationParameters) {
 			var newSize = notificationParameters.screenSize;
-			if (newSize) {
-				ORG.scene.setDeviceScreenSize(newSize.width, newSize.height);
+			var newOrientation = notificationParameters.orientation;
+			if (newSize && newOrientation) {
+				ORG.scene.setDeviceOrientation(newOrientation, newSize.width, newSize.height);
 			}
 		}
 	}
@@ -121,6 +122,10 @@ function ORGWebSocketDelegate() {
 
 		ORG.scene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
 		ORG.scene.createRaycasterForDeviceScreen();
+
+		//if ( _visualFlags & SceneVisualizationMask.SHOW_DEVICE ) {
+			ORG.scene.showDevice3DModel();
+		//}
 
 		// make sure the floor is at the right height
 		ORG.scene.positionFloorUnderDevice();

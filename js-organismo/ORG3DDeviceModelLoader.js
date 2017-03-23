@@ -25,7 +25,7 @@ class ORG3DDeviceModelLoader {
         loader.load( "3DModels/iPhone/iPhone_6.obj", function ( object ) {
             object.position.set(0,-480,-24);
             object.scale.set(124,124,124);
-            scene.addDevice3DModel( object );
+            scene.addDevice3DModel( new ORG3DDeviceModel(object) );
         } );
     }
 
@@ -34,7 +34,7 @@ class ORG3DDeviceModelLoader {
         loader.load( "3DModels/iPhone_5/iPhone5.obj", function ( object ) {
             object.scale.set(0.8,0.8,0.8);
             object.position.set(0,0,-28);
-            scene.addDevice3DModel( object );
+            scene.addDevice3DModel( new ORG3DDeviceModel(object) );
         } );
     }
 }

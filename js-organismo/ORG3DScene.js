@@ -39,7 +39,7 @@ function ORG3DScene(domContainer, screenSize) {
     var _mouseListener = null;
     var _tooltiper = null;
     var _contextMenuManager = null;
-    var _device3DModel = null;
+    var _device3DModel = null; // a ORG3DDeviceModel
     var _visualFlags = SceneVisualizationMask.SHOW_FLOOR | SceneVisualizationMask.SHOW_DEVICE | SceneVisualizationMask.CONTINUOUS_UPDATE;
 
     var _treeVisualizationFlags = TreeVisualizationMask.ShowNormalWindow |
@@ -112,9 +112,9 @@ function ORG3DScene(domContainer, screenSize) {
         _threeScreenPlane.name = "screen";
         _threeScene.add( _threeScreenPlane);
 
-        if ( _visualFlags & SceneVisualizationMask.SHOW_DEVICE ) {
-            this.showDevice3DModel();
-        }
+        //if ( _visualFlags & SceneVisualizationMask.SHOW_DEVICE ) {
+        //    this.showDevice3DModel();
+        //}
     };
 
     this.removeDeviceScreen = function() {
@@ -124,6 +124,22 @@ function ORG3DScene(domContainer, screenSize) {
             _threeScreenPlane = null;
         }
     }
+
+    this.setDeviceOrientation = function(orientation, width, height) {
+
+        if (_uiExpanded && _uiTreeModel) {
+            _uiTreeModel.removeUITreeModel(_threeScene);
+        }
+
+        if (_threeScreenPlane) {
+            this.removeDeviceScreen();
+            this.createDeviceScreen(width, height, 0);
+        }
+        if (_device3DModel) {
+            _device3DModel.setOrientation(orientation);
+        }
+        this.positionFloorUnderDevice();
+    };
 
     this.setDeviceScreenSize = function(width, height) {
         if (_threeScreenPlane) {
@@ -171,7 +187,8 @@ function ORG3DScene(domContainer, screenSize) {
         if (_threeScreenPlane && _sceneFloor) {
             var bBox = null;
             if ( (_visualFlags&SceneVisualizationMask.SHOW_DEVICE) && _device3DModel ) {
-                bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
+                //bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
+                bBox = _device3DModel.getBoundingBox();
             }
             if ( !bBox) {
                 _threeScreenPlane.geometry.computeBoundingBox ();
@@ -311,7 +328,8 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.addDevice3DModel = function( device3DModel ) {
         _device3DModel = device3DModel;
-        _threeScene.add( _device3DModel );
+        _device3DModel.addToScene(_threeScene);
+        //_threeScene.add( _device3DModel );
         this.positionFloorUnderDevice();
     }
 
@@ -321,9 +339,9 @@ function ORG3DScene(domContainer, screenSize) {
     }
 
     this.hideDevice3DModel = function() {
-
         if ( !!_device3DModel ) {
-            _threeScene.remove( _device3DModel);
+            //_threeScene.remove( _device3DModel);
+            _device3DModel.destroy();
             _device3DModel = null;
         }
         this.positionFloorUnderDevice();
