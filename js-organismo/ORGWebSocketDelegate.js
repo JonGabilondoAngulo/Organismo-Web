@@ -123,15 +123,14 @@ function ORGWebSocketDelegate() {
 		ORG.scene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
 		ORG.scene.createRaycasterForDeviceScreen();
 
-		//if ( _visualFlags & SceneVisualizationMask.SHOW_DEVICE ) {
+		if ( ORG.scene.mustShowDevice3DModel() ) {
 			ORG.scene.showDevice3DModel();
-		//}
+		}
 
 		// make sure the floor is at the right height
 		ORG.scene.positionFloorUnderDevice();
 
 		// ask for the first screenshot
-		//ORG.deviceConnection.requestScreenshot();
 		ORG.deviceController.requestScreenshot();
 	}
 

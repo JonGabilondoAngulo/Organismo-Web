@@ -13,14 +13,14 @@
 function ORG3DScene(domContainer, screenSize) {
 
     const SceneVisualizationMask = {
-        SHOW_FLOOR : 0x1,
-        SHOW_DEVICE : 0x2,
-        SHOW_TOOLTIPS : 0x4,
-        CONTINUOUS_UPDATE : 0x8
+        ShowFloor : 0x1,
+        ShowDevice : 0x2,
+        ShowTooltips : 0x4,
+        ContinuousUpdate : 0x8
     }
 
     var _zPosition = 20.0;
-    var _sceneFloor;
+    var _sceneFloor; // a ORG3DSceneFloor
     var _threeScene;
     var _threeCamera;
     var _threeRenderer;
@@ -35,12 +35,12 @@ function ORG3DScene(domContainer, screenSize) {
     var _canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
     var _threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
     var _uiTreeModelRaycaster = null;
-    var _screenRaycaster = null;
-    var _mouseListener = null;
+    var _screenRaycaster = null; // a ORGRaycaster
+    var _mouseListener = null; // a ORGMouseListener
     var _tooltiper = null;
     var _contextMenuManager = null;
     var _device3DModel = null; // a ORG3DDeviceModel
-    var _visualFlags = SceneVisualizationMask.SHOW_FLOOR | SceneVisualizationMask.SHOW_DEVICE | SceneVisualizationMask.CONTINUOUS_UPDATE;
+    var _sceneVisualFlags = SceneVisualizationMask.ShowFloor | SceneVisualizationMask.ShowDevice | SceneVisualizationMask.ContinuousUpdate;
 
     var _treeVisualizationFlags = TreeVisualizationMask.ShowNormalWindow |
         TreeVisualizationMask.ShowAlertWindow |
@@ -52,7 +52,7 @@ function ORG3DScene(domContainer, screenSize) {
 
 
     var _uiTreeModel = new ORGUITreeModel(_treeVisualizationFlags);
-    initialize(domContainer, screenSize, _visualFlags&SceneVisualizationMask.SHOW_FLOOR, this);
+    initialize(domContainer, screenSize, _sceneVisualFlags&SceneVisualizationMask.ShowFloor, this);
 
     /**
      * Remove the Device from the scene. After device disconnection all models and data of device must be removed.
@@ -108,13 +108,9 @@ function ORG3DScene(domContainer, screenSize) {
         //material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide, map : null});
         //material = new THREE.MeshBasicMaterial( {color: 0x000000, map : null});
         _threeScreenPlane = new THREE.Mesh( geometry, material );
-        _threeScreenPlane.position.set( 0 ,  0, zPosition);
+        _threeScreenPlane.position.set( 0 , 0, zPosition);
         _threeScreenPlane.name = "screen";
         _threeScene.add( _threeScreenPlane);
-
-        //if ( _visualFlags & SceneVisualizationMask.SHOW_DEVICE ) {
-        //    this.showDevice3DModel();
-        //}
     };
 
     this.removeDeviceScreen = function() {
@@ -129,6 +125,8 @@ function ORG3DScene(domContainer, screenSize) {
 
         if (_uiExpanded && _uiTreeModel) {
             _uiTreeModel.removeUITreeModel(_threeScene);
+            _uiExpanded = false;
+            buttonExpand.text("Expand");
         }
 
         if (_threeScreenPlane) {
@@ -186,7 +184,7 @@ function ORG3DScene(domContainer, screenSize) {
     this.positionFloorUnderDevice = function() {
         if (_threeScreenPlane && _sceneFloor) {
             var bBox = null;
-            if ( (_visualFlags&SceneVisualizationMask.SHOW_DEVICE) && _device3DModel ) {
+            if ( (_sceneVisualFlags&SceneVisualizationMask.ShowDevice) && _device3DModel ) {
                 //bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
                 bBox = _device3DModel.getBoundingBox();
             }
@@ -201,18 +199,17 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.continuousScreenshot = function() {
-        return _visualFlags & SceneVisualizationMask.CONTINUOUS_UPDATE;
+        return _sceneVisualFlags & SceneVisualizationMask.ContinuousUpdate;
     };
 
     this.setLiveScreen = function(live) {
         if (live) {
-            _visualFlags |= SceneVisualizationMask.CONTINUOUS_UPDATE;
+            _sceneVisualFlags |= SceneVisualizationMask.ContinuousUpdate;
         } else {
-            _visualFlags &= ~SceneVisualizationMask.CONTINUOUS_UPDATE;
+            _sceneVisualFlags &= ~SceneVisualizationMask.ContinuousUpdate;
         }
         if (_threeScreenPlane) {
-            if ((_visualFlags & SceneVisualizationMask.CONTINUOUS_UPDATE) && !_uiExpanded) {
-                //ORG.deviceConnection.requestScreenshot();
+            if ((_sceneVisualFlags & SceneVisualizationMask.ContinuousUpdate) && !_uiExpanded) {
                 ORG.deviceController.requestScreenshot();
             }
         }
@@ -220,13 +217,13 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowTooltips = function(show) {
         if (show) {
-            _visualFlags |= SceneVisualizationMask.SHOW_TOOLTIPS;
+            _sceneVisualFlags |= SceneVisualizationMask.ShowTooltips;
         } else {
-            _visualFlags &= ~SceneVisualizationMask.SHOW_TOOLTIPS;
+            _sceneVisualFlags &= ~SceneVisualizationMask.ShowTooltips;
         }
 
         if (_threeScreenPlane) {
-            if (_visualFlags & SceneVisualizationMask.SHOW_TOOLTIPS) {
+            if (_sceneVisualFlags & SceneVisualizationMask.ShowTooltips) {
                 _tooltiper = new ORGTooltip(_threeRendererDOMElement);
                 if (_uiTreeModelRaycaster) {
                     _uiTreeModelRaycaster.addDelegate(_tooltiper); // Attach it to the raycaster
@@ -244,7 +241,7 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.showTooltip = function() {
-        return _visualFlags & SceneVisualizationMask.SHOW_TOOLTIPS;
+        return _sceneVisualFlags & SceneVisualizationMask.ShowTooltips;
     };
 
     this.showPrivate = function() {
@@ -326,10 +323,13 @@ function ORG3DScene(domContainer, screenSize) {
             }).start();
     }
 
+    this.mustShowDevice3DModel = function() {
+        return _sceneVisualFlags & SceneVisualizationMask.ShowDevice;
+    }
+
     this.addDevice3DModel = function( device3DModel ) {
         _device3DModel = device3DModel;
         _device3DModel.addToScene(_threeScene);
-        //_threeScene.add( _device3DModel );
         this.positionFloorUnderDevice();
     }
 
@@ -340,7 +340,6 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.hideDevice3DModel = function() {
         if ( !!_device3DModel ) {
-            //_threeScene.remove( _device3DModel);
             _device3DModel.destroy();
             _device3DModel = null;
         }
