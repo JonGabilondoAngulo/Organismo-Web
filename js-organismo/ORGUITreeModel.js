@@ -74,19 +74,11 @@ function ORGUITreeModel( visualizationFlag ) {
         }
     };
 
-    this.collapseAndShowScreen = function (threeScreenPlane) {
+    this.collapseWithCompletion = function (completion) {
 
         for (var i in _treeData) {
             var treeNode = _treeData[i];
-            collapseNodeAnimatedWithCompletion(treeNode, function() {
-                if (threeScreenPlane) {
-                    threeScreenPlane.visible = true;
-                }
-                if (ORG.scene.continuousScreenshot()) {
-                    //ORG.deviceConnection.requestScreenshot(); // keep updating screenshot
-                    ORG.deviceController.requestScreenshot(); // keep updating screenshot
-                }
-            })
+            collapseNodeAnimatedWithCompletion(treeNode, completion)
         }
     };
 

@@ -34,14 +34,15 @@ function ORG3DScene(domContainer, screenSize) {
     var _uiExpanded = false;
     var _canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
     var _threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
-    var _uiTreeModelRaycaster = null;
+    var _uiTreeModelRaycaster = null; // a ORGRaycaster
     var _screenRaycaster = null; // a ORGRaycaster
     var _mouseListener = null; // a ORGMouseListener
     var _tooltiper = null;
     var _contextMenuManager = null;
     var _device3DModel = null; // a ORG3DDeviceModel
-    var _sceneVisualFlags = SceneVisualizationMask.ShowFloor | SceneVisualizationMask.ShowDevice | SceneVisualizationMask.ContinuousUpdate;
-
+    var _sceneVisualFlags = SceneVisualizationMask.ShowFloor |
+        SceneVisualizationMask.ShowDevice |
+        SceneVisualizationMask.ContinuousUpdate;
     var _treeVisualizationFlags = TreeVisualizationMask.ShowNormalWindow |
         TreeVisualizationMask.ShowAlertWindow |
         TreeVisualizationMask.ShowKeyboardWindow |
@@ -285,18 +286,28 @@ function ORG3DScene(domContainer, screenSize) {
         }
     };
 
-    this.expandCollapse = function() {
+    this.expand = function() {
+        ORG.deviceController.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
+    };
+
+    this.collapse = function() {
         if (_uiExpanded) {
             // we dont need the mouse listener and the raycaster anymore
             _mouseListener.disable();
             _mouseListener.removeDelegate(_uiTreeModelRaycaster);
             _uiTreeModelRaycaster = null;
             _tooltiper = null;
-            _uiTreeModel.collapseAndShowScreen( _threeScreenPlane );
+            var requestScreenshot = this.continuousScreenshot();
+            _uiTreeModel.collapseWithCompletion( function() {
+                if (_threeScreenPlane) {
+                    _threeScreenPlane.visible = true;
+                }
+                if (requestScreenshot) {
+                    ORG.deviceController.requestScreenshot(); // keep updating screenshot
+                }
+            });
             this.createRaycasterForDeviceScreen();
             _uiExpanded = false;
-        } else {
-            ORG.deviceController.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
         }
     };
 
@@ -306,7 +317,7 @@ function ORG3DScene(domContainer, screenSize) {
     this.resetCameraPosition = function() {
 
         // Avoi flickering by stopping screen updates
-        var liveScreen = this.continuousScreenshot;
+        var liveScreen = this.continuousScreenshot();
         if ( liveScreen) {
             ORG.scene.setLiveScreen( false);
         }

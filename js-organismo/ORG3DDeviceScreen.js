@@ -54,4 +54,16 @@ class ORG3DDeviceScreen {
             this._threeScreenPlane.visible = true;
         }
     }
+
+    setScreenShot(image) {
+        var screenshotTexture = new THREE.Texture( image );
+        screenshotTexture.minFilter = THREE.NearestFilter;
+        var thisBackup = this;
+        image.onload = function () {
+            screenshotTexture.needsUpdate = true;
+            thisBackup._threeScreenPlane.material.map = screenshotTexture;
+            thisBackup._threeScreenPlane.material.needsUpdate = true;
+            thisBackup._threeScreenPlane.needsUpdate = true;
+        };
+    }
 }

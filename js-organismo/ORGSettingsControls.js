@@ -72,10 +72,11 @@ buttonExpand.click(function (e) {
     }
     if (ORG.scene.UIExpanded()) {
         buttonExpand.text("Expand");
+        ORG.scene.collapse();
     } else {
         buttonExpand.text("Collapse");
+        ORG.scene.expand();
     }
-    ORG.scene.expandCollapse();
 });
 
 checkButtonShowFloor.change(function (e) {
