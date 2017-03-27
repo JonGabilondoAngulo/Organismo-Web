@@ -26,7 +26,7 @@ class ORG3DSceneFloor {
             this._threeScene.remove(this._threeFloor);
             this._threeFloor = null;
         }
-        this._threeScene.remove(this._threeFloor);
+
         if (this._threeAxis) {
             this._threeScene.remove(this._threeAxis);
             this._threeAxis = null;

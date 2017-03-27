@@ -20,16 +20,21 @@ class ORG3DDeviceScreen {
         this._threeScreenPlane.position.set( 0 , 0, zPosition);
         this._threeScreenPlane.name = "screen";
         threeScene.add( this._threeScreenPlane);
+        this._threeScreenPlane.geometry.computeBoundingBox ();
     }
 
     destroy() {
-        if (this._threeScene) {
+        if (this._threeScene && this._threeScreenPlane) {
             this._threeScene.remove( this._threeScreenPlane);
             this._threeScreenPlane = null;
         }
     }
 
-    get screenBoundingBox() {
+    get scenePlane() {
+        return this._threeScreenPlane;
+    }
+
+    get boundingBox() {
         return this._threeScreenPlane.geometry.boundingBox;
     }
 
@@ -37,33 +42,27 @@ class ORG3DDeviceScreen {
         return this._deviceScreenSize;
     }
 
-    setScreenSize(width, height) {
-        if (this._threeScreenPlane) {
-//https://github.com/mrdoob/three.js/issues/1148
-        }
-    }
-
-    hideScreen() {
+    hide() {
         if (this._threeScreenPlane) {
             this._threeScreenPlane.visible = false;
         }
     }
 
-    showScreen() {
+    show() {
         if (this._threeScreenPlane) {
             this._threeScreenPlane.visible = true;
         }
     }
 
-    setScreenShot(image) {
+    setScreenshot(image) {
         var screenshotTexture = new THREE.Texture( image );
         screenshotTexture.minFilter = THREE.NearestFilter;
-        var thisBackup = this;
+        var thisScreen = this;
         image.onload = function () {
             screenshotTexture.needsUpdate = true;
-            thisBackup._threeScreenPlane.material.map = screenshotTexture;
-            thisBackup._threeScreenPlane.material.needsUpdate = true;
-            thisBackup._threeScreenPlane.needsUpdate = true;
+            thisScreen._threeScreenPlane.material.map = screenshotTexture;
+            thisScreen._threeScreenPlane.material.needsUpdate = true;
+            thisScreen._threeScreenPlane.needsUpdate = true;
         };
     }
 }

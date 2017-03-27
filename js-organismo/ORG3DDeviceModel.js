@@ -24,7 +24,7 @@ class ORG3DDeviceModel {
     }
 
     destroy() {
-        removeFromScene();
+        this.removeFromScene();
         this.threeObj = null;
     }
 

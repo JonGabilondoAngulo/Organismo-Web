@@ -22,10 +22,10 @@ function ORG3DScene(domContainer, screenSize) {
     var _zPosition = 20.0;
     var _sceneFloor; // a ORG3DSceneFloor
     var _threeScene;
+    var _deviceScreen; // a ORG3DDeviceScreen
     var _threeCamera;
     var _threeRenderer;
     var _threeOrbitControls;
-    var _threeScreenPlane;
     var _keyboardState;
     var _threeClock;
     var _screenshotImage;
@@ -102,23 +102,13 @@ function ORG3DScene(domContainer, screenSize) {
         var geometry,material;
 
         _deviceScreenSize = { width:width, height:height};
-
-        geometry = new THREE.PlaneBufferGeometry( width, height, 1, 1);
-        geometry.dynamic = true;
-        material = new THREE.MeshBasicMaterial({ map : null , color: 0xffffff, side: THREE.DoubleSide});
-        //material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide, map : null});
-        //material = new THREE.MeshBasicMaterial( {color: 0x000000, map : null});
-        _threeScreenPlane = new THREE.Mesh( geometry, material );
-        _threeScreenPlane.position.set( 0 , 0, zPosition);
-        _threeScreenPlane.name = "screen";
-        _threeScene.add( _threeScreenPlane);
+        _deviceScreen = new ORG3DDeviceScreen(width, height, zPosition, _threeScene);
     };
 
     this.removeDeviceScreen = function() {
-        if (_threeScreenPlane) {
+        if (_deviceScreen) {
             this.removeRaycasterForDeviceScreen();
-            _threeScene.remove(_threeScreenPlane);
-            _threeScreenPlane = null;
+            _deviceScreen.destroy();
         }
     }
 
@@ -130,7 +120,7 @@ function ORG3DScene(domContainer, screenSize) {
             buttonExpand.text("Expand");
         }
 
-        if (_threeScreenPlane) {
+        if (_deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
         }
@@ -141,7 +131,7 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.setDeviceScreenSize = function(width, height) {
-        if (_threeScreenPlane) {
+        if (_deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
             this.positionFloorUnderDevice();
@@ -149,19 +139,19 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.hideDeviceScreen = function() {
-        if (_threeScreenPlane) {
-            _threeScreenPlane.visible = false;
+        if (_deviceScreen) {
+            _deviceScreen.hide();
         }
     };
 
     this.showDeviceScreen = function() {
-        if (_threeScreenPlane) {
-            _threeScreenPlane.visible = true;
+        if (_deviceScreen) {
+            _deviceScreen.show();
         }
     };
 
     this.createRaycasterForDeviceScreen = function() {
-        _screenRaycaster = new ORGRaycaster(_threeRendererDOMElement, _threeCamera, _threeScreenPlane);
+        _screenRaycaster = new ORGRaycaster(_threeRendererDOMElement, _threeCamera, _deviceScreen.screenPlane);
         _screenRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager
 
         // Activate mouse listener
@@ -179,19 +169,18 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.getDeviceScreenBoundingBox = function() {
-        return _threeScreenPlane.geometry.boundingBox;
+        return _deviceScreen.boundingBox;
     };
 
     this.positionFloorUnderDevice = function() {
-        if (_threeScreenPlane && _sceneFloor) {
+        if (_deviceScreen && _sceneFloor) {
             var bBox = null;
             if ( (_sceneVisualFlags&SceneVisualizationMask.ShowDevice) && _device3DModel ) {
                 //bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
                 bBox = _device3DModel.getBoundingBox();
             }
             if ( !bBox) {
-                _threeScreenPlane.geometry.computeBoundingBox ();
-                bBox = _threeScreenPlane.geometry.boundingBox;
+                bBox = _deviceScreen.boundingBox;
             }
             if ( bBox) {
                 _sceneFloor.setPosition(0, bBox.min.y - 50, 0);
@@ -209,7 +198,7 @@ function ORG3DScene(domContainer, screenSize) {
         } else {
             _sceneVisualFlags &= ~SceneVisualizationMask.ContinuousUpdate;
         }
-        if (_threeScreenPlane) {
+        if (_deviceScreen) {
             if ((_sceneVisualFlags & SceneVisualizationMask.ContinuousUpdate) && !_uiExpanded) {
                 ORG.deviceController.requestScreenshot();
             }
@@ -223,7 +212,7 @@ function ORG3DScene(domContainer, screenSize) {
             _sceneVisualFlags &= ~SceneVisualizationMask.ShowTooltips;
         }
 
-        if (_threeScreenPlane) {
+        if (_deviceScreen) {
             if (_sceneVisualFlags & SceneVisualizationMask.ShowTooltips) {
                 _tooltiper = new ORGTooltip(_threeRendererDOMElement);
                 if (_uiTreeModelRaycaster) {
@@ -276,7 +265,8 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.showFloor = function() {
         if (!_sceneFloor) {
-            _sceneFloor = createFloor();
+            _sceneFloor = createFloor( _threeScene);
+            this.positionFloorUnderDevice();
         }
     };
 
@@ -287,8 +277,15 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.expand = function() {
-        ORG.deviceController.requestElementTree( {"status-bar":true, "keyboard":true, "alert":true, "normal":true} );
-    };
+        if (!_uiExpanded) {
+            ORG.deviceController.requestElementTree({
+                "status-bar": true,
+                "keyboard": true,
+                "alert": true,
+                "normal": true
+            });
+        }
+    }
 
     this.collapse = function() {
         if (_uiExpanded) {
@@ -299,8 +296,8 @@ function ORG3DScene(domContainer, screenSize) {
             _tooltiper = null;
             var requestScreenshot = this.continuousScreenshot();
             _uiTreeModel.collapseWithCompletion( function() {
-                if (_threeScreenPlane) {
-                    _threeScreenPlane.visible = true;
+                if (_deviceScreen) {
+                    _deviceScreen.show();
                 }
                 if (requestScreenshot) {
                     ORG.deviceController.requestScreenshot(); // keep updating screenshot
@@ -506,20 +503,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     function updateScreenshot() {
 
-        if (_threeScreenPlane && _screenshotNeedsUpdate && _screenshotImage) {
+        if (_deviceScreen && _screenshotNeedsUpdate && _screenshotImage) {
             _screenshotNeedsUpdate = false;
-
-            var screenshotTexture = new THREE.Texture( _screenshotImage );
-            screenshotTexture.minFilter = THREE.NearestFilter;
-            _screenshotImage.onload = function () {
-                screenshotTexture.needsUpdate = true;
-                _threeScreenPlane.material.map = screenshotTexture;
-                _threeScreenPlane.material.needsUpdate = true;
-                _threeScreenPlane.needsUpdate = true;
-            };
-            //screenPlane.material = THREE.MeshBasicMaterial({ map : screenshotTexture });
-            //screenPlane.material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide});
-            //screenshotTexture.needsUpdate = true;
+            _deviceScreen.setScreenshot(_screenshotImage);
         }
     }
 

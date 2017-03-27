@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMain.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMain.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
@@ -27,33 +29,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ORG3DScene.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ORG3DScene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DScene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="37.22222">
-              <caret line="289" column="8" selection-start-line="289" selection-start-column="8" selection-end-line="289" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.33203885">
+              <caret line="344" column="8" selection-start-line="344" selection-start-column="8" selection-end-line="344" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ORG3DDeviceScreen.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js">
+      <file leaf-file-name="ORG3DDeviceModel.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="65" column="22" selection-start-line="65" selection-start-column="22" selection-end-line="65" selection-end-column="22" />
-              <folding>
-                <element signature="n#!!doc;n#ORG3DDeviceScreen#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="-9.666667">
+              <caret line="25" column="15" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ORGUITreeModel.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORGUITreeModel.js">
+      <file leaf-file-name="ORGSettingsControls.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORGSettingsControls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65245205">
-              <caret line="76" column="31" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="22" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -119,19 +119,19 @@
         <option value="$PROJECT_DIR$/js-organismo/ORGMouseListener.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGRaycaster.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGTooltip.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGMain.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGDevice.js" />
-        <option value="$PROJECT_DIR$/organismo.html" />
         <option value="vm:167" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGMain.js" />
+        <option value="$PROJECT_DIR$/organismo.html" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" />
       </list>
     </option>
   </component>
@@ -186,6 +186,25 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope">
+        <subPane subId="Changed Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Organismo-Web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT=".idea">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -220,25 +239,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Changed Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="Organismo-Web">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT=".idea">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -625,7 +625,13 @@
       <option name="project" value="LOCAL" />
       <updated>1490472176844</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Improved the UI tree collapse function.">
+      <created>1490556677676</created>
+      <option name="number" value="00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1490556677676</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TodoView">
@@ -650,7 +656,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2498469" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32839963" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290653" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27016646" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277849" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -658,7 +664,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25333333" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17285532" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1724138" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -716,7 +722,8 @@
     <MESSAGE value="Class refactoring." />
     <MESSAGE value="Added class for 3D device model.&#10;Improved handling orientation changes." />
     <MESSAGE value="Added ORG3DDeviceScreen." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added ORG3DDeviceScreen." />
+    <MESSAGE value="Improved the UI tree collapse function." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved the UI tree collapse function." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -736,11 +743,16 @@
           <line>45</line>
           <option name="timeStamp" value="639" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/js-organismo/ORG3DScene.js</url>
+          <line>134</line>
+          <option name="timeStamp" value="731" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="719" />
+      <option name="time" value="737" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -923,14 +935,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGTooltip.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="62" column="28" selection-start-line="62" selection-start-column="28" selection-end-line="62" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORGTreeEditor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -994,29 +998,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGMain.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.108892925">
-          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/organismo.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4526749">
-          <caret line="66" column="69" selection-start-line="66" selection-start-column="69" selection-end-line="66" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocket.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.56475586">
-          <caret line="99" column="4" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/Three56.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.2474437">
@@ -1035,14 +1016,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6191406">
           <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32038835">
-          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1071,13 +1044,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.024271844">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.27184466">
@@ -1092,18 +1058,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGSettingsControls.js">
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGMain.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45564517">
-          <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.097087376">
+          <caret line="4" column="75" selection-start-line="4" selection-start-column="75" selection-end-line="4" selection-end-column="75" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DScene.js">
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGTooltip.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="37.22222">
-          <caret line="289" column="8" selection-start-line="289" selection-start-column="8" selection-end-line="289" selection-end-column="8" />
+        <state vertical-scroll-proportion="-3.8058252">
+          <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/organismo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.72938687">
+          <caret line="74" column="37" selection-start-line="74" selection-start-column="37" selection-end-line="74" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -1111,7 +1085,7 @@
     <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="22" selection-start-line="65" selection-start-column="22" selection-end-line="65" selection-end-column="22" />
+          <caret line="21" column="25" selection-start-line="21" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc;n#ORG3DDeviceScreen#0" expanded="false" />
           </folding>
@@ -1120,8 +1094,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORGUITreeModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65245205">
+        <state vertical-scroll-proportion="0.0">
           <caret line="76" column="31" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08302583">
+          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGSettingsControls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="22" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocket.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36346865">
+          <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.666667">
+          <caret line="25" column="15" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DScene.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33203885">
+          <caret line="344" column="8" selection-start-line="344" selection-start-column="8" selection-end-line="344" selection-end-column="8" />
           <folding />
         </state>
       </provider>
