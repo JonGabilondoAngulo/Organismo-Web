@@ -433,7 +433,7 @@
       <workItem from="1490710309144" duration="14000" />
       <workItem from="1490712350289" duration="1277000" />
       <workItem from="1490777458538" duration="582000" />
-      <workItem from="1490779683339" duration="1212000" />
+      <workItem from="1490779683339" duration="1245000" />
     </task>
     <task id="LOCAL-00001" summary="Enabled version control on IDE">
       <created>1474667964283</created>
@@ -673,11 +673,18 @@
       <option name="project" value="LOCAL" />
       <updated>1490781059221</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Encapsulated constants.">
+      <created>1490781074731</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1490781074731</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4676000" />
+    <option name="totallyTimeSpent" value="4709000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
