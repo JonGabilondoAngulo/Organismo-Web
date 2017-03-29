@@ -4,35 +4,38 @@
  * It accepts a Delegate class that will be called on the following events: onOpen, onCLose, onMessage, onError.
  * @constructor
  */
-function ORGWebSocket() {
+class ORGWebSocket {
 
-	var ws = null;
-	var serverURL = null;
-	var delegate = null;
+	constructor() {
+        this._ws = null;
+        this._serverURL = null;
+        this._delegate = null;
+	}
 
 	/**
 	 * Opens a WebSocket to server given a URL and accepts a Delegate.
 	 * @param inServerURL
 	 * @param inDelegate. An object that can implement the callback methods: onOpen, onCLose, onMessage, onError
 	 */
-	this.open = function (inServerURL, inDelegate) {
-		serverURL = inServerURL;
-		delegate = inDelegate;
+	open(inServerURL, inDelegate) {
+		let thisVar = this;
+		this._serverURL = inServerURL;
+        this._delegate = inDelegate;
 
-		var url = "ws://" + serverURL + "/main";
-		ws = new WebSocket(url);
-		ws.onopen = onOpen;
-		ws.onclose = onClose;
-		ws.onmessage = onMessage;
-		ws.onerror = onError;
+		let url = "ws://" + this._serverURL + "/main";
+        this._ws = new WebSocket(url);
+        this._ws.onopen = function () { thisVar.onOpen();} ;
+        this._ws.onclose = function () { thisVar.onClose();};
+        this._ws.onmessage = function (event) { thisVar.onMessage(event);};
+        this._ws.onerror = function (event) { thisVar.onError(event);};
 	};
 
 	/**
 	 * Close the WebSocket.
 	 */
-	this.close = function() {
-		if (ws) {
-			ws.close();
+	close() {
+		if (this._ws) {
+            this._ws.close();
 		} else {
 			console.log('CLOSE requested but there is no ws.')
 		}
@@ -42,9 +45,9 @@ function ORGWebSocket() {
 	 * Sends data through the websocket.
 	 * @param payload. A string with the data to transfer.
 	 */
-	this.send = function(payload) {
-		if (ws) {
-			ws.send(payload);
+	send(payload) {
+		if (this._ws) {
+            this._ws.send(payload);
 		}
 	}
 
@@ -52,16 +55,16 @@ function ORGWebSocket() {
 	 * A function that returns of the websocket is connected to the server.
 	 * @returns {boolean}
 	 */
-	this.isConnected = function() {
-		return !!ws;
+	isConnected() {
+		return !!this._ws;
 	}
 
 	/**
 	 * A function that returns the URL of the server.
 	 * @returns {*}
 	 */
-	this.getServerURL = function() {
-		return serverURL;
+	getServerURL() {
+		return this._serverURL;
 	}
 
 	// Callbacks
@@ -70,10 +73,10 @@ function ORGWebSocket() {
 	 * JS WebSocket callback when the socket has opened.
 	 * It will call the Delegate "onOpen".
 	 */
-	var onOpen = function() {
-		console.log('OPENED: ' + serverURL);
-		if (!!delegate.onOpen) {
-			delegate.onOpen(this);
+    onOpen() {
+		console.log('OPENED: ' + this._serverURL);
+		if (!!this._delegate.onOpen) {
+            this._delegate.onOpen(this);
 		}
 	};
 
@@ -81,11 +84,11 @@ function ORGWebSocket() {
 	 * JS WebSocket callback when the socket has closed.
 	 * It will call the Delegate "onClose".
 	 */
-	var onClose = function() {
-		console.log('CLOSED: ' + serverURL);
-		ws = null;
-		if (!!delegate.onClose) {
-			delegate.onClose(this);
+	onClose() {
+		console.log('CLOSED: ' + this._serverURL);
+        this._ws = null;
+		if (!!this._delegate.onClose) {
+            this._delegate.onClose(this);
 		}
 	};
 
@@ -93,9 +96,9 @@ function ORGWebSocket() {
 	 * JS WebSocket callback when the socket has received a message.
 	 * It will call the Delegate "onMessage".
 	 */
-	var onMessage = function(event) {
-		if (!!delegate.onMessage) {
-			delegate.onMessage(event, this);
+	onMessage(event) {
+		if (!!this._delegate.onMessage) {
+            this._delegate.onMessage(event, this);
 		}
 	};
 
@@ -103,10 +106,10 @@ function ORGWebSocket() {
 	 * JS WebSocket callback when the socket has detected an error.
 	 * It will call the Delegate "onError".
 	 */
-	var onError = function(event) {
+	onError(event) {
 		console.log('WS Error: ' + event.data);
-		if (!!delegate.onError) {
-			delegate.onError(event, this);
+		if (!!this._delegate.onError) {
+            this._delegate.onError(event, this);
 		}
 	}
 }
