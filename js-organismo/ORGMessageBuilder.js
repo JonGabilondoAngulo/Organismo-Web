@@ -11,7 +11,7 @@ class ORGMessageBuilder {
         var msg = {
             type: "request",
             data: {
-                request: ORGRequest_deviceInfo
+                request: ORG.Request.DeviceInfo
             }
         };
         return JSON.stringify(msg);
@@ -21,7 +21,7 @@ class ORGMessageBuilder {
         var msg = {
             type: "request",
             data: {
-                request: ORGRequest_AppInfo
+                request: ORG.Request.AppInfo
             }
         };
         return JSON.stringify(msg);
@@ -31,7 +31,7 @@ class ORGMessageBuilder {
         var msg = {
             type: "request",
             data: {
-                request: ORGRequest_screenshot
+                request: ORG.Request.Screenshot
             }
         };
         return JSON.stringify(msg);
@@ -41,7 +41,7 @@ class ORGMessageBuilder {
         var msg = {
             type: "request",
             data: {
-                request: ORGRequest_elementTree,
+                request: ORG.Request.ElementTree,
                 parameters: parameters
             }
         };

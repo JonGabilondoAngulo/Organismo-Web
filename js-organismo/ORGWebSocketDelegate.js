@@ -73,13 +73,13 @@ function ORGWebSocketDelegate() {
 	 * @param messageJSON
 	 */
 	function processResponse(messageJSON) {
-		if ( messageJSON.request == ORGRequest_deviceInfo) {
+		if ( messageJSON.request == ORG.Request.DeviceInfo) {
 			processResponseDeviceInfo(messageJSON);
-		} else if ( messageJSON.request == ORGRequest_AppInfo) {
+		} else if ( messageJSON.request == ORG.Request.AppInfo) {
 			processResponseAppInfo(messageJSON);
-		} else if ( messageJSON.request == ORGRequest_screenshot) {
+		} else if ( messageJSON.request == ORG.Request.Screenshot) {
 			processReportScreenshot( messageJSON);
-		} else if ( messageJSON.request == ORGRequest_elementTree) {
+		} else if ( messageJSON.request == ORG.Request.ElementTree) {
 			processReportElementTree(messageJSON);
 		}
 	}

@@ -2,7 +2,9 @@
  * Created by jongabilondo on 22/03/2017.
  */
 
-
+/**
+ * Utilities class to load and show THREE models of different devices.
+ */
 class ORG3DDeviceModelLoader {
 
     /**

@@ -2,6 +2,10 @@
  * Created by jongabilondo on 26/02/2017.
  */
 
+/**
+ * Class to perform the communication with an external device.
+ * It uses websockets (ORGWebSocket).
+ */
 class ORGDeviceController extends ORGDeviceBaseController {
 
     constructor(ip, port) {

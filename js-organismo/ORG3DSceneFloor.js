@@ -3,6 +3,9 @@
  */
 
 
+/**
+ * Class to wrapp the actions on the THREE model of the floor in the scene.
+ */
 class ORG3DSceneFloor {
 
     constructor(size, step, showAxis, threeScene) {

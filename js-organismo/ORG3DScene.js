@@ -19,10 +19,14 @@ function ORG3DScene(domContainer, screenSize) {
         ContinuousUpdate : 0x8
     }
 
-    var _zPosition = 20.0;
-    var _sceneFloor; // a ORG3DSceneFloor
+    var _sceneFloor = null; // a ORG3DSceneFloor
+    var _deviceScreen = null; // a ORG3DDeviceScreen
+    var _uiTreeModelRaycaster = null; // a ORGRaycaster
+    var _screenRaycaster = null; // a ORGRaycaster
+    var _mouseListener = null; // a ORGMouseListener
+    var _device3DModel = null; // a ORG3DDeviceModel
+    var _tooltiper = null; // a ORGTooltip
     var _threeScene;
-    var _deviceScreen; // a ORG3DDeviceScreen
     var _threeCamera;
     var _threeRenderer;
     var _threeOrbitControls;
@@ -34,12 +38,8 @@ function ORG3DScene(domContainer, screenSize) {
     var _uiExpanded = false;
     var _canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
     var _threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
-    var _uiTreeModelRaycaster = null; // a ORGRaycaster
-    var _screenRaycaster = null; // a ORGRaycaster
-    var _mouseListener = null; // a ORGMouseListener
-    var _tooltiper = null;
     var _contextMenuManager = null;
-    var _device3DModel = null; // a ORG3DDeviceModel
+    var _zPosition = 20.0;
     var _sceneVisualFlags = SceneVisualizationMask.ShowFloor |
         SceneVisualizationMask.ShowDevice |
         SceneVisualizationMask.ContinuousUpdate;
@@ -212,23 +212,33 @@ function ORG3DScene(domContainer, screenSize) {
             _sceneVisualFlags &= ~SceneVisualizationMask.ShowTooltips;
         }
 
-        if (_deviceScreen) {
+        //if (_deviceScreen) {
             if (_sceneVisualFlags & SceneVisualizationMask.ShowTooltips) {
-                _tooltiper = new ORGTooltip(_threeRendererDOMElement);
-                if (_uiTreeModelRaycaster) {
-                    _uiTreeModelRaycaster.addDelegate(_tooltiper); // Attach it to the raycaster
-                }
+                this.enableTooltips();
             } else {
-                if (_tooltiper) {
-                    if (_uiTreeModelRaycaster) {
-                        _uiTreeModelRaycaster.removeDelegate(_tooltiper); // Detach it from the raycaster
-                    }
-                    _tooltiper.destroy( );
-                    _tooltiper = null;
-                }
+                this.disableTooltips();
+            }
+        //}
+    };
+
+    this.enableTooltips = function() {
+        if (!_tooltiper) {
+            _tooltiper = new ORGTooltip(_threeRendererDOMElement);
+            if (_uiTreeModelRaycaster) {
+                _uiTreeModelRaycaster.addDelegate(_tooltiper); // Attach it to the raycaster
             }
         }
-    };
+    }
+
+    this.disableTooltips = function() {
+        if (_tooltiper) {
+            if (_uiTreeModelRaycaster) {
+                _uiTreeModelRaycaster.removeDelegate(_tooltiper); // Detach it from the raycaster
+            }
+            _tooltiper.destroy( );
+            _tooltiper = null;
+        }
+    }
 
     this.showTooltip = function() {
         return _sceneVisualFlags & SceneVisualizationMask.ShowTooltips;
@@ -291,9 +301,12 @@ function ORG3DScene(domContainer, screenSize) {
         if (_uiExpanded) {
             // we dont need the mouse listener and the raycaster anymore
             _mouseListener.disable();
-            _mouseListener.removeDelegate(_uiTreeModelRaycaster);
-            _uiTreeModelRaycaster = null;
-            _tooltiper = null;
+
+            this.disableTooltips();
+            // _mouseListener.removeDelegate(_uiTreeModelRaycaster);
+            // _uiTreeModelRaycaster = null;
+            // _tooltiper = null;
+
             var requestScreenshot = this.continuousScreenshot();
             _uiTreeModel.collapseWithCompletion( function() {
                 if (_deviceScreen) {

@@ -3,6 +3,9 @@
  */
 
 
+/**
+ * Class that represents a connected device. Holds device's basic information.
+ */
 class ORGDevice {
 
     constructor(deviceInfo) {

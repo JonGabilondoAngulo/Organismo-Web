@@ -3,6 +3,9 @@
  */
 
 
+/**
+ * Class to wrapp the THREE object for the device screen.
+ */
 class ORG3DDeviceScreen {
 
     constructor(width, height, zPosition, threeScene) {

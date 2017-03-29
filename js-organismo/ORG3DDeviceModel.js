@@ -3,6 +3,9 @@
  */
 
 
+/**
+ * Class to wrapp the actions on the THREE model of a device.
+ */
 class ORG3DDeviceModel {
 
     constructor( threeObj ) {
