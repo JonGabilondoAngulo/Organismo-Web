@@ -3,18 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGConstants.js" afterPath="$PROJECT_DIR$/js-organismo/ORGConstants.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDevice.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDevice.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceController.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMain.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMain.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" afterPath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" afterPath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -445,7 +433,7 @@
       <workItem from="1490710309144" duration="14000" />
       <workItem from="1490712350289" duration="1277000" />
       <workItem from="1490777458538" duration="582000" />
-      <workItem from="1490779683339" duration="1166000" />
+      <workItem from="1490779683339" duration="1212000" />
     </task>
     <task id="LOCAL-00001" summary="Enabled version control on IDE">
       <created>1474667964283</created>
@@ -678,11 +666,18 @@
       <option name="project" value="LOCAL" />
       <updated>1490644816291</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Encapsulated constants.">
+      <created>1490781059221</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1490781059221</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4630000" />
+    <option name="totallyTimeSpent" value="4676000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -776,7 +771,8 @@
     <MESSAGE value="Added ORG3DDeviceScreen." />
     <MESSAGE value="Improved the UI tree collapse function." />
     <MESSAGE value="Added class for device screen." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added class for device screen." />
+    <MESSAGE value="Encapsulated constants." />
+    <option name="LAST_COMMIT_MESSAGE" value="Encapsulated constants." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
