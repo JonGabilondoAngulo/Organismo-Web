@@ -117,7 +117,7 @@ function ORG3DScene(domContainer, screenSize) {
         if (_uiExpanded && _uiTreeModel) {
             _uiTreeModel.removeUITreeModel(_threeScene);
             _uiExpanded = false;
-            buttonExpand.text("Expand");
+            ORG.UI.buttonExpand.text("Expand");
         }
 
         if (_deviceScreen) {

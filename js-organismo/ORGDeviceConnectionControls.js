@@ -2,19 +2,19 @@
  * Created by jongabilondo on 20/09/2016.
  */
 
-var connectButton = $('#connect-button');
-var deviceNameLabel = $('#device-name-label');
-var deviceSystemVersionLabel = $('#device-system-version-label');
-var deviceModelLabel = $('#device-model-label');
-var testAppNameLabel = $('#testapp-name-label');
-var testAppVersionLabel = $('#testapp-version-label');
-var testAppBundleIdLabel = $('#testapp-bundleid-label');
+ORG.UI.connectButton = $('#connect-button');
+ORG.UI.deviceNameLabel = $('#device-name-label');
+ORG.UI.deviceSystemVersionLabel = $('#device-system-version-label');
+ORG.UI.deviceModelLabel = $('#device-model-label');
+ORG.UI.testAppNameLabel = $('#testapp-name-label');
+ORG.UI.testAppVersionLabel = $('#testapp-version-label');
+ORG.UI.testAppBundleIdLabel = $('#testapp-bundleid-label');
 
 $('.dropdown-menu a').click(function(){
     $('#selected').text($(this).text());
 });
 
-connectButton.click(function(e) {
+ORG.UI.connectButton.click(function(e) {
     var serverUrl = $('#device-url');
 
     var deviceURL = serverUrl.val();
@@ -23,7 +23,6 @@ connectButton.click(function(e) {
     }
 
     if (ORG.deviceController == null) {
-        //ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
         ORG.deviceController = new ORGDeviceController(deviceURL, 5567);
     }
 
@@ -32,14 +31,14 @@ connectButton.click(function(e) {
 
         // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
         ORG.scene.handleDeviceDisconnection();
-        connectButton.text("Connect");
-        buttonExpand.text("Expand");
-        deviceNameLabel.text('');
-        deviceSystemVersionLabel.text('');
-        deviceModelLabel.text('');
-        testAppBundleIdLabel.text('');
-        testAppNameLabel.text('');
-        testAppVersionLabel.text('');
+        ORG.UI.connectButton.text("Connect");
+        ORG.UI.buttonExpand.text("Expand");
+        ORG.UI.deviceNameLabel.text('');
+        ORG.UI.deviceSystemVersionLabel.text('');
+        ORG.UI.deviceModelLabel.text('');
+        ORG.UI.testAppBundleIdLabel.text('');
+        ORG.UI.testAppNameLabel.text('');
+        ORG.UI.testAppVersionLabel.text('');
 
     } else {
         ORG.deviceController.openSession();  // Connect

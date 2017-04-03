@@ -2,7 +2,6 @@
  * Created by jongabilondo on 26/02/2017.
  */
 
-
 class ORGDeviceBaseController {
 
     constructor(ip, port) {

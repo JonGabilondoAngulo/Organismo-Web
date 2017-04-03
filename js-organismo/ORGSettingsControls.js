@@ -1,22 +1,23 @@
 
 // Settings UI Controls
-var checkButtonShowFloor = $('#show-floor');
-var checkButtonShowDevice = $('#show-device');
-var checkButtonShowTextures = $('#show-textures');
-var checkButtonShowInteractive = $('#show-interactive');
-var checkButtonShowNonInteractive = $('#show-non-interactive');
-var checkButtonShowPrivate = $('#show-private');
-var checkButtonShowTooltips = $('#show-tooltips');
-var checkButtonLiveScreen = $('#live-screen');
-var checkButtonShowHiddenViews = $('#show-hidden-views');
-var checkButtonShowNormalWindow = $('#show-normal-window');
-var checkButtonShowKeyboardWindow = $('#show-keyboard-window');
-var checkButtonShowAlertWindow = $('#show-alert-window');
-var buttonExpand = $('#expand-button');
-var buttonResetCamera = $('#reset-camera-button');
+
+ORG.UI.checkButtonShowFloor = $('#show-floor');
+ORG.UI.checkButtonShowDevice = $('#show-device');
+ORG.UI.checkButtonShowTextures = $('#show-textures');
+ORG.UI.checkButtonShowInteractive = $('#show-interactive');
+ORG.UI.checkButtonShowNonInteractive = $('#show-non-interactive');
+ORG.UI.checkButtonShowPrivate = $('#show-private');
+ORG.UI.checkButtonShowTooltips = $('#show-tooltips');
+ORG.UI.checkButtonLiveScreen = $('#live-screen');
+ORG.UI.checkButtonShowHiddenViews = $('#show-hidden-views');
+ORG.UI.checkButtonShowNormalWindow = $('#show-normal-window');
+ORG.UI.checkButtonShowKeyboardWindow = $('#show-keyboard-window');
+ORG.UI.checkButtonShowAlertWindow = $('#show-alert-window');
+ORG.UI.buttonExpand = $('#expand-button');
+ORG.UI.buttonResetCamera = $('#reset-camera-button');
 
 
-checkButtonShowDevice.change(function (e) {
+ORG.UI.checkButtonShowDevice.change(function (e) {
     if ($(this).is(':checked') == true) {
         ORG.scene.showDevice3DModel();
     } else {
@@ -24,62 +25,63 @@ checkButtonShowDevice.change(function (e) {
     }
 });
 
-checkButtonShowTextures.change(function (e) {
+ORG.UI.checkButtonShowTextures.change(function (e) {
     ORG.scene.setShowTextures($(this).is(':checked'));
 });
 
-checkButtonShowInteractive.change(function (e) {
+ORG.UI.checkButtonShowInteractive.change(function (e) {
     ORG.scene.setShowInteractive($(this).is(':checked'));
 });
 
-checkButtonShowNonInteractive.change(function (e) {
+ORG.UI.checkButtonShowNonInteractive.change(function (e) {
     ORG.scene.setShowNonInteractive($(this).is(':checked'));
 });
 
-checkButtonShowPrivate.change(function (e) {
+ORG.UI.checkButtonShowPrivate.change(function (e) {
     ORG.scene.setShowPrivate($(this).is(':checked'));
 });
 
-checkButtonShowTooltips.change(function (e) {
+ORG.UI.checkButtonShowTooltips.change(function (e) {
     ORG.scene.setShowTooltips($(this).is(':checked'));
 });
 
-checkButtonShowHiddenViews.change(function (e) {
+ORG.UI.checkButtonShowHiddenViews.change(function (e) {
     ORG.scene.setShowHiddenViews($(this).is(':checked'));
 });
 
-checkButtonLiveScreen.change(function (e) {
+ORG.UI.checkButtonLiveScreen.change(function (e) {
     ORG.scene.setLiveScreen($(this).is(':checked'));
 });
-checkButtonShowNormalWindow.change(function (e) {
+
+ORG.UI.checkButtonShowNormalWindow.change(function (e) {
     ORG.scene.setShowNormalWindow($(this).is(':checked'));
 });
-checkButtonShowKeyboardWindow.change(function (e) {
+ORG.UI.checkButtonShowKeyboardWindow.change(function (e) {
     ORG.scene.setShowKeyboardWindow($(this).is(':checked'));
 });
-checkButtonShowAlertWindow.change(function (e) {
+ORG.UI.checkButtonShowAlertWindow.change(function (e) {
     ORG.scene.setShowAlertWindow($(this).is(':checked'));
 });
 
-buttonResetCamera.click(function (e) {
+ORG.UI.buttonResetCamera.click(function (e) {
     ORG.scene.resetCameraPosition();
 });
 
-buttonExpand.click(function (e) {
+ORG.UI.buttonExpand.click(function (e) {
 
     if ( !ORG.deviceController.isConnected) {
         return;
     }
     if (ORG.scene.UIExpanded()) {
-        buttonExpand.text("Expand");
+        ORG.UI.buttonExpand.text("Expand");
         ORG.scene.collapse();
     } else {
-        buttonExpand.text("Collapse");
+        ORG.UI.buttonExpand.text("Collapse");
         ORG.scene.expand();
     }
 });
 
-checkButtonShowFloor.change(function (e) {
+ORG.UI.checkButtonShowFloor.change(function (e) {
     if ($(this).is(':checked') == true) {
         ORG.scene.showFloor();
     } else {

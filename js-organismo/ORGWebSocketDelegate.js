@@ -3,32 +3,38 @@
  * It receives the callbacks for all the events on the WebSocket.
  * @constructor
  */
-function ORGWebSocketDelegate() {
+class ORGWebSocketDelegate {
+
+	constructor() {
+		this.connected = false;
+	}
 
 	/**
 	 * Callback for the websocket opening.
 	 * @param ws
 	 */
-	this.onOpen = function(ws) {
+	onOpen(ws) {
 		console.log('Delegate onOpen');
-		connected = true;
-		connectButton.text("Disconnect");
-
+		this.connected = true;
 		ORG.deviceController.requestDeviceInfo();
 		ORG.deviceController.requestAppInfo();
-	};
+		// UI updates
+        ORG.UI.connectButton.text("Disconnect");
+    };
 
 	/**
 	 * Callback for the closing of the websocket.
 	 * @param ws
 	 */
-	this.onClose = function(ws) {
+	onClose(ws) {
 		console.log('Delegate onClose.');
-		connectButton.text("Connect");
 		ORG.scene.handleDeviceDisconnection();
-		buttonExpand.text("Expand");
-		deviceNameLabel.text('');
-		deviceSystemVersionLabel.text('');
+
+		// UI
+        ORG.UI.connectButton.text("Connect");
+        ORG.UI.buttonExpand.text("Expand");
+        ORG.UI.deviceNameLabel.text('');
+        ORG.UI.deviceSystemVersionLabel.text('');
 	};
 
 	/**
@@ -37,7 +43,7 @@ function ORGWebSocketDelegate() {
 	 * @param event
 	 * @param ws
 	 */
-	this.onMessage = function(event, ws) {
+	onMessage(event, ws) {
 
 		var messageJSON = JSON.parse(event.data);
 		if (messageJSON) {
@@ -47,12 +53,12 @@ function ORGWebSocketDelegate() {
 		}
 		if (messageJSON) {
 			if (messageJSON.type == "response") {
-				processResponse(messageJSON);
+				this._processResponse(messageJSON);
 			} else if (messageJSON.type == "notification") {
-				processNotification(messageJSON.body);
+				this._processNotification(messageJSON.body);
 			} else if (messageJSON.command == "CoreMotionFeed") {
 				var motionMessage = messageJSON.content;
-				processMotionFeedMessage(motionMessage);
+				this._processMotionFeedMessage(motionMessage);
 			}
 		}
 	};
@@ -62,7 +68,7 @@ function ORGWebSocketDelegate() {
 	 * @param event
 	 * @param ws
 	 */
-	this.onError = function(event, ws) {
+	onError(event, ws) {
 		console.log('WS Error: ' + event.data);
 	}
 
@@ -72,15 +78,15 @@ function ORGWebSocketDelegate() {
 	 * Method to process a message of type "response" that arrived from the Device.
 	 * @param messageJSON
 	 */
-	function processResponse(messageJSON) {
+	_processResponse(messageJSON) {
 		if ( messageJSON.request == ORG.Request.DeviceInfo) {
-			processResponseDeviceInfo(messageJSON);
+			this._processResponseDeviceInfo(messageJSON);
 		} else if ( messageJSON.request == ORG.Request.AppInfo) {
-			processResponseAppInfo(messageJSON);
+            this._processResponseAppInfo(messageJSON);
 		} else if ( messageJSON.request == ORG.Request.Screenshot) {
-			processReportScreenshot( messageJSON);
+            this._processReportScreenshot( messageJSON);
 		} else if ( messageJSON.request == ORG.Request.ElementTree) {
-			processReportElementTree(messageJSON);
+            this._processReportElementTree(messageJSON);
 		}
 	}
 
@@ -88,9 +94,9 @@ function ORGWebSocketDelegate() {
 	 * Method to process a message of type "notification" tath arrived from the Device.
 	 * @param messageBody
 	 */
-	function processNotification(messageBody) {
+	_processNotification(messageBody) {
 		if ( messageBody.notification == "orientation-change") {
-			processNotificationOrientationChanged(messageBody.parameters);
+            this._processNotificationOrientationChanged(messageBody.parameters);
 		}
 	}
 
@@ -98,7 +104,7 @@ function ORGWebSocketDelegate() {
 	 * Method to process the a device orientation change notification message coming from the Device.
 	 * @param notificationParameters
 	 */
-	function processNotificationOrientationChanged(notificationParameters) {
+	_processNotificationOrientationChanged(notificationParameters) {
 		if (notificationParameters) {
 			var newSize = notificationParameters.screenSize;
 			var newOrientation = notificationParameters.orientation;
@@ -112,13 +118,10 @@ function ORGWebSocketDelegate() {
 	 * Method to process a response with device info coming from the Device.
 	 * @param messageJSON
 	 */
-	function processResponseDeviceInfo(messageJSON) {
+	_processResponseDeviceInfo(messageJSON) {
 
 		// The connection to the device its on place. We got information about the device.
 		ORG.device = new ORGDevice( messageJSON.data );
-		deviceNameLabel.text( ORG.device.name);
-		deviceSystemVersionLabel.text( ORG.device.systemVersion);
-		deviceModelLabel.text( ORG.device.productName);
 
 		ORG.scene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
 		ORG.scene.createRaycasterForDeviceScreen();
@@ -132,26 +135,31 @@ function ORGWebSocketDelegate() {
 
 		// ask for the first screenshot
 		ORG.deviceController.requestScreenshot();
-	}
+
+		// UI
+        ORG.UI.deviceNameLabel.text( ORG.device.name);
+        ORG.UI.deviceSystemVersionLabel.text( ORG.device.systemVersion);
+        ORG.UI.deviceModelLabel.text( ORG.device.productName);
+    }
 
 	/**
 	 * Method to process a response with app info coming from the Device.
 	 * @param messageJSON
 	 */
-	function processResponseAppInfo(messageJSON) {
+	_processResponseAppInfo(messageJSON) {
 
 		ORG.testApp = new ORGTestApp( messageJSON.data );
 
-		testAppNameLabel.text( ORG.testApp.name );
-		testAppVersionLabel.text( ORG.testApp.version );
-		testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
+        ORG.UI.testAppNameLabel.text( ORG.testApp.name );
+        ORG.UI.testAppVersionLabel.text( ORG.testApp.version );
+        ORG.UI.testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
 	}
 
 	/**
 	 * Method to process a message response with screenshot inforamtion.
 	 * @param messageJSON
 	 */
-	function processReportScreenshot( messageJSON) {
+	_processReportScreenshot( messageJSON) {
 		var base64Img = messageJSON.data.screenshot;
 		if (base64Img) {
 			var img = new Image();
@@ -160,7 +168,6 @@ function ORGWebSocketDelegate() {
 
 			// Ask for next screenshot
 			if (ORG.scene.continuousScreenshot() && !ORG.scene.UIExpanded()) {
-				//ORG.deviceConnection.requestScreenshot();
 				ORG.deviceController.requestScreenshot();
 			}
 		}
@@ -170,7 +177,7 @@ function ORGWebSocketDelegate() {
 	 * Method to process a message reponse with information of the UI Element Tree.
 	 * @param reportData
 	 */
-	function processReportElementTree(reportData) {
+	_processReportElementTree(reportData) {
 		var jsonTree = reportData.data;
 		if (!!jsonTree) {
 			ORG.treeEditor.set( jsonTree );

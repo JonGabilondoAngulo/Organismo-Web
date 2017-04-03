@@ -8,23 +8,22 @@ class ORGTooltip {
         this._threeCanvasDomElement = canvasDomElement;
         this._hilitedObj = null;
         this._tooltipOpen = false;
+
+        $(this._threeCanvasDomElement).uitooltip({
+            items: $(this._threeCanvasDomElement),
+            content: "Roll over element",
+            track: true,
+            open: function( event, ui ) {
+                console.log( ui );
+            },
+            create: function( event, ui ) {
+                console.log( ui );
+            }
+        });
+        //$( this._threeCanvasDomElement ).uitooltip( "open" );
+        //$( this._threeCanvasDomElement ).uitooltip( "disable" );
+        this._tooltipOpen = true;
     }
-
-    //$(_threeCanvasDomElement).uitooltip({
-    //    items: $(_threeCanvasDomElement),
-    //    content: "....",
-    //    track: true
-    //    //using: function( position, feedback ) {
-    //    //    console.log("position: " + position);
-    //    //    //$( this ).css( position );
-    //    ////    $( "<div>" )
-    //    ////        .addClass( "arrow" )
-    //    ////        .addClass( feedback.vertical )
-    //    ////        .addClass( feedback.horizontal )
-    //    ////        .appendTo( this );
-    //    //}
-    //});
-
 
     destroy() {
         if (this._threeCanvasDomElement) {
@@ -36,6 +35,10 @@ class ORGTooltip {
     mouseOverElement( threeElement ) {
         if ( !!threeElement ) {
             // Mouse is over some UI element
+
+            // if (this._tooltipOpen) {
+            //     $( this._threeCanvasDomElement ).uitooltip( "enable" );
+            // }
 
             var mustShowTip = false;
             if ( !this._hilitedObj) {
@@ -51,42 +54,53 @@ class ORGTooltip {
 
             //updatePosition();
         } else  {
-            this._hide(); // Mouse is NOT over any UI element
+            //this._hide(); // Mouse is NOT over any UI element
+            if (this._tooltipOpen) {
+               //$( this._threeCanvasDomElement ).uitooltip( "disable" );
+               $( this._threeCanvasDomElement ).uitooltip( "option", "content", "<span class='ui-tooltip-value'>Roll over element</span>" );
+            }
         }
     }
 
     // PRIVATE
 
     _show( elementInfo ) {
-        if (!this._tooltipOpen) {
-            $(this._threeCanvasDomElement).uitooltip({
-                items: $(this._threeCanvasDomElement),
-                content: this._createTooltipContent(elementInfo),
-                track: true,
-                open: function( event, ui ) {
-                    console.log( ui );
-                }
-            });
+        if (this._tooltipOpen) {
+            $( this._threeCanvasDomElement ).uitooltip( "option", "content", this._createTooltipContent(elementInfo) );
+            $( this._threeCanvasDomElement ).uitooltip( "enable" );
+            //$( this._threeCanvasDomElement ).uitooltip( "option", "track", true );
+            // $( this._threeCanvasDomElement ).uitooltip( "option", "position", { using: function(pos,b) {
+            //     console.log(pos);
+            //     console.log(b);
+            //     pos.left = 300;
+            //     pos.top = 300;
+            //     $(this).css(pos);
+            // } } );
+        } else {
+            // $(this._threeCanvasDomElement).uitooltip({
+            //     items: $(this._threeCanvasDomElement),
+            //     content: this._createTooltipContent(elementInfo),
+            //     track: true,
+            //     open: function( event, ui ) {
+            //         console.log( ui );
+            //     },
+            //     create: function( event, ui ) {
+            //         console.log( ui );
+            //     }
+            // });
             //$( _threeCanvasDomElement ).uitooltip( "option", "content", createTooltipContent(elementInfo) );
-            $( this._threeCanvasDomElement ).uitooltip( "option", "track", true );
-            $( this._threeCanvasDomElement ).uitooltip( "open" );
-            this._tooltipOpen = true;
+            //$( this._threeCanvasDomElement ).uitooltip( "open" );
+            //this._tooltipOpen = true;
         }
     }
 
     _hide() {
-        //$( _threeCanvasDomElement ).uitooltip( "option", "hide", { effect: "fadeOut", duration: 500 } );
-        //$( _threeCanvasDomElement ).tooltip( "option", "hide" );
         if ( this._tooltipOpen) {
             //$( _threeCanvasDomElement ).uitooltip( "close" );
             //$( _threeCanvasDomElement ).uitooltip( "option", "content", null );
             $( this._threeCanvasDomElement ).uitooltip( "destroy" );
             this._tooltipOpen = false;
         }
-    }
-
-    _updatePosition() {
-        $( this._threeCanvasDomElement ).uitooltip( "option", "position", { at: "left+50 top+400"} );
     }
 
     _createTooltipContent( elementInfo) {
