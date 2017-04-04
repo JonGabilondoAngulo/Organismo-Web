@@ -1,4 +1,4 @@
-.tooltip, .arrow:after {
+/*.tooltip, .arrow:after {
   background: black;
   border: 2px solid white;
 }
@@ -57,4 +57,4 @@
 .tooltip.out {
   opacity: 0;
   margin-top: -20px;
-}
+}*/

@@ -12,7 +12,7 @@
  * It implements onMouseDown, onMouseUp, onMouseMove to receive the mouse events.
  * @constructor
  */
-class ORGRaycaster {
+class ORG3DRaycaster {
 
     constructor(rendererDomElement, threeCamera, threeTargetObject) {
         this._raycaster = new THREE.Raycaster();

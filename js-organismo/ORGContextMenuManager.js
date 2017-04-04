@@ -6,7 +6,7 @@
 /**
  * Class to create context menus in the 3d scene.
  * It implements the delegate call for ORGMouseListener in order to get the right mouse click.
- * It implements the delegate call for ORGRaycaster to know what is the selected three obj.
+ * It implements the delegate call for ORG3DRaycaster to know what is the selected three obj.
  * @param domElement
  * @constructor
  */
@@ -65,7 +65,7 @@ function ORGContextMenuManager(scene) {
     }
 
     /**
-     * ORGRaycaster calls this method to inform of the three obj the mouse is hoovering on.
+     * ORG3DRaycaster calls this method to inform of the three obj the mouse is hoovering on.
      * @param threeElement
      */
     this.mouseOverElement = function(threeElement, point) {

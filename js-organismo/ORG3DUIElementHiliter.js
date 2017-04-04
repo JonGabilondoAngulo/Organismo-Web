@@ -7,38 +7,38 @@
  * When attached to a Raycaster as a delegate it will start to receive the "mouseOverElement" call and it will produce the highlight visual effect.
  * It implements the ORGRayscaster delegate method "mouseOverElement".
  * It is based in the usage of the THREE.BoxHelper object that is grouped with the 3D UI object.
- * @constructor
  */
-function ORGElementHiliter( ) {
+class ORG3DUIElementHiliter {
 
-    var _hilitedObj = null;
+    constructor() {
+        this._hilitedObj = null;
+    }
 
     /**
      * Implementation of the Raycaster method to receive the UI element the mouse in on.
      * This method will manage the show and hide the highlights of the 3d objects.
      * @param threeElement
      */
-    this.mouseOverElement = function( threeElement ) {
+    mouseOverElement( threeElement ) {
         if ( !!threeElement ) {
             // Mouse is over some UI element
 
             var mustHilite = false;
-            if ( !_hilitedObj) {
+            if ( !this._hilitedObj) {
                 mustHilite = true;
-            } else if ( _hilitedObj.id != threeElement.id ) {
-                highlightUIElement( _hilitedObj, false);
+            } else if ( this._hilitedObj.id != threeElement.id ) {
+                this._highlightUIElement( this._hilitedObj, false);
                 mustHilite = true;
             }
 
             if ( mustHilite ) {
-                highlightUIElement( threeElement, true);
+                this._highlightUIElement( threeElement, true);
             }
 
         } else  {
             // Mouse is NOT over any UI element
-
-            if (_hilitedObj) {
-                highlightUIElement( _hilitedObj, false);
+            if (this._hilitedObj) {
+                this._highlightUIElement( this._hilitedObj, false);
             }
         }
     }
@@ -50,7 +50,7 @@ function ORGElementHiliter( ) {
      * @param threeUIElement
      * @param hilite
      */
-    function highlightUIElement( threeUIElement, hilite) {
+    _highlightUIElement( threeUIElement, hilite) {
 
         if (!!threeUIElement) {
             if (threeUIElement.geometry.type == "PlaneBufferGeometry" || threeUIElement.geometry.type == "BoxGeometry") {
@@ -62,7 +62,7 @@ function ORGElementHiliter( ) {
                             var edgesHelperObject = parent.children[i];
                             edgesHelperObject.material.color.set( (hilite ?0xff0000 :0xffffff) );
                             edgesHelperObject.material.needsUpdate = true;
-                            _hilitedObj = (hilite ?threeUIElement :null); // keep the hilited obj
+                            this._hilitedObj = (hilite ?threeUIElement :null); // keep the hilited obj
                             break;
                         }
                     }

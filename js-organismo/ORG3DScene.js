@@ -21,8 +21,8 @@ function ORG3DScene(domContainer, screenSize) {
 
     var _sceneFloor = null; // a ORG3DSceneFloor
     var _deviceScreen = null; // a ORG3DDeviceScreen
-    var _uiTreeModelRaycaster = null; // a ORGRaycaster
-    var _screenRaycaster = null; // a ORGRaycaster
+    var _uiTreeModelRaycaster = null; // a ORG3DRaycaster
+    var _screenRaycaster = null; // a ORG3DRaycaster
     var _mouseListener = null; // a ORGMouseListener
     var _device3DModel = null; // a ORG3DDeviceModel
     var _tooltiper = null; // a ORGTooltip
@@ -85,8 +85,8 @@ function ORG3DScene(domContainer, screenSize) {
         _uiTreeModel.updateUITreeModel( treeJson, _threeScene, _screenshotImage, _deviceScreenSize);
 
         // Create Raycaster for the 3D UI Model object
-        _uiTreeModelRaycaster = new ORGRaycaster(_threeRendererDOMElement, _threeCamera, _uiTreeModel.getTreeGroup());
-        _uiTreeModelRaycaster.addDelegate(new ORGElementHiliter()); // attach a hiliter
+        _uiTreeModelRaycaster = new ORG3DRaycaster(_threeRendererDOMElement, _threeCamera, _uiTreeModel.getTreeGroup());
+        _uiTreeModelRaycaster.addDelegate(new ORG3DUIElementHiliter()); // attach a hiliter
         _uiTreeModelRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
 
         // Activate mouse listener
@@ -151,7 +151,7 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.createRaycasterForDeviceScreen = function() {
-        _screenRaycaster = new ORGRaycaster(_threeRendererDOMElement, _threeCamera, _deviceScreen.screenPlane);
+        _screenRaycaster = new ORG3DRaycaster(_threeRendererDOMElement, _threeCamera, _deviceScreen.screenPlane);
         _screenRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager
 
         // Activate mouse listener

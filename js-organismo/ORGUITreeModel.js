@@ -3,7 +3,7 @@
  */
 
 /**
- * This class builds and manages the expanded 3D UI model. Given a JSON UI model it created a THREE objects expanded model.
+ * This class builds and manages the expanded 3D UI model. Given a JSON UI model it creates an expanded model of THREE objects.
  * @constructor
  */
 
