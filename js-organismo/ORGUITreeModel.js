@@ -22,38 +22,40 @@ const ORGTreeVisualizationMask = {
     ShowOutOfScreen : 0x0800
 };
 
-function ORGUITreeModel( visualizationFlag ) {
+class ORGUITreeModel {
 
-    var _treeData = null; // json of ui element tree as arrived from device
-    var _threeElementTreeGroup = null; // threejs group with all the ui elements.
-    //var _useCubes = true;
-    var _extrudeDuration = 500; // ms
-    var _screenSize = null;
-    var _threeScene = null;
-    var _collapseTweenCount = 0; // collapse animation counter
-    var _visualizationFlags = visualizationFlag;
+    constructor( visualizationFlag ) {
 
-    this.setVisualizationFlags = function( flags ) {
-        _visualizationFlags = flags;
+        this._treeData = null; // json of ui elements tree as arrived from device
+        this._threeElementTreeGroup = null; // threejs group with all the ui elements.
+        this._extrudeDuration = 500; // ms
+        this._screenSize = null;
+        this._threeScene = null;
+        this._collapseTweenCount = 0; // collapse animation counter
+        this._visualizationFlags = visualizationFlag;
     }
 
-    this.createUITreeModel = function (treeTopLevelNodes, threeScene, deviceScreenSize) {
+    setVisualizationFlags( flags ) {
+        this._visualizationFlags = flags;
+    }
 
-        _collapseTweenCount = 0;
-        _screenSize = deviceScreenSize;
-        _treeData = treeTopLevelNodes;
-        _threeScene = threeScene;
+    createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize) {
 
-        this._createUITreeModel(_treeData, _threeScene, _screenSize);
-    };
+        this._collapseTweenCount = 0;
+        this._screenSize = deviceScreenSize;
+        this._treeData = treeTopLevelNodes;
+        this._threeScene = threeScene;
 
-    this.updateUITreeModel = function (treeTopLevelNodes, threeScene, screenshotImage, deviceScreenSize) {
+        this._createUITreeModel(this._treeData, this._threeScene, this._screenSize);
+    }
 
-        if (_treeData) {
+    updateUITreeModel(treeTopLevelNodes, threeScene, screenshotImage, deviceScreenSize) {
+
+        if (this._treeData) {
             this.removeUITreeModel(threeScene); // remove existing first
         }
         this.createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize);
-    };
+    }
 
     /**
      * Collapses the tree and expands its again, rebuilding it.
@@ -62,36 +64,36 @@ function ORGUITreeModel( visualizationFlag ) {
      * e.g. When hidding/showing the private classes.
      * @param scene the ORG scene to take the new parameters
      */
-    this.collapseAndExpandAnimated = function (scene) {
+    collapseAndExpandAnimated(scene) {
 
-        for (var i in _treeData) {
-            var treeNode = _treeData[i];
-            var thisTreeModelObj = this;
-            var callback = function () {
-                thisTreeModelObj._createUITreeModel(_treeData, _threeScene, _screenSize);
+        for (let i in this._treeData) {
+            const treeNode = this._treeData[i];
+            const _this = this;
+            const callback = function () {
+                _this._createUITreeModel(this._treeData, this._threeScene, this._screenSize);
             };
-            collapseNodeAnimatedWithCompletion(treeNode, callback);
+            _this._collapseNodeAnimatedWithCompletion(treeNode, callback);
         }
-    };
+    }
 
-    this.collapseWithCompletion = function (completion) {
+    collapseWithCompletion(completion) {
 
-        for (var i in _treeData) {
-            var treeNode = _treeData[i];
-            collapseNodeAnimatedWithCompletion(treeNode, completion)
+        for (let i in this._treeData) {
+            const treeNode = this._treeData[i];
+            this._collapseNodeAnimatedWithCompletion(treeNode, completion)
         }
-    };
+    }
 
-    this.removeUITreeModel = function (threeScene) {
-        if (_threeElementTreeGroup) {
-            threeScene.remove(_threeElementTreeGroup);
-            _threeElementTreeGroup = null;
+    removeUITreeModel(threeScene) {
+        if (this._threeElementTreeGroup) {
+            threeScene.remove(this._threeElementTreeGroup);
+            this._threeElementTreeGroup = null;
         }
-    };
+    }
 
-    this.hideTextures = function (hide) {
-        if (_threeElementTreeGroup) {
-            _threeElementTreeGroup.traverse(function (child) {
+    hideTextures(hide) {
+        if (this._threeElementTreeGroup) {
+            this._threeElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Mesh) {
                     if (hide) {
                         child.material.map = null;
@@ -108,113 +110,78 @@ function ORGUITreeModel( visualizationFlag ) {
                 }
             });
         }
-    };
+    }
 
-    this.hideNonInteractiveViews = function(hide) {
-        if (_threeElementTreeGroup) {
-            _threeElementTreeGroup.traverse(function (child) {
+    hideNonInteractiveViews(hide) {
+        if (this._threeElementTreeGroup) {
+            this._threeElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
                     if (hide) {
-                        var nodeData = child.userData;
+                        const nodeData = child.userData;
                         if (nodeData) {
-                            if (!nodeIsInteractive(nodeData)) {
-                                hideNodeGroup(child, true);
+                            if (!_nodeIsInteractive(nodeData)) {
+                                _hideNodeGroup(child, true);
                             }
                         }
                     } else {
-                        hideNodeGroup(child, false);
+                        _hideNodeGroup(child, false);
                     }
                 }
             });
         }
-    };
+    }
 
-    this.showConnections = function( show , threeScene) {
-        if (_threeElementTreeGroup) {
-            _threeElementTreeGroup.traverse(function (child) {
+    showConnections( show , threeScene) {
+        if (this._threeElementTreeGroup) {
+            this._threeElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
-                    var nodeData = child.userData;
-                    if (nodeIsInteractive(nodeData)) {
-                        var mesh = child.children[0];
+                    const nodeData = child.userData;
+                    if (_nodeIsInteractive(nodeData)) {
+                        const mesh = child.children[0];
                         if (mesh) {
-                            var arrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 1, 0, 0 ), mesh.position, 400, 0x0000ff, 50, 25 );
-                            var cone = arrowHelper.cone;
+                            const arrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 1, 0, 0 ), mesh.position, 400, 0x0000ff, 50, 25 );
+                            const cone = arrowHelper.cone;
                             threeScene.add( arrowHelper );
                         }
                     }
                 }
             });
         }
-    };
+    }
 
-    this.getTreeGroup = function() {
-        return _threeElementTreeGroup;
-    };
+    getTreeGroup() {
+        return this._threeElementTreeGroup;
+    }
 
     // PRIVATE
 
-    this._createUITreeModel = function(treeData, threeScene, deviceScreenSize) {
+    _createUITreeModel(treeData, threeScene, deviceScreenSize) {
 
-        if (_threeElementTreeGroup) {
+        if (this._threeElementTreeGroup) {
             this.removeUITreeModel(threeScene); // remove existing first
         }
 
-        _threeElementTreeGroup = new THREE.Group();
-        createTreeModel(treeData, deviceScreenSize); // add all the ui tree in threeElementTreeGroup
-        threeScene.add(_threeElementTreeGroup);
-    };
-
-    function collapseNodeAnimatedWithCompletion(node, completionFunction) {
-        var threeObj = node.threeObj; // the obj is a THREE.Group
-        if (threeObj) {
-            var tween = new TWEEN.Tween(threeObj.position)
-                .to({x: threeObj.position.x, y: threeObj.position.y, z: 0}, _extrudeDuration)
-                .onStart( function() {
-                    _collapseTweenCount++;
-                })
-                .onComplete( function() {
-                    hideNodeGroup(threeObj, true);
-                    node.zPosition = 0;
-
-                    if (--_collapseTweenCount <= 0 ) {
-                        _collapseTweenCount = 0;
-
-                        if (_threeElementTreeGroup) {
-                            _threeScene.remove(_threeElementTreeGroup);
-                            _threeElementTreeGroup = null;
-                        }
-
-                        if (completionFunction) {
-                            completionFunction();
-                        }
-                    }
-                })
-                .start();
-        }
-
-        var subNodes = node.subviews;
-        for (var i in subNodes) {
-            var treeNode = subNodes[i];
-            collapseNodeAnimatedWithCompletion(treeNode, completionFunction);
-        }
+        this._threeElementTreeGroup = new THREE.Group();
+        this._createTreeModel(treeData, deviceScreenSize); // add all the ui tree in threeElementTreeGroup
+        threeScene.add(this._threeElementTreeGroup);
     }
 
-    function createTreeModel(tree, deviceScreenSize) {
-        for (var i in tree) {
-            if (mustCreateTreeBranch(tree[i])) {
-                createTreeNodeModel(tree[i], deviceScreenSize);
-                createTreeModel(tree[i].subviews, deviceScreenSize);
+    _createTreeModel(tree, deviceScreenSize) {
+        for (let i in tree) {
+            if (this._mustCreateTreeBranch(tree[i])) {
+                this._createTreeNodeModel(tree[i], deviceScreenSize);
+                this._createTreeModel(tree[i].subviews, deviceScreenSize);
             } else {
                 console.log("ignoring tree branch.");
             }
         }
     }
 
-    function createTreeNodeModel(treeNode, deviceScreenSize) {
+    _createTreeNodeModel(treeNode, deviceScreenSize) {
 
         if (typeof( treeNode) == "object") {
 
-            if ( !mustCreateTreeObject(treeNode)) {
+            if ( !this._mustCreateTreeObject(treeNode)) {
                 return;
             }
 
@@ -227,7 +194,7 @@ function ORGUITreeModel( visualizationFlag ) {
                 threeScreenshotTexture.minFilter = THREE.NearestFilter;
                 threeScreenshotTexture.needsUpdate = true;
             }
-            //var drawAsCube = false;//mustDrawTreeObjectAsCube(treeJson[i], parentTreeObj);
+            //var drawAsCube = false;//_mustDrawTreeObjectAsCube(treeJson[i], parentTreeObj);
 
             //if (drawAsCube) {
             // Create Texture for view
@@ -238,22 +205,22 @@ function ORGUITreeModel( visualizationFlag ) {
             //}
             //}
 
-            var zPosition = calculateElementZPosition(treeNode, _treeData, 0, deviceScreenSize);
+            var zPosition = this._calculateElementZPosition(treeNode, this._treeData, 0, deviceScreenSize);
 
-            var threeGroupObj = createUIObject(treeNode, threeScreenshotTexture, deviceScreenSize, zPosition);
+            var threeGroupObj = this._createUIObject(treeNode, threeScreenshotTexture, deviceScreenSize, zPosition);
             if (threeGroupObj) {
 
-                _threeElementTreeGroup.add(threeGroupObj);
+                this._threeElementTreeGroup.add(threeGroupObj);
                 treeNode.threeObj = threeGroupObj;
                 threeGroupObj.userData = treeNode;
 
-                if (mustHideTreeObject(treeNode)) {
+                if (this._mustHideTreeObject(treeNode)) {
                     threeGroupObj.visible = false;
                 } else {
                     // The final zPosition is in treeNode, not in the mesh object which is at 0.
                     var finalMeshPosition = {x: threeGroupObj.position.x, y: threeGroupObj.position.y, z: treeNode.zPosition};
                     var tween = new TWEEN.Tween(threeGroupObj.position)
-                        .to(finalMeshPosition, _extrudeDuration)
+                        .to(finalMeshPosition, this._extrudeDuration)
                         .start();
                 }
             }
@@ -262,8 +229,8 @@ function ORGUITreeModel( visualizationFlag ) {
         }
     }
 
-    function createUIObject(uiObjectDescription, threeScreenshotTexture, screenSize, zPosition) {
-        var threeGeometry, threeMaterial, uiObject, uiObjectWidth, uiObjectHeight, uiObjectLeft, uiObjectRight, uiObjectTop, uiObjectBottom;
+    _createUIObject(uiObjectDescription, threeScreenshotTexture, screenSize, zPosition) {
+        var threeGeometry, threeMaterial, uiObject, uiObjectWidth, uiObjectHeight, uiObjectLeft, uiObjectRight, uiObjectTop, uiObjectBottom, threeObjPosition;
 
         if (!uiObjectDescription.bounds) {
             //console.log("Object has no boundsInScreen !", uiObjectDescription, JSON.stringify(uiObjectDescription));
@@ -284,7 +251,7 @@ function ORGUITreeModel( visualizationFlag ) {
         uiObjectDescription.zPosition = zPosition; // keep it here for later use
         threeObjPosition = new THREE.Vector3(-( screenSize.width / 2 - uiObjectLeft - uiObjectWidth / 2.0), screenSize.height / 2 - uiObjectTop - uiObjectHeight / 2.0, 0);
 
-        if (mustShowScreenshots() && threeScreenshotTexture) {
+        if (this._mustShowScreenshots() && threeScreenshotTexture) {
             threeMaterial = new THREE.MeshBasicMaterial({map: threeScreenshotTexture, transparent: false, side: THREE.DoubleSide});
         } else {
             threeMaterial = new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide, transparent:false });
@@ -300,13 +267,50 @@ function ORGUITreeModel( visualizationFlag ) {
         return threeUIElementGroup;
     }
 
-    function modelVisualizationChanged() {
-        if (_threeElementTreeGroup) {
-            _threeElementTreeGroup.traverse(function (child) {
+    _collapseNodeAnimatedWithCompletion(node, completionFunction) {
+        var threeObj = node.threeObj; // the obj is a THREE.Group
+        if (threeObj) {
+            var _this = this;
+            var tween = new TWEEN.Tween(threeObj.position)
+                .to({x: threeObj.position.x, y: threeObj.position.y, z: 0}, this._extrudeDuration)
+                .onStart( function() {
+                    _this._collapseTweenCount++;
+                })
+                .onComplete( function() {
+                    _this._hideNodeGroup(threeObj, true);
+                    node.zPosition = 0;
+
+                    if (--_this._collapseTweenCount <= 0 ) {
+                        _this._collapseTweenCount = 0;
+
+                        if (_this._threeElementTreeGroup) {
+                            _this._threeScene.remove(_this._threeElementTreeGroup);
+                            _this._threeElementTreeGroup = null;
+                        }
+
+                        if (completionFunction) {
+                            completionFunction();
+                        }
+                    }
+                })
+                .start();
+        }
+
+        var subNodes = node.subviews;
+        for (var i in subNodes) {
+            var treeNode = subNodes[i];
+            this._collapseNodeAnimatedWithCompletion(treeNode, completionFunction);
+        }
+    }
+
+    _modelVisualizationChanged() {
+        if (this._threeElementTreeGroup) {
+            var _this = this;
+            this._threeElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
                     var nodeData = child.userData;
                     if (nodeData) {
-                        hideNodeGroup(child, mustHideTreeObject( nodeData));
+                        this._hideNodeGroup(child, _this._mustHideTreeObject( nodeData));
                     }
                 }
             });
@@ -366,7 +370,7 @@ function ORGUITreeModel( visualizationFlag ) {
     //    }
     //}
 
-    function changeOpacity(treeJson, opacity) {
+    _changeOpacity(treeJson, opacity) {
         //console.log("change obj to solid:", treeJson);
 
         for (var i in treeJson) {
@@ -386,12 +390,12 @@ function ORGUITreeModel( visualizationFlag ) {
                 } else {
                     //console.log("OBJECT nas no three obj !!!!!!!!", treeJson[i], JSON.stringify(treeJson[i]));
                 }
-                changeOpacity(treeJson[i].subviews, opacity);
+                this._changeOpacity(treeJson[i].subviews, opacity);
             }
         }
     }
 
-    function mustDrawTreeObjectAsCube(treeJson, inParentTreeObj) {
+    _mustDrawTreeObjectAsCube(treeJson, inParentTreeObj) {
         // if parent has texture and the object is smaller than parent
         if (inParentTreeObj &&
             (treeJson.bounds.left > inParentTreeObj.bounds.left ||
@@ -412,22 +416,22 @@ function ORGUITreeModel( visualizationFlag ) {
      * @param nodeData The UI element info as sent by the device.
      * @returns {boolean}
      */
-    function mustHideTreeObject( nodeData ) {
+    _mustHideTreeObject( nodeData ) {
         var mustBeHidden = false;
-        if (nodeData.hidden && !mustShowHiddenViews()) {
+        if (nodeData.hidden && !this._mustShowHiddenViews()) {
             mustBeHidden = true;
-        } else if (nodeData.hidden==false && mustShowHiddenViewsOnly()) {
+        } else if (nodeData.hidden==false && this._mustShowHiddenViewsOnly()) {
             mustBeHidden = true;
-        } else if (nodeIsInteractive(nodeData)) {
-            mustBeHidden = !mustShowInteractiveViews();
+        } else if (this._nodeIsInteractive(nodeData)) {
+            mustBeHidden = !this._mustShowInteractiveViews();
         } else {
-            mustBeHidden = !mustShowNonInteractiveViews();
+            mustBeHidden = !this._mustShowNonInteractiveViews();
         }
         return mustBeHidden;
     }
 
-    function mustCreateTreeBranch( nodeData ) {
-        if (isKeyboardWindow(nodeData) && !mustShowKeyboard()) {
+    _mustCreateTreeBranch( nodeData ) {
+        if (this._isKeyboardWindow(nodeData) && !this._mustShowKeyboard()) {
             return false;
         }
         return true;
@@ -436,35 +440,35 @@ function ORGUITreeModel( visualizationFlag ) {
 
     /**
      * Returns true if the ui element must be created as a 3D object.
-     * This is different than 'mustHideTreeObject'. An object can be created but might be set hidden.
+     * This is different than '_mustHideTreeObject'. An object can be created but might be set hidden.
      * e.g the visualization flags may require not to visualize the non interactive views, but they still have to be created and shown ans invisible.
      * @param nodeData
      */
-    function mustCreateTreeObject ( nodeData ) {
+    _mustCreateTreeObject ( nodeData ) {
 
-        if (!mustShowPrivate()) {
+        if (!this._mustShowPrivate()) {
             if (nodeData.private && nodeData.private == true) {
                 return false;
             }
         }
 
-        if (!mustShowOutOfScreen()) {
-            if (treeObjectIsOutOfScreen(nodeData, deviceScreenSize)) {
+        if (!this._mustShowOutOfScreen()) {
+            if (this._treeObjectIsOutOfScreen(nodeData, deviceScreenSize)) {
                 return false;
             }
         }
-        if (isStatusBarWindow(nodeData)) {
+        if (this._isStatusBarWindow(nodeData)) {
             return false;
         }
          return true;
     }
 
-    function removeScreenshotFromScreen() {
+    _removeScreenshotFromScreen() {
         screenPlane.material.color = 0x000000;
         //screenPlane.material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
     }
 
-    function calculateElementZPosition( element, tree, currentZPosition, deviceScreenSize) {
+    _calculateElementZPosition( element, tree, currentZPosition, deviceScreenSize) {
 
         if (!element || !tree) {
             return currentZPosition;
@@ -495,7 +499,7 @@ function ORGUITreeModel( visualizationFlag ) {
                     "bottom": Math.abs(objMesh.geometry.boundingBox.min.y + objMesh.position.y - deviceScreenSize.height / 2)
                 };
 
-                if ( !!newObjRect && !!runningObjRect && rectsIntersect(newObjRect, runningObjRect)) {
+                if ( !!newObjRect && !!runningObjRect && this._rectsIntersect(newObjRect, runningObjRect)) {
 
                     var meshZPos = tree[i].zPosition; // The real position is in the treenode.zPosition, not in the threejs mesh, there they are all at z=0
 
@@ -511,20 +515,20 @@ function ORGUITreeModel( visualizationFlag ) {
                     }
                 }
             }
-            zPosition = calculateElementZPosition( element, tree[i].subviews, zPosition, deviceScreenSize); // calculate against next level in tree
+            zPosition = this._calculateElementZPosition( element, tree[i].subviews, zPosition, deviceScreenSize); // calculate against next level in tree
         }
         return zPosition;
     }
 
-    function rectsIntersect(a, b) {
+    _rectsIntersect(a, b) {
         return (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom);
     }
 
-    function treeObjectIsOutOfScreen(treeJson, deviceScreenSize) {
+    _treeObjectIsOutOfScreen(treeJson, deviceScreenSize) {
         return (treeJson.bounds.top > deviceScreenSize.height);
     }
 
-    function nodeIsInteractive(treeNode) {
+    _nodeIsInteractive(treeNode) {
         if (treeNode.gestures) {
             return true;
         }
@@ -542,7 +546,7 @@ function ORGUITreeModel( visualizationFlag ) {
         }
     }
 
-    function hideNodeGroup(threeNodeGroup, hide) {
+    _hideNodeGroup(threeNodeGroup, hide) {
         var mesh = threeNodeGroup.children[0]; // the first is the mesh, second is the BoxHelper
         if (mesh) {
             mesh.visible = !hide;
@@ -553,9 +557,9 @@ function ORGUITreeModel( visualizationFlag ) {
         }
     }
 
-    function isStatusBarWindow( inUIElement) {
+    _isStatusBarWindow(inUIElement) {
         if (inUIElement.nativeClass == "UIAWindow") {
-            var child = inUIElement.subviews[0];
+            const child = inUIElement.subviews[0];
             if (child.nativeClass == "UIAStatusBar") {
                 return true;
             }
@@ -563,33 +567,33 @@ function ORGUITreeModel( visualizationFlag ) {
         return false;
     }
 
-    function isKeyboardWindow( nodeData) {
+    _isKeyboardWindow(nodeData) {
         return (nodeData.class == "UITextEffectsWindow");
     }
 
-    function mustShowKeyboard() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowKeyboardWindow);
+    _mustShowKeyboard() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowKeyboardWindow);
     }
-    function mustShowPrivate() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
+    _mustShowPrivate() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
     }
-    function mustShowHiddenViews() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViews);
+    _mustShowHiddenViews() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViews);
     }
-    function mustShowHiddenViewsOnly() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViewsOnly);
+    _mustShowHiddenViewsOnly() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViewsOnly);
     }
-    function mustShowOutOfScreen() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowOutOfScreen);
+    _mustShowOutOfScreen() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowOutOfScreen);
     }
-    function mustShowInteractiveViews() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowInteractiveViews);
+    _mustShowInteractiveViews() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowInteractiveViews);
     }
-    function mustShowNonInteractiveViews() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowNonInteractiveViews);
+    _mustShowNonInteractiveViews() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowNonInteractiveViews);
     }
-    function mustShowScreenshots() {
-        return (_visualizationFlags & ORGTreeVisualizationMask.ShowScreenshots);
+    _mustShowScreenshots() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowScreenshots);
     }
 
 }
