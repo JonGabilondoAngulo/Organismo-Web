@@ -33,7 +33,7 @@ class ORG3DDeviceScreen {
         }
     }
 
-    get scenePlane() {
+    get screenPlane() {
         return this._threeScreenPlane;
     }
 

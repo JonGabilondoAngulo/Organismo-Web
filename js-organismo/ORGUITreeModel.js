@@ -7,7 +7,7 @@
  * @constructor
  */
 
-const TreeVisualizationMask = {
+const ORGTreeVisualizationMask = {
     ShowNormalWindow : 0x1,
     ShowAlertWindow : 0x2,
     ShowKeyboardWindow : 0x4,
@@ -56,7 +56,7 @@ function ORGUITreeModel( visualizationFlag ) {
     };
 
     /**
-     * Collapses the tree and expands its again, rebuilding it again.
+     * Collapses the tree and expands its again, rebuilding it.
      * Call it when some visualization property change requires to rebuild the tree.
      * It animates the collapse/expand.
      * e.g. When hidding/showing the private classes.
@@ -459,20 +459,6 @@ function ORGUITreeModel( visualizationFlag ) {
          return true;
     }
 
-    function isStatusBarWindow( inUIElement) {
-        if (inUIElement.nativeClass == "UIAWindow") {
-            var child = inUIElement.subviews[0];
-            if (child.nativeClass == "UIAStatusBar") {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function isKeyboardWindow( nodeData) {
-        return (nodeData.class == "UITextEffectsWindow");
-    }
-
     function removeScreenshotFromScreen() {
         screenPlane.material.color = 0x000000;
         //screenPlane.material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
@@ -567,29 +553,43 @@ function ORGUITreeModel( visualizationFlag ) {
         }
     }
 
+    function isStatusBarWindow( inUIElement) {
+        if (inUIElement.nativeClass == "UIAWindow") {
+            var child = inUIElement.subviews[0];
+            if (child.nativeClass == "UIAStatusBar") {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function isKeyboardWindow( nodeData) {
+        return (nodeData.class == "UITextEffectsWindow");
+    }
+
     function mustShowKeyboard() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowKeyboardWindow);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowKeyboardWindow);
     }
     function mustShowPrivate() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowPrivate);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
     }
     function mustShowHiddenViews() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowHiddenViews);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViews);
     }
     function mustShowHiddenViewsOnly() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowHiddenViewsOnly);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViewsOnly);
     }
     function mustShowOutOfScreen() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowOutOfScreen);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowOutOfScreen);
     }
     function mustShowInteractiveViews() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowInteractiveViews);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowInteractiveViews);
     }
     function mustShowNonInteractiveViews() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowNonInteractiveViews);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowNonInteractiveViews);
     }
     function mustShowScreenshots() {
-        return (_visualizationFlags & TreeVisualizationMask.ShowScreenshots);
+        return (_visualizationFlags & ORGTreeVisualizationMask.ShowScreenshots);
     }
 
 }

@@ -6,60 +6,69 @@
 /**
  * Class to create context menus in the 3d scene.
  * It implements the delegate call for ORGMouseListener in order to get the right mouse click.
- * It implements the delegate call for ORG3DRaycaster to know what is the selected three obj.
+ * It implements the delegate call for ORG3DRaycaster which informs what is the selected three obj.
  * @param domElement
  * @constructor
  */
-function ORGContextMenuManager(scene) {
-
-    var _selectedThreeObject = null; // the three obj where the mouse is on.
-    var _intersectionPoint = null;
-    var _ORGScene = scene; // We will need to get information from some objects in the scene
+class ORGContextMenuManager {
 
     /**
-     * Instantiate the context menu
+     *
+     * @param scene The ORG scene.
      */
-    $.contextMenu({
-        selector: '#threejs-canvas',
-        trigger: 'none',
-        build: function($trigger, e) {
-            if (_selectedThreeObject) {
-                return {
-                    items: {
-                        "tap": {name: "Tap"},
-                        "long-press": {name: "Long Press"},
-                        "swipe": {
-                            name: "Swipe",
-                            items: {
-                                "swipe-left": {name: "Left"},
-                                "swipe-right": {name: "Right"},
-                                "swipe-up": {name: "Up"},
-                                "swipe-down": {name: "Down"}
+    constructor( scene ) {
+        this._selectedThreeObject = null; // the three obj where the mouse is on.
+        this._intersectionPoint = null;
+        this._scene = scene; // We will need to get information from some objects in the scene
+
+        var _this = this;
+
+        /**
+         * Instantiate the context menu
+         */
+        $.contextMenu({
+            selector: '#threejs-canvas',
+            trigger: 'none',
+            build: function($trigger, e) {
+                if (_this._selectedThreeObject) {
+                    return {
+                        items: {
+                            "tap": {name: "Tap"},
+                            "long-press": {name: "Long Press"},
+                            "swipe": {
+                                name: "Swipe",
+                                items: {
+                                    "swipe-left": {name: "Left"},
+                                    "swipe-right": {name: "Right"},
+                                    "swipe-up": {name: "Up"},
+                                    "swipe-down": {name: "Down"}
+                                }
                             }
                         }
-                    }
-                };
-            } else {
-                return {
-                    items: {
-                        "tap": {name: "General Options"}
-                    }
-                };
-            }
-        },
-        callback: function(key, options) {
-            //var m = "clicked: " + key;
-            //window.console && console.log(m) || alert(m);
+                    };
+                } else {
+                    return {
+                        items: {
+                            "reset-camera": {name: "Reset Camera"}
+                        }
+                    };
+                }
+            },
+            callback: function(key, options) {
+                //var m = "clicked: " + key;
+                //window.console && console.log(m) || alert(m);
 
-            _processMenuSelection(key, _selectedThreeObject, _ORGScene);
-        }
-    });
+                _this._processMenuSelection(key, _this._selectedThreeObject, _this._scene);
+            }
+        });
+    }
+
 
     /**
      * ORGMouseListener calls this method on right click
      * @param event
      */
-    this.onContextMenu = function(event) {
+    onContextMenu(event) {
 
         $('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
     }
@@ -68,24 +77,30 @@ function ORGContextMenuManager(scene) {
      * ORG3DRaycaster calls this method to inform of the three obj the mouse is hoovering on.
      * @param threeElement
      */
-    this.mouseOverElement = function(threeElement, point) {
-        _selectedThreeObject = threeElement;
-        _intersectionPoint = point;
+    mouseOverElement(threeElement, point) {
+        this._selectedThreeObject = threeElement;
+        this._intersectionPoint = point;
     }
 
-    // PRIVATE
 
-    function _processMenuSelection(menuOptionKey, threeObj, ORGScene) {
+    /**
+     * The user has selected a menu option. This function will respond to the selection.
+     * @param menuOptionKey The string that represents the selected menu option.
+     * @param threeObj The 3D object where the click happened.
+     * @param scene The ORG scene.
+     */
+    _processMenuSelection(menuOptionKey, threeObj, scene) {
 
         if (!threeObj) {
+            this._processMenuSelectionOnVoid(menuOptionKey, scene); // in screen raycaster we get no three obj
             return;
         }
 
         // Calculate the App coordinates where the mouse was clicked.
 
-        var screenBbox = ORGScene.getDeviceScreenBoundingBox();
-        var appX = _intersectionPoint.x - screenBbox.min.x;
-        var appY = screenBbox.max.y - _intersectionPoint.y;
+        var screenBbox = scene.getDeviceScreenBoundingBox();
+        var appX = this._intersectionPoint.x - screenBbox.min.x;
+        var appY = screenBbox.max.y - this._intersectionPoint.y;
 
         var parameters = {location:{x:appX, y:appY}};
 
@@ -97,7 +112,37 @@ function ORGContextMenuManager(scene) {
                 parameters.duration = 0.5;
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
+            case 'swipe-left' : {
+                parameters.direction = "left";
+                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+            } break;
+            case 'swipe-right' : {
+                parameters.direction = "right";
+                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+            } break;
+            case 'swipe-up' : {
+                parameters.direction = "up";
+                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+            } break;
+            case 'swipe-down' : {
+                parameters.direction = "down";
+                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+            } break;
         }
+    }
 
+    /**
+     * This function will respond to the selected option of the menu in the scene open area.
+     * @param menuOptionKey
+     * @param scene
+     * @private
+     */
+    _processMenuSelectionOnVoid(menuOptionKey, scene) {
+
+        switch (menuOptionKey) {
+            case 'reset-camera' : {
+                scene.resetCameraPosition();
+            }
+        }
     }
 }

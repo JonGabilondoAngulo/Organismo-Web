@@ -3,7 +3,7 @@
  */
 
 /**
- * The class that holds the 3D scene witht the GLRenderer.
+ * The class that holds the 3D scene with the GLRenderer.
  * It provides all the methods to handle the operations on the Scene.
  *
  * @param domContainer The dom element where to create the 3D scene.
@@ -43,13 +43,13 @@ function ORG3DScene(domContainer, screenSize) {
     var _sceneVisualFlags = SceneVisualizationMask.ShowFloor |
         SceneVisualizationMask.ShowDevice |
         SceneVisualizationMask.ContinuousUpdate;
-    var _treeVisualizationFlags = TreeVisualizationMask.ShowNormalWindow |
-        TreeVisualizationMask.ShowAlertWindow |
-        TreeVisualizationMask.ShowKeyboardWindow |
-        TreeVisualizationMask.ShowOutOfScreen |
-        TreeVisualizationMask.ShowInteractiveViews |
-        TreeVisualizationMask.ShowNonInteractiveViews |
-        TreeVisualizationMask.ShowScreenshots;
+    var _treeVisualizationFlags = ORGTreeVisualizationMask.ShowNormalWindow |
+        ORGTreeVisualizationMask.ShowAlertWindow |
+        ORGTreeVisualizationMask.ShowKeyboardWindow |
+        ORGTreeVisualizationMask.ShowOutOfScreen |
+        ORGTreeVisualizationMask.ShowInteractiveViews |
+        ORGTreeVisualizationMask.ShowNonInteractiveViews |
+        ORGTreeVisualizationMask.ShowScreenshots;
 
 
     var _uiTreeModel = new ORGUITreeModel(_treeVisualizationFlags);
@@ -100,7 +100,6 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.createDeviceScreen = function(width, height, zPosition) {
         var geometry,material;
-
         _deviceScreenSize = { width:width, height:height};
         _deviceScreen = new ORG3DDeviceScreen(width, height, zPosition, _threeScene);
     };
@@ -123,6 +122,7 @@ function ORG3DScene(domContainer, screenSize) {
         if (_deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
+            ORG.scene.createRaycasterForDeviceScreen();
         }
         if (_device3DModel) {
             _device3DModel.setOrientation(orientation);
@@ -135,7 +135,8 @@ function ORG3DScene(domContainer, screenSize) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
             this.positionFloorUnderDevice();
-         }
+            ORG.scene.createRaycasterForDeviceScreen();
+        }
     };
 
     this.hideDeviceScreen = function() {
@@ -175,8 +176,7 @@ function ORG3DScene(domContainer, screenSize) {
     this.positionFloorUnderDevice = function() {
         if (_deviceScreen && _sceneFloor) {
             var bBox = null;
-            if ( (_sceneVisualFlags&SceneVisualizationMask.ShowDevice) && _device3DModel ) {
-                //bBox = new THREE.Box3().setFromObject(_device3DModel); // _device3DModel is a THREE.Group. Don't have geometry to compute bbox.
+            if ( (_sceneVisualFlags & SceneVisualizationMask.ShowDevice) && _device3DModel ) {
                 bBox = _device3DModel.getBoundingBox();
             }
             if ( !bBox) {
@@ -245,14 +245,14 @@ function ORG3DScene(domContainer, screenSize) {
     };
 
     this.showPrivate = function() {
-        return (_treeVisualizationFlags & TreeVisualizationMask.ShowPrivate);
+        return (_treeVisualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
     };
 
     this.setShowPrivate = function(flag) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationMask.ShowPrivate;
+            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowPrivate;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowPrivate;
+            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowPrivate;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
 
@@ -369,9 +369,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowTextures = function(flag) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationMask.ShowScreenshots;
+            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowScreenshots;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowScreenshots;
+            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowScreenshots;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
 
@@ -382,9 +382,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowInteractive = function( flag ) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationMask.ShowInteractiveViews;
+            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowInteractiveViews;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowInteractiveViews;
+            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowInteractiveViews;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -394,9 +394,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowNonInteractive = function( flag ) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationMask.ShowNonInteractiveViews;
+            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowNonInteractiveViews;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowNonInteractiveViews;
+            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowNonInteractiveViews;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -406,9 +406,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowHiddenViews = function( flag) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationMask.ShowHiddenViews;
+            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowHiddenViews;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowHiddenViews;
+            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowHiddenViews;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -421,9 +421,9 @@ function ORG3DScene(domContainer, screenSize) {
 
     this.setShowKeyboardWindow = function(flag) {
         if (flag) {
-            _treeVisualizationFlags |= TreeVisualizationMask.ShowKeyboardWindow;
+            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowKeyboardWindow;
         } else {
-            _treeVisualizationFlags &= ~TreeVisualizationMask.ShowKeyboardWindow;
+            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowKeyboardWindow;
         }
         _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
         if (_uiExpanded && _uiTreeModel) {
@@ -469,11 +469,11 @@ function ORG3DScene(domContainer, screenSize) {
         _threeCamera.position.z = 900;
         _threeClock = new THREE.Clock();
 
-        // Create a mouse event listener and associate delegates
-        _mouseListener = new ORGMouseListener(_threeRendererDOMElement);
-
         // Create the rightMouse click manager
         _contextMenuManager = new ORGContextMenuManager(ORGScene);
+
+        // Create a mouse event listener and associate delegates
+        _mouseListener = new ORGMouseListener(_threeRendererDOMElement);
         _mouseListener.addDelegate(_contextMenuManager);
         _mouseListener.enable();
 
