@@ -98,7 +98,7 @@ class ORGContextMenuManager {
 
         // Calculate the App coordinates where the mouse was clicked.
 
-        var screenBbox = scene.getDeviceScreenBoundingBox();
+        var screenBbox = scene.deviceScreenBoundingBox;
         var appX = this._intersectionPoint.x - screenBbox.min.x;
         var appY = screenBbox.max.y - this._intersectionPoint.y;
 

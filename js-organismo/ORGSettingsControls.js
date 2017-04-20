@@ -42,7 +42,7 @@ ORG.UI.checkButtonShowPrivate.change(function (e) {
 });
 
 ORG.UI.checkButtonShowTooltips.change(function (e) {
-    ORG.scene.setShowTooltips($(this).is(':checked'));
+    ORG.scene.showTooltips($(this).is(':checked'));
 });
 
 ORG.UI.checkButtonShowHiddenViews.change(function (e) {
@@ -72,7 +72,7 @@ ORG.UI.buttonExpand.click(function (e) {
     if ( !ORG.deviceController.isConnected) {
         return;
     }
-    if (ORG.scene.isExpanded()) {
+    if (ORG.scene.isExpanded) {
         ORG.UI.buttonExpand.text("Expand");
         ORG.scene.collapse();
     } else {
@@ -83,9 +83,9 @@ ORG.UI.buttonExpand.click(function (e) {
 
 ORG.UI.checkButtonShowFloor.change(function (e) {
     if ($(this).is(':checked') == true) {
-        ORG.scene.showFloor();
+        ORG.scene.createFloor();
     } else {
-        ORG.scene.hideFloor();
+        ORG.scene.removeFloor();
     }
 });
 

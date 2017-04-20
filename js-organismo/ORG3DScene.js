@@ -55,7 +55,116 @@ class ORG3DScene {
             ORGTreeVisualizationMask.ShowScreenshots;
 
         this._uiTreeModel = new ORGUITreeModel( this._treeVisualizationFlags);
-        this._initialize(domContainer, this._sceneVisualFlags & ORGSceneVisualizationMask.ShowFloor);
+        this._initialize(domContainer, this.flagShowFloor);
+    }
+
+    /**
+     * Properties
+     */
+    get isExpanded() {
+        return this._uiExpanded;
+    }
+
+    get deviceScreenBoundingBox() {
+        return this._deviceScreen.boundingBox;
+    }
+
+    /**
+     * Scene flags
+     */
+    get flagContinuousScreenshot() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate;
+    }
+
+    set flagContinuousScreenshot(flag) {
+        if (flag) {
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ContinuousUpdate;
+        } else {
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ContinuousUpdate;
+        }
+    }
+
+    get flagShowTooltips() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowTooltips;
+    }
+
+    set flagShowTooltips( show) {
+        if (show) {
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowTooltips;
+        } else {
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowTooltips;
+        }
+    }
+
+    get flagShowDevice3DModel() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice;
+    }
+
+    get flagShowFloor() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowFloor;
+    }
+
+    set flagShowFloor(show ) {
+        if (show) {
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowFloor;
+        } else {
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowFloor;
+        }
+    }
+
+    /**
+     * Tree flags
+     */
+    get flagShowPrivateClasses() {
+        return ( this._treeVisualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
+    }
+
+    set flagShowPrivateClasses( flag ) {
+        if (flag) {
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowPrivate;
+        } else {
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowPrivate;
+        }
+    }
+
+    set flagShowKeyboardWindow( flag ) {
+        if (flag) {
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowKeyboardWindow;
+        } else {
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowKeyboardWindow;
+        }
+    }
+
+    set flagShowHiddenViews( flag) {
+        if (flag) {
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowHiddenViews;
+        } else {
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowHiddenViews;
+        }
+    }
+
+    set flagShowNonInteractiveViews( flag) {
+        if (flag) {
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowNonInteractiveViews;
+        } else {
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowNonInteractiveViews;
+        }
+    }
+
+    set flagShowInteractiveViews( flag) {
+        if (flag) {
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowInteractiveViews;
+        } else {
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowInteractiveViews;
+        }
+    }
+
+    set flagShowScreenshots( flag) {
+        if (flag) {
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowScreenshots;
+        } else {
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowScreenshots;
+        }
     }
 
     /**
@@ -172,10 +281,6 @@ class ORG3DScene {
         this._screenRaycaster = null;
     }
 
-    getDeviceScreenBoundingBox() {
-        return this._deviceScreen.boundingBox;
-    }
-
     positionFloorUnderDevice() {
         if ( this._deviceScreen && this._sceneFloor) {
             var bBox = null;
@@ -191,16 +296,8 @@ class ORG3DScene {
         }
     }
 
-    continuousScreenshot() {
-        return this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate;
-    }
-
     setLiveScreen(live) {
-        if (live) {
-            this._sceneVisualFlags |= ORGSceneVisualizationMask.ContinuousUpdate;
-        } else {
-            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ContinuousUpdate;
-        }
+        this.flagContinuousScreenshot = live;
         if ( this._deviceScreen) {
             if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate) && !this._uiExpanded) {
                 ORG.deviceController.requestScreenshot();
@@ -208,20 +305,13 @@ class ORG3DScene {
         }
     }
 
-    setShowTooltips(show) {
+    showTooltips(show) {
+        this.flagShowTooltips = show;
         if (show) {
-            this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowTooltips;
+            this.enableTooltips();
         } else {
-            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowTooltips;
+            this.disableTooltips();
         }
-
-        //if (_deviceScreen) {
-            if ( this._sceneVisualFlags & ORGSceneVisualizationMask.ShowTooltips) {
-                this.enableTooltips();
-            } else {
-                this.disableTooltips();
-            }
-        //}
     }
 
     enableTooltips() {
@@ -243,49 +333,25 @@ class ORG3DScene {
         }
     }
 
-    showTooltip() {
-        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowTooltips;
-    };
-
-    showPrivate() {
-        return ( this._treeVisualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
-    };
-
     setShowPrivate(flag) {
-        if (flag) {
-            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowPrivate;
-        } else {
-            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowPrivate;
-        }
+        this.flagShowPrivateClasses = flag;
         this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
 
         if ( this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
         }
-    };
+    }
 
-    isExpanded() {
-        return this._uiExpanded;
-    };
-
-    setShowFloor(showFloor) {
-        if (showFloor) {
-            this.showFloor();
-        } else {
-            this.hideFloor();
-        }
-    };
-
-    showFloor() {
+    createFloor() {
         if ( !this._sceneFloor) {
             this._sceneFloor = this._createFloor( this._threeScene);
             this.positionFloorUnderDevice();
         }
     };
 
-    hideFloor() {
+    removeFloor() {
         if ( this._sceneFloor) {
-            this._deleteFloor();
+            this._removeFloor();
         }
     };
 
@@ -311,7 +377,7 @@ class ORG3DScene {
             // _tooltiper = null;
 
             const _this = this;
-            const requestScreenshot = this.continuousScreenshot();
+            const requestScreenshot = this.flagContinuousScreenshot;
 
             this._uiTreeModel.collapseWithCompletion( function() {
                 if (_this._deviceScreen) {
@@ -332,7 +398,7 @@ class ORG3DScene {
     resetCameraPosition() {
 
         // Avoi flickering by stopping screen updates
-        var liveScreen = this.continuousScreenshot();
+        var liveScreen = this.flagContinuousScreenshot;
         if ( liveScreen) {
             this.setLiveScreen( false);
         }
@@ -349,10 +415,6 @@ class ORG3DScene {
                     _this.setLiveScreen( true);
                 }
             }).start();
-    }
-
-    mustShowDevice3DModel() {
-        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice;
     }
 
     addDevice3DModel( device3DModel ) {
@@ -375,11 +437,7 @@ class ORG3DScene {
     }
 
     setShowTextures(flag) {
-        if (flag) {
-            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowScreenshots;
-        } else {
-            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowScreenshots;
-        }
+        this.flagShowScreenshots = flag;
         this._uiTreeModel.setVisualizationFlags(this._treeVisualizationFlags);
 
         if ( this._uiTreeModel ) {
@@ -388,11 +446,7 @@ class ORG3DScene {
     };
 
     setShowInteractive( flag ) {
-        if (flag) {
-            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowInteractiveViews;
-        } else {
-            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowInteractiveViews;
-        }
+        this.flagShowInteractiveViews = flag;
         this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
         if ( this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
@@ -400,11 +454,7 @@ class ORG3DScene {
     }
 
     setShowNonInteractive( flag ) {
-        if (flag) {
-            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowNonInteractiveViews;
-        } else {
-            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowNonInteractiveViews;
-        }
+        this.flagShowNonInteractiveViews = flag;
         this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
         if ( this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
@@ -412,11 +462,7 @@ class ORG3DScene {
     }
 
     setShowHiddenViews( flag) {
-        if (flag) {
-            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowHiddenViews;
-        } else {
-            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowHiddenViews;
-        }
+        this.flagShowHiddenViews = flag;
         this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
         if (this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated(this);
@@ -427,11 +473,7 @@ class ORG3DScene {
     }
 
     setShowKeyboardWindow(flag) {
-        if (flag) {
-            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowKeyboardWindow;
-        } else {
-            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowKeyboardWindow;
-        }
+        this.flagShowKeyboardWindow = flag;
         this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
         if (this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
@@ -491,7 +533,7 @@ class ORG3DScene {
         return new ORG3DSceneFloor(4000, 50, true, threeScene);
     }
 
-    _deleteFloor() {
+    _removeFloor() {
         if (this._sceneFloor) {
             this._sceneFloor.remove();
         }

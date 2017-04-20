@@ -126,7 +126,7 @@ class ORGWebSocketDelegate {
 		ORG.scene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
 		ORG.scene.createRaycasterForDeviceScreen();
 
-		if ( ORG.scene.mustShowDevice3DModel() ) {
+		if ( ORG.scene.flagShowDevice3DModel ) {
 			ORG.scene.showDevice3DModel();
 		}
 
@@ -167,7 +167,7 @@ class ORGWebSocketDelegate {
 			ORG.scene.setScreenshotImage(img);
 
 			// Ask for next screenshot
-			if (ORG.scene.continuousScreenshot() && !ORG.scene.isExpanded()) {
+			if (ORG.scene.flagContinuousScreenshot && !ORG.scene.isExpanded) {
 				ORG.deviceController.requestScreenshot();
 			}
 		}
