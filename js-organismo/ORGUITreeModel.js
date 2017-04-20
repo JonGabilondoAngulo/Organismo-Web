@@ -70,7 +70,7 @@ class ORGUITreeModel {
             const treeNode = this._treeData[i];
             const _this = this;
             const callback = function () {
-                _this._createUITreeModel(this._treeData, this._threeScene, this._screenSize);
+                _this._createUITreeModel(_this._treeData, _this._threeScene, _this._screenSize);
             };
             _this._collapseNodeAnimatedWithCompletion(treeNode, callback);
         }
@@ -185,10 +185,10 @@ class ORGUITreeModel {
                 return;
             }
 
-            var threeScreenshotTexture = null;
-            var elementBase64Image = treeNode.screenshot;
+            let threeScreenshotTexture = null;
+            let elementBase64Image = treeNode.screenshot;
             if (elementBase64Image) {
-                var img = new Image();
+                let img = new Image();
                 img.src = "data:image/png;base64," + elementBase64Image;
                 threeScreenshotTexture = new THREE.Texture(img);
                 threeScreenshotTexture.minFilter = THREE.NearestFilter;
@@ -205,9 +205,9 @@ class ORGUITreeModel {
             //}
             //}
 
-            var zPosition = this._calculateElementZPosition(treeNode, this._treeData, 0, deviceScreenSize);
+            const zPosition = this._calculateElementZPosition(treeNode, this._treeData, 0, deviceScreenSize);
 
-            var threeGroupObj = this._createUIObject(treeNode, threeScreenshotTexture, deviceScreenSize, zPosition);
+            let threeGroupObj = this._createUIObject(treeNode, threeScreenshotTexture, deviceScreenSize, zPosition);
             if (threeGroupObj) {
 
                 this._threeElementTreeGroup.add(threeGroupObj);
@@ -218,8 +218,8 @@ class ORGUITreeModel {
                     threeGroupObj.visible = false;
                 } else {
                     // The final zPosition is in treeNode, not in the mesh object which is at 0.
-                    var finalMeshPosition = {x: threeGroupObj.position.x, y: threeGroupObj.position.y, z: treeNode.zPosition};
-                    var tween = new TWEEN.Tween(threeGroupObj.position)
+                    const finalMeshPosition = {x: threeGroupObj.position.x, y: threeGroupObj.position.y, z: treeNode.zPosition};
+                    const tween = new TWEEN.Tween(threeGroupObj.position)
                         .to(finalMeshPosition, this._extrudeDuration)
                         .start();
                 }
@@ -270,8 +270,8 @@ class ORGUITreeModel {
     _collapseNodeAnimatedWithCompletion(node, completionFunction) {
         var threeObj = node.threeObj; // the obj is a THREE.Group
         if (threeObj) {
-            var _this = this;
-            var tween = new TWEEN.Tween(threeObj.position)
+            const _this = this;
+            const tween = new TWEEN.Tween(threeObj.position)
                 .to({x: threeObj.position.x, y: threeObj.position.y, z: 0}, this._extrudeDuration)
                 .onStart( function() {
                     _this._collapseTweenCount++;
@@ -305,7 +305,7 @@ class ORGUITreeModel {
 
     _modelVisualizationChanged() {
         if (this._threeElementTreeGroup) {
-            var _this = this;
+            const _this = this;
             this._threeElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
                     var nodeData = child.userData;

@@ -29,15 +29,15 @@ class ORG3DScene {
         this._mouseListener = null; // a ORGMouseListener
         this._device3DModel = null; // a ORG3DDeviceModel
         this._tooltiper = null; // a ORGTooltip
-        this._threeScene;
-        this._threeCamera;
-        this._threeRenderer;
-        this._threeOrbitControls;
-        this._keyboardState;
-        this._threeClock;
-        this._screenshotImage;
+        this._threeScene = null;
+        this._threeCamera = null;
+        this._threeRenderer = null;
+        this._threeOrbitControls = null;
+        this._keyboardState = null;
+        this._threeClock = null;
+        this._screenshotImage = null;
         this._screenshotNeedsUpdate = false;
-        this._deviceScreenSize;
+        this._deviceScreenSize = null;
         this._uiExpanded = false;
         this._canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
         this._threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
@@ -398,13 +398,12 @@ class ORG3DScene {
     resetCameraPosition() {
 
         // Avoi flickering by stopping screen updates
-        var liveScreen = this.flagContinuousScreenshot;
+        const liveScreen = this.flagContinuousScreenshot;
         if ( liveScreen) {
             this.setLiveScreen( false);
         }
 
         const _this = this;
-
         new TWEEN.Tween( this._threeCamera.position ).to( {
             x: 0,
             y: 0,

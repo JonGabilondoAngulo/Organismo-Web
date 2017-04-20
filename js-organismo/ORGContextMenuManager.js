@@ -21,7 +21,7 @@ class ORGContextMenuManager {
         this._intersectionPoint = null;
         this._scene = scene; // We will need to get information from some objects in the scene
 
-        var _this = this;
+        const _this = this;
 
         /**
          * Instantiate the context menu
@@ -98,11 +98,11 @@ class ORGContextMenuManager {
 
         // Calculate the App coordinates where the mouse was clicked.
 
-        var screenBbox = scene.deviceScreenBoundingBox;
-        var appX = this._intersectionPoint.x - screenBbox.min.x;
-        var appY = screenBbox.max.y - this._intersectionPoint.y;
+        const screenBbox = scene.deviceScreenBoundingBox;
+        const appX = this._intersectionPoint.x - screenBbox.min.x;
+        const appY = screenBbox.max.y - this._intersectionPoint.y;
 
-        var parameters = {location:{x:appX, y:appY}};
+        const parameters = {location:{x:appX, y:appY}};
 
         switch (menuOptionKey) {
             case 'tap' : {
