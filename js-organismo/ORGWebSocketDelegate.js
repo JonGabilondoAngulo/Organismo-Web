@@ -167,7 +167,7 @@ class ORGWebSocketDelegate {
 			ORG.scene.setScreenshotImage(img);
 
 			// Ask for next screenshot
-			if (ORG.scene.continuousScreenshot() && !ORG.scene.UIExpanded()) {
+			if (ORG.scene.continuousScreenshot() && !ORG.scene.isExpanded()) {
 				ORG.deviceController.requestScreenshot();
 			}
 		}

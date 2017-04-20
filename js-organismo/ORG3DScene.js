@@ -2,63 +2,66 @@
  * Created by jongabilondo on 02/07/2016.
  */
 
+
+const ORGSceneVisualizationMask = {
+    ShowFloor : 0x1,
+    ShowDevice : 0x2,
+    ShowTooltips : 0x4,
+    ContinuousUpdate : 0x8
+}
+
 /**
- * The class that holds the 3D scene with the GLRenderer.
+ * The class that holds the THREE.Scene with the GLRenderer.
  * It provides all the methods to handle the operations on the Scene.
  *
  * @param domContainer The dom element where to create the 3D scene.
  * @param screenSize An initial size for the 3D scene. It will be updated to the real size of the container once the scene has been created.
  * @constructor
  */
-function ORG3DScene(domContainer, screenSize) {
+class ORG3DScene {
 
-    const SceneVisualizationMask = {
-        ShowFloor : 0x1,
-        ShowDevice : 0x2,
-        ShowTooltips : 0x4,
-        ContinuousUpdate : 0x8
+    constructor( domContainer, screenSize) {
+
+        this._sceneFloor = null; // a ORG3DSceneFloor
+        this._deviceScreen = null; // a ORG3DDeviceScreen
+        this._uiTreeModelRaycaster = null; // a ORG3DRaycaster
+        this._screenRaycaster = null; // a ORG3DRaycaster
+        this._mouseListener = null; // a ORGMouseListener
+        this._device3DModel = null; // a ORG3DDeviceModel
+        this._tooltiper = null; // a ORGTooltip
+        this._threeScene;
+        this._threeCamera;
+        this._threeRenderer;
+        this._threeOrbitControls;
+        this._keyboardState;
+        this._threeClock;
+        this._screenshotImage;
+        this._screenshotNeedsUpdate = false;
+        this._deviceScreenSize;
+        this._uiExpanded = false;
+        this._canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
+        this._threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
+        this._contextMenuManager = null;
+        //this._zPosition = 20.0;
+        this._sceneVisualFlags = ORGSceneVisualizationMask.ShowFloor |
+            ORGSceneVisualizationMask.ShowDevice |
+            ORGSceneVisualizationMask.ContinuousUpdate;
+        this._treeVisualizationFlags = ORGTreeVisualizationMask.ShowNormalWindow |
+            ORGTreeVisualizationMask.ShowAlertWindow |
+            ORGTreeVisualizationMask.ShowKeyboardWindow |
+            ORGTreeVisualizationMask.ShowOutOfScreen |
+            ORGTreeVisualizationMask.ShowInteractiveViews |
+            ORGTreeVisualizationMask.ShowNonInteractiveViews |
+            ORGTreeVisualizationMask.ShowScreenshots;
+
+        this._uiTreeModel = new ORGUITreeModel( this._treeVisualizationFlags);
+        this._initialize(domContainer, this._sceneVisualFlags & ORGSceneVisualizationMask.ShowFloor);
     }
-
-    var _sceneFloor = null; // a ORG3DSceneFloor
-    var _deviceScreen = null; // a ORG3DDeviceScreen
-    var _uiTreeModelRaycaster = null; // a ORG3DRaycaster
-    var _screenRaycaster = null; // a ORG3DRaycaster
-    var _mouseListener = null; // a ORGMouseListener
-    var _device3DModel = null; // a ORG3DDeviceModel
-    var _tooltiper = null; // a ORGTooltip
-    var _threeScene;
-    var _threeCamera;
-    var _threeRenderer;
-    var _threeOrbitControls;
-    var _keyboardState;
-    var _threeClock;
-    var _screenshotImage;
-    var _screenshotNeedsUpdate = false;
-    var _deviceScreenSize;
-    var _uiExpanded = false;
-    var _canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
-    var _threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
-    var _contextMenuManager = null;
-    var _zPosition = 20.0;
-    var _sceneVisualFlags = SceneVisualizationMask.ShowFloor |
-        SceneVisualizationMask.ShowDevice |
-        SceneVisualizationMask.ContinuousUpdate;
-    var _treeVisualizationFlags = ORGTreeVisualizationMask.ShowNormalWindow |
-        ORGTreeVisualizationMask.ShowAlertWindow |
-        ORGTreeVisualizationMask.ShowKeyboardWindow |
-        ORGTreeVisualizationMask.ShowOutOfScreen |
-        ORGTreeVisualizationMask.ShowInteractiveViews |
-        ORGTreeVisualizationMask.ShowNonInteractiveViews |
-        ORGTreeVisualizationMask.ShowScreenshots;
-
-
-    var _uiTreeModel = new ORGUITreeModel(_treeVisualizationFlags);
-    initialize(domContainer, screenSize, _sceneVisualFlags&SceneVisualizationMask.ShowFloor, this);
 
     /**
      * Remove the Device from the scene. After device disconnection all models and data of device must be removed.
      */
-    this.handleDeviceDisconnection = function() {
+    handleDeviceDisconnection() {
         this.removeDeviceScreen();
         this.removeUITreeModel();
         this.hideDevice3DModel();
@@ -69,203 +72,203 @@ function ORG3DScene(domContainer, screenSize) {
      * It sets the image in a variable to be used in the next render cycle.
      * @param image.
      */
-    this.setScreenshotImage = function(image) {
-        _screenshotImage = image;
-        _screenshotNeedsUpdate = true;
+    setScreenshotImage(image) {
+        this._screenshotImage = image;
+        this._screenshotNeedsUpdate = true;
     };
 
-    this.updateUITreeModel = function( treeJson ) {
+    updateUITreeModel( treeJson ) {
 
         // First destroy the raycaster for the screen
         this.removeRaycasterForDeviceScreen();
         this.hideDeviceScreen( );
 
         // Create the 3D UI model
-        _uiExpanded = true;
-        _uiTreeModel.updateUITreeModel( treeJson, _threeScene, _screenshotImage, _deviceScreenSize);
+        this._uiExpanded = true;
+        this._uiTreeModel.updateUITreeModel( treeJson, this._threeScene, this._screenshotImage, this._deviceScreenSize);
 
         // Create Raycaster for the 3D UI Model object
-        _uiTreeModelRaycaster = new ORG3DRaycaster(_threeRendererDOMElement, _threeCamera, _uiTreeModel.getTreeGroup());
-        _uiTreeModelRaycaster.addDelegate(new ORG3DUIElementHiliter()); // attach a hiliter
-        _uiTreeModelRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
+        this._uiTreeModelRaycaster = new ORG3DRaycaster( this._threeRendererDOMElement, this._threeCamera, this._uiTreeModel.getTreeGroup());
+        this._uiTreeModelRaycaster.addDelegate( new ORG3DUIElementHiliter()); // attach a hiliter
+        this._uiTreeModelRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
 
         // Activate mouse listener
-        _mouseListener.addDelegate(_uiTreeModelRaycaster); // send the mouse events to the Raycaster
-        _mouseListener.enable();
+        this._mouseListener.addDelegate( this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
+        this._mouseListener.enable();
     };
 
-    this.removeUITreeModel = function( ) {
-        _uiTreeModel.removeUITreeModel( _threeScene);
-    };
+    removeUITreeModel( ) {
+        this._uiTreeModel.removeUITreeModel( this._threeScene);
+    }
 
-    this.createDeviceScreen = function(width, height, zPosition) {
-        var geometry,material;
-        _deviceScreenSize = { width:width, height:height};
-        _deviceScreen = new ORG3DDeviceScreen(width, height, zPosition, _threeScene);
-    };
+    createDeviceScreen(width, height, zPosition) {
+        //var geometry,material;
+        this._deviceScreenSize = { width:width, height:height};
+        this._deviceScreen = new ORG3DDeviceScreen(width, height, zPosition, this._threeScene);
+    }
 
-    this.removeDeviceScreen = function() {
-        if (_deviceScreen) {
+    removeDeviceScreen() {
+        if ( this._deviceScreen) {
             this.removeRaycasterForDeviceScreen();
-            _deviceScreen.destroy();
+            this._deviceScreen.destroy();
         }
     }
 
-    this.setDeviceOrientation = function(orientation, width, height) {
+    setDeviceOrientation(orientation, width, height) {
 
-        if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.removeUITreeModel(_threeScene);
-            _uiExpanded = false;
+        if ( this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.removeUITreeModel( this._threeScene);
+            this._uiExpanded = false;
             ORG.UI.buttonExpand.text("Expand");
         }
 
-        if (_deviceScreen) {
+        if ( this._deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
-            ORG.scene.createRaycasterForDeviceScreen();
+            this.createRaycasterForDeviceScreen();
         }
-        if (_device3DModel) {
-            _device3DModel.setOrientation(orientation);
+        if ( this._device3DModel) {
+            this._device3DModel.setOrientation(orientation);
         }
         this.positionFloorUnderDevice();
-    };
+    }
 
-    this.setDeviceScreenSize = function(width, height) {
-        if (_deviceScreen) {
+    setDeviceScreenSize(width, height) {
+        if ( this._deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
             this.positionFloorUnderDevice();
-            ORG.scene.createRaycasterForDeviceScreen();
+            this.createRaycasterForDeviceScreen();
         }
-    };
+    }
 
-    this.hideDeviceScreen = function() {
-        if (_deviceScreen) {
-            _deviceScreen.hide();
+    hideDeviceScreen() {
+        if ( this._deviceScreen) {
+            this._deviceScreen.hide();
         }
-    };
+    }
 
-    this.showDeviceScreen = function() {
-        if (_deviceScreen) {
-            _deviceScreen.show();
+    showDeviceScreen() {
+        if ( this._deviceScreen) {
+            this._deviceScreen.show();
         }
-    };
+    }
 
-    this.createRaycasterForDeviceScreen = function() {
-        _screenRaycaster = new ORG3DRaycaster(_threeRendererDOMElement, _threeCamera, _deviceScreen.screenPlane);
-        _screenRaycaster.addDelegate(_contextMenuManager); // attach a context menu manager
+    createRaycasterForDeviceScreen() {
+        this._screenRaycaster = new ORG3DRaycaster( this._threeRendererDOMElement, this._threeCamera, this._deviceScreen.screenPlane);
+        this._screenRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager
 
         // Activate mouse listener
-        _mouseListener.addDelegate(_screenRaycaster); // send the mouse events to the Raycaster
-        _mouseListener.enable();
+        this._mouseListener.addDelegate( this._screenRaycaster); // send the mouse events to the Raycaster
+        this._mouseListener.enable();
     };
 
-    this.removeRaycasterForDeviceScreen = function() {
+    removeRaycasterForDeviceScreen() {
         // Deactivate mouse listener
-        _mouseListener.disable();
-        _mouseListener.removeDelegate(_screenRaycaster); // send the mouse events to the Raycaster
+        this._mouseListener.disable();
+        this._mouseListener.removeDelegate( this._screenRaycaster); // send the mouse events to the Raycaster
 
         // Destroy raycaster
-        _screenRaycaster = null;
-    };
+        this._screenRaycaster = null;
+    }
 
-    this.getDeviceScreenBoundingBox = function() {
-        return _deviceScreen.boundingBox;
-    };
+    getDeviceScreenBoundingBox() {
+        return this._deviceScreen.boundingBox;
+    }
 
-    this.positionFloorUnderDevice = function() {
-        if (_deviceScreen && _sceneFloor) {
+    positionFloorUnderDevice() {
+        if ( this._deviceScreen && this._sceneFloor) {
             var bBox = null;
-            if ( (_sceneVisualFlags & SceneVisualizationMask.ShowDevice) && _device3DModel ) {
-                bBox = _device3DModel.getBoundingBox();
+            if ( (this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice) && this._device3DModel ) {
+                bBox = this._device3DModel.getBoundingBox();
             }
             if ( !bBox) {
-                bBox = _deviceScreen.boundingBox;
+                bBox = this._deviceScreen.boundingBox;
             }
             if ( bBox) {
-                _sceneFloor.setPosition(0, bBox.min.y - 50, 0);
+                this._sceneFloor.setPosition(0, bBox.min.y - 50, 0);
             }
         }
-    };
+    }
 
-    this.continuousScreenshot = function() {
-        return _sceneVisualFlags & SceneVisualizationMask.ContinuousUpdate;
-    };
+    continuousScreenshot() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate;
+    }
 
-    this.setLiveScreen = function(live) {
+    setLiveScreen(live) {
         if (live) {
-            _sceneVisualFlags |= SceneVisualizationMask.ContinuousUpdate;
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ContinuousUpdate;
         } else {
-            _sceneVisualFlags &= ~SceneVisualizationMask.ContinuousUpdate;
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ContinuousUpdate;
         }
-        if (_deviceScreen) {
-            if ((_sceneVisualFlags & SceneVisualizationMask.ContinuousUpdate) && !_uiExpanded) {
+        if ( this._deviceScreen) {
+            if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate) && !this._uiExpanded) {
                 ORG.deviceController.requestScreenshot();
             }
         }
-    };
+    }
 
-    this.setShowTooltips = function(show) {
+    setShowTooltips(show) {
         if (show) {
-            _sceneVisualFlags |= SceneVisualizationMask.ShowTooltips;
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowTooltips;
         } else {
-            _sceneVisualFlags &= ~SceneVisualizationMask.ShowTooltips;
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowTooltips;
         }
 
         //if (_deviceScreen) {
-            if (_sceneVisualFlags & SceneVisualizationMask.ShowTooltips) {
+            if ( this._sceneVisualFlags & ORGSceneVisualizationMask.ShowTooltips) {
                 this.enableTooltips();
             } else {
                 this.disableTooltips();
             }
         //}
-    };
+    }
 
-    this.enableTooltips = function() {
-        if (!_tooltiper) {
-            _tooltiper = new ORGTooltip(_threeRendererDOMElement);
-            if (_uiTreeModelRaycaster) {
-                _uiTreeModelRaycaster.addDelegate(_tooltiper); // Attach it to the raycaster
+    enableTooltips() {
+        if ( !this._tooltiper) {
+            this._tooltiper = new ORGTooltip( this._threeRendererDOMElement);
+            if (this._uiTreeModelRaycaster) {
+                this._uiTreeModelRaycaster.addDelegate( this._tooltiper); // Attach it to the raycaster
             }
         }
     }
 
-    this.disableTooltips = function() {
-        if (_tooltiper) {
-            if (_uiTreeModelRaycaster) {
-                _uiTreeModelRaycaster.removeDelegate(_tooltiper); // Detach it from the raycaster
+    disableTooltips() {
+        if ( this._tooltiper) {
+            if ( this._uiTreeModelRaycaster) {
+                this._uiTreeModelRaycaster.removeDelegate( this._tooltiper); // Detach it from the raycaster
             }
-            _tooltiper.destroy( );
-            _tooltiper = null;
+            this._tooltiper.destroy( );
+            this._tooltiper = null;
         }
     }
 
-    this.showTooltip = function() {
-        return _sceneVisualFlags & SceneVisualizationMask.ShowTooltips;
+    showTooltip() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowTooltips;
     };
 
-    this.showPrivate = function() {
-        return (_treeVisualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
+    showPrivate() {
+        return ( this._treeVisualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
     };
 
-    this.setShowPrivate = function(flag) {
+    setShowPrivate(flag) {
         if (flag) {
-            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowPrivate;
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowPrivate;
         } else {
-            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowPrivate;
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowPrivate;
         }
-        _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
+        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
 
-        if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.collapseAndExpandAnimated(ORG.scene);
+        if ( this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.collapseAndExpandAnimated( this);
         }
     };
 
-    this.UIExpanded = function() {
-        return _uiExpanded;
+    isExpanded() {
+        return this._uiExpanded;
     };
 
-    this.setShowFloor = function(showFloor) {
+    setShowFloor(showFloor) {
         if (showFloor) {
             this.showFloor();
         } else {
@@ -273,21 +276,21 @@ function ORG3DScene(domContainer, screenSize) {
         }
     };
 
-    this.showFloor = function() {
-        if (!_sceneFloor) {
-            _sceneFloor = createFloor( _threeScene);
+    showFloor() {
+        if ( !this._sceneFloor) {
+            this._sceneFloor = this._createFloor( this._threeScene);
             this.positionFloorUnderDevice();
         }
     };
 
-    this.hideFloor = function() {
-        if (_sceneFloor) {
-            deleteFloor();
+    hideFloor() {
+        if ( this._sceneFloor) {
+            this._deleteFloor();
         }
     };
 
-    this.expand = function() {
-        if (!_uiExpanded) {
+    expand() {
+        if ( !this._uiExpanded) {
             ORG.deviceController.requestElementTree({
                 "status-bar": true,
                 "keyboard": true,
@@ -297,241 +300,254 @@ function ORG3DScene(domContainer, screenSize) {
         }
     }
 
-    this.collapse = function() {
-        if (_uiExpanded) {
+    collapse() {
+        if ( this._uiExpanded) {
             // we dont need the mouse listener and the raycaster anymore
-            _mouseListener.disable();
+            this._mouseListener.disable();
 
             this.disableTooltips();
             // _mouseListener.removeDelegate(_uiTreeModelRaycaster);
             // _uiTreeModelRaycaster = null;
             // _tooltiper = null;
 
-            var requestScreenshot = this.continuousScreenshot();
-            _uiTreeModel.collapseWithCompletion( function() {
-                if (_deviceScreen) {
-                    _deviceScreen.show();
+            const _this = this;
+            const requestScreenshot = this.continuousScreenshot();
+
+            this._uiTreeModel.collapseWithCompletion( function() {
+                if (_this._deviceScreen) {
+                    _this._deviceScreen.show();
                 }
                 if (requestScreenshot) {
                     ORG.deviceController.requestScreenshot(); // keep updating screenshot
                 }
             });
             this.createRaycasterForDeviceScreen();
-            _uiExpanded = false;
+            this._uiExpanded = false;
         }
     };
 
     /**
      * Locate the camera at default position.
      */
-    this.resetCameraPosition = function() {
+    resetCameraPosition() {
 
         // Avoi flickering by stopping screen updates
         var liveScreen = this.continuousScreenshot();
         if ( liveScreen) {
-            ORG.scene.setLiveScreen( false);
+            this.setLiveScreen( false);
         }
 
-        new TWEEN.Tween( _threeCamera.position ).to( {
+        const _this = this;
+
+        new TWEEN.Tween( this._threeCamera.position ).to( {
             x: 0,
             y: 0,
             z: 900}, 600)
             .easing( TWEEN.Easing.Quadratic.InOut)
             .onComplete(function () {
                 if (liveScreen) {
-                    ORG.scene.setLiveScreen( true);
+                    _this.setLiveScreen( true);
                 }
             }).start();
     }
 
-    this.mustShowDevice3DModel = function() {
-        return _sceneVisualFlags & SceneVisualizationMask.ShowDevice;
+    mustShowDevice3DModel() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice;
     }
 
-    this.addDevice3DModel = function( device3DModel ) {
-        _device3DModel = device3DModel;
-        _device3DModel.addToScene(_threeScene);
+    addDevice3DModel( device3DModel ) {
+        this._device3DModel = device3DModel;
+        this._device3DModel.addToScene( this._threeScene);
         this.positionFloorUnderDevice();
     }
 
-    this.showDevice3DModel = function() {
+    showDevice3DModel() {
         this.hideDevice3DModel();
-        ORG3DDeviceModelLoader.loadDevice3DModel( ORG.device, this ); // async. WHen loaded it will call "addDevice3DModel"
+        ORG3DDeviceModelLoader.loadDevice3DModel( ORG.device, this ); // async. When loaded it will call "addDevice3DModel"
     }
 
-    this.hideDevice3DModel = function() {
-        if ( !!_device3DModel ) {
-            _device3DModel.destroy();
-            _device3DModel = null;
+    hideDevice3DModel() {
+        if ( !!this._device3DModel ) {
+            this._device3DModel.destroy();
+            this._device3DModel = null;
         }
         this.positionFloorUnderDevice();
     }
 
-    this.setShowTextures = function(flag) {
+    setShowTextures(flag) {
         if (flag) {
-            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowScreenshots;
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowScreenshots;
         } else {
-            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowScreenshots;
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowScreenshots;
         }
-        _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
+        this._uiTreeModel.setVisualizationFlags(this._treeVisualizationFlags);
 
-        if ( _uiTreeModel ) {
-            _uiTreeModel.hideTextures(!flag);
+        if ( this._uiTreeModel ) {
+            this._uiTreeModel.hideTextures(!flag);
         }
     };
 
-    this.setShowInteractive = function( flag ) {
+    setShowInteractive( flag ) {
         if (flag) {
-            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowInteractiveViews;
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowInteractiveViews;
         } else {
-            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowInteractiveViews;
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowInteractiveViews;
         }
-        _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
-        if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.collapseAndExpandAnimated(ORG.scene);
+        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        if ( this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.collapseAndExpandAnimated( this);
         }
     }
 
-    this.setShowNonInteractive = function( flag ) {
+    setShowNonInteractive( flag ) {
         if (flag) {
-            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowNonInteractiveViews;
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowNonInteractiveViews;
         } else {
-            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowNonInteractiveViews;
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowNonInteractiveViews;
         }
-        _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
-        if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.collapseAndExpandAnimated(ORG.scene);
+        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        if ( this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.collapseAndExpandAnimated( this);
         }
     }
 
-    this.setShowHiddenViews = function( flag) {
+    setShowHiddenViews( flag) {
         if (flag) {
-            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowHiddenViews;
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowHiddenViews;
         } else {
-            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowHiddenViews;
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowHiddenViews;
         }
-        _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
-        if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.collapseAndExpandAnimated(ORG.scene);
+        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        if (this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.collapseAndExpandAnimated(this);
         }
     }
 
-    this.setShowNormalWindow = function(flag) {
+    setShowNormalWindow(flag) {
     }
 
-    this.setShowKeyboardWindow = function(flag) {
+    setShowKeyboardWindow(flag) {
         if (flag) {
-            _treeVisualizationFlags |= ORGTreeVisualizationMask.ShowKeyboardWindow;
+            this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowKeyboardWindow;
         } else {
-            _treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowKeyboardWindow;
+            this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowKeyboardWindow;
         }
-        _uiTreeModel.setVisualizationFlags(_treeVisualizationFlags);
-        if (_uiExpanded && _uiTreeModel) {
-            _uiTreeModel.collapseAndExpandAnimated(ORG.scene);
+        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        if (this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.collapseAndExpandAnimated( this);
         }
     }
 
-    this.setShowAlertWindow = function(flag) {
+    setShowAlertWindow(flag) {
     }
 
     // PRIVATE
 
-    function initialize(domContainer, screenSize, showFloor, ORGScene) {
+    _initialize(domContainer, showFloor) {
 
-        _canvasDomElement = domContainer;
-        var rendererCanvasWidth = _canvasDomElement.clientWidth;
-        var rendererCanvasHeight = _canvasDomElement.clientHeight;
+        this._canvasDomElement = domContainer;
+        const rendererCanvasWidth = this._canvasDomElement.clientWidth;
+        const rendererCanvasHeight = this._canvasDomElement.clientHeight;
 
-        _threeScene = new THREE.Scene();
-        _threeCamera = new THREE.PerspectiveCamera(75, rendererCanvasWidth / rendererCanvasHeight, 0.1, 10000);
-        _threeRenderer = new THREE.WebGLRenderer({antialias: true /*, alpha:true (if transparency wanted)*/});
-        _threeRenderer.domElement.style.position = 'absolute';
-        _threeRenderer.domElement.style.top = 0;
+        this._threeScene = new THREE.Scene();
+        this._threeCamera = new THREE.PerspectiveCamera(75, rendererCanvasWidth / rendererCanvasHeight, 0.1, 10000);
+        this._threeRenderer = new THREE.WebGLRenderer({antialias: true /*, alpha:true (if transparency wanted)*/});
+        this._threeRenderer.domElement.style.position = 'absolute';
+        this._threeRenderer.domElement.style.top = 0;
         //_threeRenderer.domElement.style.zIndex = 0;
         //_threeRenderer.setClearColor(0x000000);
 
+        this._threeRenderer.setSize(rendererCanvasWidth, rendererCanvasHeight);
+        this._canvasDomElement.appendChild( this._threeRenderer.domElement);
+        this._threeRendererDOMElement = this._threeRenderer.domElement; // the DOM element for the renderer
 
-        _threeRenderer.setSize(rendererCanvasWidth, rendererCanvasHeight);
-        _canvasDomElement.appendChild(_threeRenderer.domElement);
-        _threeRendererDOMElement = _threeRenderer.domElement; // the DOM element for the renderer
+        this._threeOrbitControls = new THREE.OrbitControls( this._threeCamera, this._canvasDomElement);
 
-        _threeOrbitControls = new THREE.OrbitControls(_threeCamera, _canvasDomElement);
+        this._keyboardState = new KeyboardState();
 
-        _keyboardState = new KeyboardState();
-
-        _zPosition += 10;
+        //this._zPosition += 10;
         if (showFloor) {
-            _sceneFloor = createFloor(_threeScene);
+            this._sceneFloor = this._createFloor(this._threeScene);
         }
 
-        createLights();
+        this._createLights();
 
-        _threeCamera.position.z = 900;
-        _threeClock = new THREE.Clock();
+        this._threeCamera.position.z = 900;
+        this._threeClock = new THREE.Clock();
 
         // Create the rightMouse click manager
-        _contextMenuManager = new ORGContextMenuManager(ORGScene);
+        this._contextMenuManager = new ORGContextMenuManager(this);
 
         // Create a mouse event listener and associate delegates
-        _mouseListener = new ORGMouseListener(_threeRendererDOMElement);
-        _mouseListener.addDelegate(_contextMenuManager);
-        _mouseListener.enable();
+        this._mouseListener = new ORGMouseListener( this._threeRendererDOMElement);
+        this._mouseListener.addDelegate( this._contextMenuManager);
+        this._mouseListener.enable();
 
-        render();
-        ORG.WindowResize(_threeRenderer, _threeCamera, _canvasDomElement);
+        this._render();
+        ORG.WindowResize( this._threeRenderer, this._threeCamera, this._canvasDomElement);
     }
 
-    function createFloor( threeScene ) {
+    _createFloor( threeScene ) {
         return new ORG3DSceneFloor(4000, 50, true, threeScene);
     }
 
-    function deleteFloor() {
-        if (_sceneFloor) {
-            _sceneFloor.remove();
+    _deleteFloor() {
+        if (this._sceneFloor) {
+            this._sceneFloor.remove();
         }
-        _sceneFloor = null;
+        this._sceneFloor = null;
     }
 
-    function createLights() {
+    _createLights() {
         // LIGHTS
         var light = new THREE.PointLight(0xaaaaaa);
         light.position.set(500,-500,500);
-        _threeScene.add(light);
+        this._threeScene.add(light);
 
         light = new THREE.PointLight(0xaaaaaa);
         light.position.set(500,500,500);
-        _threeScene.add(light);
+        this._threeScene.add(light);
 
         light = new THREE.PointLight(0xaaaaaa);
         light.position.set(-500,-500,-500);
-        _threeScene.add(light);
+        this._threeScene.add(light);
 
         light = new THREE.PointLight(0xaaaaaa);
         light.position.set(-500,500,-500);
-        _threeScene.add(light);
+        this._threeScene.add(light);
 
 //            var light2 = new THREE.AmbientLight(0xffffff);
 //            scene.add(light2);
     }
 
-    function updateScreenshot() {
+    _updateScreenshot() {
 
-        if (_deviceScreen && _screenshotNeedsUpdate && _screenshotImage) {
-            _screenshotNeedsUpdate = false;
-            _deviceScreen.setScreenshot(_screenshotImage);
+        if (this._deviceScreen && this._screenshotNeedsUpdate && this._screenshotImage) {
+            this._screenshotNeedsUpdate = false;
+            this._deviceScreen.setScreenshot(this._screenshotImage);
         }
     }
 
-    function render () {
+    _render() {
 
-        requestAnimationFrame( render );
-        _threeRenderer.render( _threeScene, _threeCamera);
-        _threeOrbitControls.update();
-        updateScene();
-        TWEEN.update();
+        const _this = this;
+
+        requestAnimationFrame( function() {
+            _this._threeRenderer.render( _this._threeScene, _this._threeCamera);
+            _this._threeOrbitControls.update();
+            _this._updateScene();
+            TWEEN.update();
+            _this._render();
+        });
+
+        //requestAnimationFrame( this._render );
+        //this._threeRenderer.render( this._threeScene, this._threeCamera);
+        //this._threeOrbitControls.update();
+        //this._updateScene();
+        //TWEEN.update();
     }
 
-    function updateScene()
+    _updateScene()
     {
         //var t0 = clock.getElapsedTime();
         //var timeOffset = 0.125 * t0;
@@ -540,7 +556,7 @@ function ORG3DScene(domContainer, screenSize) {
         //var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
         //var deviceMotionChanged = false;
 
-        updateScreenshot();
+        this._updateScreenshot();
 /*
         _keyboardState.update();
 

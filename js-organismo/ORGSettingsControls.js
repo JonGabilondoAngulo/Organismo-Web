@@ -72,7 +72,7 @@ ORG.UI.buttonExpand.click(function (e) {
     if ( !ORG.deviceController.isConnected) {
         return;
     }
-    if (ORG.scene.UIExpanded()) {
+    if (ORG.scene.isExpanded()) {
         ORG.UI.buttonExpand.text("Expand");
         ORG.scene.collapse();
     } else {
