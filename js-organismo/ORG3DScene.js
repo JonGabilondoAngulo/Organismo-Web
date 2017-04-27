@@ -197,7 +197,7 @@ class ORG3DScene {
         this._uiTreeModel.updateUITreeModel( treeJson, this._threeScene, this._screenshotImage, this._deviceScreenSize);
 
         // Create Raycaster for the 3D UI Model object
-        this._uiTreeModelRaycaster = new ORG3DRaycaster( this._threeRendererDOMElement, this._threeCamera, this._uiTreeModel.getTreeGroup());
+        this._uiTreeModelRaycaster = new ORG3DRaycaster( this._threeRendererDOMElement, this._threeCamera, this._uiTreeModel.treeGroup);
         this._uiTreeModelRaycaster.addDelegate( new ORG3DUIElementHiliter()); // attach a hiliter
         this._uiTreeModelRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
 
@@ -335,7 +335,7 @@ class ORG3DScene {
 
     setShowPrivate(flag) {
         this.flagShowPrivateClasses = flag;
-        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
 
         if ( this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
@@ -437,7 +437,7 @@ class ORG3DScene {
 
     setShowTextures(flag) {
         this.flagShowScreenshots = flag;
-        this._uiTreeModel.setVisualizationFlags(this._treeVisualizationFlags);
+        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
 
         if ( this._uiTreeModel ) {
             this._uiTreeModel.hideTextures(!flag);
@@ -446,7 +446,7 @@ class ORG3DScene {
 
     setShowInteractive( flag ) {
         this.flagShowInteractiveViews = flag;
-        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if ( this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
         }
@@ -454,7 +454,7 @@ class ORG3DScene {
 
     setShowNonInteractive( flag ) {
         this.flagShowNonInteractiveViews = flag;
-        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if ( this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
         }
@@ -462,7 +462,7 @@ class ORG3DScene {
 
     setShowHiddenViews( flag) {
         this.flagShowHiddenViews = flag;
-        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if (this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated(this);
         }
@@ -473,7 +473,7 @@ class ORG3DScene {
 
     setShowKeyboardWindow(flag) {
         this.flagShowKeyboardWindow = flag;
-        this._uiTreeModel.setVisualizationFlags( this._treeVisualizationFlags);
+        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if (this._uiExpanded && this._uiTreeModel) {
             this._uiTreeModel.collapseAndExpandAnimated( this);
         }
