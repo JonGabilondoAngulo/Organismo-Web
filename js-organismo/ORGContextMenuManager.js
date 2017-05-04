@@ -41,9 +41,12 @@ class ORGContextMenuManager {
                                     "swipe-left": {name: "Left"},
                                     "swipe-right": {name: "Right"},
                                     "swipe-up": {name: "Up"},
-                                    "swipe-down": {name: "Down"}
+                                    "swipe-down": {name: "Down"},
                                 }
-                            }
+                            },
+                            "-": {name: "-"},
+                            "look-at": {name: "Look at"},
+                            "look-front-at": {name: "Look Front at"}
                         }
                     };
                 } else {
@@ -127,6 +130,12 @@ class ORGContextMenuManager {
             case 'swipe-down' : {
                 parameters.direction = "down";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+            } break;
+            case 'look-at' : {
+                scene.lookAtObject( threeObj );
+            } break;
+            case 'look-front-at' : {
+                scene.lookFrontAtObject( threeObj );
             } break;
         }
     }

@@ -10,6 +10,9 @@ const ORGSceneVisualizationMask = {
     ContinuousUpdate : 0x8
 }
 
+const kORGCameraTWEENDuration = 600.0;
+
+
 /**
  * The class that holds the THREE.Scene with the GLRenderer.
  * It provides all the methods to handle the operations on the Scene.
@@ -393,11 +396,11 @@ class ORG3DScene {
     };
 
     /**
-     * Locate the camera at default position.
+     * Locate the camera at default position and looking a t 0,0,0.
      */
     resetCameraPosition() {
 
-        // Avoi flickering by stopping screen updates
+        // Avoid flickering by stopping screen updates
         const liveScreen = this.flagContinuousScreenshot;
         if ( liveScreen) {
             this.setLiveScreen( false);
@@ -407,13 +410,60 @@ class ORG3DScene {
         new TWEEN.Tween( this._threeCamera.position ).to( {
             x: 0,
             y: 0,
-            z: 900}, 600)
+            z: 900}, kORGCameraTWEENDuration)
             .easing( TWEEN.Easing.Quadratic.InOut)
             .onComplete(function () {
                 if (liveScreen) {
                     _this.setLiveScreen( true);
                 }
             }).start();
+
+        // TWEEN camera lookAt. But we can't do it setting camera.lookAt ! Due to collision with OrbitControls !
+        // We must use the OrbitControl.target instead.
+        new TWEEN.Tween( _this._threeOrbitControls.target ).to( {
+            x: 0,
+            y: 0,
+            z: 0}, kORGCameraTWEENDuration)
+            .easing( TWEEN.Easing.Quadratic.InOut)
+            .start();
+    }
+
+    /**
+     * Set the camera looking at the given THREE object.
+     * @param threeObject
+     */
+    lookAtObject( threeObject ) {
+
+        // We can't do it setting camera.lookAt ! Due to collision with OrbitControls !
+        // We must use the OrbitControl.target instead.
+        new TWEEN.Tween( this._threeOrbitControls.target ).to( {
+            x: threeObject.position.x,
+            y: threeObject.position.y,
+            z: threeObject.position.z}, kORGCameraTWEENDuration)
+            .easing( TWEEN.Easing.Quadratic.InOut)
+            .start();
+
+    }
+
+    lookFrontAtObject( threeObject ) {
+
+        // We can't do it setting camera.lookAt ! Due to collision with OrbitControls !
+        // We must use the OrbitControl.target instead.
+
+        new TWEEN.Tween( this._threeCamera.position ).to( {
+            x: threeObject.position.x,
+            y: threeObject.position.y,
+            z: 900}, kORGCameraTWEENDuration)
+            .easing( TWEEN.Easing.Quadratic.InOut)
+            .start();
+
+        new TWEEN.Tween( this._threeOrbitControls.target ).to( {
+            x: threeObject.position.x,
+            y: threeObject.position.y,
+            z: threeObject.position.z}, kORGCameraTWEENDuration)
+            .easing( TWEEN.Easing.Quadratic.InOut)
+            .start();
+
     }
 
     addDevice3DModel( device3DModel ) {
@@ -502,8 +552,7 @@ class ORG3DScene {
         this._canvasDomElement.appendChild( this._threeRenderer.domElement);
         this._threeRendererDOMElement = this._threeRenderer.domElement; // the DOM element for the renderer
 
-        this._threeOrbitControls = new THREE.OrbitControls( this._threeCamera, this._canvasDomElement);
-
+        this._threeOrbitControls = new THREE.OrbitControls( this._threeCamera, this._threeRenderer.domElement);//this._canvasDomElement);
         this._keyboardState = new KeyboardState();
 
         //this._zPosition += 10;
@@ -580,12 +629,6 @@ class ORG3DScene {
             TWEEN.update();
             _this._render();
         });
-
-        //requestAnimationFrame( this._render );
-        //this._threeRenderer.render( this._threeScene, this._threeCamera);
-        //this._threeOrbitControls.update();
-        //this._updateScene();
-        //TWEEN.update();
     }
 
     _updateScene()
