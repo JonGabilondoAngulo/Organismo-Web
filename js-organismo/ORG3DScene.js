@@ -195,18 +195,21 @@ class ORG3DScene {
         this.removeRaycasterForDeviceScreen();
         this.hideDeviceScreen( );
 
+        if ( this.flagShowTooltips) {
+            this.disableTooltips();
+        }
+
+        this.destroyRaycasterFor3DTreeModel(); // Destroy Raycaster for the 3D UI Model object
+
         // Create the 3D UI model
         this._uiExpanded = true;
         this._uiTreeModel.updateUITreeModel( treeJson, this._threeScene, this._screenshotImage, this._deviceScreenSize);
 
-        // Create Raycaster for the 3D UI Model object
-        this._uiTreeModelRaycaster = new ORG3DRaycaster( this._threeRendererDOMElement, this._threeCamera, this._uiTreeModel.treeGroup);
-        this._uiTreeModelRaycaster.addDelegate( new ORG3DUIElementHiliter()); // attach a hiliter
-        this._uiTreeModelRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
+        this.createRaycasterFor3DTreeModel(); // Create Raycaster for the 3D UI Model object
 
-        // Activate mouse listener
-        this._mouseListener.addDelegate( this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
-        this._mouseListener.enable();
+        if ( this.flagShowTooltips) {
+            this.enableTooltips();
+        }
     };
 
     removeUITreeModel( ) {
@@ -266,6 +269,30 @@ class ORG3DScene {
         }
     }
 
+    createRaycasterFor3DTreeModel() {
+        this._uiTreeModelRaycaster = new ORG3DRaycaster( this._threeRendererDOMElement, this._threeCamera, this._uiTreeModel.treeGroup);
+        this._uiTreeModelRaycaster.addDelegate( new ORG3DUIElementHiliter()); // attach a hiliter
+        this._uiTreeModelRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
+
+        // Activate mouse listener to feed the raycaster
+        if (this._mouseListener) {
+            this._mouseListener.addDelegate( this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
+            this._mouseListener.enable();
+        }
+    }
+
+    destroyRaycasterFor3DTreeModel() {
+        if ( this._uiTreeModelRaycaster ) {
+            if (this._tooltiper) {
+                this._uiTreeModelRaycaster.removeDelegate( this._tooltiper); // Detach tooltiper from the raycaster
+            }
+            if (this._mouseListener) {
+                this._mouseListener.removeDelegate( this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
+            }
+            this._uiTreeModelRaycaster = null;
+        }
+    }
+
     createRaycasterForDeviceScreen() {
         this._screenRaycaster = new ORG3DRaycaster( this._threeRendererDOMElement, this._threeCamera, this._deviceScreen.screenPlane);
         this._screenRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager
@@ -273,7 +300,7 @@ class ORG3DScene {
         // Activate mouse listener
         this._mouseListener.addDelegate( this._screenRaycaster); // send the mouse events to the Raycaster
         this._mouseListener.enable();
-    };
+    }
 
     removeRaycasterForDeviceScreen() {
         // Deactivate mouse listener
@@ -336,15 +363,6 @@ class ORG3DScene {
         }
     }
 
-    setShowPrivate(flag) {
-        this.flagShowPrivateClasses = flag;
-        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
-
-        if ( this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.collapseAndExpandAnimated( this);
-        }
-    }
-
     createFloor() {
         if ( !this._sceneFloor) {
             this._sceneFloor = this._createFloor( this._threeScene);
@@ -369,15 +387,19 @@ class ORG3DScene {
         }
     }
 
-    collapse() {
+    collapseAndExpandAnimated() {
+        const _this = this;
+        this.collapse( function () {
+            _this.expand();
+        } )
+    }
+
+    collapse( completionCallback ) {
         if ( this._uiExpanded) {
             // we dont need the mouse listener and the raycaster anymore
             this._mouseListener.disable();
 
             this.disableTooltips();
-            // _mouseListener.removeDelegate(_uiTreeModelRaycaster);
-            // _uiTreeModelRaycaster = null;
-            // _tooltiper = null;
 
             const _this = this;
             const requestScreenshot = this.flagContinuousScreenshot;
@@ -389,11 +411,15 @@ class ORG3DScene {
                 if (requestScreenshot) {
                     ORG.deviceController.requestScreenshot(); // keep updating screenshot
                 }
+                _this.createRaycasterForDeviceScreen();
+                _this._uiExpanded = false;
+
+                if (completionCallback) {
+                    completionCallback();
+                }
             });
-            this.createRaycasterForDeviceScreen();
-            this._uiExpanded = false;
         }
-    };
+    }
 
     /**
      * Locate the camera at default position and looking a t 0,0,0.
@@ -485,6 +511,16 @@ class ORG3DScene {
         this.positionFloorUnderDevice();
     }
 
+    setShowPrivate(flag) {
+        this.flagShowPrivateClasses = flag;
+        this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
+
+        const _this = this;
+        if ( this._uiExpanded && this._uiTreeModel) {
+            this.collapseAndExpandAnimated();
+        }
+    }
+
     setShowTextures(flag) {
         this.flagShowScreenshots = flag;
         this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
@@ -498,7 +534,7 @@ class ORG3DScene {
         this.flagShowInteractiveViews = flag;
         this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if ( this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.collapseAndExpandAnimated( this);
+            this.collapseAndExpandAnimated( );
         }
     }
 
@@ -506,7 +542,7 @@ class ORG3DScene {
         this.flagShowNonInteractiveViews = flag;
         this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if ( this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.collapseAndExpandAnimated( this);
+            this.collapseAndExpandAnimated( );
         }
     }
 
@@ -514,7 +550,7 @@ class ORG3DScene {
         this.flagShowHiddenViews = flag;
         this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if (this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.collapseAndExpandAnimated(this);
+            this.collapseAndExpandAnimated();
         }
     }
 
@@ -525,7 +561,7 @@ class ORG3DScene {
         this.flagShowKeyboardWindow = flag;
         this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags;
         if (this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.collapseAndExpandAnimated( this);
+            this.collapseAndExpandAnimated( );
         }
     }
 

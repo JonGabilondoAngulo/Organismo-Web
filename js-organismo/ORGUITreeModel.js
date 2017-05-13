@@ -71,16 +71,16 @@ class ORGUITreeModel {
      * e.g. When hidding/showing the private classes.
      * @param scene the ORG scene to take the new parameters
      */
-    collapseAndExpandAnimated(scene) {
-        for (let i=0; i < this._treeData.length; i++) {
-            const treeNode = this._treeData[i];
-            const _this = this;
-            const callback = function () {
-                _this._createUITreeModel(_this._treeData, _this._threeScene, _this._screenSize);
-            };
-            _this._collapseNodeAnimatedWithCompletion(treeNode, callback);
-        }
-    }
+    //collapseAndExpandAnimated(scene) {
+    //    for (let i=0; i < this._treeData.length; i++) {
+    //        const treeNode = this._treeData[i];
+    //        const _this = this;
+    //        const callback = function () {
+    //            _this._createUITreeModel(_this._treeData, _this._threeScene, _this._screenSize);
+    //        };
+    //        _this._collapseNodeAnimatedWithCompletion(treeNode, callback);
+    //    }
+    //}
 
     collapseWithCompletion(completion) {
 
