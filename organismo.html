@@ -268,11 +268,22 @@
                             <script>
                                 $("a[href='#tab-map']").on('shown.bs.tab', function (e) {
                                     //console.log('shown - after the tab has been shown');
-                                    if (!ORG.map.isCreated()) {
-                                        ORG.map.createMap();
+                                    if (!ORG.map) {
+                                        ORG.map = new ORGMap();
+                                        ORG.map.addDelegate( ORG.scene );
                                     }
                                 });
                             </script>
+
+                            <div class='smallCheckboxDiv'>
+                                <input type="checkbox" id="broadcast-location" title="broadcast-location" checked/>
+                                <div class='inlineCheckboxLabel'>Location</div>
+                            </div>
+
+                            <div class='smallCheckboxDiv'>
+                                <input type="checkbox" id="broadcast-altitude" title="broadcast-altitude" checked/>
+                                <div class='inlineCheckboxLabel'>Altitude</div>
+                            </div>
 
                         </div>
                         <div class="tab-pane" id="tab-tree">
@@ -292,6 +303,7 @@
 <script type="text/javascript" src="js-organismo/ORGDeviceConnectionControls.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTreeEditor.js"></script>
 <script type="text/javascript" src="js-organismo/ORGSettingsControls.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DLocationMarker.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback="
         async defer></script>
 

@@ -58,4 +58,14 @@ class ORGMessageBuilder {
         };
         return JSON.stringify(msg);
     }
+
+    static locationUpdate( location ) {
+        var msg = {
+            type: "update",
+            data: {
+                location: { lat: location.lat(), lng : location.lng() }
+            }
+        };
+        return JSON.stringify(msg);
+    }
 }

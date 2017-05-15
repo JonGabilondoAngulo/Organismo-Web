@@ -6,6 +6,12 @@ ORG.canvasDomElem = document.getElementById('threejs-canvas');
 ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
 ORG.deviceController = null;
 ORG.device = null;
+ORG.map = null;
+
+var loader = new THREE.FontLoader();
+loader.load( 'three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+    ORG.font_helvetiker_regular = font;
+} );
 
 // Constants
 ORG.Request = {

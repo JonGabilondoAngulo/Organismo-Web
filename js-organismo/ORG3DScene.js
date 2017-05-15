@@ -45,6 +45,7 @@ class ORG3DScene {
         this._canvasDomElement = null; // the table cell where the renderer will be created, it contains _threeRendererDOMElement
         this._threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
         this._contextMenuManager = null;
+        this._locationMarker = null;
         //this._zPosition = 20.0;
         this._sceneVisualFlags = ORGSceneVisualizationMask.ShowFloor |
             ORGSceneVisualizationMask.ShowDevice |
@@ -567,6 +568,16 @@ class ORG3DScene {
 
     setShowAlertWindow(flag) {
     }
+
+    // Map Delegate
+    locationUpdate( location, locationName) {
+
+        if (!this._locationMarker) {
+            this._locationMarker = new ORG3DLocationMarker( null, locationName, this._threeScene);
+        } else {
+            this._locationMarker.updateDescriptor(locationName);
+        }
+     }
 
     // PRIVATE
 
