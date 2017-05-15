@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORG3DLocationMarker.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMain.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMain.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMap.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -560,7 +554,7 @@
       <workItem from="1494774043967" duration="2745000" />
       <workItem from="1494842292822" duration="1671000" />
       <workItem from="1494869633944" duration="5798000" />
-      <workItem from="1494877046539" duration="1618000" />
+      <workItem from="1494877046539" duration="1682000" />
     </task>
     <task id="LOCAL-00001" summary="Enabled version control on IDE">
       <created>1474667964283</created>
@@ -891,11 +885,18 @@
       <option name="project" value="LOCAL" />
       <updated>1494705745470</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Map location broadcasted to scene. Scene shows 3d location mark and descriptor.">
+      <created>1494879216262</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1494879216262</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90067000" />
+    <option name="totallyTimeSpent" value="90131000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -989,7 +990,6 @@
       <path value="$PROJECT_DIR$/Agent/StashRepo" />
       <path value="$PROJECT_DIR$/jsoneditor" />
     </ignored-roots>
-    <MESSAGE value="Added 3d Device Models" />
     <MESSAGE value="Fixed html main page" />
     <MESSAGE value="Refactoring , encapsulation globals." />
     <MESSAGE value="Refactoring , encapsulating globals." />
@@ -1014,7 +1014,8 @@
     <MESSAGE value="3D tree creation improvements." />
     <MESSAGE value="New scene menu options to position camera." />
     <MESSAGE value="Tree collpase and expansion improved." />
-    <option name="LAST_COMMIT_MESSAGE" value="Tree collpase and expansion improved." />
+    <MESSAGE value="Map location broadcasted to scene. Scene shows 3d location mark and descriptor." />
+    <option name="LAST_COMMIT_MESSAGE" value="Map location broadcasted to scene. Scene shows 3d location mark and descriptor." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
