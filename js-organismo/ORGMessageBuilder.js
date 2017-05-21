@@ -73,4 +73,16 @@ class ORGMessageBuilder {
         }
         return JSON.stringify(msg);
     }
+
+    static attitudeUpdate( quaternion) {
+        var msg = {
+            type: "update",
+            data: {
+            }
+        };
+        if (quaternion) {
+            msg.data.deviceAttitude = { qx:quaternion.x, qy:quaternion.z, qz:quaternion.y, qw:quaternion.w };
+        }
+        return JSON.stringify(msg);
+    }
 }

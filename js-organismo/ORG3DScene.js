@@ -499,6 +499,12 @@ class ORG3DScene {
 
             // translate device
             this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
+
+            // Broadcast the value to the device
+            if (ORG.deviceController) {
+                const msg = ORGMessageBuilder.attitudeUpdate(screenObject.quaternion);
+                ORG.deviceController.sendMessage(msg);
+            }
         }
     }
 
@@ -908,6 +914,12 @@ class ORG3DScene {
         //iPhone5Object.setPosition( position(timeOffset));
     }
 
+    /**
+     * When the rotation tranformation control has changed we get a call here.
+     * This function will pair the device 3d model to the rotation of the screen.
+     * THis function will broadcast the new device attitude to the connected device.
+     * @private
+     */
     _transformControlChanged() {
         if (this._transformControl) {
             const screenObject = this._transformControl.object;
@@ -935,6 +947,12 @@ class ORG3DScene {
 
                     // translate device
                     this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
+
+                    // Broadscast Attitude
+                    if (ORG.deviceController) {
+                        const msg = ORGMessageBuilder.attitudeUpdate(screenObject.quaternion);
+                        ORG.deviceController.sendMessage(msg);
+                    }
                 }
             }
         }
