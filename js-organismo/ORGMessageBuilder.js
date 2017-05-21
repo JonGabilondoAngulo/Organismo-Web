@@ -59,13 +59,18 @@ class ORGMessageBuilder {
         return JSON.stringify(msg);
     }
 
-    static locationUpdate( location ) {
+    static locationUpdate( location, elevation) {
         var msg = {
             type: "update",
             data: {
-                location: { lat: location.lat(), lng : location.lng() }
             }
         };
+        if (location) {
+            msg.data.location = { lat: location.lat(), lng : location.lng() };
+        }
+        if (elevation) {
+            msg.data.altimeter = { altitude: elevation, pressure: 1000.0 }; // 100 kilopascal is 1 bar
+        }
         return JSON.stringify(msg);
     }
 }

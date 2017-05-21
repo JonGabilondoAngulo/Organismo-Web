@@ -55,6 +55,7 @@
     <script type="text/javascript" src="js-organismo/ORGMessageBuilder.js"></script>
     <script type="text/javascript" src="js-organismo/ORGContextMenuManager.js"></script>
     <script type="text/javascript" src="js-organismo/ORGFloorMap.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGLocationBroadcaster.js"></script>
     <script type="text/javascript" src="js-organismo/ORGMap.js"></script>
     <script type="text/javascript" src="js-organismo/ORGDevice.js"></script>
     <script type="text/javascript" src="js-organismo/ORGTestApp.js"></script>
@@ -171,6 +172,11 @@
                                         </div>
                                         <br>
                                         <div class='smallCheckboxDiv'>
+                                            <input type='checkbox' id="show-location" value="true" title="show-location" checked/>
+                                            <div class='inlineCheckboxLabel'>Show Location</div>
+                                        </div>
+                                        <br>
+                                        <div class='smallCheckboxDiv'>
                                             <input type="checkbox" id="live-screen" value="true" title="live-screen"
                                                    checked/>
                                             <div class='inlineCheckboxLabel'>Continuos Update</div>
@@ -270,7 +276,7 @@
                                     //console.log('shown - after the tab has been shown');
                                     if (!ORG.map) {
                                         ORG.map = new ORGMap();
-                                        ORG.map.addDelegate( ORG.scene );
+                                        ORG.map.addListener( ORG.locationManager );
                                     }
                                 });
                             </script>
@@ -299,6 +305,7 @@
 
 
 <script type="text/javascript" src="js-organismo/ORG3DRaycaster.js"></script>
+<script type="text/javascript" src="js-organismo/ORGLocationManager.js"></script>
 <script type="text/javascript" src="js-organismo/ORGMain.js"></script>
 <script type="text/javascript" src="js-organismo/ORGDeviceConnectionControls.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTreeEditor.js"></script>

@@ -3,6 +3,7 @@
 
 ORG.UI.checkButtonShowFloor = $('#show-floor');
 ORG.UI.checkButtonShowDevice = $('#show-device');
+ORG.UI.checkButtonShowLocation = $('#show-location');
 ORG.UI.checkButtonShowTextures = $('#show-textures');
 ORG.UI.checkButtonShowInteractive = $('#show-interactive');
 ORG.UI.checkButtonShowNonInteractive = $('#show-non-interactive');
@@ -22,6 +23,22 @@ ORG.UI.checkButtonShowDevice.change(function (e) {
         ORG.scene.showDevice3DModel();
     } else {
         ORG.scene.hideDevice3DModel();
+    }
+});
+
+ORG.UI.checkButtonShowFloor.change(function (e) {
+    if ($(this).is(':checked') == true) {
+        ORG.scene.createFloor();
+    } else {
+        ORG.scene.removeFloor();
+    }
+});
+
+ORG.UI.checkButtonShowLocation.change(function (e) {
+    if ($(this).is(':checked') == true) {
+        ORG.scene.enableShowLocation();
+    } else {
+        ORG.scene.disableShowLocation();
     }
 });
 
@@ -81,13 +98,6 @@ ORG.UI.buttonExpand.click(function (e) {
     }
 });
 
-ORG.UI.checkButtonShowFloor.change(function (e) {
-    if ($(this).is(':checked') == true) {
-        ORG.scene.createFloor();
-    } else {
-        ORG.scene.removeFloor();
-    }
-});
 
 
 

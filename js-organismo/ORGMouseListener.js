@@ -13,7 +13,7 @@ class ORGMouseListener {
 
     constructor( domElement ) {
         this._domElement = domElement;
-        this._delegates = [];
+        this._listeners = [];
     }
 
     /**
@@ -24,34 +24,34 @@ class ORGMouseListener {
         var this_backup = this;
 
         $(this._domElement).bind("mousedown", function (event) {
-            for (var i=0; i<this_backup._delegates.length; i++) {
-                if (this_backup._delegates[i].onMouseDown) {
-                    this_backup._delegates[i].onMouseDown( event );
+            for (var i=0; i<this_backup._listeners.length; i++) {
+                if (this_backup._listeners[i].onMouseDown) {
+                    this_backup._listeners[i].onMouseDown( event );
                 }
             }
         });
 
         $(this._domElement).bind("mouseup", function (event) {
-            for (var i=0; i<this_backup._delegates.length; i++) {
-                if (this_backup._delegates[i].onMouseUp) {
-                    this_backup._delegates[i].onMouseUp( event );
+            for (var i=0; i<this_backup._listeners.length; i++) {
+                if (this_backup._listeners[i].onMouseUp) {
+                    this_backup._listeners[i].onMouseUp( event );
                 }
             }
         });
 
         $(this._domElement).bind("mousemove", function (event) {
-            for (var i=0; i<this_backup._delegates.length; i++) {
-                if (this_backup._delegates[i].onMouseMove) {
-                    this_backup._delegates[i].onMouseMove( event );
+            for (var i=0; i<this_backup._listeners.length; i++) {
+                if (this_backup._listeners[i].onMouseMove) {
+                    this_backup._listeners[i].onMouseMove( event );
                 }
             }
         });
 
         $(this._domElement).bind("contextmenu",function(event){
             event.preventDefault();
-            for (var i=0; i<this_backup._delegates.length; i++) {
-                if (this_backup._delegates[i].onContextMenu) {
-                    this_backup._delegates[i].onContextMenu( event );
+            for (var i=0; i<this_backup._listeners.length; i++) {
+                if (this_backup._listeners[i].onContextMenu) {
+                    this_backup._listeners[i].onContextMenu( event );
                 }
             }
         });
@@ -70,7 +70,7 @@ class ORGMouseListener {
      * @param delegate
      */
     addDelegate( delegate ) {
-        this._delegates.push( delegate );
+        this._listeners.push( delegate );
     }
 
     /**
@@ -78,9 +78,9 @@ class ORGMouseListener {
      * @param delegate
      */
     removeDelegate( delegate ) {
-        for (var i=0; i<this._delegates.length; i++) {
-            if ( this._delegates[i] == delegate) {
-                this._delegates.splice( i, 0);
+        for (var i=0; i<this._listeners.length; i++) {
+            if ( this._listeners[i] == delegate) {
+                this._listeners.splice( i, 0);
             }
         }
     }

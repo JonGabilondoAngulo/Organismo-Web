@@ -3,40 +3,28 @@
  */
 
 
-class ORGMap {
+class ORGMap extends ORGLocationBroadcaster {
 
     constructor() {
+
+        super();
+
         this._map = null;
-        this._delegates = [];
+        this._marker = null;
 
         this._map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -33.8688, lng: 151.2195},
             zoom: 13,
             mapTypeId: 'roadmap'
         });
+        this._elevationService = new google.maps.ElevationService();
+        this._geocoder = new google.maps.Geocoder();
 
         this._initAutocomplete();
     }
 
     get isCreated() {
         return !!this._map;
-    }
-
-    addDelegate( delegate ) {
-        this._delegates.push( delegate );
-    }
-
-    removeDelegate( delegate ) {
-        for (let i=0; i<this._delegates.length; i++) {
-            if ( this._delegates[i] == delegate) {
-                this._delegates.splice( i, 1);
-                break;
-            }
-        }
-    }
-
-    removeDelegates() {
-        this._delegates = [];
     }
 
     _initAutocomplete() {
@@ -52,7 +40,16 @@ class ORGMap {
             searchBox.setBounds( _this._map.getBounds());
         });
 
-        var markers = [];
+        this._map.addListener('rightclick', function(event) {
+            _this._onRightClick(event, _this);
+        });
+
+        this._map.addListener('click', function(event) {
+            _this._onClick(event, _this);
+        });
+
+
+        //var markers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
         // more details for that place.
         searchBox.addListener('places_changed', function () {
@@ -63,10 +60,12 @@ class ORGMap {
             }
 
             // Clear out the old markers.
-            markers.forEach(function (marker) {
-                marker.setMap(null);
-            });
-            markers = [];
+            //markers.forEach(function (marker) {
+            //    marker.setMap(null);
+            //});
+            //markers = [];
+
+            _this._removeMarker();
 
             // For each place, get the icon, name and location.
             const bounds = new google.maps.LatLngBounds();
@@ -75,21 +74,22 @@ class ORGMap {
                     console.log("Returned place contains no geometry");
                     return;
                 }
-                const icon = {
-                    url: place.icon,
-                    size: new google.maps.Size(71, 71),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
-
-                // Create a marker for each place.
-                markers.push(new google.maps.Marker({
-                    map: _this._map,
-                    icon: icon,
-                    title: place.name,
-                    position: place.geometry.location
-                }));
+                //const icon = {
+                //    url: place.icon,
+                //    size: new google.maps.Size(71, 71),
+                //    origin: new google.maps.Point(0, 0),
+                //    anchor: new google.maps.Point(17, 34),
+                //    scaledSize: new google.maps.Size(25, 25)
+                //};
+                //
+                //// Create a marker for each place.
+                //markers.push(new google.maps.Marker({
+                //    map: _this._map,
+                //    icon: icon,
+                //    title: place.name,
+                //    position: place.geometry.location
+                //}));
+                _this._createMarker(place.geometry.location);
 
                 if (place.geometry.viewport) {
                     // Only geocodes have viewport.
@@ -98,20 +98,73 @@ class ORGMap {
                     bounds.extend(place.geometry.location);
                 }
 
-                // Inform delegates.
-                const msg = ORGMessageBuilder.locationUpdate( place.geometry.location );
-                if (ORG.deviceController) {
-                    ORG.deviceController.sendRequest(msg);
-                }
-
-                for (let i=0; i<_this._delegates.length; i++) {
-                    if (_this._delegates[i].locationUpdate) {
-                        _this._delegates[i].locationUpdate( place.geometry.location, place.name );
-                    }
-                }
-
+                // Find location info, and broadcast.
+                _this._getLocationInfoAndBroadcast(place.geometry.location);
             });
             _this._map.fitBounds(bounds);
         });
     }
+
+    _onClick(event, ORGMap) {
+
+        ORGMap._removeMarker();
+        ORGMap._createMarker(event.latLng);
+        ORGMap._getLocationInfoAndBroadcast(event.latLng);
+    }
+
+    _onRightClick(event, ORGMap) {
+
+    }
+
+    _createMarker(location) {
+        this._marker = new google.maps.Marker({
+            position: location,
+            map: this._map,
+            animation: google.maps.Animation.DROP,
+            draggable: true
+        });
+    }
+
+    _removeMarker() {
+        if (this._marker) {
+            this._marker.setMap(null);
+        }
+    }
+
+    _getLocationInfoAndBroadcast(location) {
+        const _this = this;
+        this._geocodePosition(location, function(location, address, elevation) {
+            _this._broadcastLocation(location, address, elevation);
+        });
+    }
+
+    _geocodePosition(location, onCompletion) {
+        const _this = this;
+
+        this._geocoder.geocode({
+            latLng: location
+        }, function(responses) {
+            if (responses && responses.length > 0) {
+                _this._elevationPosition(location, responses[0].formatted_address, onCompletion);
+            } else {
+                _this._elevationPosition(location, null, onCompletion);
+            }
+        });
+    }
+
+    _elevationPosition(location, address, onCompletion) {
+        const _this = this;
+
+        this._elevationService.getElevationForLocations({
+            'locations': [location]
+        }, function(results, status) {
+
+            if (status === 'OK') {
+                if (results[0] && onCompletion) {
+                    onCompletion(location, address, results[0].elevation);
+                }
+            }
+        });
+    }
+
 }

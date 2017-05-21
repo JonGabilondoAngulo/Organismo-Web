@@ -50,4 +50,8 @@ class ORGDeviceController extends ORGDeviceBaseController {
     sendRequest(request) {
         this.webSocket.send( request);
     }
+
+    sendMessage(message) {
+        this.webSocket.send( message);
+    }
 }

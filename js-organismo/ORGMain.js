@@ -4,6 +4,8 @@ ORG.UI = {};
 
 ORG.canvasDomElem = document.getElementById('threejs-canvas');
 ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
+ORG.locationManager = new ORGLocationManager();
+ORG.locationManager.addListener( ORG.scene );
 ORG.deviceController = null;
 ORG.device = null;
 ORG.map = null;

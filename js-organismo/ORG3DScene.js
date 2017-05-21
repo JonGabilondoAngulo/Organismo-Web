@@ -7,10 +7,12 @@ const ORGSceneVisualizationMask = {
     ShowFloor : 0x1,
     ShowDevice : 0x2,
     ShowTooltips : 0x4,
-    ContinuousUpdate : 0x8
+    ShowLocation : 0x8,
+    ContinuousUpdate : 0x10
 }
 
 const kORGCameraTWEENDuration = 600.0;
+const kORGFloorPositionY = -450;
 
 
 /**
@@ -46,9 +48,10 @@ class ORG3DScene {
         this._threeRendererDOMElement = null; // threejs scene is displayed in this DOM element
         this._contextMenuManager = null;
         this._locationMarker = null;
-        //this._zPosition = 20.0;
+        this._lastLocationName = "?";
         this._sceneVisualFlags = ORGSceneVisualizationMask.ShowFloor |
             ORGSceneVisualizationMask.ShowDevice |
+            ORGSceneVisualizationMask.ShowLocation |
             ORGSceneVisualizationMask.ContinuousUpdate;
         this._treeVisualizationFlags = ORGTreeVisualizationMask.ShowNormalWindow |
             ORGTreeVisualizationMask.ShowAlertWindow |
@@ -113,6 +116,18 @@ class ORG3DScene {
             this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowFloor;
         } else {
             this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowFloor;
+        }
+    }
+
+    get flagShowLocation() {
+        return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowLocation;
+    }
+
+    set flagShowLocation(show ) {
+        if (show) {
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowLocation;
+        } else {
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowLocation;
         }
     }
 
@@ -246,14 +261,14 @@ class ORG3DScene {
         if ( this._device3DModel) {
             this._device3DModel.setOrientation(orientation);
         }
-        this.positionFloorUnderDevice();
+        this.devicePositionHasChanged();
     }
 
     setDeviceScreenSize(width, height) {
         if ( this._deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
-            this.positionFloorUnderDevice();
+            this.devicePositionHasChanged();
             this.createRaycasterForDeviceScreen();
         }
     }
@@ -312,21 +327,6 @@ class ORG3DScene {
         this._screenRaycaster = null;
     }
 
-    positionFloorUnderDevice() {
-        if ( this._deviceScreen && this._sceneFloor) {
-            var bBox = null;
-            if ( (this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice) && this._device3DModel ) {
-                bBox = this._device3DModel.getBoundingBox();
-            }
-            if ( !bBox) {
-                bBox = this._deviceScreen.boundingBox;
-            }
-            if ( bBox) {
-                this._sceneFloor.setPosition(0, bBox.min.y - 50, 0);
-            }
-        }
-    }
-
     setLiveScreen(live) {
         this.flagContinuousScreenshot = live;
         if ( this._deviceScreen) {
@@ -367,7 +367,7 @@ class ORG3DScene {
     createFloor() {
         if ( !this._sceneFloor) {
             this._sceneFloor = this._createFloor( this._threeScene);
-            this.positionFloorUnderDevice();
+            this.devicePositionHasChanged();
         }
     };
 
@@ -496,7 +496,7 @@ class ORG3DScene {
     addDevice3DModel( device3DModel ) {
         this._device3DModel = device3DModel;
         this._device3DModel.addToScene( this._threeScene);
-        this.positionFloorUnderDevice();
+        this.devicePositionHasChanged();
     }
 
     showDevice3DModel() {
@@ -509,7 +509,24 @@ class ORG3DScene {
             this._device3DModel.destroy();
             this._device3DModel = null;
         }
-        this.positionFloorUnderDevice();
+        this.devicePositionHasChanged();
+    }
+
+    enableShowLocation() {
+        this.flagShowLocation = true;
+
+        if (!this._locationMarker) {
+            const floorPosition = this._calculateFloorPosition();
+            this._locationMarker = new ORG3DLocationMarker( floorPosition, this._lastLocationName, this._threeScene);
+        }
+    }
+
+    disableShowLocation() {
+        this.flagShowLocation = false;
+        if (this._locationMarker) {
+            this._locationMarker.destructor();
+            this._locationMarker = null;
+        }
     }
 
     setShowPrivate(flag) {
@@ -569,17 +586,32 @@ class ORG3DScene {
     setShowAlertWindow(flag) {
     }
 
-    // Map Delegate
-    locationUpdate( location, locationName) {
+    devicePositionHasChanged() {
+        const bBox = this._deviceBoundingBox();
+        this._adjustFloorPosition(bBox);
+        this._adjustLocationMarkerPosition(bBox);
+    }
 
-        if (!this._locationMarker) {
-            this._locationMarker = new ORG3DLocationMarker( null, locationName, this._threeScene);
-        } else {
-            this._locationMarker.updateDescriptor(locationName);
+    //---
+    // Map Delegate
+    //---
+    locationUpdate( location, locationName, elevation) {
+
+        this._lastLocationName = locationName;
+
+        if (this.flagShowLocation) {
+            if (!this._locationMarker) {
+                const floorPosition = this._calculateFloorPosition();
+                this._locationMarker = new ORG3DLocationMarker( floorPosition, locationName, this._threeScene);
+            } else {
+                this._locationMarker.updateDescriptor(locationName);
+            }
         }
      }
 
+    //---------
     // PRIVATE
+    //---------
 
     _initialize(domContainer, showFloor) {
 
@@ -624,8 +656,16 @@ class ORG3DScene {
         ORG.WindowResize( this._threeRenderer, this._threeCamera, this._canvasDomElement);
     }
 
+    _calculateFloorPosition() {
+        if (this._sceneFloor) {
+            return this._sceneFloor.position;
+        } else {
+            return new THREE.Vector3(0, kORGFloorPositionY, 0);
+        }
+    }
+
     _createFloor( threeScene ) {
-        return new ORG3DSceneFloor(4000, 50, true, threeScene);
+        return new ORG3DSceneFloor(4000, 50, true, threeScene, kORGFloorPositionY);
     }
 
     _removeFloor() {
@@ -662,6 +702,29 @@ class ORG3DScene {
         if (this._deviceScreen && this._screenshotNeedsUpdate && this._screenshotImage) {
             this._screenshotNeedsUpdate = false;
             this._deviceScreen.setScreenshot(this._screenshotImage);
+        }
+    }
+
+    _deviceBoundingBox() {
+        let bBox = null;
+        if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice) && this._device3DModel) {
+            bBox = this._device3DModel.getBoundingBox();
+        }
+        if (!bBox && this._deviceScreen) {
+            bBox = this._deviceScreen.boundingBox;
+        }
+        return bBox;
+    }
+
+    _adjustFloorPosition(deviceBoundingBox) {
+        if (deviceBoundingBox && this._sceneFloor) {
+            this._sceneFloor.setPosition(0, deviceBoundingBox.min.y - 50, 0);
+        }
+    }
+
+    _adjustLocationMarkerPosition(deviceBoundingBox) {
+        if ( deviceBoundingBox && this._locationMarker) {
+            this._locationMarker.setPositionY(deviceBoundingBox.min.y - 50);
         }
     }
 

@@ -22,19 +22,19 @@ class ORG3DRaycaster {
         this._threeTargetObject = threeTargetObject; // The threejs object to raycast on
         this._rendererDomElement = rendererDomElement;
         this._threeCamera = threeCamera;
-        this._delegates = [];
+        this._listeners = [];
         this._enabled = true;
     }
 
 
     addDelegate( delegate ) {
-        this._delegates.push( delegate );
+        this._listeners.push( delegate );
     }
 
     removeDelegate( delegate ) {
-        for (var i=0; i<this._delegates.length; i++) {
-            if ( this._delegates[i] == delegate) {
-                this._delegates.splice( i, 1);
+        for (var i=0; i<this._listeners.length; i++) {
+            if ( this._listeners[i] == delegate) {
+                this._listeners.splice( i, 1);
                 break;
             }
         }
@@ -114,9 +114,9 @@ class ORG3DRaycaster {
         }
 
         // Inform delegates about the intersected element, null is sent as well.
-        for (var i=0; i<this._delegates.length; i++) {
-            if (this._delegates[i].mouseOverElement) {
-                this._delegates[i].mouseOverElement( elementToHilite, intersectionPoint );
+        for (var i=0; i<this._listeners.length; i++) {
+            if (this._listeners[i].mouseOverElement) {
+                this._listeners[i].mouseOverElement( elementToHilite, intersectionPoint );
             }
         }
     }

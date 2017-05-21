@@ -131,7 +131,7 @@ class ORGWebSocketDelegate {
 		}
 
 		// make sure the floor is at the right height
-		ORG.scene.positionFloorUnderDevice();
+		ORG.scene.devicePositionHasChanged();
 
 		// ask for the first screenshot
 		ORG.deviceController.requestScreenshot();
