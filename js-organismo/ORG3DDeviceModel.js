@@ -4,13 +4,17 @@
 
 
 /**
- * Class to wrapp the actions on the THREE model of a device.
+ * Class to wrap the actions on the THREE model of a device.
  */
 class ORG3DDeviceModel {
 
     constructor( threeObj ) {
         this.threeObj = threeObj; // It is a THREE.Group. Don't have geometry to compute bbox.
         this.threeScene = null;
+    }
+
+    get THREEObject() {
+        return this.threeObj;
     }
 
     addToScene( threeScene) {

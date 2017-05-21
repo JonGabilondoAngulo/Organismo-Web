@@ -61,9 +61,9 @@ class ORG3DLocationMarker {
         return marker;
     }
 
-    _createDescriptor(text) {
+    _createDescriptor(address) {
 
-        const textGeom = new THREE.TextGeometry(text, {
+        const addressGeom = new THREE.TextGeometry(address, {
             font: ORG.font_helvetiker_regular,
             size: 40,
             height: 5,
@@ -75,7 +75,7 @@ class ORG3DLocationMarker {
         });
 
         const material = new THREE.MeshPhongMaterial({color: 0xeeeeee});
-        const textMesh = new THREE.Mesh(textGeom, material);
+        const textMesh = new THREE.Mesh(addressGeom, material);
         this._placeDescriptor(textMesh);
         return textMesh;
     }
@@ -99,13 +99,11 @@ class ORG3DLocationMarker {
             const kTextOffset = 100;
 
             textMesh.position.set( 0, 0, 0 );
-            textMesh.rotation.set( 0, 0, 0 );
+            textMesh.rotation.set( THREE.Math.degToRad( -90 ), 0, 0 );
             textMesh.updateMatrix();
             textMesh.geometry.computeBoundingBox();
-
             const centerPoint = textMesh.geometry.boundingBox.getCenter();
-            textMesh.geometry.rotateX(THREE.Math.degToRad( -90 ));
-            textMesh.geometry.translate( -centerPoint.x, this._marker.position.y, kTextOffset );
+            textMesh.position.set( -centerPoint.x, this._marker.position.y, kTextOffset );
         }
     }
 }

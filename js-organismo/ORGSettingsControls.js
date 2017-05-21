@@ -16,6 +16,7 @@ ORG.UI.checkButtonShowKeyboardWindow = $('#show-keyboard-window');
 ORG.UI.checkButtonShowAlertWindow = $('#show-alert-window');
 ORG.UI.buttonExpand = $('#expand-button');
 ORG.UI.buttonResetCamera = $('#reset-camera-button');
+ORG.UI.buttonRotateDevice = $('#rotate-device-button');
 
 
 ORG.UI.checkButtonShowDevice.change(function (e) {
@@ -82,6 +83,10 @@ ORG.UI.checkButtonShowAlertWindow.change(function (e) {
 
 ORG.UI.buttonResetCamera.click(function (e) {
     ORG.scene.resetCameraPosition();
+});
+
+ORG.UI.buttonRotateDevice.click(function (e) {
+    ORG.scene.rotateDevice();
 });
 
 ORG.UI.buttonExpand.click(function (e) {

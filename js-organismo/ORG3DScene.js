@@ -49,6 +49,7 @@ class ORG3DScene {
         this._contextMenuManager = null;
         this._locationMarker = null;
         this._lastLocationName = "?";
+        this._transformControl = null;
         this._sceneVisualFlags = ORGSceneVisualizationMask.ShowFloor |
             ORGSceneVisualizationMask.ShowDevice |
             ORGSceneVisualizationMask.ShowLocation |
@@ -422,6 +423,22 @@ class ORG3DScene {
         }
     }
 
+    rotateDevice() {
+        if (this._transformControl) {
+            this._threeScene.remove( this._transformControl );
+            this._transformControl = null;
+        } else {
+            const _this = this;
+            this._transformControl = new THREE.TransformControls( this._threeCamera, this._threeRenderer.domElement );
+            this._transformControl.setMode("rotate");
+            this._transformControl.addEventListener( 'change', function() {
+                _this._transformControlChanged();
+            } );
+            this._transformControl.attach( this._deviceScreen.screenPlane );
+            this._threeScene.add( this._transformControl );
+        }
+    }
+
     /**
      * Locate the camera at default position and looking a t 0,0,0.
      */
@@ -453,6 +470,36 @@ class ORG3DScene {
             z: 0}, kORGCameraTWEENDuration)
             .easing( TWEEN.Easing.Quadratic.InOut)
             .start();
+    }
+
+    /**
+     * Function to reset the rotation of the Device.
+     */
+    resetDevicePosition() {
+
+        const screenObject = this._transformControl.object;
+
+        if (this._deviceScreen) {
+            this._deviceScreen.screenPlane.rotation.set(0,0,0);
+        }
+
+        if (this._device3DModel) {
+
+            // Translate device to 0
+            var b = new THREE.Box3().setFromObject(this._device3DModel.THREEObject);
+            var position = b.getCenter();
+            this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
+
+            // reset rotation of device
+            var deviceMatrix = new THREE.Matrix4();
+            deviceMatrix.makeRotationFromQuaternion(this._device3DModel.THREEObject.quaternion);
+            var deviceInverseMatrix = new THREE.Matrix4();
+            deviceInverseMatrix.getInverse(deviceMatrix);
+            this._device3DModel.THREEObject.applyMatrix(deviceInverseMatrix);
+
+            // translate device
+            this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
+        }
     }
 
     /**
@@ -751,6 +798,9 @@ class ORG3DScene {
         //var deviceMotionChanged = false;
 
         this._updateScreenshot();
+        if (this._transformControl) {
+            this._transformControl.update();
+        }
 /*
         _keyboardState.update();
 
@@ -856,5 +906,37 @@ class ORG3DScene {
         //var timeOffset = uniforms.time.value + attributes.customOffset.value[ v ];
         //particleGeometry.vertices[v] = position(timeOffset);
         //iPhone5Object.setPosition( position(timeOffset));
+    }
+
+    _transformControlChanged() {
+        if (this._transformControl) {
+            const screenObject = this._transformControl.object;
+            if (screenObject) {
+                if (this._device3DModel) {
+
+                    // sync 3d device model to screen. translate to 0, rotate, translate.
+
+                    // Translate device to 0
+                    var b = new THREE.Box3().setFromObject(this._device3DModel.THREEObject);
+                    var position = b.getCenter();
+                    this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
+
+                    // reset rotation of device
+                    var deviceMatrix = new THREE.Matrix4();
+                    deviceMatrix.makeRotationFromQuaternion(this._device3DModel.THREEObject.quaternion);
+                    var deviceInverseMatrix = new THREE.Matrix4();
+                    deviceInverseMatrix.getInverse(deviceMatrix);
+                    this._device3DModel.THREEObject.applyMatrix(deviceInverseMatrix);
+
+                    // rotate device
+                    var screenMatrix = new THREE.Matrix4();
+                    screenMatrix.makeRotationFromQuaternion(screenObject.quaternion);
+                    this._device3DModel.THREEObject.applyMatrix(screenMatrix);
+
+                    // translate device
+                    this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
+                }
+            }
+        }
     }
 }

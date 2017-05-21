@@ -52,7 +52,8 @@ class ORGContextMenuManager {
                 } else {
                     return {
                         items: {
-                            "reset-camera": {name: "Reset Camera"}
+                            "reset-camera-position": {name: "Reset Camera Position"},
+                            "reset-device-position": {name: "Reset Device Position"}
                         }
                     };
                 }
@@ -149,9 +150,12 @@ class ORGContextMenuManager {
     _processMenuSelectionOnVoid(menuOptionKey, scene) {
 
         switch (menuOptionKey) {
-            case 'reset-camera' : {
+            case 'reset-camera-position' : {
                 scene.resetCameraPosition();
-            }
+            } break;
+            case 'reset-device-position' : {
+                scene.resetDevicePosition();
+            } break;
         }
     }
 }
