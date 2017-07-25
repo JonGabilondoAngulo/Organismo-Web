@@ -11,3 +11,6 @@
 	path = bootstrap
 	url = https://github.com/twbs/bootstrap.git
 	branch = master
+[submodule "flux"]
+	path = flux
+	url = https://github.com/facebook/flux.git
