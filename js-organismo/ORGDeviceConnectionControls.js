@@ -3,6 +3,7 @@
  */
 
 ORG.UI.connectButton = $('#connect-button');
+//ORG.UI.connectDriversMenu = $('#connect-drivers-menu');
 ORG.UI.deviceNameLabel = $('#device-name-label');
 ORG.UI.deviceSystemVersionLabel = $('#device-system-version-label');
 ORG.UI.deviceModelLabel = $('#device-model-label');
@@ -11,7 +12,8 @@ ORG.UI.testAppVersionLabel = $('#testapp-version-label');
 ORG.UI.testAppBundleIdLabel = $('#testapp-bundleid-label');
 
 $('.dropdown-menu a').click(function(){
-    $('#selected').text($(this).text());
+    var driverName = $(this).text();
+    $('#selected').text(driverName);
 });
 
 ORG.UI.connectButton.click(function(e) {
@@ -23,7 +25,13 @@ ORG.UI.connectButton.click(function(e) {
     }
 
     if (ORG.deviceController == null) {
-        ORG.deviceController = new ORGDeviceController(deviceURL, 5567);
+
+        var driverName = $('#selected').text();
+        if (driverName == "Organismo") {
+            ORG.deviceController = new ORGDeviceController(deviceURL, 5567);
+        } else if (driverName == "iDeviceProxy") {
+            ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000);
+        }
     }
 
     if (ORG.deviceController.isConnected) {

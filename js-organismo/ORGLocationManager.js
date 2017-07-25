@@ -3,10 +3,10 @@
  */
 
 /**
- * Class to simulate a location, altitude sensor. It does generate the data by itself, other services like Map feed this class with the location data.
+ * Class to simulate a location+altitude sensor. It does not generate the data by itself, other services like Map (LocationProvider) feed this class with the location data.
  * This class is in charge of passing the location data to the connected devices.
  */
-class ORGLocationManager extends ORGLocationBroadcaster {
+class ORGLocationManager extends ORGLocationProvider {
 
     constructor() {
         super();
@@ -39,8 +39,10 @@ class ORGLocationManager extends ORGLocationBroadcaster {
         this._elevation = elevation;
 
         if (ORG.deviceController) {
-            const msg = ORGMessageBuilder.locationUpdate( location, elevation );
-            ORG.deviceController.sendMessage(msg);
+            ORG.deviceController.sendLocationUpdate( location.lat(), location.lng());
+
+            //const msg = ORGMessageBuilder.locationUpdate( location, elevation );
+            //ORG.deviceController.sendMessage(msg);
         }
 
         this._broadcastLocation(location, address, elevation);

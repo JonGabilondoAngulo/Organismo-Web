@@ -17,6 +17,15 @@ ORG.UI.checkButtonShowAlertWindow = $('#show-alert-window');
 ORG.UI.buttonExpand = $('#expand-button');
 ORG.UI.buttonResetCamera = $('#reset-camera-button');
 ORG.UI.buttonRotateDevice = $('#rotate-device-button');
+ORG.UI.buttonItineraryStart = $('#itinerary-run');
+ORG.UI.buttonItineraryStop = $('#itinerary-stop');
+ORG.UI.buttonItineraryPause = $('#itinerary-pause');
+ORG.UI.buttonItineraryResume = $('#itinerary-resume');
+ORG.UI.startPoint = $('#start-point');
+ORG.UI.endPoint = $('#end-point');
+
+// Map
+ORG.UI.buttonResetItinerary = $('#reset-itinerary');
 
 
 ORG.UI.checkButtonShowDevice.change(function (e) {
@@ -103,6 +112,18 @@ ORG.UI.buttonExpand.click(function (e) {
     }
 });
 
-
-
-
+ORG.UI.buttonResetItinerary.click(function (e) {
+    ORG.map.resetItinerary();
+});
+ORG.UI.buttonItineraryStart.click(function (e) {
+    ORG.map.run();
+});
+ORG.UI.buttonItineraryStop.click(function (e) {
+    ORG.map.stop();
+});
+ORG.UI.buttonItineraryPause.click(function (e) {
+    ORG.map.pause();
+});
+ORG.UI.buttonItineraryResume.click(function (e) {
+    ORG.map.resume();
+});

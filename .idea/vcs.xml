@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/bootstrap" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/flux" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/jQuery-contextMenu" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/jsoneditor" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/three.js" vcs="Git" />

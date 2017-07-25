@@ -10,8 +10,8 @@ ORG.deviceController = null;
 ORG.device = null;
 ORG.map = null;
 
-var loader = new THREE.FontLoader();
-loader.load( 'three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+ORG.fontLoader = new THREE.FontLoader();
+ORG.fontLoader.load( 'three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
     ORG.font_helvetiker_regular = font;
 } );
 
@@ -21,3 +21,51 @@ ORG.Request = {
     DeviceInfo : "device-info",
     Screenshot : "screenshot",
     ElementTree : "element-tree"};
+
+
+ORG.dispatcher = new Flux.Dispatcher();
+ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
+
+
+$( "#3d-canvas-col" ).resizable({
+    handles: 'e',
+    minWidth: 500,
+    resize:function(event,ui){
+        //var x=ui.element.outerWidth();
+        //var y=ui.element.outerHeight();
+        //var par=$(this).parent().width();
+        //var ele=ui.element;
+        //var factor = par-x;
+
+        //
+        //if (x==par) {
+        //    jsEditor.resize();
+        //    cssEditor.resize();
+        //    htmEditor.resize();
+        //    return;
+        //}
+        //
+        //$.each(ele.siblings(),function(idx,item){
+        //
+        //    ele.siblings().eq(idx).css('height',y+'px');
+        //    ele.siblings().eq(idx).css('width',(factor)+'px');
+        //
+        //});
+        //
+        //if (x>=(par-100)) {
+        //    $(".resize").resizable("option","maxWidth",ui.size.width);
+        //    return;
+        //}
+        //
+        //jsEditor.resize();
+        //cssEditor.resize();
+        //htmEditor.resize();
+    }
+
+
+});
+
+
+google.charts.load('current', {'packages' : ['columnchart']});
+//google.charts.setOnLoadCallback(function() { sendAndDraw('') });
+

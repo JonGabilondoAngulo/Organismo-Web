@@ -66,9 +66,9 @@ class ORG3DScene {
         this._initialize(domContainer, this.flagShowFloor);
     }
 
-    /**
-     * Properties
-     */
+    //------------------------------------------------------------------------------------------------------------------
+    // GET/SET
+    //------------------------------------------------------------------------------------------------------------------
     get isExpanded() {
         return this._uiExpanded;
     }
@@ -186,6 +186,10 @@ class ORG3DScene {
             this._treeVisualizationFlags &= ~ORGTreeVisualizationMask.ShowScreenshots;
         }
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // PUBLIC
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * Remove the Device from the scene. After device disconnection all models and data of device must be removed.
@@ -645,26 +649,32 @@ class ORG3DScene {
         this._adjustLocationMarkerPosition(bBox);
     }
 
-    //---
-    // Map Delegate
-    //---
+    //------------------------------------------------------------------------------------------------------------------
+    //  DELEGATES
+    //------------------------------------------------------------------------------------------------------------------
+
     locationUpdate( location, locationName, elevation) {
 
-        this._lastLocationName = locationName;
+        if (locationName) {
+            this._lastLocationName = locationName;
+        } else {
+            this._lastLocationName = location.lat() + "  " + location.lng();
+        }
 
         if (this.flagShowLocation) {
             if (!this._locationMarker) {
                 const floorPosition = this._calculateFloorPosition();
-                this._locationMarker = new ORG3DLocationMarker( floorPosition, locationName, this._threeScene);
+                this._locationMarker = new ORG3DLocationMarker( floorPosition, this._lastLocationName, this._threeScene);
             } else {
-                this._locationMarker.updateDescriptor(locationName);
+                this._locationMarker.updateDescriptor(this._lastLocationName);
             }
         }
      }
 
-    //---------
+
+    //------------------------------------------------------------------------------------------------------------------
     // PRIVATE
-    //---------
+    //------------------------------------------------------------------------------------------------------------------
 
     _initialize(domContainer, showFloor) {
 
@@ -707,6 +717,7 @@ class ORG3DScene {
 
         this._render();
         ORG.WindowResize( this._threeRenderer, this._threeCamera, this._canvasDomElement);
+
     }
 
     _calculateFloorPosition() {

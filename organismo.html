@@ -10,8 +10,14 @@
     <link rel="stylesheet" type="text/css" href="css/navigator-bar.css"/>
     <link rel="stylesheet" type="text/css" href="css/map.css"/>
 
+    <!--<script type="text/javascript" src="http://www.google.com/jsapi"></script>-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback="></script>
+
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script src="flux/dist/Flux.js"></script>
+    <script src="flux/dist/FluxUtils.js"></script>
 
     <script type="text/javascript">
         // Change JQueryUI plugin names to fix name collision with Bootstrap.
@@ -40,7 +46,7 @@
     <script type="text/javascript" src="three.js/examples/js/renderers/CSS3DRenderer.js"></script>
     <script type="text/javascript" src="three.js/examples/js/controls/OrbitControls.js"></script>
     <script type="text/javascript" src="three.js/examples/js/controls/TransformControls.js"></script>
-    <script type="text/javascript" src="js/KeyboardState.js"></script>
+    <script type="text/javascript" src="js-third-party/KeyboardState.js"></script>
     <script type="text/javascript" src="three.js/examples/js/loaders/OBJLoader.js"></script>
     <script type="text/javascript" src="three.js/examples/js/libs/tween.min.js"></script>
     <script type="text/javascript" src='js-organismo/ORG.WindowResize.js'></script>
@@ -56,13 +62,15 @@
     <script type="text/javascript" src="js-organismo/ORGMessageBuilder.js"></script>
     <script type="text/javascript" src="js-organismo/ORGContextMenuManager.js"></script>
     <script type="text/javascript" src="js-organismo/ORGFloorMap.js"></script>
-    <script type="text/javascript" src="js-organismo/ORGLocationBroadcaster.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGLocationProvider.js"></script>
     <script type="text/javascript" src="js-organismo/ORGMap.js"></script>
     <script type="text/javascript" src="js-organismo/ORGDevice.js"></script>
     <script type="text/javascript" src="js-organismo/ORGTestApp.js"></script>
-    <script type="text/javascript" src="js-organismo/ORGDeviceBaseController.js"></script>
-    <script type="text/javascript" src="js-organismo/ORGDeviceWDAController.js"></script>
-    <script type="text/javascript" src="js-organismo/ORGDeviceController.js"></script>
+    <script type="text/javascript" src="js-organismo/device-controllers/ORGDeviceBaseController.js"></script>
+    <script type="text/javascript" src="js-organismo/device-controllers/ORGDeviceController.js"></script>
+    <script type="text/javascript" src="js-organismo/device-controllers/ORGDeviceWDAController.js"></script>
+    <script type="text/javascript" src="js-organismo/device-controllers/ORGWebSocketDeviceController.js"></script>
+    <script type="text/javascript" src="js-organismo/device-controllers/ORGiMobileDeviceController.js"></script>
     <script type="text/javascript" src="js-organismo/ORG3DSceneFloor.js"></script>
     <script type="text/javascript" src="js-organismo/ORG3DDeviceModelLoader.js"></script>
     <script type="text/javascript" src="js-organismo/ORG3DDeviceModel.js"></script>
@@ -96,7 +104,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="#">Organismo</a></li>
-                    <li><a href="#">WDA</a></li>
+                    <li><a href="#">iDeviceProxy</a></li>
                 </ul>
             </div>
         </div>
@@ -133,7 +141,7 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-md-9 nopadding">
+            <div class="col-md-9 nopadding resize" id="3d-canvas-col">
                 <div id="threejs-canvas"></div>
             </div>
 
@@ -282,21 +290,92 @@
                                 });
                             </script>
 
-                            <div class='smallCheckboxDiv'>
-                                <input type="checkbox" id="broadcast-location" title="broadcast-location" checked/>
-                                <div class='inlineCheckboxLabel'>Location</div>
+                            <div id="chart_div" style="width:100%" onmouseout=""></div>
+
+
+                            <div>
+                                <label type="button" class="btn btn-primary" id="reset-itinerary">Reset</label>
+                                <!--<button id="reset-itinerary" class="btn btn-default">Reset</button>-->
+                                <label class="checkbox-inline"><input type="checkbox" value="true">Autocenter</label>
+                                <span class="location-small-values"><small id="label-distance"></small> <small id="label-duration"></small> </span>
                             </div>
 
-                            <div class='smallCheckboxDiv'>
-                                <input type="checkbox" id="broadcast-altitude" title="broadcast-altitude" checked/>
-                                <div class='inlineCheckboxLabel'>Altitude</div>
+                            <br/>
+
+
+                                    <!--<label>Distance:</label>&nbsp; &nbsp; <label id="label-distance">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Heading:</label>&nbsp; &nbsp; <label id="label-heading">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Pressure:</label>&nbsp; &nbsp; <label id="label-pressure">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Speed:</label>&nbsp; &nbsp; <label id="label-speed">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Orientation:&nbsp;</label><label id="label-orientation"></label><br/>-->
+                                    <!--<label>Attitude:&nbsp;</label><label id="label-attitude"></label><br/>-->
+
+                            <label for="start-point">Start</label> <span class="location-small-values"><small id="label-lat"></small>  &nbsp;<small id="label-lng">&nbsp;</small> <small id="label-altitude">&nbsp;</small></span>
+                            <input id="start-point" class="form-control" placeholder="Origin" type="text"/><br/>
+
+                            <label for="end-point">End</label><span class="location-small-values"><small id="label-lat-end"></small>  &nbsp;<small id="label-lng-end">&nbsp;</small> <small id="label-altitude-end">&nbsp;</small></span>
+                            <input id="end-point" class="form-control" placeholder="Destination" type="text"/><br/>
+
+
+                            <div class="btn-group">
+                                <button id="mode-dropdown" type="button" class="btn btn-default">Direct</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Direct</a></li>
+                                    <li><a href="#">Driving</a></li>
+                                    <li><a href="#">Bicycling</a></li>
+                                    <li><a href="#">Walking</a></li>
+                                    <li><a href="#">Transit</a></li>
+                                </ul>
                             </div>
+
+                            <div class="btn-group">
+                                <button id="speed-dropdown" type="button" class="btn btn-default">Real Time</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Real Time</a></li>
+                                    <li><a href="#">x2</a></li>
+                                    <li><a href="#">x5</a></li>
+                                    <li><a href="#">x10</a></li>
+                                </ul>
+                            </div>
+
+                            <input id="startDate" type="datetime" value="" placeholder="Now"/>
+                            <br/>
+
+                            <div>
+                                Report:
+                                <!--<form action="">-->
+                                <!--<input type="checkbox" name="reporting" value="Location">Location-->
+                                <!--<input type="checkbox" name="reporting" value="Elevation">Elevation-->
+                                <!--<input type="checkbox" name="reporting" value="Location">Orientation-->
+                                <!--<input type="checkbox" name="reporting" value="Attitude">Attitude-->
+                                <!--</form>-->
+
+                                <label class="checkbox-inline"><input type="checkbox" value="true" checked="checked">Location</label>
+                                <label class="checkbox-inline"><input type="checkbox" value="true" checked="checked">Elevation</label>
+                                <label class="checkbox-inline"><input type="checkbox" value="" disabled>Orientation</label>
+                                <label class="checkbox-inline"><input type="checkbox" value="" disabled>Attitude</label>
+                            </div>
+
+                            <!--<br/>-->
+
+                            <label type="button" class="btn btn-primary" id="itinerary-run">Run</label>
+                            <label type="button" class="btn btn-primary" id="itinerary-pause">Pause</label>
+                            <label type="button" class="btn btn-primary" id="itinerary-resume">Resume</label>
+                            <label type="button" class="btn btn-primary" id="itinerary-stop">Stop</label>
+
 
                         </div>
                         <div class="tab-pane" id="tab-tree">
                             <div id="json-editor"></div>
                         </div>
-                        <!--</div>-->
                     </div>
                 </div>
             </div>
@@ -307,13 +386,17 @@
 
 <script type="text/javascript" src="js-organismo/ORG3DRaycaster.js"></script>
 <script type="text/javascript" src="js-organismo/ORGLocationManager.js"></script>
+<script type="text/javascript" src="js-organismo/ORGFluxStore.js"></script>
 <script type="text/javascript" src="js-organismo/ORGMain.js"></script>
 <script type="text/javascript" src="js-organismo/ORGDeviceConnectionControls.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTreeEditor.js"></script>
 <script type="text/javascript" src="js-organismo/ORGSettingsControls.js"></script>
 <script type="text/javascript" src="js-organismo/ORG3DLocationMarker.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback="
-        async defer></script>
+<script type="text/javascript" src="js-third-party/dist.js"></script>
+<script type="text/javascript" src="js-third-party/epoly.js"></script>
+<script type="text/javascript" src="js-organismo/ORGItinerary.js"></script>
+<script type="text/javascript" src="js-organismo/ORGItineraryLocation.js"></script>
+<script type="text/javascript" src="js-organismo/ORGItineraryRunner.js"></script>
 
 </body>
 </html>

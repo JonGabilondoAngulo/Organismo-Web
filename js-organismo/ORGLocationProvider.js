@@ -2,7 +2,11 @@
  * Created by jongabilondo on 21/05/2017.
  */
 
-class ORGLocationBroadcaster {
+/**
+ * Base class for the Objects that are capable of generating location data. Like a Map.
+ * It provides a Broadcasting capabilities to inform listeners of location updates.
+ */
+class ORGLocationProvider {
 
     constructor() {
         this._listeners = [];
