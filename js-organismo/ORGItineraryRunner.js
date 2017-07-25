@@ -63,10 +63,10 @@ class ORGItineraryRunner extends ORGLocationProvider {
         if (distance > this._itinerary.length) {
             return;
         }
-        if (this.state == "idle") {
+        if (this._state == ORG.RunnerState.IDLE) {
             return;
         }
-        if (this.state == "paused") {
+        if (this._state == ORG.RunnerState.PAUSED) {
             return;
         }
 
