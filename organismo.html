@@ -66,11 +66,11 @@
     <script type="text/javascript" src="js-organismo/ORGMap.js"></script>
     <script type="text/javascript" src="js-organismo/ORGDevice.js"></script>
     <script type="text/javascript" src="js-organismo/ORGTestApp.js"></script>
-    <script type="text/javascript" src="js-organismo/device-controllers/ORGDeviceBaseController.js"></script>
-    <script type="text/javascript" src="js-organismo/device-controllers/ORGDeviceController.js"></script>
-    <script type="text/javascript" src="js-organismo/device-controllers/ORGDeviceWDAController.js"></script>
-    <script type="text/javascript" src="js-organismo/device-controllers/ORGWebSocketDeviceController.js"></script>
-    <script type="text/javascript" src="js-organismo/device-controllers/ORGiMobileDeviceController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDeviceBaseController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDeviceController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGDeviceWDAController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGWebSocketDeviceController.js"></script>
+    <script type="text/javascript" src="js-organismo/ORGiMobileDeviceController.js"></script>
     <script type="text/javascript" src="js-organismo/ORG3DSceneFloor.js"></script>
     <script type="text/javascript" src="js-organismo/ORG3DDeviceModelLoader.js"></script>
     <script type="text/javascript" src="js-organismo/ORG3DDeviceModel.js"></script>
@@ -98,13 +98,13 @@
         <div class='mynavbar-header'>
             <div class="btn-group">
                 <button id="selected" type="button" class="btn btn-default">Organismo</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button id="selected2" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <ul class="dropdown-menu">
+                <ul id="selected3" class="dropdown-menu">
                     <li><a href="#">Organismo</a></li>
-                    <li><a href="#">iDeviceProxy</a></li>
+                    <li><a href="#">iDeviceControlProxy</a></li>
                 </ul>
             </div>
         </div>
@@ -297,11 +297,10 @@
                                 <label type="button" class="btn btn-primary" id="reset-itinerary">Reset</label>
                                 <!--<button id="reset-itinerary" class="btn btn-default">Reset</button>-->
                                 <label class="checkbox-inline"><input type="checkbox" value="true">Autocenter</label>
-                                <span class="location-small-values"><small id="label-distance"></small> <small id="label-duration"></small> </span>
+                                <span class="location-small-values"><span class="glyphicon glyphicon-road" aria-hidden="true"></span><small id="label-distance"></small> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><small id="label-duration"></small> </span>
                             </div>
 
                             <br/>
-
 
                                     <!--<label>Distance:</label>&nbsp; &nbsp; <label id="label-distance">&nbsp; &nbsp; </label><br/>-->
                                     <!--<label>Heading:</label>&nbsp; &nbsp; <label id="label-heading">&nbsp; &nbsp; </label><br/>-->
@@ -310,30 +309,49 @@
                                     <!--<label>Orientation:&nbsp;</label><label id="label-orientation"></label><br/>-->
                                     <!--<label>Attitude:&nbsp;</label><label id="label-attitude"></label><br/>-->
 
-                            <label for="start-point">Start</label> <span class="location-small-values"><small id="label-lat"></small>  &nbsp;<small id="label-lng">&nbsp;</small> <small id="label-altitude">&nbsp;</small></span>
-                            <input id="start-point" class="form-control" placeholder="Origin" type="text"/><br/>
+                            <label for="start-point">Start</label>
+                            <span id='button-send-location' role='button' class="glyphicon glyphicon-phone"></span>
+                            <!--<div id="TrashButton" class="glyphicon glyphicon-phone" style="cursor:pointer"></div>-->
+                            <!--<button class="btn btn-info" type="button"> <span class="glyphicon glyphicon-phone"></span> </button>-->
 
-                            <label for="end-point">End</label><span class="location-small-values"><small id="label-lat-end"></small>  &nbsp;<small id="label-lng-end">&nbsp;</small> <small id="label-altitude-end">&nbsp;</small></span>
+                            <span class="location-small-values">
+                                <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                                <small id="label-lat"></small>  &nbsp;
+                                <small id="label-lng">&nbsp;</small>
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                <small id="label-altitude">&nbsp;</small>
+                            </span>
+                            <input id="start-point" class="form-control" placeholder="Origin" type="text"/>
+
+                            <br/>
+
+                            <label for="end-point">End</label>
+                            <span class="location-small-values">
+                                <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                                <small id="label-lat-end"></small>  &nbsp;
+                                <small id="label-lng-end">&nbsp;</small>
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                <small id="label-altitude-end">&nbsp;</small>
+                            </span>
                             <input id="end-point" class="form-control" placeholder="Destination" type="text"/><br/>
 
 
                             <div class="btn-group">
-                                <button id="mode-dropdown" type="button" class="btn btn-default">Direct</button>
+                                <button id="travel-mode-dropdown" type="button" class="btn btn-default" value="DRIVING">Driving</button>
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Direct</a></li>
-                                    <li><a href="#">Driving</a></li>
-                                    <li><a href="#">Bicycling</a></li>
-                                    <li><a href="#">Walking</a></li>
-                                    <li><a href="#">Transit</a></li>
+                                    <li><a href="#" data-value="DRIVING">Driving</a></li>
+                                    <li><a href="#" data-value="WALKING">Walking</a></li>
+                                    <li><a href="#" data-value="BICYCLING">Bicycling</a></li>
+                                    <li><a href="#" data-value="TRANSIT">Transit</a></li>
                                 </ul>
                             </div>
 
                             <div class="btn-group">
-                                <button id="speed-dropdown" type="button" class="btn btn-default">Real Time</button>
+                                <button id="travel-speed-dropdown" type="button" class="btn btn-default">Real Time</button>
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
@@ -347,6 +365,8 @@
                             </div>
 
                             <input id="startDate" type="datetime" value="" placeholder="Now"/>
+                            <br/>
+
                             <br/>
 
                             <div>
@@ -364,12 +384,14 @@
                                 <label class="checkbox-inline"><input type="checkbox" value="" disabled>Attitude</label>
                             </div>
 
-                            <!--<br/>-->
+                            <br/>
 
-                            <label type="button" class="btn btn-primary" id="itinerary-run">Run</label>
-                            <label type="button" class="btn btn-primary" id="itinerary-pause">Pause</label>
-                            <label type="button" class="btn btn-primary" id="itinerary-resume">Resume</label>
-                            <label type="button" class="btn btn-primary" id="itinerary-stop">Stop</label>
+                            <div class="text-center">
+                                <label type="button" class="btn btn-primary" id="itinerary-run">Run</label>
+                                <label type="button" class="btn btn-primary" id="itinerary-pause">Pause</label>
+                                <label type="button" class="btn btn-primary" id="itinerary-resume">Resume</label>
+                                <label type="button" class="btn btn-primary" id="itinerary-stop">Stop</label>
+                            </div>
 
 
                         </div>

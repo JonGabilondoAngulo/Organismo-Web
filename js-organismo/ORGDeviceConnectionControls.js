@@ -10,10 +10,12 @@ ORG.UI.deviceModelLabel = $('#device-model-label');
 ORG.UI.testAppNameLabel = $('#testapp-name-label');
 ORG.UI.testAppVersionLabel = $('#testapp-version-label');
 ORG.UI.testAppBundleIdLabel = $('#testapp-bundleid-label');
+ORG.UI.dropdownDriver = $('#selected'); // the button that holds the text
 
-$('.dropdown-menu a').click(function(){
-    var driverName = $(this).text();
-    $('#selected').text(driverName);
+$(".dropdown-menu a").click(function(){
+
+    $(this).parents(".btn-group").children(":first").text($(this).text());
+    $(this).parents(".btn-group").children(":first").val($(this).data("value"));
 });
 
 ORG.UI.connectButton.click(function(e) {
@@ -26,10 +28,10 @@ ORG.UI.connectButton.click(function(e) {
 
     if (ORG.deviceController == null) {
 
-        var driverName = $('#selected').text();
+        var driverName = ORG.UI.dropdownDriver.text();
         if (driverName == "Organismo") {
             ORG.deviceController = new ORGDeviceController(deviceURL, 5567);
-        } else if (driverName == "iDeviceProxy") {
+        } else if (driverName == "iDeviceControlProxy") {
             ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000);
         }
     }
@@ -39,14 +41,10 @@ ORG.UI.connectButton.click(function(e) {
 
         // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
         ORG.scene.handleDeviceDisconnection();
-        ORG.UI.connectButton.text("Connect");
-        ORG.UI.buttonExpand.text("Expand");
-        ORG.UI.deviceNameLabel.text('');
-        ORG.UI.deviceSystemVersionLabel.text('');
-        ORG.UI.deviceModelLabel.text('');
-        ORG.UI.testAppBundleIdLabel.text('');
-        ORG.UI.testAppNameLabel.text('');
-        ORG.UI.testAppVersionLabel.text('');
+
+        ORG.dispatcher.dispatch({
+            actionType: 'device-disconnect'
+        });
 
     } else {
         ORG.deviceController.openSession();  // Connect

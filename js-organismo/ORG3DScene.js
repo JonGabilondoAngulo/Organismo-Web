@@ -247,6 +247,7 @@ class ORG3DScene {
         if ( this._deviceScreen) {
             this.removeRaycasterForDeviceScreen();
             this._deviceScreen.destroy();
+            this._deviceScreen = null;
         }
     }
 

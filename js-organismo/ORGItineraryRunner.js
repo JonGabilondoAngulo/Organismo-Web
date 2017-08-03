@@ -88,7 +88,7 @@ class ORGItineraryRunner extends ORGLocationProvider {
         // continue to next step unless reached the end
         this._nextStepDistance = distance + stepDelta;
         if (this._nextStepDistance <= this._itinerary.length) {
-            this._executeRunSimulationWithDelay(this._nextStepDistance, stepDelta, 50);
+            this._executeRunSimulationWithDelay(this._nextStepDistance, stepDelta, 100);
         }
     }
 

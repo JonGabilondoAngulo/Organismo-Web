@@ -21,8 +21,10 @@ ORG.UI.buttonItineraryStart = $('#itinerary-run');
 ORG.UI.buttonItineraryStop = $('#itinerary-stop');
 ORG.UI.buttonItineraryPause = $('#itinerary-pause');
 ORG.UI.buttonItineraryResume = $('#itinerary-resume');
+ORG.UI.buttonSendLocation = $('#button-send-location');
 ORG.UI.startPoint = $('#start-point');
 ORG.UI.endPoint = $('#end-point');
+ORG.UI.dropdownTravelMode = $('#travel-mode-dropdown');
 
 // Map
 ORG.UI.buttonResetItinerary = $('#reset-itinerary');
@@ -126,4 +128,8 @@ ORG.UI.buttonItineraryPause.click(function (e) {
 });
 ORG.UI.buttonItineraryResume.click(function (e) {
     ORG.map.resume();
+});
+
+ORG.UI.buttonSendLocation.click(function(e) {
+    ORG.map.sendStartLocationToDevice();
 });

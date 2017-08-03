@@ -44,6 +44,10 @@ class ORGMap extends ORGLocationProvider {
         return !!this._map;
     }
 
+    get travelMode() {
+        return ORG.UI.dropdownTravelMode.val();
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     // PUBLIC
     //------------------------------------------------------------------------------------------------------------------
@@ -83,8 +87,11 @@ class ORGMap extends ORGLocationProvider {
             });
         }
         if (lat && lng) {
-            this._itineraryLocationMarker.setOptions({"position":new google.maps.LatLng(lat, lng), "anchorPoint":new google.maps.Point(10, 10)});
+            const loc = new google.maps.LatLng(lat, lng);
+            this._itineraryLocationMarker.setOptions({"position":loc, "anchorPoint":new google.maps.Point(10, 10)});
+            this._map.setCenter(loc);
             //this._itineraryLocationMarker.setPosition(new google.maps.LatLng(lat, lng));
+
         } else {
             this._itineraryLocationMarker.setMap(null);
             this._itineraryLocationMarker = null;
@@ -118,6 +125,11 @@ class ORGMap extends ORGLocationProvider {
         });
     }
 
+    sendStartLocationToDevice() {
+        if (this._startLocation) {
+            this._broadcastLocation(this._startLocation, null, null);
+        }
+    }
 
     //------------------------------------------------------------------------------------------------------------------
     // PRIVATE
@@ -323,7 +335,18 @@ class ORGMap extends ORGLocationProvider {
         const _this = this;
         google.maps.event.addListener(this._startLocationMarker, 'dragend', function () {
             _this._startLocation = _this._startLocationMarker.getPosition();
-            _this._getLocationInfoAndBroadcast(_this._startLocation);
+            //_this._getLocationInfoAndBroadcast(_this._startLocation);
+
+            _this._getLocationAddress( _this._startLocation, function(address) {
+                _this._broadcastLocation(_this._startLocation, address, null);
+                ORG.dispatcher.dispatch({
+                    actionType: 'start-location-update',
+                    lat: _this._startLocation.lat(),
+                    lng: _this._startLocation.lng(),
+                    elevation: null,
+                    address: address
+                });
+            });
         });
         this._getLocationInfoAndBroadcast(location);
 
@@ -434,7 +457,7 @@ class ORGMap extends ORGLocationProvider {
         const request = {
             origin: this._startLocation,
             destination: this._endLocation,
-            travelMode: google.maps.DirectionsTravelMode.DRIVING
+            travelMode: this.travelMode//google.maps.DirectionsTravelMode.DRIVING
         };
 
         var _this = this;

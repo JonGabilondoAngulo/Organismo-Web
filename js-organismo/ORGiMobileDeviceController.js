@@ -5,7 +5,7 @@
 class ORGiMobileDeviceController extends ORGWebSocketDeviceController {
 
     get type() {
-        return "iDeviceProxy";
+        return "iDeviceControlProxy";
     }
 
     requestDeviceInfo() {

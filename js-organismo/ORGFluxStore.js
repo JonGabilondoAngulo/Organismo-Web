@@ -7,6 +7,18 @@ class ORGFluxStore extends FluxUtils.Store {
 
     __onDispatch(payload) {
         switch (payload.actionType) {
+
+            case 'device-disconnect': {
+                ORG.UI.connectButton.text("Connect");
+                ORG.UI.buttonExpand.text("Expand");
+                ORG.UI.deviceNameLabel.text('');
+                ORG.UI.deviceSystemVersionLabel.text('');
+                ORG.UI.deviceModelLabel.text('');
+                ORG.UI.testAppBundleIdLabel.text('');
+                ORG.UI.testAppNameLabel.text('');
+                ORG.UI.testAppVersionLabel.text('');
+
+            } break;
             case 'itinerary-location-update': {
                 ORG.map.updateItineraryLocation(payload.lat, payload.lng);
             } break;
@@ -49,6 +61,20 @@ class ORGFluxStore extends FluxUtils.Store {
                 $('#label-lat-end').text(payload.end_location.lat());
                 $('#label-lng-end').text(payload.end_location.lng());
             } break;
+            case 'websocket-closed' : {
+                ORG.UI.connectButton.text("Connect");
+                ORG.UI.buttonExpand.text("Expand");
+                ORG.UI.deviceNameLabel.text('');
+                ORG.UI.deviceSystemVersionLabel.text('');
+
+                if (payload.code == 1006) {
+                    if (payload.deviceController == "ORGDeviceController") {
+                        alert("Error connecting to device.\nMake sure the device is connected and the application is open.");
+                    } else {
+                        alert("Error connecting to idevicecontrolproxy.\nMake sure the proxy is running.\nRead about it @ https://github.com/JonGabilondoAngulo/idevicecontrolproxy");
+                    }
+                }
+            }
         }
 
 

@@ -18,16 +18,16 @@ class ORGWebSocket {
 	 * @param inDelegate. An object that can implement the callback methods: onOpen, onCLose, onMessage, onError
 	 */
 	open(inServerURL, inDelegate) {
-		let thisVar = this;
+		let _this = this;
 		this._serverURL = inServerURL;
         this._delegate = inDelegate;
 
 		let url = "ws://" + this._serverURL + "/main";
         this._ws = new WebSocket(url);
-        this._ws.onopen = function () { thisVar.onOpen();} ;
-        this._ws.onclose = function () { thisVar.onClose();};
-        this._ws.onmessage = function (event) { thisVar.onMessage(event);};
-        this._ws.onerror = function (event) { thisVar.onError(event);};
+        this._ws.onopen = function () { _this.onOpen();} ;
+        this._ws.onclose = function () { _this.onClose(event);};
+        this._ws.onmessage = function (event) { _this.onMessage(event);};
+        this._ws.onerror = function (event) { _this.onError(event);};
 	};
 
 	/**
@@ -84,11 +84,11 @@ class ORGWebSocket {
 	 * JS WebSocket callback when the socket has closed.
 	 * It will call the Delegate "onClose".
 	 */
-	onClose() {
+	onClose(event) {
 		console.log('CLOSED: ' + this._serverURL);
         this._ws = null;
 		if (!!this._delegate.onClose) {
-            this._delegate.onClose(this);
+            this._delegate.onClose(event, this);
 		}
 	};
 
@@ -107,7 +107,7 @@ class ORGWebSocket {
 	 * It will call the Delegate "onError".
 	 */
 	onError(event) {
-		console.log('WS Error: ' + event.data);
+		console.log('WS Error: ' + JSON.stringify(event));
 		if (!!this._delegate.onError) {
             this._delegate.onError(event, this);
 		}
