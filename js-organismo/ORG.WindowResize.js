@@ -1,21 +1,7 @@
-// This THREEx helper makes it easy to handle window resize.
+// This helper makes it easy to handle window resize.
 // It will update renderer and camera when window is resized.
 //
-// # Usage
-//
-// **Step 1**: Start updating renderer and camera
-//
-// ```var windowResize = THREEx.WindowResize(aRenderer, aCamera)```
-//    
-// **Step 2**: Start updating renderer and camera
-//
-// ```windowResize.stop()```
-// # Code
 
-//
-
-/** @namespace */
-var ORG	= ORG 		|| {};
 
 ORG.WindowResize	= function(renderer, camera, canvas) {
 
@@ -37,9 +23,7 @@ ORG.WindowResize	= function(renderer, camera, canvas) {
 
 	// return .stop() the function to stop watching window resize
 	return {
-		/**
-		 * Stop watching window resize
-		*/
+		//Stop watching window resize
 		stop	: function(){
 			window.removeEventListener('resize', callback);
 		}

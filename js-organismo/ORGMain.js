@@ -1,6 +1,4 @@
 
-var ORG = ORG || {};
-ORG.UI = {};
 
 ORG.contentWrapper = document.getElementById('content-wrapper');
 ORG.leftSection = document.getElementById('3d-canvas-col');
@@ -25,26 +23,11 @@ ORG.Request = {
     Screenshot : "screenshot",
     ElementTree : "element-tree"};
 
-
 ORG.dispatcher = new Flux.Dispatcher();
 ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
 
 // Resize splitter
-$( "#3d-canvas-col" ).resizable({
-    handles: 'e,w',
-    minWidth: 500,
-    resize:function(event, ui) {
-
-        const newRightWidth = ORG.contentWrapper.offsetWidth - ui.size.width;
-        const newLeftWidth = ui.size.width;
-        ORG.leftSection.style.width = newLeftWidth + 'px';
-        ORG.canvasDomElem.style.width = newLeftWidth + 'px';
-        ORG.scene.resize(ui.size);
-        ORG.rightSection.style.width = newRightWidth + 'px';
-
-    }
-});
-
+ORG.SplitterResize(ORG.contentWrapper, ORG.leftSection, ORG.rightSection, ORG.scene);
 
 google.charts.load('current', {'packages' : ['columnchart']});
 //google.charts.setOnLoadCallback(function() { sendAndDraw('') });
