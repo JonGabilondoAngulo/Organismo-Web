@@ -26,6 +26,8 @@ ORG.WindowResize	= function(renderer, camera, canvas) {
         renderer.setSize( canvas.offsetWidth, canvasHeight);
         camera.aspect	= canvas.offsetWidth / canvasHeight;
 		camera.updateProjectionMatrix();
+
+        canvas.style.height = canvasHeight  + 'px'; //otherwise the canvas is not adapting to the renderer area
 	}
 
 	callback(); // ugly to provoke resize now

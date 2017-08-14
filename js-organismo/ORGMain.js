@@ -2,7 +2,10 @@
 var ORG = ORG || {};
 ORG.UI = {};
 
+ORG.contentWrapper = document.getElementById('content-wrapper');
+ORG.leftSection = document.getElementById('3d-canvas-col');
 ORG.canvasDomElem = document.getElementById('threejs-canvas');
+ORG.rightSection = document.getElementById('right-tabs');
 ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
 ORG.locationManager = new ORGLocationManager();
 ORG.locationManager.addListener( ORG.scene );
@@ -26,43 +29,20 @@ ORG.Request = {
 ORG.dispatcher = new Flux.Dispatcher();
 ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
 
-
+// Resize splitter
 $( "#3d-canvas-col" ).resizable({
-    handles: 'e',
+    handles: 'e,w',
     minWidth: 500,
-    resize:function(event,ui){
-        //var x=ui.element.outerWidth();
-        //var y=ui.element.outerHeight();
-        //var par=$(this).parent().width();
-        //var ele=ui.element;
-        //var factor = par-x;
+    resize:function(event, ui) {
 
-        //
-        //if (x==par) {
-        //    jsEditor.resize();
-        //    cssEditor.resize();
-        //    htmEditor.resize();
-        //    return;
-        //}
-        //
-        //$.each(ele.siblings(),function(idx,item){
-        //
-        //    ele.siblings().eq(idx).css('height',y+'px');
-        //    ele.siblings().eq(idx).css('width',(factor)+'px');
-        //
-        //});
-        //
-        //if (x>=(par-100)) {
-        //    $(".resize").resizable("option","maxWidth",ui.size.width);
-        //    return;
-        //}
-        //
-        //jsEditor.resize();
-        //cssEditor.resize();
-        //htmEditor.resize();
+        const newRightWidth = ORG.contentWrapper.offsetWidth - ui.size.width;
+        const newLeftWidth = ui.size.width;
+        ORG.leftSection.style.width = newLeftWidth + 'px';
+        ORG.canvasDomElem.style.width = newLeftWidth + 'px';
+        ORG.scene.resize(ui.size);
+        ORG.rightSection.style.width = newRightWidth + 'px';
+
     }
-
-
 });
 
 

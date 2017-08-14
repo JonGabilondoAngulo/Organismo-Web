@@ -650,6 +650,13 @@ class ORG3DScene {
         this._adjustLocationMarkerPosition(bBox);
     }
 
+    resize(newSize) {
+
+        this._threeRenderer.setSize( newSize.width, this._threeRenderer.getSize().height);
+        this._threeCamera.aspect	= newSize.width / this._threeRenderer.getSize().height;
+        this._threeCamera.updateProjectionMatrix();
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     //  DELEGATES
     //------------------------------------------------------------------------------------------------------------------
