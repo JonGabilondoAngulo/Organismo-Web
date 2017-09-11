@@ -61,6 +61,9 @@ class ORGFluxStore extends FluxUtils.Store {
                 $('#label-lat-end').text(payload.end_location.lat());
                 $('#label-lng-end').text(payload.end_location.lng());
             } break;
+            case 'websocket-open' : {
+                ORG.UI.connectButton.text("Disconnect");
+            } break;
             case 'websocket-closed' : {
                 ORG.UI.connectButton.text("Connect");
                 ORG.UI.buttonExpand.text("Expand");

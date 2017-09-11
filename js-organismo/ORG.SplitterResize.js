@@ -13,7 +13,7 @@ ORG.SplitterResize	= function(fullContent, leftSide, rightSide, scene) {
             const newRightWidth = fullContent.offsetWidth - ui.size.width;
             const newLeftWidth = ui.size.width;
             leftSide.style.width = newLeftWidth + 'px';
-            //ORG.canvasDomElem.style.width = newLeftWidth + 'px';
+            ORG.canvasDomElem.style.width = newLeftWidth + 'px';
             scene.resize(ui.size);
             rightSide.style.width = newRightWidth + 'px';
         }

@@ -12,7 +12,7 @@ class ORGDeviceController extends ORGDeviceBaseController {
         super(ip,port);
         this.session = null;
         this.webSocket = new ORGWebSocket();
-        this.webSocketDelegate = new ORGWebSocketDelegate();
+        this.webSocketDelegate = new ORGOrganismoWSDelegate();
     }
 
     get type() {

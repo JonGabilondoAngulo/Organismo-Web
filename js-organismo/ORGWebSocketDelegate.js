@@ -16,10 +16,10 @@ class ORGWebSocketDelegate {
 	onOpen(ws) {
 		console.log('Delegate onOpen');
 		this.connected = true;
-		ORG.deviceController.requestDeviceInfo();
-		ORG.deviceController.requestAppInfo();
 		// UI updates
-        ORG.UI.connectButton.text("Disconnect");
+        ORG.dispatcher.dispatch({
+            actionType: 'websocket-open'
+        });
     };
 
 	/**
@@ -100,6 +100,7 @@ class ORGWebSocketDelegate {
 			//console.log("onMessage. parse OK");
 		} else {
 			console.log("onMessage. parse NOT OK");
+			return;
 		}
 		if (messageJSON) {
 			if (messageJSON.type == "response") {
@@ -130,7 +131,7 @@ class ORGWebSocketDelegate {
 	 */
 	_processResponse(messageJSON) {
 		if ( messageJSON.request == ORG.Request.DeviceInfo) {
-			this._processResponseDeviceInfo(messageJSON);
+			this._processResponseDeviceInfo(messageJSON.data);
 		} else if ( messageJSON.request == ORG.Request.AppInfo) {
             this._processResponseAppInfo(messageJSON);
 		} else if ( messageJSON.request == ORG.Request.Screenshot) {
@@ -168,12 +169,12 @@ class ORGWebSocketDelegate {
 	 * Method to process a response with device info coming from the Device.
 	 * @param messageJSON
 	 */
-	_processResponseDeviceInfo(messageJSON) {
+	_processResponseDeviceInfo(deviceInfo) {
 
 		// The connection to the device its on place. We got information about the device.
-		ORG.device = new ORGDevice( messageJSON.data );
+		ORG.device = new ORGDevice( deviceInfo );
 
-		ORG.scene.createDeviceScreen( messageJSON.data.screenSize.width, messageJSON.data.screenSize.height, 0);
+		ORG.scene.createDeviceScreen( deviceInfo.screenSize.width, deviceInfo.screenSize.height, 0);
 		ORG.scene.createRaycasterForDeviceScreen();
 
 		if ( ORG.scene.flagShowDevice3DModel ) {

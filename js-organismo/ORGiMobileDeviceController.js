@@ -1,7 +1,6 @@
 /**
  * Created by jongabilondo on 26/02/2017.
  */
-
 class ORGiMobileDeviceController extends ORGWebSocketDeviceController {
 
     get type() {
@@ -9,19 +8,17 @@ class ORGiMobileDeviceController extends ORGWebSocketDeviceController {
     }
 
     requestDeviceInfo() {
-        this.webSocket.send(ORGMessageBuilder.deviceInfo());
+        this.webSocket.send( "{ \"cmd\" : \"ideviceinfo\" }");
     }
 
     requestAppInfo() {
-        this.webSocket.send(ORGMessageBuilder.appInfo());
     }
 
     requestScreenshot() {
-        this.webSocket.send( ORGMessageBuilder.takeScreenshot());
+        this.webSocket.send( "{ \"cmd\" : \"idevicescreenshot\" }");
     }
 
     requestElementTree( parameters ) {
-        this.webSocket.send( ORGMessageBuilder.elementTree( parameters));
     }
 
     sendLocationUpdate( lat, lng) {
