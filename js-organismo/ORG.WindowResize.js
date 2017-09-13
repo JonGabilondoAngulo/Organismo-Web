@@ -2,7 +2,6 @@
 // It will update renderer and camera when window is resized.
 //
 
-
 ORG.WindowResize	= function(renderer, camera, canvas) {
 
 	var callback	= function(){

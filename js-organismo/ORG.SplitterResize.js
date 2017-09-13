@@ -2,7 +2,6 @@
  * Created by jongabilondo on 14/08/2017.
  */
 
-
 ORG.SplitterResize	= function(fullContent, leftSide, rightSide, scene) {
 
     $( leftSide ).resizable({

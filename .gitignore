@@ -51,3 +51,5 @@ fabric.properties
 /deletefile.list
 /.project
 js-organismo/*.min.js
+node_modules
+build
