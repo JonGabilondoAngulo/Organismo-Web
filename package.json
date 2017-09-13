@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "gulp": "latest",
+    "gulp-concat": "latest",
+    "gulp-rename": "latest",
+    "gulp-uglify-es": "^0.1.3",
+    "gulp-uglifyjs": "latest",
+    "gulp-util": "latest"
+  }
+}
