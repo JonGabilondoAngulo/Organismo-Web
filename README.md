@@ -14,7 +14,7 @@ UI Exploration
 
   ![Demo Video](https://j.gifs.com/k5Jv1Y.gif)
 
-Devie 3D Motion
+Device 3D Motion
 
   ![Demo Video](https://j.gifs.com/wjYLBm.gif)
 
