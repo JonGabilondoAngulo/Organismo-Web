@@ -50,3 +50,4 @@ fabric.properties
 *~
 /deletefile.list
 /.project
+js-organismo/*.min.js

@@ -46,6 +46,8 @@ ORG.UI.connectButton.click(function(e) {
             actionType: 'device-disconnect'
         });
 
+        ORG.deviceController = null;
+
     } else {
         ORG.deviceController.openSession();  // Connect
     }
