@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="Device connection improvements. Map location improvements.">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/jquery-1.4.3.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/three.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/three.min.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="$PROJECT_DIR$/gulpfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-libs/organismo.min.js" afterPath="$PROJECT_DIR$/js-libs/organismo.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -357,15 +351,6 @@
     </option>
   </component>
   <component name="RunManager" selected="JavaScript Debug.organismo.html">
-    <configuration default="false" name="01_basic_usage.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/jsoneditor-master/examples/01_basic_usage.html">
-      <method />
-    </configuration>
-    <configuration default="false" name="02_viewer.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/jsoneditor-master/examples/02_viewer.html">
-      <method />
-    </configuration>
-    <configuration default="false" name="simple-map.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/simple-map.html">
-      <method />
-    </configuration>
     <configuration default="false" name="organismo.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/organismo.html">
       <method>
         <option name="GulpBeforeRunTask" enabled="true">
@@ -506,22 +491,12 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <configuration default="false" name="3d.html" type="JavascriptDebugType" factoryName="JavaScript Debug" nameIsGenerated="true" uri="http://localhost:63342/Organismo/3d.html">
-      <method />
-    </configuration>
-    <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.3d.html" />
-      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.01_basic_usage.html" />
-      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.02_viewer.html" />
-      <item index="3" class="java.lang.String" itemvalue="JavaScript Debug.simple-map.html" />
-      <item index="4" class="java.lang.String" itemvalue="JavaScript Debug.organismo.html" />
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.organismo.html" />
     </list>
     <recent_temporary>
-      <list size="4">
+      <list size="1">
         <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.organismo.html" />
-        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.simple-map.html" />
-        <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.02_viewer.html" />
-        <item index="3" class="java.lang.String" itemvalue="JavaScript Debug.01_basic_usage.html" />
       </list>
     </recent_temporary>
   </component>
@@ -656,7 +631,7 @@
       <workItem from="1505240409321" duration="612000" />
       <workItem from="1505241419170" duration="520000" />
       <workItem from="1505303841300" duration="1965000" />
-      <workItem from="1505312412744" duration="265000" />
+      <workItem from="1505312412744" duration="517000" />
     </task>
     <task id="LOCAL-00010" summary="Fixed html main page">
       <created>1481819690722</created>
@@ -1005,7 +980,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="266580000" />
+    <option name="totallyTimeSpent" value="266832000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1018,18 +993,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="23" y="23" width="1886" height="1122" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18820375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3260188" sideWeight="0.49246576" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19805825" sideWeight="0.3785523" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19805825" sideWeight="0.38123325" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1871969" sideWeight="0.45988628" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.46648794" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32815534" sideWeight="0.46434316" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21695629" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.49726027" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19805825" sideWeight="0.62144774" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19805825" sideWeight="0.6187668" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32747456" sideWeight="0.4918378" order="7" side_tool="false" content_ui="tabs" />
