@@ -1,10 +1,7 @@
 # Organismo-Web
-Organismo's Web Front End
 
-Virtual Reality for Software
+https://github.com/JonGabilondoAngulo/Organismo-Web.wiki.git
 
-
-git clone --recursive https://github.com/JonGabilondoAngulo/Organismo-Web.git
 
 UI Exploration
 -
