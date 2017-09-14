@@ -1,6 +1,6 @@
 # Organismo-Web
 
-https://github.com/JonGabilondoAngulo/Organismo-Web.wiki.git
+https://github.com/JonGabilondoAngulo/Organismo-Web/wiki
 
 
 UI Exploration
