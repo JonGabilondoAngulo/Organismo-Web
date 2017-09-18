@@ -17,3 +17,6 @@ Geo Location
 -
 .![Demo Video](https://j.gifs.com/nZMyvY.gif)
 
+Geo Paths
+-
+.![Demo Video](https://j.gifs.com/qjwQG2.gif)
