@@ -207,7 +207,7 @@ class ORGWebSocketDelegate {
 	}
 
 	/**
-	 * Method to process a message response with screenshot inforamtion.
+	 * Method to process a message response with screenshot information.
 	 * @param messageJSON
 	 */
 	_processReportScreenshot( messageJSON) {

@@ -6,29 +6,15 @@
  * Class to perform the communication with an external device.
  * It uses websockets (ORGWebSocket).
  */
-class ORGDeviceController extends ORGDeviceBaseController {
+class ORGDeviceController extends ORGWebSocketDeviceController {
 
     constructor(ip, port) {
         super(ip,port);
-        this.session = null;
-        this.webSocket = new ORGWebSocket();
         this.webSocketDelegate = new ORGOrganismoWSDelegate();
     }
 
     get type() {
         return "ORG";
-    }
-
-    get isConnected() {
-        return this.webSocket.isConnected();
-    }
-
-    openSession() {
-        this.webSocket.open(this.IPandPort, this.webSocketDelegate);
-    }
-
-    closeSession() {
-        this.webSocket.close();
     }
 
     requestDeviceInfo() {
@@ -40,18 +26,14 @@ class ORGDeviceController extends ORGDeviceBaseController {
     }
 
     requestScreenshot() {
-        this.webSocket.send( ORGMessageBuilder.takeScreenshot());
+        this.webSocket.send(ORGMessageBuilder.takeScreenshot());
     }
 
-    requestElementTree( parameters ) {
-        this.webSocket.send( ORGMessageBuilder.elementTree( parameters));
+    requestElementTree(parameters) {
+        this.webSocket.send(ORGMessageBuilder.elementTree(parameters));
     }
 
-    sendRequest(request) {
-        this.webSocket.send( request);
-    }
-
-    sendMessage(message) {
-        this.webSocket.send( message);
+    sendLocationUpdate(lat, lng) {
+        this.webSocket.send(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null));
     }
 }

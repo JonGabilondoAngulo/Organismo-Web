@@ -3,6 +3,11 @@
  */
 class ORGiMobileDeviceController extends ORGWebSocketDeviceController {
 
+    constructor(ip, port) {
+        super(ip,port);
+        this.webSocketDelegate = new ORGiControlProxyWSDelegate();
+    }
+
     get type() {
         return "iDeviceControlProxy";
     }
