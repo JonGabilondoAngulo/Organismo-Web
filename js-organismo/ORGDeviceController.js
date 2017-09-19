@@ -3,7 +3,8 @@
  */
 
 /**
- * Class to perform the communication with an external device.
+ * Class to perform the communication with an external device using the Organismo protocol.
+ * It performs the Organismo commands on a mobile device.
  * It uses websockets (ORGWebSocket).
  */
 class ORGDeviceController extends ORGWebSocketDeviceController {

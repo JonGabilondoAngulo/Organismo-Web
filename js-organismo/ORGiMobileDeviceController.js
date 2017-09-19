@@ -1,6 +1,10 @@
 /**
  * Created by jongabilondo on 26/02/2017.
  */
+
+/**
+ * Class to communicate with mobile devices using idevicecontrolproxy server.
+ */
 class ORGiMobileDeviceController extends ORGWebSocketDeviceController {
 
     constructor(ip, port) {

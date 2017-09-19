@@ -2,6 +2,9 @@
  * Created by jongabilondo on 26/02/2017.
  */
 
+/**
+ * Base class to communicate with mobile devices via web sockets.
+ */
 class ORGWebSocketDeviceController extends ORGDeviceBaseController {
 
     constructor(ip, port) {
@@ -21,7 +24,6 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
     closeSession() {
         this.webSocket.close();
     }
-
 
     sendRequest(request) {
         this.webSocket.send( request);

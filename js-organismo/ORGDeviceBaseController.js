@@ -2,6 +2,11 @@
  * Created by jongabilondo on 26/02/2017.
  */
 
+/**
+ * Base class to communicate with mobile devices via web sockets.
+ * Provides the base virtual functions for subclasses to implement.
+ * It's not a class to be used directly, but to inherit from it.
+ */
 class ORGDeviceBaseController {
 
     constructor(ip, port) {
