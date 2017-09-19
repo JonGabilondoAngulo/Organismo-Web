@@ -1,10 +1,7 @@
 # Organismo-Web
-Organismo's Web Front End
 
-Virtual Reality for Software
+https://github.com/JonGabilondoAngulo/Organismo-Web/wiki
 
-
-git clone --recursive https://github.com/JonGabilondoAngulo/Organismo-Web.git
 
 UI Exploration
 -
@@ -20,3 +17,6 @@ Geo Location
 -
 .![Demo Video](https://j.gifs.com/nZMyvY.gif)
 
+Geo Paths
+-
+.![Demo Video](https://j.gifs.com/qjwQG2.gif)
