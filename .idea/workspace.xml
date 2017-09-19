@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceBaseController.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceBaseController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceController.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGWebSocketDeviceController.js" afterPath="$PROJECT_DIR$/js-organismo/ORGWebSocketDeviceController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGiMobileDeviceController.js" afterPath="$PROJECT_DIR$/js-organismo/ORGiMobileDeviceController.js" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -135,6 +131,7 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="MERGE" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -220,7 +217,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="x" value="322" />
+    <option name="y" value="539" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
   </component>
@@ -649,14 +647,7 @@
       <workItem from="1505735204818" duration="291000" />
       <workItem from="1505741712845" duration="3357000" />
       <workItem from="1505818764531" duration="1224000" />
-      <workItem from="1505840792775" duration="34000" />
-    </task>
-    <task id="LOCAL-00011" summary="Refactoring , encapsulation globals.">
-      <created>1482156017596</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1482156017596</updated>
+      <workItem from="1505840792775" duration="147000" />
     </task>
     <task id="LOCAL-00012" summary="Refactoring , encapsulating globals.">
       <created>1482412680245</created>
@@ -994,11 +985,18 @@
       <option name="project" value="LOCAL" />
       <updated>1505746324027</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="DeviceController documentation.">
+      <created>1505840857720</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1505840857721</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272312000" />
+    <option name="totallyTimeSpent" value="272425000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1010,7 +1008,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="322" y="539" width="1440" height="873" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18816067" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1100,7 +1099,6 @@
       <path value="$PROJECT_DIR$/Agent/StashRepo" />
       <path value="$PROJECT_DIR$/jsoneditor" />
     </ignored-roots>
-    <MESSAGE value="Added ORG3DDeviceScreen." />
     <MESSAGE value="Improved the UI tree collapse function." />
     <MESSAGE value="Added class for device screen." />
     <MESSAGE value="Encapsulated constants." />
@@ -1125,7 +1123,8 @@
     <MESSAGE value="Removing flux file." />
     <MESSAGE value="Device connection improvements. Map location improvements." />
     <MESSAGE value="ORGDeviceController inheritance fixed." />
-    <option name="LAST_COMMIT_MESSAGE" value="ORGDeviceController inheritance fixed." />
+    <MESSAGE value="DeviceController documentation." />
+    <option name="LAST_COMMIT_MESSAGE" value="DeviceController documentation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1392,6 +1391,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="543">
           <caret line="76" column="16" lean-forward="false" selection-start-line="76" selection-start-column="16" selection-end-line="76" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1415,6 +1415,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="720">
           <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
