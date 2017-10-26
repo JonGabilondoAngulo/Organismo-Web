@@ -30,9 +30,9 @@ ORG.UI.connectButton.click(function(e) {
 
         var driverName = ORG.UI.dropdownDriver.text();
         if (driverName == "Organismo") {
-            ORG.deviceController = new ORGDeviceController(deviceURL, 5567);
+            ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
         } else if (driverName == "iDeviceControlProxy") {
-            ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000);
+            ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
         }
     }
 

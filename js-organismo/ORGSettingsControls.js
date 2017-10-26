@@ -17,11 +17,13 @@ ORG.UI.checkButtonShowAlertWindow = $('#show-alert-window');
 ORG.UI.buttonExpand = $('#expand-button');
 ORG.UI.buttonResetCamera = $('#reset-camera-button');
 ORG.UI.buttonRotateDevice = $('#rotate-device-button');
+ORG.UI.buttonTranslateDevice = $('#translate-device-button');
 ORG.UI.buttonItineraryStart = $('#itinerary-run');
 ORG.UI.buttonItineraryStop = $('#itinerary-stop');
 ORG.UI.buttonItineraryPause = $('#itinerary-pause');
 ORG.UI.buttonItineraryResume = $('#itinerary-resume');
 ORG.UI.buttonSendLocation = $('#button-send-location');
+ORG.UI.buttonAddBeacon = $('#button-add-beacon');
 ORG.UI.startPoint = $('#start-point');
 ORG.UI.endPoint = $('#end-point');
 ORG.UI.dropdownTravelMode = $('#travel-mode-dropdown');
@@ -97,7 +99,15 @@ ORG.UI.buttonResetCamera.click(function (e) {
 });
 
 ORG.UI.buttonRotateDevice.click(function (e) {
-    ORG.scene.rotateDevice();
+    ORG.scene.showHideDeviceTransformControls("rotate");
+});
+
+ORG.UI.buttonTranslateDevice.click(function (e) {
+    ORG.scene.showHideDeviceTransformControls("translate");
+});
+
+ORG.UI.buttonAddBeacon.click(function (e) {
+    ORG.scene.addBeacon();
 });
 
 ORG.UI.buttonExpand.click(function (e) {

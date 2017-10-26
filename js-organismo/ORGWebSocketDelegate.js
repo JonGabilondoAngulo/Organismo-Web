@@ -174,7 +174,8 @@ class ORGWebSocketDelegate {
 		// The connection to the device its on place. We got information about the device.
 		ORG.device = new ORGDevice( deviceInfo );
 
-		ORG.scene.createDeviceScreen( deviceInfo.screenSize.width, deviceInfo.screenSize.height, 0);
+        ORG.scene.createDeviceScreen( ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
+        //ORG.scene.createDeviceScreen( deviceInfo.screenSize.width, deviceInfo.screenSize.height, 0);
 		ORG.scene.createRaycasterForDeviceScreen();
 
 		if ( ORG.scene.flagShowDevice3DModel ) {

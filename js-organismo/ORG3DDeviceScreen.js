@@ -4,15 +4,15 @@
 
 
 /**
- * Class to wrapp the THREE object for the device screen.
+ * Class to create and handle the THREE object of the device screen.
  */
 class ORG3DDeviceScreen {
 
-    constructor(width, height, zPosition, threeScene) {
+    constructor(width, height, yPosition, zPosition, threeScene) {
         var geometry,material;
 
         this._deviceScreenSize = { width:width, height:height};
-        this._threeScene = threeScene;
+        this._THREEScene = threeScene;
 
         geometry = new THREE.PlaneBufferGeometry( width, height, 1, 1);
         geometry.dynamic = true;
@@ -20,15 +20,15 @@ class ORG3DDeviceScreen {
         //material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide, map : null});
         //material = new THREE.MeshBasicMaterial( {color: 0x000000, map : null});
         this._threeScreenPlane = new THREE.Mesh( geometry, material );
-        this._threeScreenPlane.position.set( 0 , 0, zPosition);
+        this._threeScreenPlane.position.set( 0 , yPosition, zPosition );
         this._threeScreenPlane.name = "screen";
-        threeScene.add( this._threeScreenPlane);
+        threeScene.add( this._threeScreenPlane );
         this._threeScreenPlane.geometry.computeBoundingBox ();
     }
 
     destroy() {
-        if (this._threeScene && this._threeScreenPlane) {
-            this._threeScene.remove( this._threeScreenPlane);
+        if (this._THREEScene && this._threeScreenPlane) {
+            this._THREEScene.remove( this._threeScreenPlane);
             this._threeScreenPlane = null;
         }
     }
@@ -43,6 +43,10 @@ class ORG3DDeviceScreen {
 
     get screenSize() {
         return this._deviceScreenSize;
+    }
+
+    get screenPosition() {
+        return this._threeScreenPlane.position;
     }
 
     hide() {

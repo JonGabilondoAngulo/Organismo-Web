@@ -5,12 +5,26 @@
 
 /**
  * Class to wrap the actions on the THREE model of a device.
+ * It contains only the body of the device, not the display.
  */
 class ORG3DDeviceModel {
 
+    /**
+     * Constructor
+     * @param threeObj - A THREE.Group representing the Device.
+     */
     constructor( threeObj ) {
         this.threeObj = threeObj; // It is a THREE.Group. Don't have geometry to compute bbox.
         this.threeScene = null;
+    }
+
+
+    /**
+     * Removes the object from the 3D scene and disposes the object.
+     */
+    destroy() {
+        this.removeFromScene();
+        this.threeObj = null;
     }
 
     get THREEObject() {
@@ -28,11 +42,6 @@ class ORG3DDeviceModel {
         if (this.threeScene && this.threeObj) {
             this.threeScene.remove( this.threeObj);
         }
-    }
-
-    destroy() {
-        this.removeFromScene();
-        this.threeObj = null;
     }
 
     setOrientation( orientation ) {

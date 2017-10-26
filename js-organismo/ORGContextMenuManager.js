@@ -4,7 +4,7 @@
 
 
 /**
- * Class to create context menus in the 3d scene.
+ * Class to create context menus in the 3D scene.
  * It implements the delegate call for ORGMouseListener in order to get the right mouse click.
  * It implements the delegate call for ORG3DRaycaster which informs what is the selected three obj.
  * @param domElement
@@ -61,7 +61,6 @@ class ORGContextMenuManager {
             callback: function(key, options) {
                 //var m = "clicked: " + key;
                 //window.console && console.log(m) || alert(m);
-
                 _this._processMenuSelection(key, _this._selectedThreeObject, _this._scene);
             }
         });

@@ -2,10 +2,6 @@
  * Created by jongabilondo on 02/07/2016.
  */
 
-/**
- * This class builds and manages the expanded 3D UI model. Given a JSON UI model it creates an expanded model of THREE objects.
- * @constructor
- */
 
 const ORGTreeVisualizationMask = {
     ShowNormalWindow : 0x1,
@@ -22,84 +18,89 @@ const ORGTreeVisualizationMask = {
     ShowOutOfScreen : 0x0800
 };
 
-const kORGPlaneDistance = 10.0;
-const kORGExtrudeDuration = 500.0;
+const kORGPlaneDistance = 0.001; // m
+const kORGExtrudeDuration = 500.0; // ms
 
+/**
+ * This class builds and manages the expanded 3D UI model. Given a JSON UI model it creates an expanded model of THREE objects.
+ * @constructor
+ */
 class ORGUITreeModel {
 
     constructor( visualizationFlag ) {
 
         this._treeData = null; // json of ui elements tree as arrived from device
-        this._threeElementTreeGroup = null; // threejs group with all the ui elements.
-        //this._extrudeDuration = 500; // ms
-        this._screenSize = null;
-        this._threeScene = null;
+        this._THREEElementTreeGroup = null; // threejs group with all the ui elements.
+        this._THREEScene = null;
         this._collapseTweenCount = 0; // collapse animation counter
         this._visualizationFlags = visualizationFlag;
     }
 
     get treeGroup() {
-        return this._threeElementTreeGroup;
+        return this._THREEElementTreeGroup;
     }
 
     set visualizationFlags( flags ) {
         this._visualizationFlags = flags;
     }
 
-    createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize) {
+    get _flagShowKeyboard() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowKeyboardWindow);
+    }
+    get _flagShowPrivate() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
+    }
+    get _flagShowHiddenViews() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViews);
+    }
+    get _flagShowHiddenViewsOnly() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViewsOnly);
+    }
+    get _flagShowOutOfScreen() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowOutOfScreen);
+    }
+    get _flagShowInteractiveViews() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowInteractiveViews);
+    }
+    get _flagShowNonInteractiveViews() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowNonInteractiveViews);
+    }
+    get _flagShowScreenshots() {
+        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowScreenshots);
+    }
 
+    createUITreeModel( treeTopLevelNodes, threeScene, screenSize, displaySize, displayScale, displayPosition ) {
         this._collapseTweenCount = 0;
-        this._screenSize = deviceScreenSize;
         this._treeData = treeTopLevelNodes;
-        this._threeScene = threeScene;
+        this._THREEScene = threeScene;
 
-        this._createUITreeModel(this._treeData, this._threeScene, this._screenSize);
+        this._createUITreeModel( this._treeData, this._THREEScene, screenSize, displaySize, displayScale, displayPosition );
     }
 
-    updateUITreeModel(treeTopLevelNodes, threeScene, screenshotImage, deviceScreenSize) {
-
-        if (this._treeData) {
-            this.removeUITreeModel(threeScene); // remove existing first
+    updateUITreeModel( treeTopLevelNodes, threeScene, screenSize, displaySize, displayScale, displayPosition ) {
+        if ( this._treeData ) {
+            this.removeUITreeModel( threeScene ); // remove existing first
         }
-        this.createUITreeModel(treeTopLevelNodes, threeScene, deviceScreenSize);
+        this.createUITreeModel( treeTopLevelNodes, threeScene, screenSize, displaySize, displayScale, displayPosition );
     }
 
-    /**
-     * Collapses the tree and expands its again, rebuilding it.
-     * Call it when some visualization property change requires to rebuild the tree.
-     * It animates the collapse/expand.
-     * e.g. When hidding/showing the private classes.
-     * @param scene the ORG scene to take the new parameters
-     */
-    //collapseAndExpandAnimated(scene) {
-    //    for (let i=0; i < this._treeData.length; i++) {
-    //        const treeNode = this._treeData[i];
-    //        const _this = this;
-    //        const callback = function () {
-    //            _this._createUITreeModel(_this._treeData, _this._threeScene, _this._screenSize);
-    //        };
-    //        _this._collapseNodeAnimatedWithCompletion(treeNode, callback);
-    //    }
-    //}
-
-    collapseWithCompletion(completion) {
-
+    collapseWithCompletion( completion ) {
         for (let i=0; i < this._treeData.length; i++) {
             const treeNode = this._treeData[i];
             this._collapseNodeAnimatedWithCompletion(treeNode, completion)
         }
     }
 
-    removeUITreeModel(threeScene) {
-        if (this._threeElementTreeGroup) {
-            threeScene.remove(this._threeElementTreeGroup);
-            this._threeElementTreeGroup = null;
+    removeUITreeModel( threeScene ) {
+        if (this._THREEElementTreeGroup) {
+            threeScene.remove(this._THREEElementTreeGroup);
+            this._THREEElementTreeGroup = null;
         }
     }
 
-    hideTextures(hide) {
-        if (this._threeElementTreeGroup) {
-            this._threeElementTreeGroup.traverse(function (child) {
+    hideTextures( hide ) {
+        if (this._THREEElementTreeGroup) {
+            this._THREEElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Mesh) {
                     if (hide) {
                         child.material.map = null;
@@ -118,9 +119,9 @@ class ORGUITreeModel {
         }
     }
 
-    hideNonInteractiveViews(hide) {
-        if (this._threeElementTreeGroup) {
-            this._threeElementTreeGroup.traverse(function (child) {
+    hideNonInteractiveViews( hide ) {
+        if (this._THREEElementTreeGroup) {
+            this._THREEElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
                     if (hide) {
                         const nodeData = child.userData;
@@ -138,8 +139,8 @@ class ORGUITreeModel {
     }
 
     showConnections( show , threeScene) {
-        if (this._threeElementTreeGroup) {
-            this._threeElementTreeGroup.traverse(function (child) {
+        if (this._THREEElementTreeGroup) {
+            this._THREEElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
                     const nodeData = child.userData;
                     if (_nodeIsInteractive(nodeData)) {
@@ -157,144 +158,274 @@ class ORGUITreeModel {
 
     // PRIVATE
 
-    _createUITreeModel(treeData, threeScene, deviceScreenSize) {
-
-        this.removeUITreeModel( threeScene ); // remove existing first
-
-        this._threeElementTreeGroup = new THREE.Group();
-
-        const startingZpos = 0;
-        this._createTree3DModel(treeData, this._treeData, deviceScreenSize, startingZpos); // add all the ui tree in threeElementTreeGroup
-        threeScene.add(this._threeElementTreeGroup);
-    }
-
-    /**
-     * Create the THREE elements of the given UI elements json tree.
-     * @param json tree of ui elements as recieved from the App
-     * @param deviceScreenSize
+    /***
+     * Creates a 3D representation of a UI tree.
+     * @param treeRootNodes - The top level nodes. Usually the Windows.
+     * @param threeScene - The THREE scene to add the tree to.
+     * @param screenSize - Screen size in pixels.
+     * @param displaySize - Display real world size (m)
+     * @param displayScale -  Scale to convert screen pixels to world coordinates.
+     * @param displayPosition - Position of the display in real world. (m)
      * @private
      */
-    _createTree3DModel(tree, parentNodes, deviceScreenSize, startingZPos) {
-        if ( !!tree ) {
-            for (let i = 0; i < tree.length; i++) {
-                const treeNode = tree[i];
-                if (this._mustCreateTreeBranch(treeNode)) {
+    _createUITreeModel( treeRootNodes, threeScene, screenSize, displaySize, displayScale, displayPosition ) {
+        this.removeUITreeModel( threeScene ); // remove existing first
 
-                    let nextZPos = startingZPos;
-                    if ( this._mustCreateTreeObject(treeNode)) {
-                        this._createTreeNode3DModel(treeNode, parentNodes, deviceScreenSize, startingZPos);
-                        if ( !!treeNode.zPosition ) {
-                            nextZPos = treeNode.zPosition;
-                        }
-                    }
+        this._THREEElementTreeGroup = new THREE.Group();
+        threeScene.add(this._THREEElementTreeGroup);
 
-                    if ( !!treeNode.subviews ) {
-                        this._createTree3DModel(treeNode.subviews, [treeNode], deviceScreenSize, nextZPos);
-                    }
-                } else {
+        let nextZPos = 0;
+        if ( !!treeRootNodes ) {
+            let treeNode;
+            for ( let i = 0; i < treeRootNodes.length; i++ ) {
+                treeNode = treeRootNodes[i];
+
+                // Some full branches might be ignored
+                if ( !this._mustCreateTreeBranch( treeNode ) ) {
                     console.log("ignoring tree branch.");
+                    continue;
+                }
+
+                // create the element and its subelements (full branch)
+                if ( this._mustCreateTreeObject( treeNode )) {
+                    nextZPos = this._createTreeNode3DModel( treeNode, null, screenSize, displaySize, displayScale, displayPosition, nextZPos, nextZPos);
                 }
             }
         }
+
+        //this._createTree3DModel( treeData, screenSize, displaySize, displayScale, displayPosition, startingZ); // add all the ui tree in threeElementTreeGroup
+    }
+
+    /***
+     * Creates a 3D representation of a UI tree.
+     * @param treeRootNodes - The top level nodes. Usually the Windows.
+     * @param screenSize - Screen size in pixels.
+     * @param displaySize - Display real world size (m)
+     * @param displayScale -  Scale to convert screen pixels to world coordinates.
+     * @param displayPosition - Position of the display in real world. (m)
+     * @param startingZPos - The Z pos for the first node.
+     * @private
+     */
+    //_createTree3DModel( treeRootNodes, screenSize, displaySize, displayScale, displayPosition, startingZPos ) {
+    //    let nextZPos = startingZPos;
+    //    if ( !!treeRootNodes ) {
+    //        let treeNode;
+    //        for ( let i = 0; i < treeRootNodes.length; i++ ) {
+    //            treeNode = treeRootNodes[i];
+    //
+    //            // Some full branches might be ignored
+    //            if ( !this._mustCreateTreeBranch( treeNode ) ) {
+    //                console.log("ignoring tree branch.");
+    //                continue;
+    //            }
+    //
+    //            // create the element
+    //            if ( this._mustCreateTreeObject( treeNode )) {
+    //                nextZPos = this._createTreeNode3DModel( treeNode, null, screenSize, displaySize, displayScale, displayPosition, nextZPos, nextZPos);
+    //            }
+    //        }
+    //    }
+    //}
+
+    /***
+     * Create the 3D tree starting from a given tree node. Recursive.
+     * @param treeNode -  The root node.
+     * @param treeNodeParent - The last parent node taht was created in 3D. Not necessarily the parent in the UI tree, some nodes are not represented.
+     * @param screenSize - Screen size in pixels.
+     * @param displaySize - Display real world size (m)
+     * @param displayScale -  Scale to convert screen pixels to world coordinates.
+     * @param displayPosition - Position of the display in real world. (m)
+     * @param zStartingPos - Z position of the node.
+     * @param highestZPosition - THe highest Z so far.
+     * @returns {highestZPosition}
+     * @private
+     */
+    _createTreeNode3DModel( treeNode, treeNodeParent, screenSize, displaySize, displayScale, displayPosition, zStartingPos, highestZPosition ) {
+
+        var highestZPosition = highestZPosition;
+        var lastCreatedParentNode = treeNodeParent;
+        var newElemZPosition = zStartingPos;
+
+        if ( typeof( treeNode ) != "object" ) {
+            console.log("what is this ? Tree node that is not an object ?");
+            return highestZPosition;
+        }
+
+        if ( this._mustCreateTreeObject( treeNode )) {
+            let screenshotTexture = null;
+            let elementBase64Image = treeNode.screenshot;
+            if ( elementBase64Image ) {
+                let img = new Image();
+                img.src = "data:image/png;base64," + elementBase64Image;
+                screenshotTexture = new THREE.Texture(img);
+                screenshotTexture.minFilter = THREE.NearestFilter;
+                screenshotTexture.needsUpdate = true;
+            }
+
+            const elementWorldBounds = this._elementWorldBounds( treeNode, screenSize, displaySize, displayScale, displayPosition, true ); // calculate bounds of the ui element in real world (x,y), at 0,0.
+            newElemZPosition = this._calculateElementZPosition( treeNode, treeNodeParent, elementWorldBounds, zStartingPos, displayPosition );
+
+            let elementGroup = this._createUIElementObject( treeNode, elementWorldBounds, screenshotTexture, newElemZPosition);
+            if ( elementGroup ) {
+                this._THREEElementTreeGroup.add( elementGroup );
+                treeNode.threeObj = elementGroup;
+                elementGroup.userData = treeNode;
+
+                if ( this._mustHideTreeObject( treeNode )) {
+                    elementGroup.visible = false;
+                } else {
+                    // Now we will animate the element to its final position.
+                    // The final zPosition is in treeNode, not in the mesh object which is at 0.
+                    const finalMeshPosition = {x: elementGroup.position.x, y: elementGroup.position.y, z: newElemZPosition};
+                    const tween = new TWEEN.Tween( elementGroup.position)
+                        .to(finalMeshPosition, kORGExtrudeDuration)
+                        .start();
+                }
+            }
+
+            if ( newElemZPosition > highestZPosition ) {
+                highestZPosition = newElemZPosition;
+            }
+            lastCreatedParentNode = treeNode; // this is the parent of the subviews to be created bellow
+        }
+
+        // create subelements
+        if ( !!treeNode.subviews ) {
+            for (let i = 0; i < treeNode.subviews.length; i++) {
+                highestZPosition = this._createTreeNode3DModel( treeNode.subviews[i], lastCreatedParentNode, screenSize, displaySize, displayScale, displayPosition, newElemZPosition, highestZPosition);
+            }
+        }
+        return highestZPosition;
     }
 
     /**
-     * Create the THREE object for the given tree node. It calculates the position in 3D.
-     * @param treeNode
-     * @param parentTreeNode
-     * @param deviceScreenSize
+     * Convert the pixel 2D coordinates of an element to world coordinates.
+     * @param uiElement
+     * @param screenSize - in pixels
+     * @param displaySize - real world
+     * @param displayScale
+     * @param displayPosition - real world
+     * @returns {defs.THREE.Box2|*|Box2}
      * @private
      */
-    _createTreeNode3DModel(treeNode, parentNodes, deviceScreenSize, zStartingPos) {
+    _elementWorldBounds( uiElement, screenSize, displaySize, displayScale, displayPosition, translateToDevice ) {
 
-        if (typeof( treeNode) != "object") {
-            console.log("what is this ? Tree node that is not an object ?");
-            return;
+        // device coordinates are 0,0 for top-left corner !
+
+        var elementBox2 = new THREE.Box2(
+            new THREE.Vector2( uiElement.bounds.left * displayScale.x, (screenSize.height - uiElement.bounds.bottom) * displayScale.y),
+            new THREE.Vector2( uiElement.bounds.right * displayScale.x, (screenSize.height - uiElement.bounds.top) * displayScale.y));
+        elementBox2.translate( new THREE.Vector2( - ( displaySize.width / 2.0 ), - ( displaySize.height / 2.0 )));
+
+        if (translateToDevice) {
+            elementBox2.translate( new THREE.Vector2( displayPosition.x , displayPosition.y ));
         }
-
-        let threeScreenshotTexture = null;
-        let elementBase64Image = treeNode.screenshot;
-        if (elementBase64Image) {
-            let img = new Image();
-            img.src = "data:image/png;base64," + elementBase64Image;
-            threeScreenshotTexture = new THREE.Texture(img);
-            threeScreenshotTexture.minFilter = THREE.NearestFilter;
-            threeScreenshotTexture.needsUpdate = true;
-        }
-        //var drawAsCube = false;//_mustDrawTreeObjectAsCube(treeJson[i], parentTreeObj);
-
-        //if (drawAsCube) {
-        // Create Texture for view
-        //if (!!screenshotImage) {
-        //    threeScreenshotTexture = new THREE.Texture(screenshotImage);
-        //    threeScreenshotTexture.needsUpdate = true;
-        //    //screenshotImage.onload = function () { threeScreenshotTexture.needsUpdate = true; };
-        //}
-        //}
-
-        //const zPosition = this._calculateElementZPosition(treeNode, this._treeData, 0, deviceScreenSize);
-
-        const zPosition = this._calculateElementZPosition(treeNode, parentNodes, zStartingPos, deviceScreenSize);
-
-        let threeGroupObj = this._createUIObject(treeNode, threeScreenshotTexture, deviceScreenSize, zPosition);
-        if (threeGroupObj) {
-
-            this._threeElementTreeGroup.add(threeGroupObj);
-            treeNode.threeObj = threeGroupObj;
-            threeGroupObj.userData = treeNode;
-
-            if (this._mustHideTreeObject(treeNode)) {
-                threeGroupObj.visible = false;
-            } else {
-                // The final zPosition is in treeNode, not in the mesh object which is at 0.
-                const finalMeshPosition = {x: threeGroupObj.position.x, y: threeGroupObj.position.y, z: treeNode.zPosition};
-                const tween = new TWEEN.Tween(threeGroupObj.position)
-                    .to(finalMeshPosition, kORGExtrudeDuration)
-                    .start();
-            }
-        }
-
+        return elementBox2;
     }
 
-    _createUIObject(uiObjectDescription, threeScreenshotTexture, screenSize, zPosition) {
-        var threeGeometry, threeMaterial, uiObject, uiObjectWidth, uiObjectHeight, uiObjectLeft, uiObjectRight, uiObjectTop, uiObjectBottom, threeObjPosition;
+    /**
+     * Creates and returns THREE.Group for an UI element with a plane plus a box helper for highlight. It assigns a texture.
+     * @param uiElementDescription
+     * @param THREEScreenshotTexture
+     * @param displaySize - Real display size (m)
+     * @param displayScale - Scale to transform pixels to real size
+     * @param displayPosition - The translation of the display in the 3D scene, usually it's above the floor.
+     * @param zPosition - z axis position for the 3d object
+     * @returns {* THREE.Group }
+     * @private
+     */
+    _createUIElementObject( uiElementDescription, elementWorldBoundsBox2, THREEScreenshotTexture, zPosition ) {
+        var THREEMaterial, THREEMesh, THREEGeometry, THREEUIElementGroup;
 
-        if (!uiObjectDescription.bounds) {
+        if ( !uiElementDescription.bounds ) {
             //console.log("Object has no boundsInScreen !", uiObjectDescription, JSON.stringify(uiObjectDescription));
             return null;
         }
-        var threeUIElementGroup = new THREE.Group();
-
-        uiObjectWidth = uiObjectDescription.bounds.right - uiObjectDescription.bounds.left;
-        uiObjectHeight = uiObjectDescription.bounds.bottom - uiObjectDescription.bounds.top;
-        uiObjectLeft = uiObjectDescription.bounds.left;
-        //uiObjectRight = uiObjectDescription.bounds.right;
-        uiObjectTop = uiObjectDescription.bounds.top;
-        //uiObjectBottom = uiObjectDescription.bounds.bottom;
 
         // create obj at Z = 0. We will animate it to its real position later.
 
-        threeGeometry = new THREE.PlaneBufferGeometry(uiObjectWidth, uiObjectHeight, 1, 1);
-        uiObjectDescription.zPosition = zPosition; // keep it here for later use
-        threeObjPosition = new THREE.Vector3(-( screenSize.width / 2 - uiObjectLeft - uiObjectWidth / 2.0), screenSize.height / 2 - uiObjectTop - uiObjectHeight / 2.0, 0);
+        const center2D = elementWorldBoundsBox2.getCenter();
+        const center3D = new THREE.Vector3( center2D.x, center2D.y, 0.0);
 
-        if (this._flagShowScreenshots && threeScreenshotTexture) {
-            threeMaterial = new THREE.MeshBasicMaterial({map: threeScreenshotTexture, transparent: false, side: THREE.DoubleSide});
+        THREEGeometry = new THREE.PlaneBufferGeometry( elementWorldBoundsBox2.getSize().x, elementWorldBoundsBox2.getSize().y, 1, 1 );
+        uiElementDescription.zPosition = zPosition; // keep it here for later use
+
+        if ( this._flagShowScreenshots && THREEScreenshotTexture ) {
+            THREEMaterial = new THREE.MeshBasicMaterial( {map: THREEScreenshotTexture, transparent: false, side: THREE.DoubleSide});
         } else {
-            threeMaterial = new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide, transparent:false });
+            THREEMaterial = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide, transparent:false });
         }
-        uiObject = new THREE.Mesh(threeGeometry, threeMaterial);
-        uiObject.position.set(threeObjPosition.x, threeObjPosition.y, threeObjPosition.z);
+        THREEMesh = new THREE.Mesh( THREEGeometry, THREEMaterial );
+        THREEMesh.position.copy( center3D );
 
-        uiObject.ORGData = { threeScreenshotTexture : threeScreenshotTexture }; // keep a reference to make the show/hide of textures
+        THREEMesh.ORGData = { threeScreenshotTexture : THREEScreenshotTexture }; // keep a reference to make the show/hide of textures
 
-        threeUIElementGroup.add(uiObject);
-        threeUIElementGroup.add(new THREE.BoxHelper(uiObject, 0xffffff));
+        // Create a group with the plane a boxhelper for highlights. First add the BoxHelper and then the plane, otherwise RayCaster will not give us proper collisions on the plane !!
+        THREEUIElementGroup = new THREE.Group();
+        THREEUIElementGroup.add( new THREE.BoxHelper( THREEMesh, 0xffffff) );
+        THREEUIElementGroup.add( THREEMesh );
 
-        return threeUIElementGroup;
+        return THREEUIElementGroup;
     }
 
-    _collapseNodeAnimatedWithCompletion(node, completionFunction) {
+    /**
+     * Calculates the Z position for a given UI tree element. This element has nbot been created yet, does not have a THREE object yet.
+     * @param uiTreeElement - The element to calculate the Z for.
+     * @param uiTreeStartElement - The element from which to start to calculate the Z. In the first iteration would be the parent.
+     * @param uiElementWorldBox2 - Box2 of the element in world coordinates (m).
+     * @param currentZPosition - Current zPosition in the tree traversal.
+     * @param displayPosition - The translation of the display in the 3D scene, usually it's above the floor.
+     * @returns {zPosition}
+     * @private
+     */
+    _calculateElementZPosition( uiTreeElement, uiTreeStartElement, uiElementWorldBox2, currentZPosition, displayPosition ) {
+
+        if ( !uiTreeElement || !uiTreeStartElement ) {
+            return currentZPosition;
+        }
+
+        if ( uiTreeElement == uiTreeStartElement ) {
+            return currentZPosition; // we have arrived to the element itself, no more to search
+        }
+
+        let zPosition = currentZPosition;
+        const threeObj = uiTreeStartElement.threeObj; // THREE obj of the ui element
+
+        if ( threeObj ) {
+            // This element has been visualized in 3D, because it has threeObj.
+            // we have to check if the new element must be in front of this one.
+
+            const objMesh = threeObj.children[0];
+            objMesh.geometry.computeBoundingBox();
+            var runningElementWorldBox3 = objMesh.geometry.boundingBox; // box at 0,0,0 !
+            runningElementWorldBox3.translate( objMesh.position );
+            var runningElementWorldBox2 = new THREE.Box2(
+                new THREE.Vector2( runningElementWorldBox3.min.x, runningElementWorldBox3.min.y),
+                new THREE.Vector2( runningElementWorldBox3.max.x, runningElementWorldBox3.max.y));
+
+            //if ( uiElementWorldBox2.intersectsBox( runningElementWorldBox2 ) ) {
+            if ( this._boxesIntersect( uiElementWorldBox2, runningElementWorldBox2 ) ) {
+                const meshZPos = uiTreeStartElement.zPosition; // The real position is in the treenode.zPosition, not in the threejs mesh, there they are all at z=0 waiting to be animated.
+                if ( meshZPos >= zPosition ) {
+                    zPosition = meshZPos + kORGPlaneDistance;
+                }
+            }
+        }
+
+        // Run subviews
+        const subElements = uiTreeStartElement.subviews;
+        if ( subElements ) {
+            for ( let i = 0; i < subElements.length; i++ ) {
+                if ( uiTreeElement == subElements[i] ) {
+                    break; // we have arrived to the element itself, no more to search
+                }
+                zPosition = this._calculateElementZPosition( uiTreeElement, subElements[i], uiElementWorldBox2, zPosition, displayPosition); // calculate against next level in tree
+            }
+        }
+        return zPosition;
+    }
+
+    _collapseNodeAnimatedWithCompletion( node, completionFunction ) {
         var threeObj = node.threeObj; // the obj is a THREE.Group
         if (threeObj) {
             const _this = this;
@@ -310,9 +441,9 @@ class ORGUITreeModel {
                     if (--_this._collapseTweenCount <= 0 ) {
                         _this._collapseTweenCount = 0;
 
-                        if (_this._threeElementTreeGroup) {
-                            _this._threeScene.remove(_this._threeElementTreeGroup);
-                            _this._threeElementTreeGroup = null;
+                        if (_this._THREEElementTreeGroup) {
+                            _this._THREEScene.remove(_this._THREEElementTreeGroup);
+                            _this._THREEElementTreeGroup = null;
                         }
 
                         if (completionFunction) {
@@ -333,9 +464,9 @@ class ORGUITreeModel {
     }
 
     _modelVisualizationChanged() {
-        if (this._threeElementTreeGroup) {
+        if (this._THREEElementTreeGroup) {
             const _this = this;
-            this._threeElementTreeGroup.traverse(function (child) {
+            this._THREEElementTreeGroup.traverse(function (child) {
                 if (child instanceof THREE.Group) {
                     var nodeData = child.userData;
                     if (nodeData) {
@@ -399,7 +530,7 @@ class ORGUITreeModel {
     //    }
     //}
 
-    _changeOpacity(treeJson, opacity) {
+    _changeOpacity( treeJson, opacity ) {
         if ( !!treeJson ) {
             for (let i = 0; i < treeJson.length; i++) {
                 const treeNode = treeJson[i];
@@ -425,7 +556,7 @@ class ORGUITreeModel {
         }
     }
 
-    _mustDrawTreeObjectAsCube(treeJson, inParentTreeObj) {
+    _mustDrawTreeObjectAsCube( treeJson, inParentTreeObj ) {
         // if parent has texture and the object is smaller than parent
         if (inParentTreeObj &&
             (treeJson.bounds.left > inParentTreeObj.bounds.left ||
@@ -498,66 +629,21 @@ class ORGUITreeModel {
         //screenPlane.material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
     }
 
-    _calculateElementZPosition( element, tree, currentZPosition, deviceScreenSize) {
-
-        if (!element || !tree) {
-            return currentZPosition;
-        }
-
-        let zPosition = currentZPosition;
-        const newObjRect = element.bounds;
-
-        for (let i = 0; i < tree.length; i++) {
-
-            //if (element == tree[i]) {
-            //    return zPosition; // we have arrived to the element itself, no more to do
-            //}
-
-            const threeObj = tree[i].threeObj;
-            if ((element != tree[i]) && threeObj) {
-
-                // This element has been visualized in 3D, because it has threeObj.
-                // we have to check if the new element must be in front of this one.
-                const objMesh = threeObj.children[0];
-                objMesh.geometry.computeBoundingBox();
-
-                const runningObjRect = {
-                    "left": (objMesh.geometry.boundingBox.min.x + objMesh.position.x + deviceScreenSize.width / 2),
-                    "top": Math.abs(objMesh.geometry.boundingBox.max.y + objMesh.position.y - deviceScreenSize.height / 2),
-                    "right": (objMesh.geometry.boundingBox.max.x + objMesh.position.x + deviceScreenSize.width / 2),
-                    "bottom": Math.abs(objMesh.geometry.boundingBox.min.y + objMesh.position.y - deviceScreenSize.height / 2)
-                };
-
-                if ( !!newObjRect && !!runningObjRect && this._rectsIntersect(newObjRect, runningObjRect)) {
-
-                    const meshZPos = tree[i].zPosition; // The real position is in the treenode.zPosition, not in the threejs mesh, there they are all at z=0
-
-                    //if (objMesh.geometry.type == "BoxGeometry") {
-                    //    meshZPos += 5;
-                    //}
-
-                    if (meshZPos >= zPosition) {
-                        zPosition = meshZPos + kORGPlaneDistance;
-                        //if (objMesh.geometry.type == "BoxGeometry") {
-                        //    zPosition += 5;
-                        //}
-                    }
-                }
-            }
-            zPosition = this._calculateElementZPosition( element, tree[i].subviews, zPosition, deviceScreenSize); // calculate against next level in tree
-        }
-        return zPosition;
+    _rectsIntersect( a, b ) {
+        return (a.left < b.right && b.left < a.right && a.top > b.bottom && b.top > a.bottom);
     }
 
-    _rectsIntersect(a, b) {
-        return (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom);
+    _boxesIntersect( a, b ) {
+        const precision = 0.0001;
+        //return (a.min.x < b.max.x && b.min.x < a.max.x && a.max.y > b.min.y && b.max.y > a.min.y);
+        return ( ((b.max.x - a.min.x) > precision) &&  ((a.max.x - b.min.x) > precision) && ((a.max.y - b.min.y) > precision ) && ((b.max.y - a.min.y) > precision));
     }
 
-    _treeObjectIsOutOfScreen(treeJson, deviceScreenSize) {
-        return (treeJson.bounds.top > deviceScreenSize.height);
+    _treeObjectIsOutOfScreen( treeJson, deviceScreenSize ) {
+        return ( treeJson.bounds.top > deviceScreenSize.height );
     }
 
-    _nodeIsInteractive(treeNode) {
+    _nodeIsInteractive( treeNode ) {
         if (treeNode.gestures) {
             return true;
         }
@@ -575,7 +661,7 @@ class ORGUITreeModel {
         }
     }
 
-    _hideNodeGroup(threeNodeGroup, hide) {
+    _hideNodeGroup( threeNodeGroup, hide ) {
         var mesh = threeNodeGroup.children[0]; // the first is the mesh, second is the BoxHelper
         if (mesh) {
             mesh.visible = !hide;
@@ -586,7 +672,7 @@ class ORGUITreeModel {
         }
     }
 
-    _isStatusBarWindow(inUIElement) {
+    _isStatusBarWindow( inUIElement ) {
         if (inUIElement.nativeClass == "UIAWindow") {
             const child = inUIElement.subviews[0];
             if (child.nativeClass == "UIAStatusBar") {
@@ -596,33 +682,8 @@ class ORGUITreeModel {
         return false;
     }
 
-    _isKeyboardWindow(nodeData) {
+    _isKeyboardWindow( nodeData ) {
         return (nodeData.class == "UITextEffectsWindow");
-    }
-
-    get _flagShowKeyboard() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowKeyboardWindow);
-    }
-    get _flagShowPrivate() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
-    }
-    get _flagShowHiddenViews() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViews);
-    }
-    get _flagShowHiddenViewsOnly() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowHiddenViewsOnly);
-    }
-    get _flagShowOutOfScreen() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowOutOfScreen);
-    }
-    get _flagShowInteractiveViews() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowInteractiveViews);
-    }
-    get _flagShowNonInteractiveViews() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowNonInteractiveViews);
-    }
-    get _flagShowScreenshots() {
-        return (this._visualizationFlags & ORGTreeVisualizationMask.ShowScreenshots);
     }
 
 }

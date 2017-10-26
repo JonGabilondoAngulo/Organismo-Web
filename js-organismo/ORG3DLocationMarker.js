@@ -12,10 +12,10 @@ class ORG3DLocationMarker {
         this._marker = null;
 
         this._anchorPoint = anchorPoint;
-        this._threeScene = threeScene;
+        this._THREEScene = threeScene;
 
         this._marker = this._createMarker(this._anchorPoint);
-        this._threeScene.add(this._marker);
+        this._THREEScene.add(this._marker);
 
         this.updateDescriptor(text);
     }
@@ -26,12 +26,12 @@ class ORG3DLocationMarker {
     }
 
     updateDescriptor(text) {
-        if (!this._threeScene) {
+        if (!this._THREEScene) {
             return;
         }
         this._removeDescriptor();
         this._descriptor = this._createDescriptor(text);
-        this._threeScene.add( this._descriptor );
+        this._THREEScene.add( this._descriptor );
     }
 
     setPositionY(y) {
@@ -81,15 +81,15 @@ class ORG3DLocationMarker {
     }
 
     _removeMarker() {
-        if (this._threeScene && this._marker) {
-            this._threeScene.remove(this._marker);
+        if (this._THREEScene && this._marker) {
+            this._THREEScene.remove(this._marker);
             this._marker = null;
         }
     }
 
     _removeDescriptor() {
-        if (this._threeScene && this._descriptor) {
-            this._threeScene.remove(this._descriptor);
+        if (this._THREEScene && this._descriptor) {
+            this._THREEScene.remove(this._descriptor);
             this._descriptor = null;
         }
     }

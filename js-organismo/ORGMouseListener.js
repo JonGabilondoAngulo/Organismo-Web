@@ -14,6 +14,7 @@ class ORGMouseListener {
     constructor( domElement ) {
         this._domElement = domElement;
         this._listeners = [];
+        this._enabled = false;
     }
 
     /**
@@ -21,40 +22,46 @@ class ORGMouseListener {
      */
     enable(  ) {
 
-        var this_backup = this;
+        var _this = this;
+
+        if (this._enabled) {
+            return; // make sure we do binds only once
+        }
 
         $(this._domElement).bind("mousedown", function (event) {
-            for (var i=0; i<this_backup._listeners.length; i++) {
-                if (this_backup._listeners[i].onMouseDown) {
-                    this_backup._listeners[i].onMouseDown( event );
+            for (let i=0; i<_this._listeners.length; i++) {
+                if (_this._listeners[i].onMouseDown) {
+                    _this._listeners[i].onMouseDown( event );
                 }
             }
         });
 
         $(this._domElement).bind("mouseup", function (event) {
-            for (var i=0; i<this_backup._listeners.length; i++) {
-                if (this_backup._listeners[i].onMouseUp) {
-                    this_backup._listeners[i].onMouseUp( event );
+            for (let i=0; i<_this._listeners.length; i++) {
+                if (_this._listeners[i].onMouseUp) {
+                    _this._listeners[i].onMouseUp( event );
                 }
             }
         });
 
         $(this._domElement).bind("mousemove", function (event) {
-            for (var i=0; i<this_backup._listeners.length; i++) {
-                if (this_backup._listeners[i].onMouseMove) {
-                    this_backup._listeners[i].onMouseMove( event );
+            for (let i=0; i<_this._listeners.length; i++) {
+                if (_this._listeners[i].onMouseMove) {
+                    _this._listeners[i].onMouseMove( event );
                 }
             }
         });
 
         $(this._domElement).bind("contextmenu",function(event){
             event.preventDefault();
-            for (var i=0; i<this_backup._listeners.length; i++) {
-                if (this_backup._listeners[i].onContextMenu) {
-                    this_backup._listeners[i].onContextMenu( event );
+            for (let i=0; i<_this._listeners.length; i++) {
+                if (_this._listeners[i].onContextMenu) {
+                    _this._listeners[i].onContextMenu( event );
                 }
             }
         });
+
+        this._enabled = true;
     }
 
     /**
@@ -78,7 +85,7 @@ class ORGMouseListener {
      * @param delegate
      */
     removeDelegate( delegate ) {
-        for (var i=0; i<this._listeners.length; i++) {
+        for (let i=0; i<this._listeners.length; i++) {
             if ( this._listeners[i] == delegate) {
                 this._listeners.splice( i, 0);
             }

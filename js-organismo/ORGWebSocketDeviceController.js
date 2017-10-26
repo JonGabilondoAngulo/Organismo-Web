@@ -7,9 +7,16 @@
  */
 class ORGWebSocketDeviceController extends ORGDeviceBaseController {
 
-    constructor(ip, port) {
+    /**
+     * Constructor
+     * @param ip
+     * @param port
+     * @param webSocket delegate
+     */
+    constructor(ip, port, delegate) {
         super(ip,port);
         this.session = null;
+        this.webSocketDelegate = delegate;
         this.webSocket = new ORGWebSocket();
     }
 

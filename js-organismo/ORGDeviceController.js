@@ -9,10 +9,10 @@
  */
 class ORGDeviceController extends ORGWebSocketDeviceController {
 
-    constructor(ip, port) {
-        super(ip,port);
-        this.webSocketDelegate = new ORGOrganismoWSDelegate();
-    }
+    //constructor(ip, port, delegate) {
+    //    super(ip,port, delegate);
+    //    //this.webSocketDelegate = new ORGOrganismoWSDelegate();
+    //}
 
     get type() {
         return "ORG";

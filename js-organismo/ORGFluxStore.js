@@ -8,6 +8,9 @@ class ORGFluxStore extends FluxUtils.Store {
     __onDispatch(payload) {
         switch (payload.actionType) {
 
+            case 'beacon-selected' : {
+                ORG.scene.showHideBeaconTransformControls( payload.beacon );
+            } break;
             case 'device-disconnect': {
                 ORG.UI.connectButton.text("Connect");
                 ORG.UI.buttonExpand.text("Expand");
@@ -17,7 +20,6 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.UI.testAppBundleIdLabel.text('');
                 ORG.UI.testAppNameLabel.text('');
                 ORG.UI.testAppVersionLabel.text('');
-
             } break;
             case 'itinerary-location-update': {
                 ORG.map.updateItineraryLocation(payload.lat, payload.lng);

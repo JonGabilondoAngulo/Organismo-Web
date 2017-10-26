@@ -48,6 +48,7 @@
     <script type="text/javascript" src="three.js/examples/js/controls/OrbitControls.js"></script>
     <script type="text/javascript" src="three.js/examples/js/controls/TransformControls.js"></script>
     <script type="text/javascript" src="js-third-party/KeyboardState.js"></script>
+    <script type="text/javascript" src="js-third-party/math.min.js"></script>
     <script type="text/javascript" src="three.js/examples/js/loaders/OBJLoader.js"></script>
     <script type="text/javascript" src="three.js/examples/js/libs/tween.min.js"></script>
 
@@ -170,6 +171,8 @@
                                         </br>
                                         <button id='reset-camera-button' class="ui-button ui-widget ui-corner-all not-focusable">Reset Camera</button>
                                         <button id='rotate-device-button' class="ui-button ui-widget ui-corner-all not-focusable">Rotate Device</button>
+                                        <button id='translate-device-button' class="ui-button ui-widget ui-corner-all not-focusable">Translate Device</button>
+                                        <button id='button-add-beacon' class="ui-button ui-widget ui-corner-all not-focusable">Add Beacon</button>
                                     </div>
                                 </div>
 
@@ -386,18 +389,22 @@
 <script type="text/javascript" src="js-organismo/ORG.Namespaces.js"></script>
 <script type="text/javascript" src="js-organismo/ORGConstants.js"></script>
 <script type="text/javascript" src="js-organismo/ORGWebSocket.js"></script>
+<script type="text/javascript" src="js-organismo/ORGScenario.js"></script>
 <!--<script type="text/javascript" src="js-organismo/ORGDeviceConnection.js"></script>-->
 <script type="text/javascript" src="js-organismo/ORGUITreeModel.js"></script>
 <script type="text/javascript" src="js-organismo/ORGMouseListener.js"></script>
-<script type="text/javascript" src="js-organismo/ORG3DUIElementHiliter.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DUIElementHighlight.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTooltip.js"></script>
 <script type="text/javascript" src="js-organismo/ORG3DScene.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DDeviceTransformControl.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DBeaconTransformControl.js"></script>
 <script type="text/javascript" src="js-organismo/ORGMessageBuilder.js"></script>
 <script type="text/javascript" src="js-organismo/ORGContextMenuManager.js"></script>
 <script type="text/javascript" src="js-organismo/ORGFloorMap.js"></script>
 <script type="text/javascript" src="js-organismo/ORGLocationProvider.js"></script>
 <script type="text/javascript" src="js-organismo/ORGMap.js"></script>
 <script type="text/javascript" src="js-organismo/ORGDevice.js"></script>
+<script type="text/javascript" src="js-organismo/ORGBeacon.js"></script>
 <script type="text/javascript" src="js-organismo/ORGTestApp.js"></script>
 <script type="text/javascript" src="js-organismo/ORGDeviceBaseController.js"></script>
 <script type="text/javascript" src="js-organismo/ORGWebSocketDeviceController.js"></script>
@@ -411,7 +418,9 @@
 <script type="text/javascript" src="js-organismo/ORGWebSocketDelegate.js"></script>
 <script type="text/javascript" src="js-organismo/ORGiControlProxyWSDelegate.js"></script>
 <script type="text/javascript" src="js-organismo/ORGOrganismoWSDelegate.js"></script>
-<script type="text/javascript" src="js-organismo/ORG3DRaycaster.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DUITreeRaycaster.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DSceneRaycaster.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DBeacon.js"></script>
 <script type="text/javascript" src="js-organismo/ORGLocationManager.js"></script>
 <script type="text/javascript" src="js-organismo/ORGFluxStore.js"></script>
 <script type="text/javascript" src='js-organismo/ORG.SplitterResize.js'></script>
