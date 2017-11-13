@@ -2,30 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORG3DBattery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDiskChart.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORG3DMemoryChart.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORG3DPieChart.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORG3DSceneTooltip.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORGSystemInfoManager.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-libs/organismo.min.js" afterPath="$PROJECT_DIR$/js-libs/organismo.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DBeacon.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DBeacon.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceTransformControl.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceTransformControl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DSceneRaycaster.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DSceneRaycaster.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DUITreeRaycaster.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DUITreeRaycaster.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" afterPath="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMain.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMain.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" afterPath="$PROJECT_DIR$/js-organismo/ORGTooltip.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" afterPath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -756,14 +733,7 @@
       <workItem from="1510495435091" duration="5209000" />
       <workItem from="1510564606985" duration="1340000" />
       <workItem from="1510580281475" duration="7553000" />
-      <workItem from="1510601104080" duration="7000" />
-    </task>
-    <task id="LOCAL-00012" summary="Refactoring , encapsulating globals.">
-      <created>1482412680245</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1482412680245</updated>
+      <workItem from="1510601104080" duration="89000" />
     </task>
     <task id="LOCAL-00013" summary="Refactoring , refactoring to classes.">
       <created>1489183936709</created>
@@ -1101,11 +1071,18 @@
       <option name="project" value="LOCAL" />
       <updated>1505840857721</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Battery &amp; Disk system info charts.">
+      <created>1510601160669</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1510601160670</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="495440000" />
+    <option name="totallyTimeSpent" value="495522000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1118,13 +1095,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26920366" sideWeight="0.506993" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26004228" sideWeight="0.7989691" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3260188" sideWeight="0.49246576" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3431498" sideWeight="0.64137006" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17897727" sideWeight="0.4533042" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17797695" sideWeight="0.54897815" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17797695" sideWeight="0.45102185" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3153409" sideWeight="0.0824686" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21695629" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.49726027" order="7" side_tool="false" content_ui="tabs" />
@@ -1208,7 +1184,6 @@
       <path value="$PROJECT_DIR$/Agent/StashRepo" />
       <path value="$PROJECT_DIR$/jsoneditor" />
     </ignored-roots>
-    <MESSAGE value="Improved the UI tree collapse function." />
     <MESSAGE value="Added class for device screen." />
     <MESSAGE value="Encapsulated constants." />
     <MESSAGE value="ORGWebSocket refactored to a class." />
@@ -1233,7 +1208,8 @@
     <MESSAGE value="Device connection improvements. Map location improvements." />
     <MESSAGE value="ORGDeviceController inheritance fixed." />
     <MESSAGE value="DeviceController documentation." />
-    <option name="LAST_COMMIT_MESSAGE" value="DeviceController documentation." />
+    <MESSAGE value="Battery &amp; Disk system info charts." />
+    <option name="LAST_COMMIT_MESSAGE" value="Battery &amp; Disk system info charts." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1566,6 +1542,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="257">
           <caret line="426" column="33" lean-forward="true" selection-start-line="426" selection-start-column="33" selection-end-line="426" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1573,6 +1550,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="635">
           <caret line="65" column="33" lean-forward="false" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1587,6 +1565,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="599">
           <caret line="91" column="140" lean-forward="true" selection-start-line="89" selection-start-column="7" selection-end-line="91" selection-end-column="140" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1599,6 +1578,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
           <caret line="13085" column="8" lean-forward="false" selection-start-line="13085" selection-start-column="8" selection-end-line="13085" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1616,6 +1596,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="32" column="21" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc;n#ORG3DBattery#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
