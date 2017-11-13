@@ -18,7 +18,8 @@ const ORGTreeVisualizationMask = {
     ShowOutOfScreen : 0x0800
 };
 
-const kORGPlaneDistance = 0.001; // m
+const kORGMinimalPlaneDistance = 0.001; // m
+const kORGMaxPlaneDistance = 0.02; // m
 const kORGExtrudeDuration = 500.0; // ms
 
 /**
@@ -34,6 +35,8 @@ class ORGUITreeModel {
         this._THREEScene = null;
         this._collapseTweenCount = 0; // collapse animation counter
         this._visualizationFlags = visualizationFlag;
+        this._planeDistance = kORGMinimalPlaneDistance;
+        this._layerCount = 0;
     }
 
     get treeGroup() {
@@ -44,6 +47,9 @@ class ORGUITreeModel {
         this._visualizationFlags = flags;
     }
 
+    get layerCount() {
+        return this._layerCount;
+    }
     get _flagShowKeyboard() {
         return (this._visualizationFlags & ORGTreeVisualizationMask.ShowKeyboardWindow);
     }
@@ -70,6 +76,7 @@ class ORGUITreeModel {
     }
 
     createUITreeModel( treeTopLevelNodes, threeScene, screenSize, displaySize, displayScale, displayPosition ) {
+        this._layerCount = 0;
         this._collapseTweenCount = 0;
         this._treeData = treeTopLevelNodes;
         this._THREEScene = threeScene;
@@ -101,7 +108,7 @@ class ORGUITreeModel {
     hideTextures( hide ) {
         if (this._THREEElementTreeGroup) {
             this._THREEElementTreeGroup.traverse(function (child) {
-                if (child instanceof THREE.Mesh) {
+                if (child.type == "Mesh") {
                     if (hide) {
                         child.material.map = null;
                         child.material.color = new THREE.Color(0x000000);
@@ -122,7 +129,7 @@ class ORGUITreeModel {
     hideNonInteractiveViews( hide ) {
         if (this._THREEElementTreeGroup) {
             this._THREEElementTreeGroup.traverse(function (child) {
-                if (child instanceof THREE.Group) {
+                if (child.type == "Group") {
                     if (hide) {
                         const nodeData = child.userData;
                         if (nodeData) {
@@ -139,11 +146,11 @@ class ORGUITreeModel {
     }
 
     showConnections( show , threeScene) {
-        if (this._THREEElementTreeGroup) {
+        if ( this._THREEElementTreeGroup ) {
             this._THREEElementTreeGroup.traverse(function (child) {
-                if (child instanceof THREE.Group) {
+                if ( child.type == "Group" ) {
                     const nodeData = child.userData;
-                    if (_nodeIsInteractive(nodeData)) {
+                    if ( _nodeIsInteractive(nodeData) ) {
                         const mesh = child.children[0];
                         if (mesh) {
                             const arrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 1, 0, 0 ), mesh.position, 400, 0x0000ff, 50, 25 );
@@ -153,6 +160,46 @@ class ORGUITreeModel {
                     }
                 }
             });
+        }
+    }
+
+    setExpandedTreeLayersDistance( distanceUnits ) {
+
+        this._planeDistance = kORGMinimalPlaneDistance + (distanceUnits/100.0 * kORGMaxPlaneDistance); // new plane distance
+
+        if ( this._THREEElementTreeGroup ) {
+            const allElements = this._THREEElementTreeGroup.children;
+            let firstPosition = 0;
+            for ( let i in allElements ) {
+                let currentElementGroup = allElements[i];
+                if ( i == 0 ) {
+                    firstPosition = currentElementGroup.position;
+                    continue;
+                }
+
+                if ( currentElementGroup.type == "Group" ) {
+                    const layerNum = (currentElementGroup.userData.originalWorldZPosition - firstPosition.z) / kORGMinimalPlaneDistance; // layer of the element
+                    currentElementGroup.position.z = firstPosition.z + (layerNum * this._planeDistance);
+                } else {
+                    // all should be groups !
+                }
+            }
+        }
+    }
+
+    setExpandedTreeLayersVisibleRange( maxVisibleLayer ) {
+        // Traverse all Tree elements and set their visibility
+        // Every element is a Group with 2 children, a Mesh and a BoxHelper.
+
+        const allElements = this._THREEElementTreeGroup.children;
+        for ( let i in allElements ) {
+            let currentElementGroup = allElements[i];
+            if ( currentElementGroup.type == "Group" ) {
+                const nodeData = currentElementGroup.userData;
+                if ( !!nodeData ) {
+                    currentElementGroup.visible = ( nodeData.expandedTreeLayer < maxVisibleLayer );
+                }
+            }
         }
     }
 
@@ -172,7 +219,7 @@ class ORGUITreeModel {
         this.removeUITreeModel( threeScene ); // remove existing first
 
         this._THREEElementTreeGroup = new THREE.Group();
-        threeScene.add(this._THREEElementTreeGroup);
+        threeScene.add( this._THREEElementTreeGroup );
 
         let nextZPos = 0;
         if ( !!treeRootNodes ) {
@@ -193,7 +240,10 @@ class ORGUITreeModel {
             }
         }
 
-        //this._createTree3DModel( treeData, screenSize, displaySize, displayScale, displayPosition, startingZ); // add all the ui tree in threeElementTreeGroup
+        ORG.dispatcher.dispatch({
+            actionType: 'uitree-expanded',
+            ui_tree: this
+        });
     }
 
     /***
@@ -348,7 +398,11 @@ class ORGUITreeModel {
         const center3D = new THREE.Vector3( center2D.x, center2D.y, 0.0);
 
         THREEGeometry = new THREE.PlaneBufferGeometry( elementWorldBoundsBox2.getSize().x, elementWorldBoundsBox2.getSize().y, 1, 1 );
-        uiElementDescription.zPosition = zPosition; // keep it here for later use
+        uiElementDescription.originalWorldZPosition = zPosition; // keep it here for later use
+        uiElementDescription.expandedTreeLayer = zPosition / this._planeDistance; // keep it here for later use
+        if (uiElementDescription.expandedTreeLayer > this._layerCount) {
+            this._layerCount = uiElementDescription.expandedTreeLayer;
+        }
 
         if ( this._flagShowScreenshots && THREEScreenshotTexture ) {
             THREEMaterial = new THREE.MeshBasicMaterial( {map: THREEScreenshotTexture, transparent: false, side: THREE.DoubleSide});
@@ -405,9 +459,9 @@ class ORGUITreeModel {
 
             //if ( uiElementWorldBox2.intersectsBox( runningElementWorldBox2 ) ) {
             if ( this._boxesIntersect( uiElementWorldBox2, runningElementWorldBox2 ) ) {
-                const meshZPos = uiTreeStartElement.zPosition; // The real position is in the treenode.zPosition, not in the threejs mesh, there they are all at z=0 waiting to be animated.
+                const meshZPos = uiTreeStartElement.originalWorldZPosition; // The real position is in the treenode.originalWorldZPosition, not in the threejs mesh, there they are all at z=0 waiting to be animated.
                 if ( meshZPos >= zPosition ) {
-                    zPosition = meshZPos + kORGPlaneDistance;
+                    zPosition = meshZPos + this._planeDistance;
                 }
             }
         }
@@ -467,7 +521,7 @@ class ORGUITreeModel {
         if (this._THREEElementTreeGroup) {
             const _this = this;
             this._THREEElementTreeGroup.traverse(function (child) {
-                if (child instanceof THREE.Group) {
+                if (child.type == "Group") {
                     var nodeData = child.userData;
                     if (nodeData) {
                         this._hideNodeGroup(child, _this._mustHideTreeObject( nodeData));
@@ -621,7 +675,7 @@ class ORGUITreeModel {
         if (this._isStatusBarWindow(nodeData)) {
             return false;
         }
-         return true;
+        return true;
     }
 
     _removeScreenshotFromScreen() {

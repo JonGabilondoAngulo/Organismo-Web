@@ -4,6 +4,7 @@
 ORG.UI.checkButtonShowFloor = $('#show-floor');
 ORG.UI.checkButtonShowDevice = $('#show-device');
 ORG.UI.checkButtonShowLocation = $('#show-location');
+ORG.UI.checkButtonShowSystemInfo = $('#show-system-info');
 ORG.UI.checkButtonShowTextures = $('#show-textures');
 ORG.UI.checkButtonShowInteractive = $('#show-interactive');
 ORG.UI.checkButtonShowNonInteractive = $('#show-non-interactive');
@@ -27,6 +28,26 @@ ORG.UI.buttonAddBeacon = $('#button-add-beacon');
 ORG.UI.startPoint = $('#start-point');
 ORG.UI.endPoint = $('#end-point');
 ORG.UI.dropdownTravelMode = $('#travel-mode-dropdown');
+ORG.UI.sliderTreeLayersDistance = $('#ex1');
+ORG.UI.sliderTreeLayersRange = $('#ex2');
+
+// Sliders
+ORG.UI.sliderTreeLayersDistance.bootstrapSlider();
+ORG.UI.sliderTreeLayersRange.bootstrapSlider();
+
+ORG.UI.sliderTreeLayersDistance.on("slide", function(slideEvt) {
+    ORG.dispatcher.dispatch({
+        actionType: 'uitree-layer-spacing-change',
+        value: slideEvt.value
+    });
+});
+
+ORG.UI.sliderTreeLayersRange.on("slide", function(slideEvt) {
+    ORG.dispatcher.dispatch({
+        actionType: 'uitree-layer-range-change',
+        value: slideEvt.value
+    });
+});
 
 // Map
 ORG.UI.buttonResetItinerary = $('#reset-itinerary');
@@ -37,6 +58,14 @@ ORG.UI.checkButtonShowDevice.change(function (e) {
         ORG.scene.showDevice3DModel();
     } else {
         ORG.scene.hideDevice3DModel();
+    }
+});
+
+ORG.UI.checkButtonShowSystemInfo.change(function (e) {
+    if ($(this).is(':checked') == true) {
+        ORG.systemInfoManager.start();
+    } else {
+        ORG.systemInfoManager.stop();
     }
 });
 
@@ -57,19 +86,19 @@ ORG.UI.checkButtonShowLocation.change(function (e) {
 });
 
 ORG.UI.checkButtonShowTextures.change(function (e) {
-    ORG.scene.setShowTextures($(this).is(':checked'));
+    ORG.scene.flagShowScreenshots = $(this).is(':checked');
 });
 
 ORG.UI.checkButtonShowInteractive.change(function (e) {
-    ORG.scene.setShowInteractive($(this).is(':checked'));
+    ORG.scene.flagShowInteractiveViews = $(this).is(':checked');
 });
 
 ORG.UI.checkButtonShowNonInteractive.change(function (e) {
-    ORG.scene.setShowNonInteractive($(this).is(':checked'));
+    ORG.scene.flagShowNonInteractiveViews = $(this).is(':checked');
 });
 
 ORG.UI.checkButtonShowPrivate.change(function (e) {
-    ORG.scene.setShowPrivate($(this).is(':checked'));
+    ORG.scene.flagShowPrivateClasses = $(this).is(':checked');
 });
 
 ORG.UI.checkButtonShowTooltips.change(function (e) {
@@ -77,7 +106,7 @@ ORG.UI.checkButtonShowTooltips.change(function (e) {
 });
 
 ORG.UI.checkButtonShowHiddenViews.change(function (e) {
-    ORG.scene.setShowHiddenViews($(this).is(':checked'));
+    ORG.scene.flagShowHiddenViews = $(this).is(':checked');
 });
 
 ORG.UI.checkButtonLiveScreen.change(function (e) {
@@ -88,7 +117,7 @@ ORG.UI.checkButtonShowNormalWindow.change(function (e) {
     ORG.scene.setShowNormalWindow($(this).is(':checked'));
 });
 ORG.UI.checkButtonShowKeyboardWindow.change(function (e) {
-    ORG.scene.setShowKeyboardWindow($(this).is(':checked'));
+    ORG.scene.flagShowKeyboardWindow = $(this).is(':checked');
 });
 ORG.UI.checkButtonShowAlertWindow.change(function (e) {
     ORG.scene.setShowAlertWindow($(this).is(':checked'));

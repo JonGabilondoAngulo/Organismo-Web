@@ -8,6 +8,18 @@ class ORGFluxStore extends FluxUtils.Store {
     __onDispatch(payload) {
         switch (payload.actionType) {
 
+            case 'uitree-expanded': {
+//mySlider .bootstrapSlider('setValue', 5) .bootstrapSlider('setValue', 7); this way ?
+                ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setAttribute', 'min', 0);
+                ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setAttribute', 'max', payload.ui_tree.layerCount);
+                ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setValue', payload.ui_tree.layerCount);
+            } break;
+            case 'uitree-layer-range-change': {
+                ORG.scene.setExpandedTreeLayersVisibleRange( payload.value );
+            } break;
+            case 'uitree-layer-spacing-change': {
+                ORG.scene.setExpandedTreeLayersDistance( payload.value );
+            } break;
             case 'beacon-selected' : {
                 ORG.scene.showHideBeaconTransformControls( payload.beacon );
             } break;

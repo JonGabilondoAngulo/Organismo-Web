@@ -63,7 +63,7 @@ class ORG3DBeacon {
         var coverMesh = new THREE.Mesh(geometry, material);
         coverMesh.name = "ORG.Beacon.Cover.Mesh";
 
-        var coreGeometry = new THREE.SphereGeometry(1, 16, 16);
+        var coreGeometry = new THREE.SphereGeometry(2, 16, 16);
         var coreMaterial = new THREE.MeshPhongMaterial({
             color: 0x771122
         });

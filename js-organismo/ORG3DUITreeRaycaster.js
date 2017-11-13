@@ -18,12 +18,12 @@ class ORG3DUITreeRaycaster {
         this._raycaster = new THREE.Raycaster();
         this._raycaster.linePrecision = 0.0001;
         this._rcmouse = new THREE.Vector2();
-        this._THREETargetObject = THREETargetObject; // The threejs object to raycast on
+        this._THREETargetObject = THREETargetObject; // The threejs object to raycast on.
         this._THREECamera = THREECamera;
         this._rendererDomElement = rendererDomElement;
         this._listeners = [];
         this._hilitedObj = null;
-        this._isMouseDown = false; // It will help us to ignore the mousemoves while mousedown.
+        this._isMouseDown = false; // It will help us to ignore the mouse moves while mouse down.
         this._enabled = true;
     }
 
@@ -55,7 +55,7 @@ class ORG3DUITreeRaycaster {
      * @param event
      */
     onMouseUp( event ) {
-
+        this._isMouseDown = false;
     }
 
     /**

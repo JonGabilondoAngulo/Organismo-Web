@@ -42,8 +42,8 @@ class ORG3DDeviceModelLoader {
             const scale = device.bodySize.height / deviceBox.getSize().y;
             object.scale.set( scale, scale, scale );
             deviceBox =  new THREE.Box3().setFromObject( object );
-            object.position.set( 0, yPosition, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-            scene.addDevice3DModel( new ORG3DDeviceModel( object ) );
+            object.position.set( 0, 0/*yPosition*/, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
+            scene.addDevice3DModel( new ORG3DDeviceModel( scene.THREEScene, object ) );
         } );
     }
 }

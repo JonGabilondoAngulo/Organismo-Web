@@ -87,5 +87,28 @@ class ORG3DSceneRaycaster {
      */
     onMouseMove( event ) {
 
+        var elementToTooltip = null;
+
+        const canvasW = $(this._rendererDomElement).width();
+        const canvasH = $(this._rendererDomElement).height();
+        const canvasOffset = $(this._rendererDomElement).offset();
+
+        // calculate mouse position in normalized device coordinates. (-1 to +1) for both components
+        this._rcmouse.x = ( (event.clientX - canvasOffset.left) / canvasW ) * 2 - 1;
+        this._rcmouse.y = - ( (event.clientY - canvasOffset.top) / canvasH ) * 2 + 1;
+
+        this._raycaster.setFromCamera( this._rcmouse, this._THREECamera );
+        var intersects = this._raycaster.intersectObject( this._THREETargetObject, true /*recursive*/ ); // returns always an array. The first one is the closest object.
+
+        if ( intersects && intersects.length ) {
+            elementToTooltip = intersects[0];
+        }
+
+        // Inform delegates about the intersected element, null is sent as well.
+        for ( let i=0; i<this._listeners.length; i++ ) {
+            if (this._listeners[i].mouseOverElement) {
+                this._listeners[i].mouseOverElement( elementToTooltip );
+            }
+        }
     }
 }

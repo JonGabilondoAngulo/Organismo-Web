@@ -136,8 +136,10 @@ class ORGWebSocketDelegate {
             this._processResponseAppInfo(messageJSON);
 		} else if ( messageJSON.request == ORG.Request.Screenshot) {
             this._processReportScreenshot( messageJSON);
-		} else if ( messageJSON.request == ORG.Request.ElementTree) {
+        } else if ( messageJSON.request == ORG.Request.ElementTree) {
             this._processReportElementTree(messageJSON);
+        } else if ( messageJSON.request == ORG.Request.SystemInfo) {
+            this._processReportSystemInfo(messageJSON);
 		}
 	}
 
@@ -226,7 +228,7 @@ class ORGWebSocketDelegate {
 	}
 
 	/**
-	 * Method to process a message reponse with information of the UI Element Tree.
+	 * Method to process a message response with information of the UI Element Tree.
 	 * @param reportData
 	 */
 	_processReportElementTree(reportData) {
@@ -236,4 +238,16 @@ class ORGWebSocketDelegate {
 			ORG.scene.updateUITreeModel( jsonTree );
 		}
 	}
-}
+
+    /**
+     * Method to process a message response with the system information of the iDevice.
+     * @param reportData
+     */
+    _processReportSystemInfo( reportData ) {
+        var systemInfoData = reportData.data;
+        if ( !!systemInfoData ) {
+			if ( ORG.systemInfoManager) {
+				ORG.systemInfoManager.dataUpdate( systemInfoData );
+            }
+        }
+    }}

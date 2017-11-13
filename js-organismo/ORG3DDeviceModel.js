@@ -13,9 +13,9 @@ class ORG3DDeviceModel {
      * Constructor
      * @param threeObj - A THREE.Group representing the Device.
      */
-    constructor( threeObj ) {
+    constructor( scene, threeObj ) {
         this.threeObj = threeObj; // It is a THREE.Group. Don't have geometry to compute bbox.
-        this.threeScene = null;
+        this.threeScene = scene;
     }
 
 
@@ -29,13 +29,6 @@ class ORG3DDeviceModel {
 
     get THREEObject() {
         return this.threeObj;
-    }
-
-    addToScene( threeScene) {
-        this.threeScene = threeScene;
-        if (this.threeObj) {
-            this.threeScene.add( this.threeObj);
-        }
     }
 
     removeFromScene() {

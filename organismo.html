@@ -28,7 +28,7 @@
 
     <script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel='stylesheet' type="text/css" href='bootstrap/dist/css/bootstrap.min.css'>
-    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>-->
 
     <link rel="stylesheet" type="text/css" href="css/tooltips2.css"/>
 
@@ -53,6 +53,8 @@
     <script type="text/javascript" src="three.js/examples/js/libs/tween.min.js"></script>
 
 
+    <link rel='stylesheet' type="text/css" href='js-third-party/bootstrap-slider/css/bootstrap-slider.min.css'>
+    <script type="text/javascript" src="js-third-party/bootstrap-slider/bootstrap-slider.min.js"></script>
 
 </head>
 <body>
@@ -164,6 +166,11 @@
                                         </div>
                                         <br>
                                         <div class='smallCheckboxDiv'>
+                                            <input type='checkbox' id="show-system-info" value="false" title="show-system-info"/>
+                                            <div class='inlineCheckboxLabel'>Show System Info</div>
+                                        </div>
+                                        <br>
+                                        <div class='smallCheckboxDiv'>
                                             <input type="checkbox" id="live-screen" value="true" title="live-screen"
                                                    checked/>
                                             <div class='inlineCheckboxLabel'>Continuos Update</div>
@@ -248,6 +255,13 @@
                                             <!--<input type="checkbox" id="show-alert-window" title="show-alert-window"/>-->
                                             <!--<div class='inlineCheckboxLabel'>Alert Window</div>-->
                                         <!--</div>-->
+
+
+                                        <div>
+                                        <span>Layers Dist:</span> &nbsp; <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0" data-slider-tooltip="hide"/>
+                                        <br/>
+                                        <span>Layers Range:</span> &nbsp;  <input id="ex2" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0" data-slider-tooltip="hide"/>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -385,6 +399,7 @@
     </div>
 </main>
 
+
 <!--<script type="text/javascript" src="js-libs/organismo.min.js"></script>-->
 <script type="text/javascript" src="js-organismo/ORG.Namespaces.js"></script>
 <script type="text/javascript" src="js-organismo/ORGConstants.js"></script>
@@ -421,6 +436,10 @@
 <script type="text/javascript" src="js-organismo/ORG3DUITreeRaycaster.js"></script>
 <script type="text/javascript" src="js-organismo/ORG3DSceneRaycaster.js"></script>
 <script type="text/javascript" src="js-organismo/ORG3DBeacon.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DBattery.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DPieChart.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DMemoryChart.js"></script>
+<script type="text/javascript" src="js-organismo/ORG3DDiskChart.js"></script>
 <script type="text/javascript" src="js-organismo/ORGLocationManager.js"></script>
 <script type="text/javascript" src="js-organismo/ORGFluxStore.js"></script>
 <script type="text/javascript" src='js-organismo/ORG.SplitterResize.js'></script>
@@ -435,6 +454,7 @@
 <script type="text/javascript" src="js-organismo/ORGItinerary.js"></script>
 <script type="text/javascript" src="js-organismo/ORGItineraryLocation.js"></script>
 <script type="text/javascript" src="js-organismo/ORGItineraryRunner.js"></script>
+<script type="text/javascript" src="js-organismo/ORGSystemInfoManager.js"></script>
 
 </body>
 </html>

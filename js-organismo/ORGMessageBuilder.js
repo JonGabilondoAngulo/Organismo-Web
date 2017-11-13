@@ -17,6 +17,16 @@ class ORGMessageBuilder {
         return JSON.stringify(msg);
     }
 
+    static systemInfo() {
+        var msg = {
+            type: "request",
+            data: {
+                request: ORG.Request.SystemInfo
+            }
+        };
+        return JSON.stringify(msg);
+    }
+
     static appInfo() {
         var msg = {
             type: "request",

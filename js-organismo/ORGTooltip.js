@@ -111,7 +111,7 @@ class ORGTooltip {
 
         var content = "<div>" + elementInfo.class;
         for (var key in elementInfo){
-            if ( key == "screenshot" || key == "class" || key == "subviews" || key == "threeObj" || key == "layerZPosition" || key == "zPosition") {
+            if ( key == "screenshot" || key == "class" || key == "subviews" || key == "threeObj" || key == "originalWorldZPosition" || key == "zPosition") {
                 continue;
             }
 

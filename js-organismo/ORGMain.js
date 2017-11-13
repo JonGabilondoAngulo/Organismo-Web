@@ -3,6 +3,7 @@
 ORG.Request = {
     AppInfo : "app-info",
     DeviceInfo : "device-info",
+    SystemInfo : "system-info",
     Screenshot : "screenshot",
     ElementTree : "element-tree"};
 
@@ -41,6 +42,9 @@ ORG.fontLoader.load( 'three.js/examples/fonts/helvetiker_regular.typeface.json',
 
     google.charts.load('current', {'packages' : ['columnchart']});
     //google.charts.setOnLoadCallback(function() { sendAndDraw('') });
+
+    // System Info manager
+    ORG.systemInfoManager = new ORGSystemInfoManager( ORG.scene );
 } );
 
 

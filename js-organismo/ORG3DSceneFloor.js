@@ -3,17 +3,22 @@
  */
 
 
+const kORGFloorLabelFontSize = 20;
+const kORGArrowOffset = 10;
+const kORGArrowToTextOffset = 5;
+const kORGFloorLabelHeight = 5;
+
 /**
  * Class to represent the floor the THREE scene model.
  */
 class ORG3DSceneFloor {
 
-    constructor(size, step, showAxis, threeScene, defaultYPos) {
+    constructor( size, step, showAxis, THREEScene, defaultYPos) {
 
-        this._THREEScene = threeScene;
+        this._THREEScene = THREEScene;
         this._yPos = defaultYPos;
 
-        if (showAxis) {
+        if ( showAxis ) {
             this._THREEAxis = new THREE.AxisHelper(10);
             this._THREEAxis.position.set(-size/2, this._yPos,-size/2);
             this._THREEScene.add(this._THREEAxis);
@@ -54,8 +59,8 @@ class ORG3DSceneFloor {
 
     // PRIVATE
 
-    _createXArrow(floorSize) {
-        const zOffset = 80;
+    _createXArrow( floorSize ) {
+        const zOffset = kORGArrowOffset;
         const origin = new THREE.Vector3( -floorSize/2, 0, floorSize/2 + zOffset);
         const length = floorSize;
         const color = 0xffff00;
@@ -64,16 +69,16 @@ class ORG3DSceneFloor {
         this._THREEScene.add( arrowHelper );
     }
 
-    _createXLabel(floorSize) {
+    _createXLabel( floorSize ) {
 
-        const addressGeom = new THREE.TextGeometry(floorSize.toString() + " m", {
+        const addressGeom = new THREE.TextGeometry( floorSize.toString() + " m", {
             font: ORG.font_helvetiker_regular,
-            size: 60,
-            height: 5,
+            size: kORGFloorLabelFontSize,
+            height: kORGFloorLabelHeight,
             curveSegments: 12,
             bevelEnabled: false,
-            bevelThickness: 10,
-            bevelSize: 8,
+            bevelThickness: kORGFloorLabelHeight / 5.0,
+            bevelSize: kORGFloorLabelHeight / 5.0,
             bevelSegments: 5
         });
 
@@ -84,7 +89,7 @@ class ORG3DSceneFloor {
         textMesh.updateMatrix();
         textMesh.geometry.computeBoundingBox();
         const centerPoint = textMesh.geometry.boundingBox.getCenter();
-        textMesh.position.set( -centerPoint.x, this._yPos, floorSize/2 + 70 );
+        textMesh.position.set( -centerPoint.x, this._yPos, floorSize/2 + kORGFloorLabelFontSize + kORGArrowOffset + kORGArrowToTextOffset );
 
         this._THREEScene.add( textMesh );
     }
