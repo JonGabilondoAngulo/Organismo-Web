@@ -6,17 +6,23 @@
 class ORG3DPieChart {
 
     constructor( radius, height, sectorsDescription ) {
+
         this._THREEModel = this._createModel( radius, height, sectorsDescription);
+
     }
 
     get THREEModel() {
+
         return this._THREEModel;
+
     }
 
     set position( position ) {
+
         if ( this._THREEModel ) {
             this._THREEModel.position.copy( position );
         }
+
     }
 
     // PRIVATE
@@ -50,8 +56,10 @@ class ORG3DPieChart {
     }
 
     _createSector( radius, height, segments, startAngle, endAngle, color) {
+
         var geometry = new THREE.CylinderGeometry( radius, radius, height, segments, 1, false, startAngle, endAngle );
         var material = new THREE.MeshStandardMaterial({ color: color, metalness: 0.5 });
         return new THREE.Mesh( geometry, material );
+
     }
 }

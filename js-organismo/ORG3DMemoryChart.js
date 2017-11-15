@@ -39,8 +39,6 @@ class ORG3DMemoryChart extends ORG3DPieChart {
         kWiredMemoryPercent *= overshootCorrection;
         kPurgableMemoryPercent *= overshootCorrection;
 
-        //double totalMemory;
-
         super( kRadius, kThickness, [
             {"percent": kFreeMemoryPercent, "color": 0x0099CC, "tooltip": "Free Memory \r" +  kFreeMemoryRaw / 1024 + " MB\r" + kFreeMemoryPercent + " %"},
             {"percent": kUsedMemoryPercent, "color": 0xFFDC00, "tooltip": "Free Memory \r" +  kUsedMemoryRaw / 1024 + " MB\r" + kUsedMemoryPercent + " %" },

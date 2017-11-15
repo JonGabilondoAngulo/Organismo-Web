@@ -42,6 +42,10 @@ ORG.UI.connectButton.click(function(e) {
         // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
         ORG.scene.handleDeviceDisconnection();
 
+        if ( ORG.systemInfoManager ) {
+            ORG.systemInfoManager.stop();
+        }
+
         ORG.dispatcher.dispatch({
             actionType: 'device-disconnect'
         });

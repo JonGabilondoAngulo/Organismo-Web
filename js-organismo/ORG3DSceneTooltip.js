@@ -6,6 +6,7 @@
 class ORG3DSceneTooltip {
 
     constructor( canvasDomElement ) {
+
         this._threeCanvasDomElement = canvasDomElement;
         this._tooltipOpen = false;
 
@@ -21,17 +22,21 @@ class ORG3DSceneTooltip {
             }
         });
         this._tooltipOpen = true;
+
     }
 
     destroy() {
+
         if (this._threeCanvasDomElement) {
             $( this._threeCanvasDomElement ).uitooltip( "destroy" );
         }
+
     }
 
     // DELEGATE METHOD
 
     mouseOverElement( threeElement ) {
+
         if ( !!threeElement ) {
 
             var mustShowTip = false;
@@ -51,23 +56,28 @@ class ORG3DSceneTooltip {
                 $( this._threeCanvasDomElement ).uitooltip( "option", "content", "<span class='ui-tooltip-value'>Roll over element</span>" );
             }
         }
+
     }
 
     // PRIVATE
 
     _show( elementInfo ) {
+
         if ( this._tooltipOpen ) {
             $( this._threeCanvasDomElement ).uitooltip( "option", "content", this._createTooltipContent(elementInfo) );
             $( this._threeCanvasDomElement ).uitooltip( "enable" );
         } else {
         }
+
     }
 
     _hide() {
+
         if ( this._tooltipOpen) {
             $( this._threeCanvasDomElement ).uitooltip( "destroy" );
             this._tooltipOpen = false;
         }
+
     }
 
     _createTooltipContent( elementInfo) {
@@ -112,6 +122,10 @@ class ORG3DSceneTooltip {
                 continue;
             }
 
+            if ( key == "pointer") {
+                content += "<br><span class='ui-tooltip-key'>pointer: </span>" + "<span class='ui-tooltip-value'>" + elementInfo[key] + "</span>";
+                continue;
+            }
 
             content += "<br><span class='ui-tooltip-key'>" + key + ": </span>" + "<span class='ui-tooltip-value'>" + elementInfo[key] + "</span>";
         }
