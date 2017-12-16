@@ -14,6 +14,6 @@
 [submodule "flux"]
 	path = flux
 	url = https://github.com/facebook/flux.git
-[submodule "js-thrid-party"]
-	path = js-thrid-party
-	url = https://github.com/patternfly/patternfly-bootstrap-treeview.git
+[submodule "js-third-party/patternfly"]
+	path = js-third-party/patternfly
+	url = https://github.com/JonGabilondoAngulo/patternfly-bootstrap-treeview.git
