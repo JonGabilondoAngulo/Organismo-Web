@@ -26,7 +26,7 @@ const kORGExtrudeDuration = 500.0; // ms
  * This class builds and manages the expanded 3D UI model. Given a JSON UI model it creates an expanded model of THREE objects.
  * @constructor
  */
-class ORGUITreeModel {
+class ORG3DUITreeModel {
 
     constructor( visualizationFlag ) {
 

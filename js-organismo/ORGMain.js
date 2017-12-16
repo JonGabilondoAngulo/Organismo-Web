@@ -38,13 +38,16 @@ ORG.fontLoader.load( 'three.js/examples/fonts/helvetiker_regular.typeface.json',
     ORG.locationManager.addListener( ORG.scene );
 
     // Resize splitter
-    ORG.SplitterResize(ORG.contentWrapper, ORG.leftSection, ORG.rightSection, ORG.scene);
+    ORG.SplitterResize(document.getElementById('org-splitter'), ORG.contentWrapper, ORG.leftSection, ORG.rightSection, ORG.scene);
 
     google.charts.load('current', {'packages' : ['columnchart']});
     //google.charts.setOnLoadCallback(function() { sendAndDraw('') });
 
     // System Info manager
-    ORG.systemInfoManager = new ORGSystemInfoManager( ORG.scene );
+    ORG.systemInfoManager = new ORGSystemInfoManager(ORG.scene);
+
+    // UI JSON Tree
+    ORG.UIJSONTreeManager = new ORGUIJSONTreeManager(ORG.scene, document.getElementById('ui-json-tree'));
 } );
 
 

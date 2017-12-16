@@ -140,8 +140,8 @@ class ORGSystemInfoManager {
 
     _create3DCPUUsageBarChart( ) {
 
-        this._cpuUsageChart = new ORD3DCPUUsageBarChart( new THREE.Vector3( 0.001, 0.03, 0.001 ) );
-        this._cpuUsageChart.position = new THREE.Vector3( 0.065, 1.55, 0);
+        this._cpuUsageChart = new ORG3DCPUUsageBarChart( new THREE.Vector3( 0.002, 0.03, 0.002 ) );
+        this._cpuUsageChart.position = new THREE.Vector3( 0.065, 1.52, 0);
         this._scene.THREEScene.add( this._cpuUsageChart.THREEModel );
 
     }

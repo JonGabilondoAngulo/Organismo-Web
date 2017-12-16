@@ -64,14 +64,17 @@ class ORG3DScene {
             ORGTreeVisualizationMask.ShowNonInteractiveViews |
             ORGTreeVisualizationMask.ShowScreenshots;
 
-        this._uiTreeModel = new ORGUITreeModel( this._treeVisualizationFlags);
+        this._uiTreeModel = new ORG3DUITreeModel( this._treeVisualizationFlags);
         this._initialize(domContainer, this.flagShowFloor);
-
     }
 
     //------------------------------------------------------------------------------------------------------------------
     // GET/SET
     //------------------------------------------------------------------------------------------------------------------
+    get sceneSize() {
+        return this._THREERenderer.getSize();
+    }
+
     get isExpanded() {
         return this._uiExpanded;
     }
@@ -654,6 +657,10 @@ class ORG3DScene {
         if ( this._uiTreeModel ) {
             this._uiTreeModel.setExpandedTreeLayersVisibleRange( maxVisibleLayer );
         }
+    }
+
+    highlightUIElement(element) {
+
     }
 
 

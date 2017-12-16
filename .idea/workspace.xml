@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORD3DCPUUsageBarChart.js" />
+    <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="CPU usage chart.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/bootstrap-override.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/js-libs/organismo.min.js" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/js-organismo/ORD3DCPUUsageBarChart.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DCPUUsageBarChart.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DUITreeModel.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-libs/organismo.min.js" afterPath="$PROJECT_DIR$/js-libs/organismo.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DMemoryChart.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DMemoryChart.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DPieChart.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DPieChart.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DSceneTooltip.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DSceneTooltip.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="$PROJECT_DIR$/gulpfile.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG.SplitterResize.js" afterPath="$PROJECT_DIR$/js-organismo/ORG.SplitterResize.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG.WindowResize.js" afterPath="$PROJECT_DIR$/js-organismo/ORG.WindowResize.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGMain.js" afterPath="$PROJECT_DIR$/js-organismo/ORGMain.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGSystemInfoManager.js" afterPath="$PROJECT_DIR$/js-organismo/ORGSystemInfoManager.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" afterPath="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,74 +41,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ORGSystemInfoManager.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORGSystemInfoManager.js">
+      <file leaf-file-name="organismo.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/organismo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1434">
-              <caret line="168" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+            <state relative-caret-position="209">
+              <caret line="413" column="62" lean-forward="false" selection-start-line="413" selection-start-column="45" selection-end-line="413" selection-end-column="62" />
               <folding>
-                <element signature="n#!!doc;n#ORGSystemInfoManager#0" expanded="false" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ORD3DCPUUsageBarChart.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORD3DCPUUsageBarChart.js">
+      <file leaf-file-name="gulpfile.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="37" column="29" lean-forward="false" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
-              <folding>
-                <element signature="n#!!doc;n#ORD3DCPUUsageBarChart#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="379">
+              <caret line="63" column="18" lean-forward="false" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ORG3DDiskChart.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDiskChart.js">
+      <file leaf-file-name="ORGDeviceConnectionControls.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="34" column="83" lean-forward="false" selection-start-line="34" selection-start-column="63" selection-end-line="34" selection-end-column="83" />
-              <folding>
-                <element signature="n#!!doc;n#ORG3DDiskChart#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="429">
+              <caret line="33" column="31" lean-forward="false" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ORG3DMemoryChart.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DMemoryChart.js">
+      <file leaf-file-name="ORGUIJSONTreeManager.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!doc;n#ORG3DMemoryChart#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="464">
+              <caret line="43" column="36" lean-forward="false" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ORG3DPieChart.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DPieChart.js">
+      <file leaf-file-name="ORGMain.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORGMain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="64" column="1" lean-forward="true" selection-start-line="64" selection-start-column="1" selection-end-line="64" selection-end-column="1" />
-              <folding>
-                <element signature="n#!!doc;n#ORG3DPieChart#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ORG3DSceneTooltip.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DSceneTooltip.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1048">
-              <caret line="125" column="134" lean-forward="false" selection-start-line="125" selection-start-column="134" selection-end-line="125" selection-end-column="134" />
-              <folding>
-                <element signature="n#!!doc;n#ORG3DSceneTooltip#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="637">
+              <caret line="49" column="64" lean-forward="false" selection-start-line="49" selection-start-column="64" selection-end-line="49" selection-end-column="64" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -109,46 +101,49 @@
       <list>
         <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>computeBoundi</find>
-      <find>computeBoundinf</find>
-      <find>computeBoundin</find>
-      <find>computeBounding</find>
-      <find>computeBoundingB</find>
-      <find>computeBoundingBo</find>
-      <find>computeBoundingBox</find>
-      <find>B</find>
-      <find>Bo</find>
-      <find>Box</find>
-      <find>Box3De</find>
-      <find>Box3D</find>
-      <find>Box3</find>
-      <find>Box3H</find>
-      <find>Box3He</find>
-      <find>Box3Hel</find>
-      <find>Box3Help</find>
-      <find>Box3Helper</find>
-      <find>p</find>
-      <find>po</find>
-      <find>pos</find>
-      <find>posi</find>
-      <find>positi</find>
-      <find>positio</find>
-      <find>position</find>
-      <find>position.c</find>
-      <find>position.co</find>
-      <find>position.cop</find>
-      <find>position.copy</find>
-      <find>device-disconnect</find>
+      <find>.nodes</find>
+      <find>children</find>
+      <find>json</find>
+      <find>subviews</find>
+      <find>class</find>
+      <find>.class</find>
+      <find>className</find>
+      <find>20</find>
+      <find>openTag</find>
+      <find>ReactDOM</find>
+      <find>es2015</find>
+      <find>xxx</find>
+      <find>ORGUIJSONTree</find>
+      <find>webpackUniversalModuleDefinition</find>
+      <find>ORGSplitterComponent</find>
+      <find>threejs-canvas</find>
+      <find>3d-canvas-col</find>
+      <find>ORG.leftSection</find>
+      <find>ORG.WindowResize</find>
+      <find>ui-json-tree</find>
+      <find>SplitterResize</find>
+      <find>ORG.SplitterResize</find>
+      <find>resize</find>
+      <find>Splitt</find>
+      <find>paneSep</find>
+      <find>setSize</find>
+      <find>px</find>
+      <find>ORGUIJSONTreeManager</find>
+      <find>new ORGUIJSONTreeManager</find>
+      <find>8100</find>
     </findStrings>
     <replaceStrings>
       <replace>_rendererDOMElement</replace>
+      <replace>'js-organismo/ORG</replace>
     </replaceStrings>
     <dirStrings>
+      <dir>$PROJECT_DIR$/js-third-party</dir>
       <dir>$PROJECT_DIR$/js-organismo</dir>
     </dirStrings>
   </component>
@@ -165,57 +160,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/js-organismo/ORGWebSocket.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGMap.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGItineraryRunner.js" />
-        <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGOrganismoWSDelegate.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGiControlProxyWSDelegate.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG.Namespaces.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG.SplitterResize.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG.WindowResize.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGDeviceBaseController.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGiMobileDeviceController.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGDeviceController.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGWebSocketDeviceController.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DUIElementHiliter.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGContextMenuManager.js" />
-        <option value="code.jquery.com/jquery-1.12.4.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DBeaconTransformControl.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGScenario.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGBeacon.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGDevice.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGMouseListener.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DUIElementHighlight.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DRaycaster.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DUITreeRaycaster.js" />
-        <option value="$PROJECT_DIR$/slider.html" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" />
-        <option value="$PROJECT_DIR$/build/concat.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGTooltip.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceTransformControl.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DBeacon.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGMain.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DSceneRaycaster.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGSettingsControls.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DBattery.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDiskChart.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DMemoryChart.js" />
-        <option value="$PROJECT_DIR$/organismo.html" />
-        <option value="$PROJECT_DIR$/js-organismo/ORD3DCPUUsageBarChart.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGSystemInfoManager.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DPieChart.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DSceneTooltip.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGSystemInfoManager.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORD3DCPUUsageBarChart.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG3DUITreeModel.js" />
+        <option value="unpkg.com/react@16.2.0/umd/react.development.js" />
+        <option value="unpkg.com/react-dom@16.2.0/umd/react-dom.development.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGUIJSONTree.js" />
+        <option value="$PROJECT_DIR$/.babelrc" />
+        <option value="$PROJECT_DIR$/js-third-party/assets/libs/bounds.js" />
+        <option value="$PROJECT_DIR$/js-third-party/assets/libs/utils.js" />
+        <option value="$PROJECT_DIR$/js-third-party/assets/libs/xpath.js" />
+        <option value="$PROJECT_DIR$/js-third-party/assets/components/tree.jsx" />
+        <option value="$PROJECT_DIR$/js-organismo/bounds.js" />
+        <option value="$PROJECT_DIR$/js-organismo/tree.jsx" />
+        <option value="$PROJECT_DIR$/js-organismo/utils.js" />
+        <option value="$PROJECT_DIR$/js-organismo/xpath.js" />
+        <option value="$PROJECT_DIR$/js-organismo/tree.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ui-json-tree/tree.css" />
+        <option value="$PROJECT_DIR$/js-third-party/react-splitter-layout-master/src/components/SplitterLayout.js" />
+        <option value="$PROJECT_DIR$/js-third-party/react-splitter-layout-master/src/components/Pane.js" />
+        <option value="$PROJECT_DIR$/js-third-party/react-splitter-layout/react-splitter-layout.js" />
+        <option value="$PROJECT_DIR$/build/ORG.SplitterResize.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG.WindowResize.js" />
+        <option value="$PROJECT_DIR$/o.html" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG.SplitterResize.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ui-json-tree/ORGUIJSONTree.js" />
+        <option value="$PROJECT_DIR$/js-third-party/patternfly-bootstrap-treeview/bootstrap-treeview.js" />
+        <option value="$PROJECT_DIR$/js-third-party/patternfly-bootstrap-treeview/bootstrap-treeview.css" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGMain.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
+        <option value="$PROJECT_DIR$/js-libs/organismo.development.js" />
+        <option value="$PROJECT_DIR$/css/style.css" />
+        <option value="$PROJECT_DIR$/css/bootstrap-override.css" />
+        <option value="$PROJECT_DIR$/organismo.html" />
+        <option value="$PROJECT_DIR$/js-organismo/ui-json-tree/ORGUIJSONTreeManager.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js" />
       </list>
     </option>
   </component>
@@ -290,35 +285,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Organismo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Organismo-Web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Organismo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Organismo-Web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js-organismo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Changed Files">
           <PATH>
@@ -337,6 +303,21 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -344,7 +325,7 @@
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="settings.editor.selected.configurable" value="watcher.settings" />
+    <property name="settings.editor.selected.configurable" value="sshConsole" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/jongabilondo/Desktop/Organismo/3d.html&#10;createScreenPlane&#9;null&#9;null&#10;needsUpdate&#9;null&#9;null" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/organismo" />
     <property name="js.buildTools.gulp.node_interpreter" value="/usr/local/bin/node" />
@@ -370,17 +351,19 @@
     <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/js-organismo" />
-      <recent name="$PROJECT_DIR$/js-organismo/device-controllers" />
-      <recent name="$PROJECT_DIR$/js-organismo/Device Controllers" />
-      <recent name="$PROJECT_DIR$/js-organismo/notUsed" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/js-organismo" />
       <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/js-organismo" />
+      <recent name="$PROJECT_DIR$/bootstrap/dist/js" />
+      <recent name="$PROJECT_DIR$/js-organismo/ui-json-tree" />
+      <recent name="$PROJECT_DIR$/js-organismo/device-controllers" />
+      <recent name="$PROJECT_DIR$/js-organismo/Device Controllers" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -396,6 +379,9 @@
     </option>
   </component>
   <component name="RunManager" selected="JavaScript Debug.organismo.html">
+    <configuration default="false" name="slider.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/slider.html">
+      <method />
+    </configuration>
     <configuration default="false" name="organismo.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/organismo.html">
       <method>
         <option name="GulpBeforeRunTask" enabled="true">
@@ -408,7 +394,7 @@
         </option>
       </method>
     </configuration>
-    <configuration default="false" name="slider.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/slider.html">
+    <configuration default="false" name="o.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Organismo/o.html">
       <method />
     </configuration>
     <configuration default="true" type="ChromiumRemoteDebugType" factoryName="Chromium Remote">
@@ -539,14 +525,16 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.organismo.html" />
-      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.slider.html" />
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.slider.html" />
+      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.organismo.html" />
+      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.o.html" />
     </list>
     <recent_temporary>
-      <list size="2">
+      <list size="3">
         <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.organismo.html" />
-        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.slider.html" />
+        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.o.html" />
+        <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.slider.html" />
       </list>
     </recent_temporary>
   </component>
@@ -735,14 +723,23 @@
       <workItem from="1510580281475" duration="7553000" />
       <workItem from="1510601104080" duration="1621000" />
       <workItem from="1510679401819" duration="5341000" />
-      <workItem from="1510772043006" duration="1337000" />
-    </task>
-    <task id="LOCAL-00014" summary="Refactoring , refactoring to classes.">
-      <created>1489183968886</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1489183968886</updated>
+      <workItem from="1510772043006" duration="1945000" />
+      <workItem from="1511030780002" duration="702000" />
+      <workItem from="1511362241447" duration="563000" />
+      <workItem from="1511373408544" duration="912000" />
+      <workItem from="1511437124687" duration="4890000" />
+      <workItem from="1511805407693" duration="357000" />
+      <workItem from="1511970041810" duration="325000" />
+      <workItem from="1512063710165" duration="27974000" />
+      <workItem from="1512171728251" duration="10363000" />
+      <workItem from="1512316940864" duration="4385000" />
+      <workItem from="1512325765709" duration="3654000" />
+      <workItem from="1512998338617" duration="3000" />
+      <workItem from="1512998393156" duration="230000" />
+      <workItem from="1513196316023" duration="9686000" />
+      <workItem from="1513250950887" duration="21382000" />
+      <workItem from="1513373122764" duration="2687000" />
+      <workItem from="1513456872033" duration="135000" />
     </task>
     <task id="LOCAL-00015" summary="Refactoring , refactoring to classes.">
       <created>1489184001611</created>
@@ -1080,11 +1077,18 @@
       <option name="project" value="LOCAL" />
       <updated>1510601198371</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="CPU usage chart.">
+      <created>1510773410530</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1510773410530</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="503732000" />
+    <option name="totallyTimeSpent" value="592588000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1097,18 +1101,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26920366" sideWeight="0.506993" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26004228" sideWeight="0.7989691" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3260188" sideWeight="0.49246576" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28553137" sideWeight="0.67512333" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17797695" sideWeight="0.45102185" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3149808" sideWeight="0.10641297" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24453841" sideWeight="0.7989691" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32522407" sideWeight="0.48978153" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23431498" sideWeight="0.5574348" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17797695" sideWeight="0.44256517" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30985916" sideWeight="0.26145172" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21695629" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.49726027" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25440452" sideWeight="0.20103092" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28553137" sideWeight="0.32487667" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23431498" sideWeight="0.44256517" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32747456" sideWeight="0.4918378" order="7" side_tool="false" content_ui="tabs" />
@@ -1117,7 +1120,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25333333" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2144956" sideWeight="0.4624146" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21254802" sideWeight="0.44679353" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1187,7 +1190,6 @@
       <path value="$PROJECT_DIR$/Agent/StashRepo" />
       <path value="$PROJECT_DIR$/jsoneditor" />
     </ignored-roots>
-    <MESSAGE value="Added class for device screen." />
     <MESSAGE value="Encapsulated constants." />
     <MESSAGE value="ORGWebSocket refactored to a class." />
     <MESSAGE value="ORGWebSocketDelegate refactored to a class. &#10;Fixed Tooltip location." />
@@ -1212,7 +1214,8 @@
     <MESSAGE value="ORGDeviceController inheritance fixed." />
     <MESSAGE value="DeviceController documentation." />
     <MESSAGE value="Battery &amp; Disk system info charts." />
-    <option name="LAST_COMMIT_MESSAGE" value="Battery &amp; Disk system info charts." />
+    <MESSAGE value="CPU usage chart." />
+    <option name="LAST_COMMIT_MESSAGE" value="CPU usage chart." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1228,25 +1231,15 @@
           <option name="timeStamp" value="394" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/build/concat.js</url>
-          <line>2494</line>
-          <option name="timeStamp" value="1072" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/build/concat.js</url>
-          <line>2435</line>
-          <option name="timeStamp" value="1073" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/build/concat.js</url>
-          <line>2402</line>
-          <option name="timeStamp" value="1074" />
+          <url>file://$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js</url>
+          <line>236</line>
+          <option name="timeStamp" value="1377" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="1355" />
+      <option name="time" value="1392" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1263,194 +1256,17 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocket.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="54" lean-forward="false" selection-start-line="27" selection-start-column="54" selection-end-line="27" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/editor/js/libs/tern-threejs/threejs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="423" column="8" lean-forward="false" selection-start-line="423" selection-start-column="8" selection-end-line="423" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/src/core/Geometry.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="46" column="4" lean-forward="false" selection-start-line="46" selection-start-column="4" selection-end-line="46" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGDevice.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="35" column="51" lean-forward="false" selection-start-line="35" selection-start-column="51" selection-end-line="35" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/src/core/Raycaster.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="97" column="4" lean-forward="false" selection-start-line="97" selection-start-column="4" selection-end-line="97" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGContextMenuManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
-          <caret line="83" column="8" lean-forward="false" selection-start-line="83" selection-start-column="8" selection-end-line="83" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DUIElementHighlight.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="40" column="21" lean-forward="false" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGMap.js">
+    <entry file="file://$PROJECT_DIR$/js-third-party/react-treebeard/src/components/decorators.js" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/react-treebeard/src/components/header.js" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/react-treebeard/src/index.js" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/assets/libs/utils.js" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/assets/libs/xpath.js" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/assets/libs/bounds.js" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/assets/index.jsx" />
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGOrganismoWSDelegate.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGMouseListener.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="47" column="54" lean-forward="false" selection-start-line="47" selection-start-column="54" selection-end-line="47" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-third-party/bootstrap-slider/bootstrap-slider.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="3" column="11991" lean-forward="false" selection-start-line="3" selection-start-column="11991" selection-end-line="3" selection-end-column="11991" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/slider.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="46" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flux/dist/Flux.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="256" column="7" lean-forward="false" selection-start-line="256" selection-start-column="7" selection-end-line="256" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/build/three.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="703">
-          <caret line="43" column="421" lean-forward="false" selection-start-line="43" selection-start-column="421" selection-end-line="43" selection-end-column="421" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/examples/js/controls/TransformControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="783" column="4" lean-forward="false" selection-start-line="783" selection-start-column="4" selection-end-line="783" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-libs/organismo.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="0" column="22354" lean-forward="false" selection-start-line="0" selection-start-column="22354" selection-end-line="0" selection-end-column="22354" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="31" column="5" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceTransformControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="28" column="56" lean-forward="false" selection-start-line="28" selection-start-column="56" selection-end-line="28" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGUITreeModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1290">
-          <caret line="86" column="21" lean-forward="false" selection-start-line="86" selection-start-column="4" selection-end-line="86" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/concat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="217" column="4" lean-forward="false" selection-start-line="217" selection-start-column="4" selection-end-line="217" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/examples/js/ParametricGeometries.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="218" column="0" lean-forward="false" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DBeacon.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="77" column="27" lean-forward="false" selection-start-line="55" selection-start-column="8" selection-end-line="77" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="473" column="7" lean-forward="false" selection-start-line="473" selection-start-column="5" selection-end-line="473" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGMain.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="668">
-          <caret line="46" column="25" lean-forward="false" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="45" column="74" lean-forward="false" selection-start-line="45" selection-start-column="74" selection-end-line="45" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DBeaconTransformControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="11" column="18" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -1461,66 +1277,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DLocationMarker.js">
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DCPUUsageBarChart.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DUITreeRaycaster.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="83" column="16" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGTooltip.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DSceneRaycaster.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="584">
-          <caret line="103" column="45" lean-forward="false" selection-start-line="103" selection-start-column="45" selection-end-line="103" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGMessageBuilder.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="20" column="18" lean-forward="false" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocketDeviceController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="35" column="13" lean-forward="false" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGSettingsControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="635">
-          <caret line="65" column="33" lean-forward="false" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/build/three.module.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="7850" column="4" lean-forward="false" selection-start-line="7850" selection-start-column="4" selection-end-line="7850" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DSceneFloor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
-          <caret line="91" column="140" lean-forward="true" selection-start-line="89" selection-start-column="7" selection-end-line="91" selection-end-column="140" />
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1529,115 +1289,214 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DBattery.js">
+    <entry file="https://unpkg.com/react@16.2.0/umd/react.development.js">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="https://unpkg.com/react-dom@16.2.0/umd/react-dom.development.js">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-third-party/assets/components/tree.jsx" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/assets/components/tree.less" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/assets/components/index.jsx" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/react-splitter-layout-master/src/components/SplitterLayout.js" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/react-splitter-layout-master/src/stylesheets/index.css" />
+    <entry file="file://$PROJECT_DIR$/js-third-party/react-splitter-layout-master/src/components/Pane.js" />
+    <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="32" column="21" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js">
+    <entry file="file://$PROJECT_DIR$/js-third-party/bootstrap-slider/bootstrap-slider.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3690">
-          <caret line="246" column="40" lean-forward="false" selection-start-line="246" selection-start-column="40" selection-end-line="246" selection-end-column="40" />
+        <state relative-caret-position="13">
+          <caret line="3" column="1572" lean-forward="false" selection-start-line="3" selection-start-column="1572" selection-end-line="3" selection-end-column="1572" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGFluxStore.js">
+    <entry file="file://$PROJECT_DIR$/js-third-party/react-splitter-layout/react-splitter-layout.js" />
+    <entry file="file://$PROJECT_DIR$/build/ORG.SplitterResize.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="25" column="35" lean-forward="false" selection-start-line="25" selection-start-column="18" selection-end-line="25" selection-end-column="35" />
+        <state relative-caret-position="208">
+          <caret line="16" column="59" lean-forward="false" selection-start-line="11" selection-start-column="14" selection-end-line="16" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/dist/js/bootstrap.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitmodules">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="11" column="33" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/o.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG.SplitterResize.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="6" column="33" lean-forward="false" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG.WindowResize.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-third-party/patternfly-bootstrap-treeview/bootstrap-treeview.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="508">
+          <caret line="1173" column="169" lean-forward="false" selection-start-line="1173" selection-start-column="169" selection-end-line="1173" selection-end-column="169" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-third-party/patternfly-bootstrap-treeview/bootstrap-treeview.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ui-json-tree/tree.css" />
+    <entry file="file://$PROJECT_DIR$/js-organismo/ui-json-tree/tree.js" />
+    <entry file="file://$PROJECT_DIR$/js-organismo/ui-json-tree/utils.js" />
+    <entry file="file://$PROJECT_DIR$/js-organismo/ui-json-tree/xpath.js" />
+    <entry file="file://$PROJECT_DIR$/js-organismo/ui-json-tree/bounds.js" />
+    <entry file="file://$PROJECT_DIR$/js-organismo/ui-json-tree/ORGUIJSONTree.js" />
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocketDelegate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="235" column="25" lean-forward="false" selection-start-line="235" selection-start-column="25" selection-end-line="235" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/ORG3DScene.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4264">
+          <caret line="328" column="52" lean-forward="false" selection-start-line="328" selection-start-column="52" selection-end-line="328" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DUIElementHighlight.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DUITreeModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="49" column="22" lean-forward="true" selection-start-line="49" selection-start-column="22" selection-end-line="49" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DScene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="223" column="4" lean-forward="false" selection-start-line="223" selection-start-column="4" selection-end-line="223" selection-end-column="4" />
+        <state relative-caret-position="8593">
+          <caret line="661" column="22" lean-forward="false" selection-start-line="661" selection-start-column="4" selection-end-line="661" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-libs/organismo.development.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="6199" column="30" lean-forward="false" selection-start-line="6199" selection-start-column="30" selection-end-line="6199" selection-end-column="30" />
+          <folding>
+            <marker date="1513456924000" expanded="true" signature="207546:207548" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/tooltips2.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1684">
+          <caret line="189" column="0" lean-forward="false" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGMain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="49" column="64" lean-forward="false" selection-start-line="49" selection-start-column="64" selection-end-line="49" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/tooltips.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-297">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/bootstrap-override.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="7" column="19" lean-forward="false" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/build/three.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4027">
-          <caret line="29010" column="8" lean-forward="false" selection-start-line="29010" selection-start-column="8" selection-end-line="29010" selection-end-column="8" />
+        <state relative-caret-position="429">
+          <caret line="33" column="31" lean-forward="false" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/organismo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="442" column="59" lean-forward="false" selection-start-line="442" selection-start-column="59" selection-end-line="442" selection-end-column="59" />
+        <state relative-caret-position="209">
+          <caret line="413" column="62" lean-forward="false" selection-start-line="413" selection-start-column="45" selection-end-line="413" selection-end-column="62" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="63" column="18" lean-forward="false" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDiskChart.js">
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="34" column="83" lean-forward="false" selection-start-line="34" selection-start-column="63" selection-end-line="34" selection-end-column="83" />
-          <folding>
-            <element signature="n#!!doc;n#ORG3DDiskChart#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DPieChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="64" column="1" lean-forward="true" selection-start-line="64" selection-start-column="1" selection-end-line="64" selection-end-column="1" />
-          <folding>
-            <element signature="n#!!doc;n#ORG3DPieChart#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DMemoryChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc;n#ORG3DMemoryChart#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DSceneTooltip.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1048">
-          <caret line="125" column="134" lean-forward="false" selection-start-line="125" selection-start-column="134" selection-end-line="125" selection-end-column="134" />
-          <folding>
-            <element signature="n#!!doc;n#ORG3DSceneTooltip#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGSystemInfoManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1434">
-          <caret line="168" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc;n#ORGSystemInfoManager#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORD3DCPUUsageBarChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="37" column="29" lean-forward="false" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!doc;n#ORD3DCPUUsageBarChart#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="464">
+          <caret line="43" column="36" lean-forward="false" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>

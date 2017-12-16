@@ -234,8 +234,8 @@ class ORGWebSocketDelegate {
 	_processReportElementTree(reportData) {
 		var jsonTree = reportData.data;
 		if (!!jsonTree) {
-			ORG.treeEditor.set( jsonTree );
-			ORG.scene.updateUITreeModel( jsonTree );
+            ORG.UIJSONTreeManager.update(jsonTree);
+			ORG.scene.updateUITreeModel(jsonTree);
 		}
 	}
 
@@ -250,4 +250,7 @@ class ORGWebSocketDelegate {
 				ORG.systemInfoManager.dataUpdate( systemInfoData );
             }
         }
-    }}
+    }
+
+
+}

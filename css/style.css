@@ -146,29 +146,45 @@ label {
 	float: right;
 }
 
-.ui-resizable { }
-.ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
-
-.ui-resizable-e {
+.org-splitter {
+	content: "-";
+	position: absolute;
+	top: 0;
+	right: 0;
 	background-color: rgba(66, 66, 66, 0.55);
 	background: linear-gradient(rgba(66, 66, 66, 0.57), rgba(0, 43, 54, 0.43));
 	border-right: 1px solid rgba(66, 66, 66, 0.51);
 	border-left: 1px solid rgba(66, 66, 66, 0.55);
 	box-shadow: inset 0 1px 0 #6e6e6e,0 2px 2px rgba(0,0,0,0.4);
-	width:10px;
-	height:120px;
-	//z-index: 88;
+	width:8px;
+	height:100%;
+	cursor: ew-resize;
 }
 
-.ui-resizable-e:after {
-	content: "-";
-	display: block;
+.org-splitter-handle {
 	position: absolute;
-	top: calc(50% - 16px);
-	left: 0;
-	height: 25px;
-	width: 2px;
-	background-color:rgba(0,0,0,0.4);
-	margin:3px;
+	top: 50%;
+	left: 0px;
+	display: block;
+	width: 5px;
+	height: 20px;
+	margin-top: -10px;
+	line-height: 10px;
+	color: black;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.org-splitter-handle2 { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
+
+.org-splitter2 {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 5px;
+	height: 100%;
+	background: #ccc;
+	cursor: ew-resize;
+
 }
 

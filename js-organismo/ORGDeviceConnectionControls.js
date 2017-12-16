@@ -28,10 +28,10 @@ ORG.UI.connectButton.click(function(e) {
 
     if (ORG.deviceController == null) {
 
-        var driverName = ORG.UI.dropdownDriver.text();
-        if (driverName == "Organismo") {
+        var driverName = ORG.UI.dropdownDriver.text().split(' ');
+        if (driverName[0] == "Organismo") {
             ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
-        } else if (driverName == "iDeviceControlProxy") {
+        } else if (driverName[0] == "iDeviceControlProxy") {
             ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
         }
     }

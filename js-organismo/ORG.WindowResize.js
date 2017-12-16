@@ -13,6 +13,8 @@ ORG.WindowResize	= function(renderer, camera, canvas) {
 		camera.updateProjectionMatrix();
 
         canvas.style.height = canvasHeight  + 'px'; //otherwise the canvas is not adapting to the renderer area
+
+        document.getElementById('ui-json-tree').style.height = canvasHeight-45 + 'px';
 	}
 
 	callback(); // ugly to provoke resize now
