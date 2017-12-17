@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/bootstrap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/ui-json-tree/ORGUIJSONTree.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-organismo/ui-json-tree/tree.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js-thrid-party" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jsoneditor" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitmodules" afterPath="$PROJECT_DIR$/.gitmodules" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js" afterPath="$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js" />
     </list>
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="organismo.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="organismo.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/organismo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
-              <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+            <state relative-caret-position="616">
+              <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -45,7 +39,7 @@
       <file leaf-file-name="gulpfile.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
+            <state relative-caret-position="819">
               <caret line="63" column="18" lean-forward="false" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
               <folding />
             </state>
@@ -65,14 +59,102 @@
       <file leaf-file-name="ORGUIJSONTreeManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="43" column="36" lean-forward="false" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
+            <state relative-caret-position="481">
+              <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitmodules" pinned="false" current-in-tab="true">
+      <file leaf-file-name="organismo.development.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js-libs/organismo.development.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="81536">
+              <caret line="6282" column="9" lean-forward="false" selection-start-line="6282" selection-start-column="9" selection-end-line="6282" selection-end-column="9" />
+              <folding>
+                <marker date="1513525504000" expanded="true" signature="206371:208697" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="206371:227920" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="206528:206927" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="206631:206927" ph="{&quot;data&quot;: jsonTree...}" />
+                <marker date="1513525504000" expanded="true" signature="208685:208694" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="208685:208697" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="208698:208747" ph="/** Created by jongabilondo on 04/05/2016. ...*/" />
+                <marker date="1513525504000" expanded="true" signature="208748:209694" ph="/** Snap marker to closest point on a line. ...*/" />
+                <marker date="1513525504000" expanded="true" signature="209719:213398" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="209886:210066" ph="/** @desc Initialize the objects. ...*/" />
+                <marker date="1513525504000" expanded="true" signature="210117:210336" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="210342:210486" ph="/** @desc Update targets ...*/" />
+                <marker date="1513525504000" expanded="true" signature="210541:210688" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="210694:210806" ph="/** @desc internal use only, Load map listeners to calculate and update this.oMarker position. ...*/" />
+                <marker date="1513525504000" expanded="true" signature="210844:211073" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="211079:211213" ph="/** @desc internal use only, Load route points into RoutePixel array for calculations, do this whenever zoom changes ...*/" />
+                <marker date="1513525504000" expanded="true" signature="211249:211549" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="211401:211543" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="211555:211687" ph="/** @desc internal use only, Handle the move listeners output and move the given marker. ...*/" />
+                <marker date="1513525504000" expanded="true" signature="211742:211860" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="211866:212007" ph="/** @desc Get closest point on route to test point ...*/" />
+                <marker date="1513525504000" expanded="true" signature="212052:212198" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="212204:212384" ph="/** @desc Get distance along route in meters of closest point on route to test point ...*/" />
+                <marker date="1513525504000" expanded="true" signature="212430:212530" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="212536:212638" ph="/** @desc internal use only, gets test point xy and then calls fundamental algorithm ...*/" />
+                <marker date="1513525504000" expanded="true" signature="212688:212927" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="212933:213033" ph="/** @desc internal use only, find distance along route to point nearest test point ...*/" />
+                <marker date="1513525504000" expanded="true" signature="213079:213394" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="213400:213826" ph="/*...*/" />
+                <marker date="1513525504000" expanded="true" signature="213872:216164" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="213992:216100" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="214044:215931" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="214089:214307" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="215242:215921" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="215277:215590" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="215314:215431" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="215456:215572" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="215612:215852" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="216167:220344" ph="/** \ ...*/" />
+                <marker date="1513525504000" expanded="true" signature="220468:220974" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="221029:221067" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="221162:221340" ph="//..." />
+                <marker date="1513525504000" expanded="true" signature="221398:222065" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="221534:222044" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="221767:222040" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="221996:222034" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="222067:222318" ph="//..." />
+                <marker date="1513525504000" expanded="true" signature="222367:223097" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="222543:223067" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="223216:223386" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="223502:223672" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="223604:223653" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="223674:223835" ph="//..." />
+                <marker date="1513525504000" expanded="true" signature="223904:224541" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="224174:224276" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="224298:224320" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="224709:225319" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="224903:225300" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="225026:225296" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="225321:225482" ph="//..." />
+                <marker date="1513525504000" expanded="true" signature="225551:225922" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="225770:225872" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="225924:226249" ph="//..." />
+                <marker date="1513525504000" expanded="true" signature="226306:227087" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="226326:226382" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="226405:226425" ph="{...}" />
+                <marker date="1513525504000" expanded="true" signature="226647:226666" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ORGWebSocket.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocket.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="494">
+              <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitmodules" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitmodules">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="78">
@@ -105,11 +187,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>children</find>
-      <find>json</find>
-      <find>subviews</find>
-      <find>class</find>
-      <find>.class</find>
       <find>className</find>
       <find>20</find>
       <find>openTag</find>
@@ -135,6 +212,11 @@
       <find>new ORGUIJSONTreeManager</find>
       <find>8100</find>
       <find>bootstrap</find>
+      <find>_</find>
+      <find>_t</find>
+      <find>_th</find>
+      <find>_thi</find>
+      <find>_this</find>
     </findStrings>
     <replaceStrings>
       <replace>_rendererDOMElement</replace>
@@ -158,7 +240,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/js-organismo/ORGUITreeModel.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceTransformControl.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
@@ -209,6 +290,7 @@
         <option value="$PROJECT_DIR$/gulpfile.js" />
         <option value="$PROJECT_DIR$/organismo.html" />
         <option value="$PROJECT_DIR$/.gitmodules" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js" />
       </list>
     </option>
   </component>
@@ -245,10 +327,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="942" />
-    <option name="y" value="213" />
-    <option name="width" value="1440" />
-    <option name="height" value="873" />
+    <option name="x" value="1104" />
+    <option name="y" value="542" />
+    <option name="width" value="1723" />
+    <option name="height" value="1119" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -296,9 +378,22 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Organismo-Web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js-organismo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Changed Files">
           <PATH>
@@ -317,6 +412,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -740,7 +836,9 @@
       <workItem from="1513373122764" duration="2687000" />
       <workItem from="1513456872033" duration="211000" />
       <workItem from="1513457171627" duration="471000" />
-      <workItem from="1513457913829" duration="1003000" />
+      <workItem from="1513457913829" duration="1173000" />
+      <workItem from="1513518679537" duration="2307000" />
+      <workItem from="1513523372695" duration="743000" />
     </task>
     <task id="LOCAL-00018" summary="Refactoring , refactoring to classes.">
       <created>1489184329453</created>
@@ -1089,7 +1187,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="594138000" />
+    <option name="totallyTimeSpent" value="597358000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1101,19 +1199,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="942" y="213" width="1440" height="873" extended-state="0" />
-    <editor active="true" />
+    <frame x="1104" y="542" width="1723" height="1119" extended-state="0" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26920366" sideWeight="0.506993" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24453841" sideWeight="0.7989691" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20387779" sideWeight="0.7989691" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32522407" sideWeight="0.48978153" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23431498" sideWeight="0.5602537" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1187926" sideWeight="0.5881316" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17797695" sideWeight="0.44256517" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30985916" sideWeight="0.26004228" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30963972" sideWeight="0.24324325" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21695629" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.49726027" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25440452" sideWeight="0.20103092" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23431498" sideWeight="0.4397463" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1187926" sideWeight="0.4118684" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32747456" sideWeight="0.4918378" order="7" side_tool="false" content_ui="tabs" />
@@ -1258,7 +1355,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js-third-party/react-treebeard/src/index.js" />
     <entry file="file://$PROJECT_DIR$/js-third-party/assets/libs/utils.js" />
     <entry file="file://$PROJECT_DIR$/js-third-party/assets/libs/xpath.js" />
     <entry file="file://$PROJECT_DIR$/js-third-party/assets/libs/bounds.js" />
@@ -1316,7 +1412,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13">
           <caret line="3" column="1572" lean-forward="false" selection-start-line="3" selection-start-column="1572" selection-end-line="3" selection-end-column="1572" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1328,13 +1423,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bootstrap/dist/js/bootstrap.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/dist/js/bootstrap.min.js" />
     <entry file="file://$PROJECT_DIR$/o.html" />
     <entry file="file://$PROJECT_DIR$/js-organismo/ORG.SplitterResize.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -1406,16 +1495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-libs/organismo.development.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="6199" column="30" lean-forward="false" selection-start-line="6199" selection-start-column="30" selection-end-line="6199" selection-end-column="30" />
-          <folding>
-            <marker date="1513459196000" expanded="true" signature="207546:207548" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/tooltips2.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1468,30 +1547,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="43" column="36" lean-forward="false" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
+        <state relative-caret-position="819">
           <caret line="63" column="18" lean-forward="false" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/organismo.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1500,6 +1560,109 @@
         <state relative-caret-position="78">
           <caret line="6" column="10" lean-forward="false" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGWebSocket.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-libs/organismo.development.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81536">
+          <caret line="6282" column="9" lean-forward="false" selection-start-line="6282" selection-start-column="9" selection-end-line="6282" selection-end-column="9" />
+          <folding>
+            <marker date="1513525504000" expanded="true" signature="206371:208697" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="206371:227920" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="206528:206927" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="206631:206927" ph="{&quot;data&quot;: jsonTree...}" />
+            <marker date="1513525504000" expanded="true" signature="208685:208694" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="208685:208697" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="208698:208747" ph="/** Created by jongabilondo on 04/05/2016. ...*/" />
+            <marker date="1513525504000" expanded="true" signature="208748:209694" ph="/** Snap marker to closest point on a line. ...*/" />
+            <marker date="1513525504000" expanded="true" signature="209719:213398" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="209886:210066" ph="/** @desc Initialize the objects. ...*/" />
+            <marker date="1513525504000" expanded="true" signature="210117:210336" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="210342:210486" ph="/** @desc Update targets ...*/" />
+            <marker date="1513525504000" expanded="true" signature="210541:210688" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="210694:210806" ph="/** @desc internal use only, Load map listeners to calculate and update this.oMarker position. ...*/" />
+            <marker date="1513525504000" expanded="true" signature="210844:211073" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="211079:211213" ph="/** @desc internal use only, Load route points into RoutePixel array for calculations, do this whenever zoom changes ...*/" />
+            <marker date="1513525504000" expanded="true" signature="211249:211549" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="211401:211543" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="211555:211687" ph="/** @desc internal use only, Handle the move listeners output and move the given marker. ...*/" />
+            <marker date="1513525504000" expanded="true" signature="211742:211860" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="211866:212007" ph="/** @desc Get closest point on route to test point ...*/" />
+            <marker date="1513525504000" expanded="true" signature="212052:212198" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="212204:212384" ph="/** @desc Get distance along route in meters of closest point on route to test point ...*/" />
+            <marker date="1513525504000" expanded="true" signature="212430:212530" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="212536:212638" ph="/** @desc internal use only, gets test point xy and then calls fundamental algorithm ...*/" />
+            <marker date="1513525504000" expanded="true" signature="212688:212927" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="212933:213033" ph="/** @desc internal use only, find distance along route to point nearest test point ...*/" />
+            <marker date="1513525504000" expanded="true" signature="213079:213394" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="213400:213826" ph="/*...*/" />
+            <marker date="1513525504000" expanded="true" signature="213872:216164" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="213992:216100" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="214044:215931" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="214089:214307" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="215242:215921" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="215277:215590" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="215314:215431" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="215456:215572" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="215612:215852" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="216167:220344" ph="/** \ ...*/" />
+            <marker date="1513525504000" expanded="true" signature="220468:220974" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="221029:221067" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="221162:221340" ph="//..." />
+            <marker date="1513525504000" expanded="true" signature="221398:222065" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="221534:222044" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="221767:222040" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="221996:222034" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="222067:222318" ph="//..." />
+            <marker date="1513525504000" expanded="true" signature="222367:223097" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="222543:223067" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="223216:223386" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="223502:223672" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="223604:223653" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="223674:223835" ph="//..." />
+            <marker date="1513525504000" expanded="true" signature="223904:224541" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="224174:224276" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="224298:224320" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="224709:225319" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="224903:225300" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="225026:225296" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="225321:225482" ph="//..." />
+            <marker date="1513525504000" expanded="true" signature="225551:225922" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="225770:225872" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="225924:226249" ph="//..." />
+            <marker date="1513525504000" expanded="true" signature="226306:227087" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="226326:226382" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="226405:226425" ph="{...}" />
+            <marker date="1513525504000" expanded="true" signature="226647:226666" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="481">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/organismo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

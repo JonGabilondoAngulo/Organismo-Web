@@ -11,13 +11,29 @@ class ORGUIJSONTreeManager {
 
     update(jsonTree) {
         this._adaptor(jsonTree);
+        let _this = this;
         $(this._treePlaceholder).treeview({
             data: jsonTree,
             levels: 15,
             showBorder:false,
             expandIcon:'glyphicon glyphicon-triangle-right',
             collapseIcon:'glyphicon glyphicon-triangle-bottom',
-            onNodeSelected: this._nodeSelected});
+            onNodeSelected: function (event, node) { _this._nodeSelected(event, node);},
+            onNodeEnter: function (event, node) { _this._nodeEnter(event, node);},
+            onNodeLeave: function (event, node) { _this._nodeLeave(event, node);},
+        } );
+    }
+
+    _nodeSelected(event, node) {
+        const nodeHTMLData = this._nodeAdaptor(node);
+        $('#ui-json-tree-node').html(nodeHTMLData);
+        ORG.scene.highlightUIElement(node);
+    }
+
+    _nodeEnter(event, node) {
+    }
+
+    _nodeLeave(event, node) {
     }
 
     _adaptor(jsonTree) {
@@ -39,9 +55,25 @@ class ORGUIJSONTreeManager {
         }
     }
 
-    _nodeSelected(event, node) {
-
-        $('#ui-json-tree-node').html('<b>class:</b>' + node.text);
-        ORG.scene.highlightUIElement(node);
+    _nodeAdaptor(node) {
+        var description = "";
+        for (let key of Object.keys(node)) {
+            if (this._ignoreNodeKey(key)) {
+                continue;
+            }
+            if (key == "bounds") {
+                description += "<b>" + key + "</b> :" + JSON.stringify(node.bounds) + "<br>";
+            } else if (key == "_state") {
+                description += "<b>" + "state" + "</b> :" + node[key] + "<br>";
+            } else {
+                description += "<b>" + key + "</b> :" + node[key] + "<br>";
+            }
+        }
+        return description;
     }
+
+    _ignoreNodeKey(key) {
+        return (key == "text" || key == "state" || key == "subviews" || key == "nodes" || key == "$el" || key == "screenshot" || key == "nodeId" || key == "parentId");
+    }
+
 }
