@@ -4,9 +4,9 @@
 [submodule "jQuery-contextMenu"]
 	path = jQuery-contextMenu
 	url = https://github.com/swisnl/jQuery-contextMenu.git
-[submodule "flux"]
-	path = flux
-	url = https://github.com/facebook/flux.git
 [submodule "js-third-party/patternfly"]
 	path = js-third-party/patternfly
 	url = https://github.com/JonGabilondoAngulo/patternfly-bootstrap-treeview.git
+[submodule "js-third-party/flux"]
+	path = js-third-party/flux
+	url = https://github.com/facebook/flux.git
