@@ -30,6 +30,14 @@ ORG.UI.endPoint = $('#end-point');
 ORG.UI.dropdownTravelMode = $('#travel-mode-dropdown');
 ORG.UI.sliderTreeLayersDistance = $('#ex1');
 ORG.UI.sliderTreeLayersRange = $('#ex2');
+ORG.UI.refreshUITree = $('#ui-tree-refresh');
+
+// UI Tree
+ORG.UI.refreshUITree.click(function (e) {
+    ORG.dispatcher.dispatch({
+        actionType: 'ui-tree-refresh'
+    });
+});
 
 // Sliders
 ORG.UI.sliderTreeLayersDistance.bootstrapSlider();

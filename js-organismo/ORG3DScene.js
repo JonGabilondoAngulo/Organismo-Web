@@ -62,9 +62,11 @@ class ORG3DScene {
             ORGTreeVisualizationMask.ShowOutOfScreen |
             ORGTreeVisualizationMask.ShowInteractiveViews |
             ORGTreeVisualizationMask.ShowNonInteractiveViews |
+            ORGTreeVisualizationMask.ShowPrivate |
             ORGTreeVisualizationMask.ShowScreenshots;
 
         this._uiTreeModel = new ORG3DUITreeModel( this._treeVisualizationFlags);
+        this.expanding = false;
         this._initialize(domContainer, this.flagShowFloor);
     }
 
@@ -75,12 +77,12 @@ class ORG3DScene {
         return this._THREERenderer.getSize();
     }
 
-    get isExpanded() {
-        return this._uiExpanded;
-    }
-
     get THREEScene() {
         return this._THREEScene;
+    }
+
+    get THREERenderer() {
+        return this._THREERenderer;
     }
 
     get deviceScreen() {
@@ -105,6 +107,22 @@ class ORG3DScene {
 
     get rendererDOMElement() {
         return this._rendererDOMElement;
+    }
+
+    get isExpanded() {
+        return this._uiExpanded;
+    }
+
+    set isExpanded(expanded) {
+        this._uiExpanded = expanded;
+    }
+
+    get expanding() {
+        return this._expanding;
+    }
+
+    set expanding(expanding) {
+        this._expanding = expanding;
     }
 
     /**
@@ -253,7 +271,8 @@ class ORG3DScene {
         this.destroyRaycasterFor3DTreeModel(); // Destroy Raycaster for the 3D UI Model object
 
         // Create the 3D UI model
-        this._uiExpanded = true;
+        this.isExpanded = true;
+        this.expanding = false;
         this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags; // update the flags
         this._uiTreeModel.updateUITreeModel( treeJson, this._THREEScene, ORG.device.screenSize, ORG.device.displaySize, ORG.device.displayScale, this._THREEDeviceAndScreenGroup.position);
 
@@ -410,26 +429,27 @@ class ORG3DScene {
     }
 
     createFloor() {
-        if ( !this._sceneFloor) {
+        if (!this._sceneFloor) {
             this._sceneFloor = this._createFloor( this._THREEScene);
             this.devicePositionHasChanged();
         }
     };
 
     removeFloor() {
-        if ( this._sceneFloor) {
+        if (this._sceneFloor) {
             this._removeFloor();
         }
     };
 
     expand() {
-        if ( !this._uiExpanded) {
+        if (!this._uiExpanded) {
             ORG.deviceController.requestElementTree({
                 "status-bar": true,
                 "keyboard": true,
                 "alert": true,
                 "normal": true
             });
+            this.expanding = true;
         }
     }
 
@@ -440,8 +460,8 @@ class ORG3DScene {
         } )
     }
 
-    collapse( completionCallback ) {
-        if ( this._uiExpanded) {
+    collapse(completionCallback ) {
+        if (this.isExpanded) {
             // we dont need the mouse listener and the raycaster anymore
             //this._mouseListener.disable();
 
@@ -660,7 +680,11 @@ class ORG3DScene {
     }
 
     highlightUIElement(element) {
-
+        if (this._uiTreeModel) {
+            this._uiTreeModel.highlightUIElement(element);
+        } else if (this._deviceScreen) {
+            this._deviceScreen.highlightUIElement(element);
+        }
     }
 
 
@@ -735,7 +759,7 @@ class ORG3DScene {
         this._mouseListener.enable();
 
         this._render();
-        ORG.WindowResize( this._THREERenderer, this._THREECamera, this._canvasDomElement);
+        //ORG.WindowResize( this._THREERenderer, this._THREECamera, this._canvasDomElement);
 
         this.createRaycasterForScene();
     }

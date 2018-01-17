@@ -2,10 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/bootstrap" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/flux" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/jQuery-contextMenu" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/jsoneditor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/js-third-party/flux" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/js-third-party/patternfly" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/three.js" vcs="Git" />
   </component>
 </project>

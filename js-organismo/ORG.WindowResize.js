@@ -2,31 +2,45 @@
 // It will update renderer and camera when window is resized.
 //
 
-ORG.WindowResize	= function(renderer, camera, canvas) {
+ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, rightPanel) {
 
-	var callback	= function(){
-		// notify the renderer of the size change
-		var canvasHeight = window.innerHeight - 66;
+	var callback	= function() {
 
-        renderer.setSize( canvas.offsetWidth, canvasHeight);
-        camera.aspect	= canvas.offsetWidth / canvasHeight;
-		camera.updateProjectionMatrix();
-
+		// Canvas
+        //const canvasElem = document.getElementById('threejs-canvas');
+        const rect = canvas.getBoundingClientRect();
+		const canvasTopOffset = rect.top;
+		const canvasBottomOffset = 6;
+		const canvasHeight = window.innerHeight - canvasTopOffset - canvasBottomOffset;
         canvas.style.height = canvasHeight  + 'px'; //otherwise the canvas is not adapting to the renderer area
 
-        document.getElementById('ui-json-tree').style.height = canvasHeight-45 + 'px';
+		// Right Panel
+        const contentRect = contentPanel.getBoundingClientRect();
+        const leftPanelRect = leftPanel.getBoundingClientRect();
+        const rightPanelWidth = contentRect.width - leftPanelRect.width;
+        rightPanel.style.width = rightPanelWidth - 4  + 'px';
+
+        // Renderer & Camera
+        renderer.setSize( canvas.offsetWidth, canvasHeight);
+        camera.aspect = canvas.offsetWidth / canvasHeight;
+		camera.updateProjectionMatrix();
+
+		// UI Tree
+        document.getElementById('ui-json-tree').style.height = canvasHeight-115 + 'px';
 	}
 
-	callback(); // ugly to provoke resize now
+	//callback(); // ugly to provoke resize now
 
 	// bind the resize event
 	window.addEventListener('resize', callback, false);
 
 	// return .stop() the function to stop watching window resize
 	return {
-		//Stop watching window resize
-		stop	: function(){
-			window.removeEventListener('resize', callback);
-		}
+        resize	: function(){
+            callback();
+        }
+        //stop	: function(){
+        //    window.removeEventListener('resize', callback);
+        //}
 	};
 }

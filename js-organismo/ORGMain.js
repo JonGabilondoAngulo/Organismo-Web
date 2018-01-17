@@ -47,7 +47,12 @@ ORG.fontLoader.load( 'three.js/examples/fonts/helvetiker_regular.typeface.json',
     ORG.systemInfoManager = new ORGSystemInfoManager(ORG.scene);
 
     // UI JSON Tree
-    ORG.UIJSONTreeManager = new ORGUIJSONTreeManager(ORG.scene, document.getElementById('ui-json-tree'));
+    ORG.UIJSONTreeManager = new ORGUIJSONTreeManager(document.getElementById('ui-json-tree'), document.getElementById('ui-json-tree-node'));
+
+    // Install handler for Window Resize
+    var resizer = ORG.WindowResize( ORG.scene.THREERenderer, ORG.scene.THREECamera, ORG.canvasDomElem, ORG.contentWrapper, ORG.leftSection, ORG.rightSection);
+    resizer.resize();
+
 } );
 
 

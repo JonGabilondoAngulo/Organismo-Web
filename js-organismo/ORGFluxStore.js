@@ -8,6 +8,24 @@ class ORGFluxStore extends FluxUtils.Store {
     __onDispatch(payload) {
         switch (payload.actionType) {
 
+            case 'ui-tree-refresh': {
+                ORG.deviceController.requestElementTree({
+                    "status-bar": true,
+                    "keyboard": true,
+                    "alert": true,
+                    "normal": true
+                });
+            } break;
+
+            case 'uitree-node-selected': {
+                $('#ui-json-tree-node').html(payload.html);
+            } break;
+            case 'uitree-node-enter': {
+                ORG.scene.highlightUIElement(payload.node);
+            } break;
+            case 'uitree-node-leave': {
+                ORG.scene.highlightUIElement(null);
+            } break;
             case 'uitree-expanded': {
 //mySlider .bootstrapSlider('setValue', 5) .bootstrapSlider('setValue', 7); this way ?
                 ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setAttribute', 'min', 0);
@@ -32,6 +50,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.UI.testAppBundleIdLabel.text('');
                 ORG.UI.testAppNameLabel.text('');
                 ORG.UI.testAppVersionLabel.text('');
+                ORG.UIJSONTreeManager.update(null);
             } break;
             case 'itinerary-location-update': {
                 ORG.map.updateItineraryLocation(payload.lat, payload.lng);

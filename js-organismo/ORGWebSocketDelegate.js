@@ -235,7 +235,9 @@ class ORGWebSocketDelegate {
 		var jsonTree = reportData.data;
 		if (!!jsonTree) {
             ORG.UIJSONTreeManager.update(jsonTree);
-			ORG.scene.updateUITreeModel(jsonTree);
+            if (ORG.scene.expanding || ORG.scene.isExpanded) {
+                ORG.scene.updateUITreeModel(jsonTree);
+			}
 		}
 	}
 
@@ -251,6 +253,5 @@ class ORGWebSocketDelegate {
             }
         }
     }
-
 
 }

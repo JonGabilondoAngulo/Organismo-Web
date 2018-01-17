@@ -37,6 +37,7 @@ class ORG3DUITreeModel {
         this._visualizationFlags = visualizationFlag;
         this._planeDistance = kORGMinimalPlaneDistance;
         this._layerCount = 0;
+        this._nodeHighlighter = new ORG3DUIElementHighlight();
     }
 
     get treeGroup() {
@@ -192,14 +193,37 @@ class ORG3DUITreeModel {
         // Every element is a Group with 2 children, a Mesh and a BoxHelper.
 
         const allElements = this._THREEElementTreeGroup.children;
-        for ( let i in allElements ) {
-            let currentElementGroup = allElements[i];
+        for ( let currentElementGroup of allElements ) {
             if ( currentElementGroup.type == "Group" ) {
                 const nodeData = currentElementGroup.userData;
                 if ( !!nodeData ) {
                     currentElementGroup.visible = ( nodeData.expandedTreeLayer < maxVisibleLayer );
                 }
             }
+        }
+    }
+
+    /***
+     * Highlight the given node, unhighlight previous.
+     * @param elementNode - A JSON description of the UI node. It is not a THREE object. The tree has some THREE node that represents the passed element node.
+     */
+    highlightUIElement(elementNode) {
+        if (!this._THREEElementTreeGroup) {
+            return;
+        }
+        if (elementNode) {
+            const allElements = this._THREEElementTreeGroup.children;
+            for ( let currentElementGroup of allElements ) {
+                if ( currentElementGroup.type == "Group" ) {
+                    const nodeData = currentElementGroup.userData;
+                    if ( !!nodeData && !!nodeData.pointer && nodeData.pointer == elementNode.pointer ) {
+                        this._nodeHighlighter.mouseOverElement(currentElementGroup);
+                        break;
+                    }
+                }
+            }
+        } else {
+            this._nodeHighlighter.mouseOverElement(null);
         }
     }
 

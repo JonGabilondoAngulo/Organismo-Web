@@ -53,20 +53,21 @@ class ORG3DUIElementHighlight {
     _highlightUIElement( THREEElement, hilite) {
 
         if ( !!THREEElement ) {
-            if ( THREEElement.geometry.type == "PlaneBufferGeometry" || THREEElement.geometry.type == "BoxGeometry" ) {
 
+            var boxHelper = null;
+            if (THREEElement.type == "Group") {
+                boxHelper = THREEElement.children[0];
+            } else if ( THREEElement.geometry.type == "PlaneBufferGeometry" || THREEElement.geometry.type == "BoxGeometry" ) {
                 const parent = THREEElement.parent; // parent must be a group, holds edgesHelper and the uiobject plane
                 if ( parent ) {
-                    for ( let  i in parent.children ) {
-                        if ( parent.children[i] instanceof THREE.BoxHelper ) {
-                            var edgesHelperObject = parent.children[i];
-                            edgesHelperObject.material.color.set( (hilite ?0xff0000 :0xffffff) );
-                            edgesHelperObject.material.needsUpdate = true;
-                            this._hilitedObj = (hilite ?THREEElement :null); // keep the hilited obj
-                            break;
-                        }
-                    }
+                    boxHelper = parent.children[0];
                 }
+            }
+            if ( boxHelper instanceof THREE.BoxHelper ) {
+                boxHelper.material.color.set( (hilite ?0xff0000 :0xffffff) );
+                boxHelper.material.linewidth = (hilite ?10 :1);
+                boxHelper.material.needsUpdate = true;
+                this._hilitedObj = (hilite ?THREEElement :null); // keep the hilited obj
             }
         }
     }

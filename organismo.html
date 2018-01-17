@@ -130,7 +130,7 @@
 
     <div class="container-fluid" id="content-wrapper">
 
-        <div class="row">
+        <div class="row" id="content-wrapper-row">
             <div id="3d-canvas-col" class="col-md-9">
                 <div id="threejs-canvas"></div>
                 <div id="org-splitter" class="org-splitter">
@@ -163,8 +163,7 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class='smallCheckboxDiv'>
-                                            <input type='checkbox' id="show-device" value="true" title="show-device"
-                                                   checked/>
+                                            <input type='checkbox' id="show-device" value="true" title="show-device" checked/>
                                             <div class='inlineCheckboxLabel'>Show Device</div>
                                         </div>
                                         <br>
@@ -184,8 +183,7 @@
                                         </div>
                                         <br>
                                         <div class='smallCheckboxDiv'>
-                                            <input type="checkbox" id="live-screen" value="true" title="live-screen"
-                                                   checked/>
+                                            <input type="checkbox" id="live-screen" value="true" title="live-screen" checked/>
                                             <div class='inlineCheckboxLabel'>Continuos Update</div>
                                         </div>
                                         </br>
@@ -218,25 +216,22 @@
                                         </div>
                                         <br/>
                                         <div class='smallCheckboxDiv'>
-                                            <input type="checkbox" id="show-public-classes" title="show-public-classes"
-                                                   checked/>
+                                            <input type="checkbox" id="show-public-classes" title="show-public-classes" checked/>
                                             <div class='inlineCheckboxLabel'>Public Classes</div>
                                         </div>
                                         <br/>
                                         <div class='smallCheckboxDiv'>
-                                            <input type="checkbox" id="show-private" value="true" title="show-private"/>
+                                            <input type="checkbox" id="show-private" value="true" title="show-private" checked/>
                                             <div class='inlineCheckboxLabel'>Private Classes</div>
                                         </div>
                                         <br/>
                                         <div class='smallCheckboxDiv'>
-                                            <input type="checkbox" id="show-interactive" value="true" title="show-interactive"
-                                                   checked/>
+                                            <input type="checkbox" id="show-interactive" value="true" title="show-interactive" checked/>
                                             <div class='inlineCheckboxLabel'>Interactive Cntrls</div>
                                         </div>
                                         <br/>
                                         <div class='smallCheckboxDiv'>
-                                            <input type="checkbox" id="show-non-interactive" value="true"
-                                                   title="show-non-interactive" checked/>
+                                            <input type="checkbox" id="show-non-interactive" value="true"  title="show-non-interactive" checked/>
                                             <div class='inlineCheckboxLabel'>Non-Interactive Cntrls</div>
                                         </div>
                                         <br/>
@@ -403,10 +398,26 @@
 
                         </div>
                         <div class="tab-pane" id="tab-tree">
-                            <div class="container-fluid">
+                            <div class="container-fluid" style="padding-right: 2px; padding-left: 2px;">
                                 <div class="row">
-                                    <div id="ui-json-tree" class="col-sm-8" style="overflow-y: auto"></div>
-                                    <div id="ui-json-tree-node" class="col-sm-4" ></div>
+                                    <div class="col-sm-8" >
+                                        <div class="panel " style="height: 44px; padding:2px; " >
+                                            <div class="panel-body" style="height: 44px; padding:2px; " >
+                                                <label type="button" class="btn btn-primary" id='ui-tree-refresh'>Refresh</label>
+                                            </div>
+                                        </div>
+                                        <div id="ui-json-tree" style="overflow-y: auto; overflow-x: auto"></div>
+                                    </div>
+
+                                    <div class="col-sm-4" >
+                                        <div class="panel " style="" >
+                                            <div class="panel-body" style="padding:2px;" >
+                                                <div id="ui-json-tree-node" style="overflow-x: auto;" ></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
 

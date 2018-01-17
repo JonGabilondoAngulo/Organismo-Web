@@ -2,9 +2,9 @@
  * Created by jongabilondo on 14/08/2017.
  */
 
-ORG.SplitterResize	= function(paneSep, fullContent, leftPane, rightPane, scene) {
+ORG.SplitterResize	= function(paneSep, contentPanel, leftPane, rightPane, scene) {
 
-    const splitterWidth = paneSep.offsetWidth;
+    const kSplitterWidth = paneSep.offsetWidth;
 
     // The script below constrains the target to move horizontally between a left and a right virtual boundaries.
     // - the left limit is positioned at 10% of the screen width
@@ -36,12 +36,15 @@ ORG.SplitterResize	= function(paneSep, fullContent, leftPane, rightPane, scene) 
             cur = window.innerWidth;
         }
 
-        const right = window.innerWidth - pageX - splitterWidth;
-        leftPane.style.width = pageX + 'px';
-        rightPane.style.width = right + 'px';
+        const contentRect = contentPanel.getBoundingClientRect();
+        const leftPanelWidth = pageX + kSplitterWidth/2.0;
+        const rightPanelWidth = contentRect.width - leftPanelWidth;
+        const sceneWidth = leftPanelWidth - kSplitterWidth/2.0 - 15 - 15;
+        leftPane.style.width = leftPanelWidth + 'px';
+        rightPane.style.width = rightPanelWidth + 'px';
 
-        ORG.canvasDomElem.style.width = leftPane.style.width;
-        scene.resize({width:pageX - 30, height:scene.sceneSize.height});
+        //ORG.canvasDomElem.style.width = leftPane.style.width;
+        scene.resize({width:sceneWidth, height:scene.sceneSize.height});
 
     }, null, 'horizontal');
 

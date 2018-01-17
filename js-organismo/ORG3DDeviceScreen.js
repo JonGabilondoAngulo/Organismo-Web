@@ -72,4 +72,15 @@ class ORG3DDeviceScreen {
             thisScreen._threeScreenPlane.needsUpdate = true;
         };
     }
+
+    /***
+     * Show a highlight plane covering the area of the given element.
+     * @param elementNode - A JSON description of the UI node.
+     */
+    highlightUIElement(elementNode) {
+        if (elementNode) {
+
+        } else {
+        }
+    }
 }
