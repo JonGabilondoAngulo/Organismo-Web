@@ -24,7 +24,7 @@ class ORGDevice {
         var body = null;
         if ( this.productName.startsWith( 'iPhone 5' )) {
             body = ORG.DeviceMetrics.iPhone5.Body;
-        } else if ( device.productName.startsWith( 'iPhone 6' )) {
+        } else if ( this.productName.startsWith( 'iPhone 6' )) {
             body = ORG.DeviceMetrics.iPhone6.Body;
         } else {
             body = ORG.DeviceMetrics.iPhone5.Body;
@@ -40,7 +40,7 @@ class ORGDevice {
         var display = null;
         if ( this.productName.startsWith( 'iPhone 5' )) {
             display = ORG.DeviceMetrics.iPhone5.Display;
-        } else if ( device.productName.startsWith( 'iPhone 6' )) {
+        } else if ( this.productName.startsWith( 'iPhone 6' )) {
             display = ORG.DeviceMetrics.iPhone6.Display;
         } else {
             display = ORG.DeviceMetrics.iPhone5.Display;

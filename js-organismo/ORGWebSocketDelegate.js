@@ -176,24 +176,21 @@ class ORGWebSocketDelegate {
 		// The connection to the device its on place. We got information about the device.
 		ORG.device = new ORGDevice( deviceInfo );
 
-        ORG.scene.createDeviceScreen( ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
-        //ORG.scene.createDeviceScreen( deviceInfo.screenSize.width, deviceInfo.screenSize.height, 0);
-		ORG.scene.createRaycasterForDeviceScreen();
-
-		if ( ORG.scene.flagShowDevice3DModel ) {
-			ORG.scene.showDevice3DModel();
-		}
-
-		// make sure the floor is at the right height
-		ORG.scene.devicePositionHasChanged();
-
-		// ask for the first screenshot
-		ORG.deviceController.requestScreenshot();
-
 		// UI
-        ORG.UI.deviceNameLabel.text( ORG.device.name);
-        ORG.UI.deviceSystemVersionLabel.text( ORG.device.systemVersion);
-        ORG.UI.deviceModelLabel.text( ORG.device.productName);
+        ORG.dispatcher.dispatch({
+            actionType: 'device-info-update',
+            device: ORG.device
+        });
+
+        //ORG.scene.createDeviceScreen( ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
+        //if ( ORG.scene.flagShowDevice3DModel ) {
+        //    ORG.scene.showDevice3DModel();
+        //}
+        //ORG.scene.devicePositionHasChanged();
+        ORG.scene.createRaycasterForDeviceScreen();
+
+        // ask for the first screenshot
+        ORG.deviceController.requestScreenshot();
     }
 
 	/**
@@ -204,9 +201,15 @@ class ORGWebSocketDelegate {
 
 		ORG.testApp = new ORGTestApp( messageJSON.data );
 
-        ORG.UI.testAppNameLabel.text( ORG.testApp.name );
-        ORG.UI.testAppVersionLabel.text( ORG.testApp.version );
-        ORG.UI.testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
+        // UI updates
+        ORG.dispatcher.dispatch({
+            actionType: 'app-info-update',
+            app: ORG.testApp
+        });
+
+        //ORG.UI.testAppNameLabel.text( ORG.testApp.name );
+        //ORG.UI.testAppVersionLabel.text( ORG.testApp.version );
+        //ORG.UI.testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
 	}
 
 	/**
@@ -218,7 +221,12 @@ class ORGWebSocketDelegate {
 		if (base64Img) {
 			var img = new Image();
 			img.src = "data:image/jpg;base64," + base64Img;
-			ORG.scene.setScreenshotImage(img);
+
+            // UI updates
+            ORG.dispatcher.dispatch({
+                actionType: 'screenshot-update',
+                image: img
+            });
 
 			// Ask for next screenshot
 			if (ORG.scene.flagContinuousScreenshot && !ORG.scene.isExpanded && ORG.deviceController.isConnected) {
@@ -234,7 +242,7 @@ class ORGWebSocketDelegate {
 	_processReportElementTree(reportData) {
 		var jsonTree = reportData.data;
 		if (!!jsonTree) {
-            ORG.UIJSONTreeManager.update(jsonTree);
+            ORG.UIJSONTreeManager.update(jsonTree, ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO);
             if (ORG.scene.expanding || ORG.scene.isExpanded) {
                 ORG.scene.updateUITreeModel(jsonTree);
 			}

@@ -37,4 +37,13 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
     sendLocationUpdate(lat, lng) {
         this.webSocket.send(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null));
     }
+
+    refreshUITree() {
+        this.requestElementTree({
+            "status-bar": true,
+            "keyboard": true,
+            "alert": true,
+            "normal": true
+        });
+    }
 }

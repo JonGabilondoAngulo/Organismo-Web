@@ -7,9 +7,23 @@ class ORGUIJSONTreeManager {
     constructor(placeholder, nodePlaceholder) {
         this._treePlaceholder = placeholder;
         this._nodePlaceholder = nodePlaceholder;
+        this._treeAdaptor = null;
+        this._treeType = null;
     }
 
-    update(jsonTree) {
+    update(jsonTree, treeType) {
+        this._treeType = treeType;
+        switch (treeType) {
+            case ORGUIJSONTreeManager.TREE_TYPE_WDA : {
+                this._treeAdaptor =  ORGUIJSONWDATreeAdaptor;
+            } break;
+            case ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO : {
+                this._treeAdaptor = ORGUIJSONOrganismoTreeAdaptor;
+            } break;
+            default : {
+                return;
+            }
+        }
 
         if (jsonTree == null) {
             $(this._treePlaceholder).treeview('remove');
@@ -17,7 +31,7 @@ class ORGUIJSONTreeManager {
             return;
         }
 
-        var adaptedTree = this._adaptor(jsonTree);
+        var adaptedTree = this._treeAdaptor.adaptTree(jsonTree);
         var _this = this;
         $(this._treePlaceholder).treeview({
             data: adaptedTree,
@@ -32,7 +46,7 @@ class ORGUIJSONTreeManager {
     }
 
     _nodeSelected(event, node) {
-        const nodeHTMLData = this._nodeAdaptor(node.representedNode);
+        const nodeHTMLData = this._treeAdaptor.nodeToHTML(node.representedNode);
         ORG.dispatcher.dispatch({
             actionType: 'uitree-node-selected',
             node:node.representedNode,
@@ -41,9 +55,28 @@ class ORGUIJSONTreeManager {
     }
 
     _nodeEnter(event, node) {
+        var node3DElement = null;
+
+        if (node  && !node.representedNode) {
+            console.debug("The mouseover tree node has no data !");
+            return;
+        }
+
+        switch (this._treeType) {
+            case ORGUIJSONTreeManager.TREE_TYPE_WDA : {
+                node3DElement = new ORG3DWDAUIElement(node.representedNode);
+            } break;
+            case ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO : {
+                node3DElement = new ORG3DORGUIElement(node.representedNode);
+            } break;
+            default : {
+                return;
+            }
+        }
+
         ORG.dispatcher.dispatch({
             actionType: 'uitree-node-enter',
-            node:node.representedNode
+            node:node3DElement
         });
     }
 
@@ -52,66 +85,7 @@ class ORGUIJSONTreeManager {
             actionType: 'uitree-node-leave'
         });
     }
-
-    _adaptor(jsonTree) {
-        var newTree = [];
-        if (!jsonTree) {
-            return null;
-        }
-        for (let node of jsonTree) {
-            var newNode = { representedNode:node};
-            newTree.push(newNode);
-            newNode.nodes = node.subviews;
-
-            // Compose text for node
-            newNode.text = node.class;
-            if (node.accessibilityLabel) {
-                newNode.text += " - " + node.accessibilityLabel;
-            } else if (node.currentTitle) {
-                newNode.text += " - " + node.currentTitle;
-            } else if (node.text) {
-                newNode.text += " - " + node.text;
-            }
-
-            // hidden icon
-            if (node.hidden) {
-                newNode.icon = 'glyphicon glyphicon-eye-close';
-            }
-
-            // subnodes
-            var subTree = this._adaptor(node.subviews);
-            if (subTree) {
-                newNode.nodes = subTree;
-            }
-        }
-        return newTree;
-    }
-
-    _nodeAdaptor(node) {
-        var description = "";
-
-        const className = node.class;
-        if (className) {
-            description += "<h4><b>" + className + "</b></h4>";
-        }
-
-        for (let key of Object.keys(node)) {
-            if (this._ignoreNodeKey(key)) {
-                continue;
-            }
-            if (key == "bounds") {
-                description += "<b>" + key + "</b>:&nbsp" + JSON.stringify(node.bounds) + "<br>";
-            } else {
-                description += "<b>" + key + "</b>:&nbsp" + node[key] + "<br>";
-            }
-        }
-        description += "<br>";
-
-        return description;
-    }
-
-    _ignoreNodeKey(key) {
-        return (key == "text" || key == "state" || key == "subviews" || key == "nodes" || key == "$el" || key == "screenshot" || key == "nodeId" || key == "parentId");
-    }
-
 }
+
+ORGUIJSONTreeManager.TREE_TYPE_WDA = 0;
+ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO = 1;

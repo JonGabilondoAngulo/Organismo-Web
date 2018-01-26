@@ -44,6 +44,10 @@ class ORG3DUITreeModel {
         return this._THREEElementTreeGroup;
     }
 
+    get isExpanded() {
+        return this.treeGroup != null;
+    }
+
     set visualizationFlags( flags ) {
         this._visualizationFlags = flags;
     }

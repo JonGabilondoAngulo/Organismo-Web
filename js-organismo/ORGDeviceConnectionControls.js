@@ -33,6 +33,8 @@ ORG.UI.connectButton.click(function(e) {
             ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
         } else if (driverName[0] == "iDeviceControlProxy") {
             ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
+        } else if (driverName[0] == "WDA") {
+            ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
         }
     }
 

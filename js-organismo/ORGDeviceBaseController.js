@@ -3,7 +3,7 @@
  */
 
 /**
- * Base class to communicate with mobile devices via web sockets.
+ * Base class to communicate with mobile devices via web sockets/REST.
  * Provides the base virtual functions for subclasses to implement.
  * It's not a class to be used directly, but to inherit from it.
  */
@@ -19,27 +19,26 @@ class ORGDeviceBaseController {
     get isConnected() {
         _throwError();
     };
-    get RESTPrefix() {
-        return "http://" + this.IPandPort;
-    }
     get IPandPort() {
         return this._ip + ":" + this._port;
-    }
+    };
 
     openSession() {
-        _throwError();
+        this._throwError();
     };
     closeSession() {
-        _throwError();
+        this._throwError();
     };
     screenshot() {
-        _throwError();
+        this._throwError();
     };
     elementTree() {
-        _throwError();
+        this._throwError();
     };
-
+    refreshUITree() {
+        this._throwError();
+    };
     _throwError() {
         throw new Error("Executing base class method. Subclass must implement this method.");
-    }
+    };
 }

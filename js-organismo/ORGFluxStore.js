@@ -8,15 +8,42 @@ class ORGFluxStore extends FluxUtils.Store {
     __onDispatch(payload) {
         switch (payload.actionType) {
 
-            case 'ui-tree-refresh': {
-                ORG.deviceController.requestElementTree({
-                    "status-bar": true,
-                    "keyboard": true,
-                    "alert": true,
-                    "normal": true
-                });
+            case 'screenshot-update': {
+                ORG.scene.setScreenshotImage(payload.image);
             } break;
 
+            case 'beacon-selected' : {
+                ORG.scene.showHideBeaconTransformControls( payload.beacon );
+            } break;
+
+            case 'device-info-update' : {
+                ORG.UI.deviceNameLabel.text(payload.device.name);
+                ORG.UI.deviceSystemVersionLabel.text(payload.device.systemVersion);
+                ORG.UI.deviceModelLabel.text(payload.device.productName);
+
+                ORG.scene.createDeviceScreen( payload.device.displaySize.width, payload.device.displaySize.height, 0);
+                if ( ORG.scene.flagShowDevice3DModel ) {
+                    ORG.scene.showDevice3DModel();
+                }
+                ORG.scene.devicePositionHasChanged();
+            } break;
+
+            case 'app-info-update' : {
+                ORG.UI.testAppNameLabel.text(payload.app.name );
+                ORG.UI.testAppVersionLabel.text(payload.app.version );
+                ORG.UI.testAppBundleIdLabel.text(payload.app.bundleIdentifier );
+            } break;
+
+            //************************************************************
+            // JSON UI TREE
+            //************************************************************
+
+            case 'ui-json-tree-update': {
+                ORG.UIJSONTreeManager.update(payload.tree, payload.treeType);
+            } break;
+            case 'ui-tree-refresh': {
+                ORG.deviceController.refreshUITree();
+            } break;
             case 'uitree-node-selected': {
                 $('#ui-json-tree-node').html(payload.html);
             } break;
@@ -26,8 +53,11 @@ class ORGFluxStore extends FluxUtils.Store {
             case 'uitree-node-leave': {
                 ORG.scene.highlightUIElement(null);
             } break;
+
+            //************************************************************
+            // 3D UI TREE
+            //************************************************************
             case 'uitree-expanded': {
-//mySlider .bootstrapSlider('setValue', 5) .bootstrapSlider('setValue', 7); this way ?
                 ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setAttribute', 'min', 0);
                 ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setAttribute', 'max', payload.ui_tree.layerCount);
                 ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setValue', payload.ui_tree.layerCount);
@@ -38,20 +68,11 @@ class ORGFluxStore extends FluxUtils.Store {
             case 'uitree-layer-spacing-change': {
                 ORG.scene.setExpandedTreeLayersDistance( payload.value );
             } break;
-            case 'beacon-selected' : {
-                ORG.scene.showHideBeaconTransformControls( payload.beacon );
-            } break;
-            case 'device-disconnect': {
-                ORG.UI.connectButton.text("Connect");
-                ORG.UI.buttonExpand.text("Expand");
-                ORG.UI.deviceNameLabel.text('');
-                ORG.UI.deviceSystemVersionLabel.text('');
-                ORG.UI.deviceModelLabel.text('');
-                ORG.UI.testAppBundleIdLabel.text('');
-                ORG.UI.testAppNameLabel.text('');
-                ORG.UI.testAppVersionLabel.text('');
-                ORG.UIJSONTreeManager.update(null);
-            } break;
+
+
+            //************************************************************
+            // LOCATION
+            //************************************************************
             case 'itinerary-location-update': {
                 ORG.map.updateItineraryLocation(payload.lat, payload.lng);
             } break;
@@ -94,9 +115,26 @@ class ORGFluxStore extends FluxUtils.Store {
                 $('#label-lat-end').text(payload.end_location.lat());
                 $('#label-lng-end').text(payload.end_location.lng());
             } break;
+
+            //************************************************************
+            // DEVICE CONNECTIONS
+            //************************************************************
+            case 'device-disconnect': {
+                ORG.UI.connectButton.text("Connect");
+                ORG.UI.buttonExpand.text("Expand");
+                ORG.UI.deviceNameLabel.text('');
+                ORG.UI.deviceSystemVersionLabel.text('');
+                ORG.UI.deviceModelLabel.text('');
+                ORG.UI.testAppBundleIdLabel.text('');
+                ORG.UI.testAppNameLabel.text('');
+                ORG.UI.testAppVersionLabel.text('');
+                ORG.UIJSONTreeManager.update(null);
+            } break;
+            case 'wda-session-open' :
             case 'websocket-open' : {
                 ORG.UI.connectButton.text("Disconnect");
             } break;
+            case 'wda-session-closed' :
             case 'websocket-closed' : {
                 ORG.UI.connectButton.text("Connect");
                 ORG.UI.buttonExpand.text("Expand");

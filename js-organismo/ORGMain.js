@@ -7,17 +7,6 @@ ORG.Request = {
     Screenshot : "screenshot",
     ElementTree : "element-tree"};
 
-ORG.DeviceMetrics = {
-    iPhone5 : {
-        Body : {H : "123.8 mm", W: "58.6 mm", D: "7.6 mm"},
-        Display: {Diagonal:"100 mm", Ratio:"1.7777777" /* 16/9 */}
-    },
-    iPhone6 : {
-        Body : {H : "123.8 mm", W: "58.6 mm", D: "7.6 mm"},
-        Display: {Diagonal:"100 mm", Ratio:"1.7777777" /* 16/9 */}
-    }
-};
-
 ORG.contentWrapper = document.getElementById('content-wrapper');
 ORG.leftSection = document.getElementById('3d-canvas-col');
 ORG.canvasDomElem = document.getElementById('threejs-canvas');

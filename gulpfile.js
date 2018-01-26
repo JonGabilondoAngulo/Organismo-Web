@@ -9,6 +9,7 @@ var gulp = require('gulp')
 
 const sources = [
     'js-organismo/ORG.Namespaces.js',
+    'js-organismo/ORG.DeviceMetrics.js',
     'js-organismo/ORGConstants.js',
     'js-organismo/ORGWebSocket.js',
     'js-organismo/ORGScenario.js',
@@ -60,12 +61,12 @@ const sources = [
     'js-organismo/ORGItineraryLocation.js',
     'js-organismo/ORGItineraryRunner.js',
     'js-organismo/ORGSystemInfoManager.js',
-    //'js-organismo/ui-json-tree/ORGUIJSONTree.js',
+    'js-organismo/ORG3DUIElement.js',
+    'js-organismo/ORG3DWDAUIElement.js',
+    'js-organismo/ORG3DORGUIElement.js',
     'js-organismo/ORGUIJSONTreeManager.js',
-    //'js-organismo/ui-json-tree/tree.js',
-    //'js-organismo/ui-json-tree/bounds.js',
-    //'js-organismo/ui-json-tree/utils.js',
-    //'js-organismo/ui-json-tree/xpath.js',
+    'js-organismo/ORGUIJSONWDATreeAdaptor.js',
+    'js-organismo/ORGUIJSONOrganismoTreeAdaptor.js',
     'js-third-party/dist.js',
     'js-third-party/epoly.js'
 ];

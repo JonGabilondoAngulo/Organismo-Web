@@ -43,8 +43,6 @@ class ORG3DScene {
         this._THREEDeviceAndScreenGroup = new THREE.Group();
         this._keyboardState = null;
         this._threeClock = null;
-        this._screenshotImage = null;
-        this._screenshotNeedsUpdate = false;
         this._deviceScreenSize = null;
         this._uiExpanded = false;
         this._canvasDomElement = null; // the table cell where the renderer will be created, it contains _rendererDOMElement
@@ -254,8 +252,9 @@ class ORG3DScene {
      * @param image.
      */
     setScreenshotImage(image) {
-        this._screenshotImage = image;
-        this._screenshotNeedsUpdate = true;
+        if (this._deviceScreen) {
+            this._deviceScreen.nextScreenshotImage = image;
+        }
     };
 
     updateUITreeModel( treeJson ) {
@@ -679,9 +678,13 @@ class ORG3DScene {
         }
     }
 
+    /***
+     * Call the 3D tree or the Sreen to highlight the given UI elment
+     * @param element ORG3DUIElement, can be WDA, Org ...
+     */
     highlightUIElement(element) {
-        if (this._uiTreeModel) {
-            this._uiTreeModel.highlightUIElement(element);
+        if (this._uiTreeModel.isExpanded) {
+            this._uiTreeModel.highlightUIElement(element.elementJSON);
         } else if (this._deviceScreen) {
             this._deviceScreen.highlightUIElement(element);
         }
@@ -807,14 +810,6 @@ class ORG3DScene {
 //            scene.add(light2);
     }
 
-    _updateScreenshot() {
-
-        if (this._deviceScreen && this._screenshotNeedsUpdate && this._screenshotImage) {
-            this._screenshotNeedsUpdate = false;
-            this._deviceScreen.setScreenshot(this._screenshotImage);
-        }
-    }
-
     _deviceBoundingBox() {
         let bBox = null;
         if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice) && this._device3DModel) {
@@ -854,7 +849,10 @@ class ORG3DScene {
 
     _updateScene()
     {
-        this._updateScreenshot();
+        if (this._deviceScreen) {
+            this._deviceScreen.renderUpdate();
+        }
+
         if (this._transformControl) {
             this._transformControl.update(); // important to update the controls size while changing POV
         }

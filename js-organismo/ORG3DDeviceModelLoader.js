@@ -26,9 +26,16 @@ class ORG3DDeviceModelLoader {
         var loader = new THREE.OBJLoader(  );
         loader.load( "3DModels/iPhone/iPhone_6.obj", function ( object ) {
 
-            object.position.set(0,-480,-24);
-            object.scale.set(124,124,124);
-            scene.addDevice3DModel( new ORG3DDeviceModel(object) );
+            var deviceBox =  new THREE.Box3().setFromObject( object );
+            const scale = device.bodySize.height / deviceBox.getSize().y;
+            object.scale.set( scale, scale, scale );
+            deviceBox =  new THREE.Box3().setFromObject( object );
+            object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
+            scene.addDevice3DModel( new ORG3DDeviceModel( scene.THREEScene, object ) );
+
+            //object.position.set(0,-480,-24);
+            //object.scale.set(124,124,124);
+            //scene.addDevice3DModel( new ORG3DDeviceModel(scene.THREEScene, object) );
         } );
     }
 
