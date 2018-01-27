@@ -13,6 +13,7 @@ ORG.canvasDomElem = document.getElementById('threejs-canvas');
 ORG.rightSection = document.getElementById('right-tabs');
 ORG.deviceController = null;
 ORG.device = null;
+ORG.testApp = null;
 ORG.map = null;
 ORG.scenario = new ORGScenario();
 ORG.dispatcher = new Flux.Dispatcher();

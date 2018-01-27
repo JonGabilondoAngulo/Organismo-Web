@@ -120,6 +120,14 @@ class ORGFluxStore extends FluxUtils.Store {
             // DEVICE CONNECTIONS
             //************************************************************
             case 'device-disconnect': {
+                ORG.scene.handleDeviceDisconnection();  // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
+                if ( ORG.systemInfoManager ) {
+                    ORG.systemInfoManager.stop();
+                }
+                ORG.deviceController = null;
+                ORG.device = null;
+                ORG.testApp = null;
+
                 ORG.UI.connectButton.text("Connect");
                 ORG.UI.buttonExpand.text("Expand");
                 ORG.UI.deviceNameLabel.text('');
@@ -128,7 +136,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.UI.testAppBundleIdLabel.text('');
                 ORG.UI.testAppNameLabel.text('');
                 ORG.UI.testAppVersionLabel.text('');
-                ORG.UIJSONTreeManager.update(null);
+                ORG.UIJSONTreeManager.remove();
             } break;
             case 'wda-session-open' :
             case 'websocket-open' : {

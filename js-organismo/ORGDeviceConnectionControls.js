@@ -19,16 +19,15 @@ $(".dropdown-menu a").click(function(){
 });
 
 ORG.UI.connectButton.click(function(e) {
-    var serverUrl = $('#device-url');
-
+    const serverUrl = $('#device-url');
     var deviceURL = serverUrl.val();
     if (deviceURL == "") {
         deviceURL = "localhost";
     }
 
+    // Create the controller for the selected protocol.
     if (ORG.deviceController == null) {
-
-        var driverName = ORG.UI.dropdownDriver.text().split(' ');
+        const driverName = ORG.UI.dropdownDriver.text().split(' ');
         if (driverName[0] == "Organismo") {
             ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
         } else if (driverName[0] == "iDeviceControlProxy") {
@@ -38,22 +37,12 @@ ORG.UI.connectButton.click(function(e) {
         }
     }
 
+    // Connect ot disconnect.
     if (ORG.deviceController.isConnected) {
-        ORG.deviceController.closeSession(); // Disconnect
-
-        // ORGWebSocketDelegate is not getting called onClose, at least within a reasonable time. Let's update the UI here.
-        ORG.scene.handleDeviceDisconnection();
-
-        if ( ORG.systemInfoManager ) {
-            ORG.systemInfoManager.stop();
-        }
-
+        ORG.deviceController.closeSession(); // It's not like disconnecting the device. On Disconnection the device disappears. Closing session the Device stays.
         ORG.dispatcher.dispatch({
             actionType: 'device-disconnect'
         });
-
-        ORG.deviceController = null;
-
     } else {
         ORG.deviceController.openSession();  // Connect
     }

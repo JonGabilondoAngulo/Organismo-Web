@@ -12,6 +12,12 @@ class ORGUIJSONTreeManager {
     }
 
     update(jsonTree, treeType) {
+
+        if (treeType === undefined) {
+            console.debug('Tree update requested but type undefined.');
+            return;
+        }
+
         this._treeType = treeType;
         switch (treeType) {
             case ORGUIJSONTreeManager.TREE_TYPE_WDA : {
@@ -26,8 +32,7 @@ class ORGUIJSONTreeManager {
         }
 
         if (jsonTree == null) {
-            $(this._treePlaceholder).treeview('remove');
-            $(this._nodePlaceholder).html("");
+            this.remove();
             return;
         }
 
@@ -43,6 +48,11 @@ class ORGUIJSONTreeManager {
             onNodeEnter: function (event, node) { _this._nodeEnter(event, node);},
             onNodeLeave: function (event, node) { _this._nodeLeave(event, node);},
         } );
+    }
+
+    remove() {
+        $(this._treePlaceholder).treeview('remove');
+        $(this._nodePlaceholder).html("");
     }
 
     _nodeSelected(event, node) {
