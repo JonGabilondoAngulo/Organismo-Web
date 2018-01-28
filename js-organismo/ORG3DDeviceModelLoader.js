@@ -14,15 +14,15 @@ class ORG3DDeviceModelLoader {
      */
     static loadDevice3DModel( device, scene, yPosition ) {
         if ( device.productName.startsWith('iPhone 5')) {
-            this._load_iPhone_5( scene, device, yPosition );
+            this._load_iPhone_5( scene, device );
         } else if ( device.productName.startsWith('iPhone 6')) {
-            this._load_iPhone_6( scene, device, yPosition );
+            this._load_iPhone_6( scene, device );
         }
     }
 
 // PRIVATE
 
-    static _load_iPhone_5( scene, device, yPosition ) {
+    static _load_iPhone_5( scene, device/*, yPosition*/ ) {
         var loader = new THREE.OBJLoader(  );
         loader.load( "3DModels/iPhone_5/iPhone5.obj", function ( object ) {
 
@@ -36,9 +36,9 @@ class ORG3DDeviceModelLoader {
         } );
     }
 
-    static _load_iPhone_6( scene, device, yPosition ) {
+    static _load_iPhone_6( scene, device/*, yPosition*/ ) {
         var loader = new THREE.OBJLoader(  );
-        loader.load( "3DModels/iPhone/iPhone_6.obj", function ( object ) {
+        loader.load( "3DModels/iPhone_6/iPhone_6.obj", function ( object ) {
 
             // model loaded, scale and translate
             var deviceBox =  new THREE.Box3().setFromObject( object );

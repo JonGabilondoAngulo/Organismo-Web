@@ -26,13 +26,15 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         const _this = this;
         var endpointURL = this.RESTPrefix  + "/session";
         this.xhr.open("POST", endpointURL, true);
-        this.xhr.onload = function() {
-            _this._sessionInfo = JSON.parse(this.responseText);
+        this.xhr.onload = () => {
+            this._sessionInfo = JSON.parse(this.xhr.responseText);
 
             // UI updates
             ORG.dispatcher.dispatch({
                 actionType: 'wda-session-open'
             });
+
+            bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' });
 
             // Get element tree, we will get the App information from it.
             _this.requestElementTree().then(function(result) {
@@ -74,12 +76,20 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                             });
                         }
                     }
+                    bootbox.hideAll();
 
                 }, function(err) {
                     console.log(err);
+                    bootbox.hideAll();
                 })
             })
-        }
+        };
+        this.xhr.onerror = () => {
+            ORG.dispatcher.dispatch({
+                actionType: 'wda-session-open-error',
+                error: this.xhr.statusText
+            });
+        };
         this.xhr.send();
     }
 
@@ -103,6 +113,8 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
 
     refreshUITree() {
         const _this = this;
+
+        bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' });
 
         // Get element tree
         this.requestElementTree().then(function(result) {
@@ -128,8 +140,11 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                         image: img
                     });
                 }
+                bootbox.hideAll();
+
             }, function(err) {
                 console.log(err);
+                bootbox.hideAll();
             })
         })
     }
@@ -175,6 +190,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     requestDeviceInfo() {
         const _this = this;
 
+        // Not implemented in default WDA. "/deviceInfo"
         return new Promise((resolve, reject) => {
             var endpointURL = _this.RESTPrefix + "/deviceInfo";
             _this.xhr.open("GET", endpointURL, true);
@@ -194,6 +210,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     requestAppInfo() {
         const _this = this;
 
+        // Not implemented in default WDA. "/appInfo"
         return new Promise((resolve, reject) => {
             var endpointURL = _this.RESTPrefix + "/appInfo";
             _this.xhr.open("GET", endpointURL, true);

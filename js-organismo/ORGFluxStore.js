@@ -142,6 +142,13 @@ class ORGFluxStore extends FluxUtils.Store {
             case 'websocket-open' : {
                 ORG.UI.connectButton.text("Disconnect");
             } break;
+            case 'wda-session-open-error' : {
+                bootbox.alert({
+                    title: "Error connecting to device",
+                    message: "1. Connect your device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. A localport at 8100 must be opened to talk to the device (iproxy 8100 8100)."
+                });
+                console.debug(payload.error);
+            } break;
             case 'wda-session-closed' :
             case 'websocket-closed' : {
                 ORG.UI.connectButton.text("Connect");
@@ -151,9 +158,12 @@ class ORGFluxStore extends FluxUtils.Store {
 
                 if (payload.code == 1006) {
                     if (payload.deviceController == "ORGDeviceController") {
-                        alert("Error connecting to device.\nMake sure the device is connected and the application is open.");
+                        bootbox.alert({
+                            title: "Error connecting to device",
+                            message: "1. Connect your device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. A localport at 5567 must be opened to talk to the device (iproxy 5567 5567)."
+                        })
                     } else {
-                        alert("Error connecting to idevicecontrolproxy.\nMake sure the proxy is running.\nRead about it @ https://github.com/JonGabilondoAngulo/idevicecontrolproxy");
+                        bootbox.alert("Error connecting to idevicecontrolproxy.\nMake sure the proxy is running.\nRead about it @ https://github.com/JonGabilondoAngulo/idevicecontrolproxy");
                     }
                 }
             }
