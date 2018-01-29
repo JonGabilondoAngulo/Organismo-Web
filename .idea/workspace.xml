@@ -2,20 +2,41 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone/Textures/iphone-6-02 (1).jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone/iPhone 6.3ds" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone/iPhone 6.blend" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone/iPhone 6.mtl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone/iPhone_6.obj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_6/iPhone_6.c4d" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_6/tex/Flash_02.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_6/tex/Gradient_04.tif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_6/tex/iPhone_Back_Gloss.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_6/tex/octane_studio6.hdr" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone 5.c4d" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone 5.obj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone_5.mtl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/aniso.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/home.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone 5 baksidan" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone5_screen.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone5_text.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/speakergrill_b.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/speakergrill_c.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 4.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Bouton Diffuse 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Bouton Diffuse 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Body 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Body 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Screen.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Thumbs.db" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Thumbs.db" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.e3d" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.mtl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.obj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_Screen.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_diffuse.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_specular.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.e3d" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.mtl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.obj" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3DModels/iPhone_6/iPhone_6.obj" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/iPhone_6.obj" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" afterPath="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
     </list>
@@ -40,18 +61,8 @@
       <file leaf-file-name="ORG3DDeviceModelLoader.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="40" column="39" lean-forward="false" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="organismo.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/organismo.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state relative-caret-position="832">
+              <caret line="66" column="13" lean-forward="false" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -60,18 +71,18 @@
       <file leaf-file-name="ORG3DScene.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DScene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="940" column="16" lean-forward="false" selection-start-line="940" selection-start-column="16" selection-end-line="940" selection-end-column="16" />
+            <state relative-caret-position="10387">
+              <caret line="799" column="40" lean-forward="false" selection-start-line="793" selection-start-column="7" selection-end-line="799" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ORGFluxStore.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js-organismo/ORGFluxStore.js">
+      <file leaf-file-name="organismo.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/organismo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="147" column="110" lean-forward="false" selection-start-line="147" selection-start-column="110" selection-end-line="147" selection-end-column="110" />
+            <state relative-caret-position="90">
+              <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -80,8 +91,28 @@
       <file leaf-file-name="ORGDeviceWDAController.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
+            <state relative-caret-position="-272">
               <caret line="29" column="12" lean-forward="false" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ORGFluxStore.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORGFluxStore.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="592">
+              <caret line="162" column="0" lean-forward="false" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ORGDeviceConnectionControls.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="368">
+              <caret line="38" column="69" lean-forward="false" selection-start-line="38" selection-start-column="69" selection-end-line="38" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -100,19 +131,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>js-organismo</find>
-      <find>_enterNode</find>
-      <find>_enterNod</find>
-      <find>_enterNo</find>
-      <find>_enterN</find>
-      <find>_enter</find>
-      <find>_ente</find>
-      <find>_ent</find>
-      <find>_en</find>
-      <find>_e</find>
-      <find>_</find>
-      <find>_n</find>
-      <find>_no</find>
       <find>_node</find>
       <find>_nodeE</find>
       <find>_nodeEn</find>
@@ -130,6 +148,19 @@
       <find>a</find>
       <find>alert</find>
       <find>alert(</find>
+      <find>_createLights</find>
+      <find>OBJLoader2</find>
+      <find>fa</find>
+      <find>fav</find>
+      <find>fav.o</find>
+      <find>fav.</find>
+      <find>fav.i</find>
+      <find>fav.ic</find>
+      <find>fav.ico</find>
+      <find>favi.ico</find>
+      <find>favic.ico</find>
+      <find>favico.ico</find>
+      <find>favicon.ico</find>
     </findStrings>
     <replaceStrings>
       <replace>_rendererDOMElement</replace>
@@ -138,6 +169,7 @@
     <dirStrings>
       <dir>$PROJECT_DIR$/js-third-party</dir>
       <dir>$PROJECT_DIR$/js-organismo</dir>
+      <dir>$PROJECT_DIR$</dir>
     </dirStrings>
   </component>
   <component name="FindManager">
@@ -197,13 +229,13 @@
         <option value="$PROJECT_DIR$/js-organismo/ORGUIJSONWDATreeAdaptor.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGUIJSONTreeManager.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGMain.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-        <option value="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" />
         <option value="$PROJECT_DIR$/js-libs/organismo.development.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" />
+        <option value="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
         <option value="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
         <option value="$PROJECT_DIR$/organismo.html" />
+        <option value="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
       </list>
     </option>
   </component>
@@ -241,7 +273,6 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="12" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="877" />
@@ -280,6 +311,24 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Changed Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Organismo-Web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT=".idea">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -305,24 +354,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="js-organismo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Changed Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="Organismo-Web">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT=".idea">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -788,14 +819,14 @@
       <workItem from="1517070127003" duration="6089000" />
       <workItem from="1517129101119" duration="8000" />
       <workItem from="1517151334218" duration="62000" />
-      <workItem from="1517151437061" duration="3008000" />
-    </task>
-    <task id="LOCAL-00022" summary="Refactoring , refactoring to classes.">
-      <created>1489265799972</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1489265799972</updated>
+      <workItem from="1517151437061" duration="3186000" />
+      <workItem from="1517157197691" duration="253000" />
+      <workItem from="1517158536652" duration="2031000" />
+      <workItem from="1517161251577" duration="1887000" />
+      <workItem from="1517163644494" duration="4043000" />
+      <workItem from="1517230225868" duration="897000" />
+      <workItem from="1517235253780" duration="4000" />
+      <workItem from="1517250311596" duration="679000" />
     </task>
     <task id="LOCAL-00023" summary="Refactoring , refactoring to classes.">
       <created>1489336390192</created>
@@ -1133,11 +1164,18 @@
       <option name="project" value="LOCAL" />
       <updated>1517076935591</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Added alerts and messages for connections errors. Added loading data alert to WDA controller.">
+      <created>1517155418236</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1517155418237</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="704182000" />
+    <option name="totallyTimeSpent" value="714154000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1149,20 +1187,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="12" y="23" width="1440" height="877" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26920366" sideWeight="0.506993" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22198732" sideWeight="0.7989691" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21423538" sideWeight="0.7989691" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32522407" sideWeight="0.48978153" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24076433" sideWeight="0.4496124" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35286623" sideWeight="0.5680056" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24076433" sideWeight="0.56166315" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17797695" sideWeight="0.44256517" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3057325" sideWeight="0.10641297" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21695629" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.49726027" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25440452" sideWeight="0.20103092" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24076433" sideWeight="0.5503876" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24076433" sideWeight="0.43833685" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32747456" sideWeight="0.4918378" order="7" side_tool="false" content_ui="tabs" />
@@ -1171,6 +1208,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25333333" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35286623" sideWeight="0.5680056" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1242,7 +1280,6 @@
       <path value="$PROJECT_DIR$/bootstrap" />
       <path value="$PROJECT_DIR$/flux" />
     </ignored-roots>
-    <MESSAGE value="Refactoring to E6 standards." />
     <MESSAGE value="Bug fixes in collapse expand." />
     <MESSAGE value="3D tree creation improvements." />
     <MESSAGE value="New scene menu options to position camera." />
@@ -1267,7 +1304,8 @@
     <MESSAGE value="JSON Tree view and item node views." />
     <MESSAGE value="JSON Tree view for WDA driver." />
     <MESSAGE value="Fixed device location offset on second connections." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed device location offset on second connections." />
+    <MESSAGE value="Added alerts and messages for connections errors. Added loading data alert to WDA controller." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added alerts and messages for connections errors. Added loading data alert to WDA controller." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1313,27 +1351,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/css/bootstrap-override.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13">
-          <caret line="1" column="20" lean-forward="false" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/ORG3DScene.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="683" column="34" lean-forward="false" selection-start-line="683" selection-start-column="34" selection-end-line="683" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/three.js/build/three.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="196" column="8" lean-forward="false" selection-start-line="196" selection-start-column="8" selection-end-line="196" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DUITreeModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1183">
@@ -1453,7 +1470,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="4309" column="4" lean-forward="false" selection-start-line="4309" selection-start-column="4" selection-end-line="4309" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1591,13 +1607,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="23" column="26" lean-forward="false" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-355">
@@ -1626,657 +1635,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DScene.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="940" column="16" lean-forward="false" selection-start-line="940" selection-start-column="16" selection-end-line="940" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGFluxStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="147" column="110" lean-forward="false" selection-start-line="147" selection-start-column="110" selection-end-line="147" selection-end-column="110" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="29" column="12" lean-forward="false" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js-libs/organismo.development.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
           <caret line="3795" column="12" lean-forward="false" selection-start-line="3795" selection-start-column="12" selection-end-line="3795" selection-end-column="12" />
-          <folding>
-            <marker date="1517155182815" expanded="true" signature="143183:143879" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="143306:143870" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="143884:143933" ph="/** Created by jongabilondo on 22/03/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="143936:144065" ph="/** Class to wrap the actions on the THREE model of a device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="144089:146580" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144096:144190" ph="/** Constructor ...*/" />
-            <marker date="1517155182815" expanded="true" signature="144226:144361" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144368:144448" ph="/** Removes the object from the 3D scene and disposes the object. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="144463:144532" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144556:144593" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144617:144734" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144665:144728" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144770:146485" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144800:144831" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144861:146479" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="144892:145421" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="145456:145945" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="145981:146469" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="146508:146577" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="146581:146630" ph="/** Created by jongabilondo on 25/03/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="146633:146709" ph="/** Class to create and handle the THREE object of the device screen. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="146734:152370" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="146802:147639" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="147655:148077" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="147688:147719" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="147756:147828" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="147870:147947" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148101:148147" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148171:148238" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148261:148307" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148334:148500" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148532:148759" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148796:148846" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148859:148966" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148897:148960" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="148979:149085" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="149017:149079" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="149112:149622" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="149272:149347" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="149628:149822" ph="/** Create a highlight plane covering the area of the given element. It will be shown in the next renderUpdate. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="149857:150601" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="149882:150536" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="150542:150595" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="150607:150682" ph="/** Time to update the 3D model. Called by the render loop. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="150702:151592" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="150773:150889" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="150954:151232" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="151001:151086" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="151272:151586" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="151319:151404" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="151598:151807" ph="/** Create a THREE plane that will be used as a highlight on top of the screen. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="151850:152367" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="152371:152511" ph="/** Delegate class for the WebSocket to the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="152539:160760" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="152557:152587" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="152590:152652" ph="/** Callback for the websocket opening. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="152665:152834" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="152774:152826" ph="{&quot;actionType&quot;: 'websocket-open'...}" />
-            <marker date="1517155182815" expanded="true" signature="152838:152907" ph="/** Callback for the closing of the websocket. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="152928:155488" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="153056:153216" ph="{&quot;actionType&quot;: 'websocket-closed'...}" />
-            <marker date="1517155182815" expanded="true" signature="153221:155485" ph="/*...*/" />
-            <marker date="1517155182815" expanded="true" signature="155492:155642" ph="/** Callback for when the websocket has received a message from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="155665:156210" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="155731:155777" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="155783:155842" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="155862:156207" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="155903:155949" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="155995:156050" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="156101:156203" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="156214:156320" ph="/** Callback for when an error has been occurred in the websocket. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="156341:156387" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="156403:156515" ph="/** Method to process a message of type &quot;response&quot; that arrived from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="156547:157152" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="156603:156662" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="156717:156777" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="156835:156903" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="156962:157030" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="157155:157271" ph="/** Method to process a message of type &quot;notification&quot; tath arrived from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="157307:157455" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="157366:157452" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="157458:157599" ph="/** Method to process the a device orientation change notification message coming from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="157664:157940" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="157696:157937" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="157844:157933" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="157943:158048" ph="/** Method to process a response with device info coming from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="158089:158763" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="158262:158350" ph="{&quot;actionType&quot;: 'device-info-update'...}" />
-            <marker date="1517155182815" expanded="true" signature="158362:158614" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="158766:158868" ph="/** Method to process a response with app info coming from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="158907:159308" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="159017:159100" ph="{&quot;actionType&quot;: 'app-info-update'...}" />
-            <marker date="1517155182815" expanded="true" signature="159112:159305" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="159311:159412" ph="/** Method to process a message response with screenshot information. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="159453:159949" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="159519:159946" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="159661:159752" ph="{&quot;actionType&quot;: 'screenshot-update'...}" />
-            <marker date="1517155182815" expanded="true" signature="159952:160064" ph="/** Method to process a message response with information of the UI Element Tree. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="160104:160383" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160158:160380" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160315:160376" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160389:160513" ph="/** Method to process a message response with the system information of the iDevice. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="160557:160757" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160637:160751" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160670:160741" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160761:160810" ph="/** Created by jongabilondo on 14/08/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="160875:163063" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160896:160920" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="160926:160997" ph="/** Callback for the websocket opening. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="161013:161096" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="161104:161269" ph="/** Callback for when the websocket has received a message from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="161295:161824" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="161461:161522" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="161528:161611" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="161658:161717" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="161723:161818" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="161831:161939" ph="/** Method to process a response to a cmd, arrived from the Device. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="161974:162520" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="162009:162514" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="162042:162355" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="162043:162348" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="162394:162504" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="162395:162504" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="162559:163061" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="162709:162751" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="162860:162905" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="163064:163113" ph="/** Created by jongabilondo on 15/08/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="163174:163447" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="163195:163219" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="163225:163296" ph="/** Callback for the websocket opening. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="163312:163442" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="163448:163494" ph="/** Created by jongabilondo on 6/21/15. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="163496:163934" ph="/** Class to detect the THREE object of the expanded UI tree the mouse is on. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="163962:167369" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="164035:164561" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="164591:164640" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="164673:164880" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="164728:164874" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="164779:164864" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="164928:165000" ph="/** ORGMouseListener informs of event ...*/" />
-            <marker date="1517155182815" expanded="true" signature="165024:165065" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="165071:165143" ph="/** ORGMouseListener informs of event ...*/" />
-            <marker date="1517155182815" expanded="true" signature="165167:165209" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="165215:165287" ph="/** ORGMouseListener informs of event ...*/" />
-            <marker date="1517155182815" expanded="true" signature="165313:167367" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="165349:165380" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="166080:166093" ph="/*...*/" />
-            <marker date="1517155182815" expanded="true" signature="166284:167052" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="166528:166541" ph="/*...*/" />
-            <marker date="1517155182815" expanded="true" signature="166543:167042" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="166738:167028" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="166793:167010" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="166860:166988" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="167190:167361" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="167245:167351" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="167371:167417" ph="/** Created by jongabilondo on 6/21/15. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="167419:167906" ph="/** Class to detect the Scene THREE object the mouse is on. Not for 3D UITree, only for objects in the screen such as beacons. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="167933:171638" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="168006:168529" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="168559:168608" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="168641:168848" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="168696:168842" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="168747:168832" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="168896:168968" ph="/** ORGMouseListener informs of event ...*/" />
-            <marker date="1517155182815" expanded="true" signature="168992:169033" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="169039:169111" ph="/** ORGMouseListener informs of event ...*/" />
-            <marker date="1517155182815" expanded="true" signature="169135:170380" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="169366:169468" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="169919:170374" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="170021:170364" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="170147:170350" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="170193:170330" ph="{&quot;actionType&quot;: 'beacon-selected'...}" />
-            <marker date="1517155182815" expanded="true" signature="170386:170458" ph="/** ORGMouseListener informs of event ...*/" />
-            <marker date="1517155182815" expanded="true" signature="170484:171636" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="171152:171165" ph="/*...*/" />
-            <marker date="1517155182815" expanded="true" signature="171282:171339" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="171477:171630" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="171532:171620" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="171640:171689" ph="/** Created by jongabilondo on 22/09/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="171691:171761" ph="/** Class to create and manipulate a beacon in the THREE scene. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="171780:174583" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="171787:171853" ph="/** Constructor ...*/" />
-            <marker date="1517155182815" expanded="true" signature="171878:172127" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="172133:172181" ph="/** @returns a THREE.Group ...*/" />
-            <marker date="1517155182815" expanded="true" signature="172198:172239" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="172245:172362" ph="/** Location of the Beacon in the scene in meters. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="172382:172421" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="172427:172479" ph="/** Starts animating the beacon core. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="172498:172538" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="172560:172694" ph="/** Creates a THREE.Group with the beacon THREE objects. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="172721:173582" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="172913:172981" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="173589:173727" ph="/** Animates the Scale up of the beacon core, it launches the scale down on completion. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="173744:174129" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="173831:173970" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174019:174045" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174070:174121" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174136:174274" ph="/** Animates the Scale down of the beacon core, it launches the scale up on completion. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="174293:174579" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174380:174422" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174471:174497" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174522:174571" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174584:174633" ph="/** Created by jongabilondo on 08/11/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="174655:177250" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174701:174781" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174804:174844" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174875:174982" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="174909:174976" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="175051:176974" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="175912:176379" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="176470:176632" ph="{&quot;font&quot;: ORG.font_helvetiker_regular...}" />
-            <marker date="1517155182815" expanded="true" signature="177044:177248" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="177251:177300" ph="/** Created by jongabilondo on 08/11/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="177323:178946" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="177380:177472" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="177495:177537" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="177568:177677" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="177603:177670" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="177749:178598" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="178057:178492" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="178674:178944" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="178947:178996" ph="/** Created by jongabilondo on 08/11/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="179044:183192" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="179071:183190" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="181051:182040" ph="[...]" />
-            <marker date="1517155182815" expanded="true" signature="182144:182306" ph="{&quot;font&quot;: ORG.font_helvetiker_regular...}" />
-            <marker date="1517155182815" expanded="true" signature="182717:182879" ph="{&quot;font&quot;: ORG.font_helvetiker_regular...}" />
-            <marker date="1517155182815" expanded="true" signature="183193:183242" ph="/** Created by jongabilondo on 08/11/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="183288:185315" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="183315:185313" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="183849:184118" ph="[...]" />
-            <marker date="1517155182815" expanded="true" signature="184222:184381" ph="{&quot;font&quot;: ORG.font_helvetiker_regular...}" />
-            <marker date="1517155182815" expanded="true" signature="184810:184969" ph="{&quot;font&quot;: ORG.font_helvetiker_regular...}" />
-            <marker date="1517155182815" expanded="true" signature="185316:185365" ph="/** Created by jongabilondo on 14/11/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="185395:186623" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="185425:185541" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="185564:185606" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="185637:185746" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="185672:185739" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="185777:185899" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="185932:186621" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="186624:186673" ph="/** Created by jongabilondo on 18/05/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="186675:186937" ph="/** Class to simulate a location+altitude sensor. It does not generate the data by itself, other services like Map (LocationProvider) feed this class with the location data. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="186991:188052" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="187012:187130" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="187151:187189" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="187208:187245" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="187266:187305" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="187311:187554" ph="/** Delegate function to be called to inform the manager of his new location data. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="187604:188050" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="187746:187980" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="187847:187970" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="188053:188102" ph="/** Created by jongabilondo on 20/07/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="188148:195862" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="188177:195860" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="188215:195852" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="188255:188339" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="188256:188332" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="188377:188477" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="188378:188470" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="188518:189065" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="188519:189058" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="188920:188990" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="189103:189343" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="189104:189336" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="189357:189522" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="189563:189664" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="189564:189657" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="189700:189777" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="189701:189770" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="189818:189901" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="189819:189894" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="189939:190022" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="189940:190015" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="190060:190135" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="190061:190128" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="190149:190312" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="190348:190677" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="190349:190670" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="190723:190824" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="190724:190817" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="190872:190969" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="190873:190962" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="190984:191145" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="191191:191289" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="191192:191282" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="191331:191704" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="191332:191697" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="191475:191566" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="191604:191683" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="191744:192066" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="191745:192059" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="191896:191991" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="192103:192527" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="192104:192520" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="192566:193119" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="192567:193112" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="193133:193304" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="193342:194237" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="193343:194230" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="193562:193631" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="194311:194391" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="194312:194384" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="194435:194810" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="194436:194803" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="194468:194741" ph="{&quot;title&quot;: &quot;Error connecting to device&quot;...}" />
-            <marker date="1517155182815" expanded="true" signature="194888:195842" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="194889:195842" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="195147:195828" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="195224:195590" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="195264:195567" ph="{&quot;title&quot;: &quot;Error connecting to device&quot;...}" />
-            <marker date="1517155182815" expanded="true" signature="195596:195810" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="195863:195912" ph="/** Created by jongabilondo on 14/08/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="195995:197538" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="196051:196291" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="196414:197513" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="196501:196600" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="196659:196759" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="196872:196904" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="196942:196990" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="197540:197658" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="197751:199128" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="197781:198756" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="197786:197867" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="198955:199125" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="198984:199019" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="199028:199122" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="199158:199314" ph="{&quot;AppInfo&quot;: &quot;app-info&quot;...}" />
-            <marker date="1517155182815" expanded="true" signature="199912:200911" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="200919:200968" ph="/** Created by jongabilondo on 20/09/2016. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="201527:201687" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="201730:202914" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="201834:201874" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="201970:202510" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="202082:202200" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="202250:202379" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="202413:202504" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="202584:202843" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="202780:202835" ph="{&quot;actionType&quot;: 'device-disconnect'...}" />
-            <marker date="1517155182815" expanded="true" signature="202849:202912" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="204590:204669" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="204620:204665" ph="{&quot;actionType&quot;: 'ui-tree-refresh'...}" />
-            <marker date="1517155182815" expanded="true" signature="204847:204969" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="204877:204965" ph="{&quot;actionType&quot;: 'uitree-layer-spacing-change'...}" />
-            <marker date="1517155182815" expanded="true" signature="205033:205153" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205063:205149" ph="{&quot;actionType&quot;: 'uitree-layer-range-change'...}" />
-            <marker date="1517155182815" expanded="true" signature="205268:205410" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205310:205356" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205362:205408" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205467:205608" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205509:205555" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205561:205606" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205660:205790" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205702:205742" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205748:205788" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205845:205990" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205887:205934" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="205940:205988" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206045:206108" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206166:206234" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206295:206366" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206420:206486" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206541:206596" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206654:206717" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206770:206826" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="206885:206947" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="207007:207073" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="207130:207191" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="207328:207388" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="207440:207503" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="207622:207893" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="207723:207804" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="207810:207891" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="208319:208363" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="208366:208415" ph="/** Created by jongabilondo on 15/05/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="208417:208530" ph="/** Wrapper class to create and handle the 3D location marker and the 3D description text in the 3D scene. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="208557:211519" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="208607:208902" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="208921:208992" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="209021:209232" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="209054:209085" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="209254:209391" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="209282:209336" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="209398:209447" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="209480:210097" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="210130:210659" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="210193:210447" ph="{&quot;font&quot;: ORG.font_helvetiker_regular...}" />
-            <marker date="1517155182815" expanded="true" signature="210681:210830" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="210729:210824" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="210856:211017" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="210908:211011" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="211050:211517" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="211090:211511" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="211520:211569" ph="/** Created by jongabilondo on 20/07/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="211591:213981" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="211657:212132" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="211753:211832" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="212138:212390" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="212416:212459" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="212483:212524" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="212530:212704" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="212725:212763" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="212782:212818" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="212839:212877" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="212900:212940" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="212946:213198" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="213235:213979" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="213383:213480" ph="{&quot;strokeColor&quot;: '##FF0000'...}" />
-            <marker date="1517155182815" expanded="true" signature="213529:213947" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="213730:213937" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="213842:213923" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="213982:214031" ph="/** Created by jongabilondo on 23/07/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="214060:217816" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="214119:214420" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="214426:214678" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="214707:215223" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="214812:214999" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="215244:215282" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="215303:215348" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="215367:215448" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="215466:215501" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="215523:216841" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="215583:216809" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="215909:215999" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="216005:216799" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="216465:216713" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="216719:216785" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="216847:217099" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="217123:217814" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="217165:217198" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="217691:217759" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="217818:217867" ph="/** Created by jongabilondo on 20/07/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="217887:217955" ph="{&quot;IDLE&quot;: &quot;idle&quot;...}" />
-            <marker date="1517155182815" expanded="true" signature="218041:218356" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="218362:218613" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="218627:218864" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="218877:218929" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="218943:218997" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="219012:219156" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="219162:219414" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="219479:219677" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="219555:219620" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="219719:220745" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="220298:220461" ph="{&quot;actionType&quot;: 'itinerary-location-update'...}" />
-            <marker date="1517155182815" expanded="true" signature="220639:220739" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="220750:220799" ph="/** Created by jongabilondo on 09/11/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="220829:224828" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="220857:221091" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221105:221284" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221144:221277" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221297:221588" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221329:221581" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221603:221964" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221635:221957" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221678:221849" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221889:221947" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="221999:222157" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="222087:222150" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="222200:222383" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="222239:222376" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="222420:222745" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="222783:223015" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223040:223195" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223072:223188" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223236:223450" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223481:223648" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223517:223641" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223685:223889" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223918:224079" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="223952:224072" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="224114:224368" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="224404:224577" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="224442:224570" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="224620:224732" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="224658:224725" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="224753:224825" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="224829:224878" ph="/** Created by jongabilondo on 19/01/2018. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="224881:225044" ph="/** A wrapper base class to a UI tree element. Gives a 3D context functionalities to a UI tree element node. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="225073:225206" ph="/** @param elementNode. The JSON object describing the UI element, the one in the UI tree. Could be WDA/Org... ...*/" />
-            <marker date="1517155182815" expanded="true" signature="225236:225280" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="225304:225341" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="225360:225433" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="225439:225701" ph="/** Calculates the Box2 of the element in the given device screen. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="225752:226809" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="226813:226862" ph="/** Created by jongabilondo on 25/01/2018. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="226912:227196" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="226932:227193" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="226949:227186" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227197:227246" ph="/** Created by jongabilondo on 25/01/2018. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="227296:227365" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227316:227363" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227366:227415" ph="/** Created by jongabilondo on 02/12/2017. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="227444:230260" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227493:227659" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227692:228969" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227731:227834" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227897:228259" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="227952:228037" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="227953:228030" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="228097:228187" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="228098:228180" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="228209:228249" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="228210:228249" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="228291:228349" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="228484:228960" ph="{&quot;data&quot;: adaptedTree...}" />
-            <marker date="1517155182815" expanded="true" signature="228984:229087" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="229120:229371" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="229235:229363" ph="{&quot;actionType&quot;: 'uitree-node-selected'...}" />
-            <marker date="1517155182815" expanded="true" signature="229401:230131" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="229482:229581" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="229615:230002" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="229670:229770" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="229671:229763" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="229830:229930" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="229831:229923" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="229952:229992" ph="..." />
-            <marker date="1517155182815" expanded="true" signature="229953:229992" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="230036:230123" ph="{&quot;actionType&quot;: 'uitree-node-enter'...}" />
-            <marker date="1517155182815" expanded="true" signature="230161:230258" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="230195:230250" ph="{&quot;actionType&quot;: 'uitree-node-leave'...}" />
-            <marker date="1517155182815" expanded="true" signature="230349:230398" ph="/** Created by jongabilondo on 23/01/2018. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="230401:230483" ph="/** Functions to adapt a WDA JSON tree to a patternfly-bootstrap-treeview. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="230548:231501" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="230599:230635" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="230671:231471" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="230906:230973" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="230994:231060" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231082:231150" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231218:231297" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231405:231461" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231531:232148" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231624:231699" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231744:232082" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231787:231828" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231860:231971" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="231977:232072" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="232180:232355" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="232358:232407" ph="/** Created by jongabilondo on 23/01/2018. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="232410:232497" ph="/** Functions to adapt an Organismo UI tree to a patternfly-bootstrap-treeview. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="232568:233551" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="232619:232655" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="232691:233521" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="232940:233020" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233049:233123" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233144:233210" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233268:233347" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233455:233511" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233581:234203" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233675:233750" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233795:234137" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233838:233879" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="233913:234026" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="234032:234127" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="234235:234410" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="234414:234463" ph="/** Created by jongabilondo on 04/05/2016. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="234464:235410" ph="/** Snap marker to closest point on a line. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="235602:235782" ph="/** @desc Initialize the objects. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="235833:236052" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="236058:236202" ph="/** @desc Update targets ...*/" />
-            <marker date="1517155182815" expanded="true" signature="236257:236404" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="236410:236522" ph="/** @desc internal use only, Load map listeners to calculate and update this.oMarker position. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="236560:236789" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="236795:236929" ph="/** @desc internal use only, Load route points into RoutePixel array for calculations, do this whenever zoom changes ...*/" />
-            <marker date="1517155182815" expanded="true" signature="236965:237265" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="237117:237259" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="237271:237403" ph="/** @desc internal use only, Handle the move listeners output and move the given marker. ...*/" />
-            <marker date="1517155182815" expanded="true" signature="237458:237576" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="237582:237723" ph="/** @desc Get closest point on route to test point ...*/" />
-            <marker date="1517155182815" expanded="true" signature="237768:237914" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="237920:238100" ph="/** @desc Get distance along route in meters of closest point on route to test point ...*/" />
-            <marker date="1517155182815" expanded="true" signature="238146:238246" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="238252:238354" ph="/** @desc internal use only, gets test point xy and then calls fundamental algorithm ...*/" />
-            <marker date="1517155182815" expanded="true" signature="238404:238643" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="238649:238749" ph="/** @desc internal use only, find distance along route to point nearest test point ...*/" />
-            <marker date="1517155182815" expanded="true" signature="239116:239542" ph="/*...*/" />
-            <marker date="1517155182815" expanded="true" signature="239588:241880" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="239708:241816" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="239760:241647" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="239805:240023" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="240958:241637" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="240993:241306" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="241030:241147" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="241172:241288" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="241328:241568" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="241883:246060" ph="/** \ ...*/" />
-            <marker date="1517155182815" expanded="true" signature="246184:246690" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="246878:247056" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="247250:247760" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="247483:247756" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="247783:248034" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="248083:248813" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="248259:248783" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="249003:249085" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="249218:249388" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="249390:249551" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="249620:250257" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="249890:249992" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="250014:250036" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="250425:251035" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="250619:251016" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="250742:251012" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="251037:251198" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="251267:251638" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="251486:251588" ph="{...}" />
-            <marker date="1517155182815" expanded="true" signature="251640:251965" ph="//..." />
-            <marker date="1517155182815" expanded="true" signature="252042:252098" ph="{...}" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/map.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-117">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/navigator-bar.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/three.js/examples/js/loaders/OBJLoader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-9143">
+          <caret line="4" column="15" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="40" column="39" lean-forward="false" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
+        <state relative-caret-position="832">
+          <caret line="66" column="13" lean-forward="false" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORG3DScene.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10387">
+          <caret line="799" column="40" lean-forward="false" selection-start-line="793" selection-start-column="7" selection-end-line="799" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/organismo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="90">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceWDAController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-272">
+          <caret line="29" column="12" lean-forward="false" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGFluxStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="592">
+          <caret line="162" column="0" lean-forward="false" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="38" column="69" lean-forward="false" selection-start-line="38" selection-start-column="69" selection-end-line="38" selection-end-column="69" />
           <folding />
         </state>
       </provider>

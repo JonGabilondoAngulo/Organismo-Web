@@ -26,13 +26,17 @@ ORG.UI.connectButton.click(function(e) {
     }
 
     // Create the controller for the selected protocol.
-    if (ORG.deviceController == null) {
-        const driverName = ORG.UI.dropdownDriver.text().split(' ');
-        if (driverName[0] == "Organismo") {
+    const driverName = ORG.UI.dropdownDriver.text().split(' ');
+    if (driverName[0] == "Organismo") {
+        if (! (ORG.deviceController instanceof ORGDeviceController)) {
             ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
-        } else if (driverName[0] == "iDeviceControlProxy") {
+        }
+    } else if (driverName[0] == "iDeviceControlProxy") {
+        if (! (ORG.deviceController instanceof ORGiMobileDeviceController)) {
             ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
-        } else if (driverName[0] == "WDA") {
+        }
+    } else if (driverName[0] == "WDA") {
+        if (! (ORG.deviceController instanceof ORGDeviceWDAController)) {
             ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
         }
     }

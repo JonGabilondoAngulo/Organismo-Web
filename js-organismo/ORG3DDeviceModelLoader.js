@@ -23,32 +23,48 @@ class ORG3DDeviceModelLoader {
 // PRIVATE
 
     static _load_iPhone_5( scene, device/*, yPosition*/ ) {
-        var loader = new THREE.OBJLoader(  );
-        loader.load( "3DModels/iPhone_5/iPhone5.obj", function ( object ) {
 
-            // model loaded, scale and translate
-            var deviceBox =  new THREE.Box3().setFromObject( object );
-            const scale = device.bodySize.height / deviceBox.getSize().y;
-            object.scale.set( scale, scale, scale );
-            deviceBox =  new THREE.Box3().setFromObject( object );
-            object.position.set( 0, 0/*yPosition*/, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-            scene.addDevice3DModel( new ORG3DDeviceModel( scene.THREEScene, object ) );
-        } );
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath( '3DModels/iPhone_5/' );
+        mtlLoader.load( 'iPhone_5.mtl', function( materials ) {
+            materials.preload();
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.setPath( '3DModels/iPhone_5/' );
+            objLoader.load( "iPhone_5.obj", function (object) {
+                // model loaded, scale and translate
+                var deviceBox =  new THREE.Box3().setFromObject(object);
+                const scale = device.bodySize.height / deviceBox.getSize().y;
+                object.scale.set( scale, scale, scale );
+                deviceBox =  new THREE.Box3().setFromObject(object);
+                object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
+                scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+            });
+        });
     }
 
     static _load_iPhone_6( scene, device/*, yPosition*/ ) {
-        var loader = new THREE.OBJLoader(  );
-        loader.load( "3DModels/iPhone_6/iPhone_6.obj", function ( object ) {
 
-            // model loaded, scale and translate
-            var deviceBox =  new THREE.Box3().setFromObject( object );
-            const scale = device.bodySize.height / deviceBox.getSize().y;
-            object.scale.set( scale, scale, scale );
-            deviceBox =  new THREE.Box3().setFromObject( object );
-            object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-            scene.addDevice3DModel( new ORG3DDeviceModel( scene.THREEScene, object ) );
+        //var mtlLoader = new THREE.MTLLoader();
+        //mtlLoader.setPath( '3DModels/iPhone_6/' );
+        //mtlLoader.load( 'iPhone_6.mtl', function( materials ) {
+        //    materials.preload();
 
-        } );
+            var objLoader = new THREE.OBJLoader(  );
+            objLoader.setPath( '3DModels/iPhone_6/' );
+            objLoader.load( "iPhone_6.obj", function ( object ) {
+
+                // model loaded, scale and translate
+                var deviceBox =  new THREE.Box3().setFromObject( object );
+                const scale = device.bodySize.height / deviceBox.getSize().y;
+                object.scale.set( scale, scale, scale );
+                deviceBox =  new THREE.Box3().setFromObject( object );
+                object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
+                scene.addDevice3DModel( new ORG3DDeviceModel( scene.THREEScene, object ) );
+
+            });
+        //});
     }
 
 }

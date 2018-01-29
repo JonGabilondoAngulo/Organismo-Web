@@ -773,7 +773,9 @@ class ORG3DScene {
 
     _createLights() {
         // LIGHTS
-        var light = new THREE.PointLight(0xaaaaaa);
+        var light;
+
+        light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(500,-500,500);
         this._THREEScene.add(light);
 
@@ -789,8 +791,19 @@ class ORG3DScene {
         light.position.set(-500,500,-500);
         this._THREEScene.add(light);
 
-//            var light2 = new THREE.AmbientLight(0xffffff);
-//            scene.add(light2);
+        //light = new THREE.DirectionalLight( 0xaaaaaa, 0.5  );
+        //light.position.copy(  new THREE.Vector3(0.0, 1.0, -1.0));
+        //this._THREEScene.add( light );
+        //
+        //light = new THREE.DirectionalLight( 0xaaaaaa, 0.5  );
+        //light.position.copy(  new THREE.Vector3(1.0, 1.0, 1.0));
+        //this._THREEScene.add( light );
+
+        light = new THREE.HemisphereLight(   );
+        this._THREEScene.add( light );
+
+        light = new THREE.AmbientLight( 0xffffff, 0.9);
+        this._THREEScene.add(light);
     }
 
     _deviceBoundingBox() {
