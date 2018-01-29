@@ -1,45 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone 5.c4d" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone 5.obj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/iPhone_5.mtl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/aniso.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/home.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone 5 baksidan" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone5_screen.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/iPhone5_text.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/speakergrill_b.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5/tex/speakergrill_c.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Renders/Wallpaper 4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Bouton Diffuse 1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Bouton Diffuse 2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Body 1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Body 2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Diffuse Screen.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Textures/Thumbs.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/Thumbs.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.e3d" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.mtl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone 5S/iPhone 5S.obj" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_Screen.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_diffuse.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/Iphone5_specular.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.e3d" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.mtl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/3DModels/iPhone_5/iPhone5.obj" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3DModels/iPhone_6/iPhone_6.obj" afterPath="$PROJECT_DIR$/3DModels/iPhone_6/iPhone_6.obj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DDeviceModelLoader.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" afterPath="$PROJECT_DIR$/js-organismo/ORG3DScene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" afterPath="$PROJECT_DIR$/js-organismo/ORGDeviceConnectionControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" afterPath="$PROJECT_DIR$/js-organismo/ORGFluxStore.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismo.html" afterPath="$PROJECT_DIR$/organismo.html" />
-    </list>
+    <list default="true" id="e5b77d0c-6083-49ff-9227-133ff7b8f542" name="Default" comment="Correct DeviceController created on Connection. Changes in lights and models." />
     <ignored path="Simple-WebSocket-Client-master.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -826,14 +788,7 @@
       <workItem from="1517163644494" duration="4043000" />
       <workItem from="1517230225868" duration="897000" />
       <workItem from="1517235253780" duration="4000" />
-      <workItem from="1517250311596" duration="679000" />
-    </task>
-    <task id="LOCAL-00023" summary="Refactoring , refactoring to classes.">
-      <created>1489336390192</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1489336390192</updated>
+      <workItem from="1517250311596" duration="914000" />
     </task>
     <task id="LOCAL-00024" summary="Visualization flags added to UI tree model.">
       <created>1490084833706</created>
@@ -1171,11 +1126,18 @@
       <option name="project" value="LOCAL" />
       <updated>1517155418237</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Correct DeviceController created on Connection. Changes in lights and models.">
+      <created>1517251220478</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1517251220478</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="714154000" />
+    <option name="totallyTimeSpent" value="714389000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1187,7 +1149,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="877" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26920366" sideWeight="0.506993" order="2" side_tool="true" content_ui="tabs" />
@@ -1280,7 +1242,6 @@
       <path value="$PROJECT_DIR$/bootstrap" />
       <path value="$PROJECT_DIR$/flux" />
     </ignored-roots>
-    <MESSAGE value="Bug fixes in collapse expand." />
     <MESSAGE value="3D tree creation improvements." />
     <MESSAGE value="New scene menu options to position camera." />
     <MESSAGE value="Tree collpase and expansion improved." />
@@ -1305,7 +1266,8 @@
     <MESSAGE value="JSON Tree view for WDA driver." />
     <MESSAGE value="Fixed device location offset on second connections." />
     <MESSAGE value="Added alerts and messages for connections errors. Added loading data alert to WDA controller." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added alerts and messages for connections errors. Added loading data alert to WDA controller." />
+    <MESSAGE value="Correct DeviceController created on Connection. Changes in lights and models." />
+    <option name="LAST_COMMIT_MESSAGE" value="Correct DeviceController created on Connection. Changes in lights and models." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1639,6 +1601,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
           <caret line="3795" column="12" lean-forward="false" selection-start-line="3795" selection-start-column="12" selection-end-line="3795" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1660,6 +1623,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-9143">
           <caret line="4" column="15" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="15" />
+          <folding />
         </state>
       </provider>
     </entry>
