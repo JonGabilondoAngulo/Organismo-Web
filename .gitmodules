@@ -1,7 +1,3 @@
-[submodule "js-third-party/patternfly"]
-	path = js-third-party/patternfly
-	url = https://github.com/JonGabilondoAngulo/patternfly-bootstrap-treeview.git
-	branch = master
 [submodule "js-third-party/flux"]
 	path = js-third-party/flux
 	url = https://github.com/facebook/flux.git
@@ -13,4 +9,8 @@
 [submodule "js-third-party/jQuery-contextMenu"]
 	path = js-third-party/jQuery-contextMenu
 	url = https://github.com/swisnl/jQuery-contextMenu.git
+	branch = master
+[submodule "js-third-party/patterfly-treeview"]
+	path = js-third-party/patterfly-treeview
+	url = https://github.com/JonGabilondoAngulo/patternfly-bootstrap-treeview.git
 	branch = master
