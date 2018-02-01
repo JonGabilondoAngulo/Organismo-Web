@@ -9,10 +9,9 @@
  */
 class ORGDeviceController extends ORGWebSocketDeviceController {
 
-    //constructor(ip, port, delegate) {
-    //    super(ip,port, delegate);
-    //    //this.webSocketDelegate = new ORGOrganismoWSDelegate();
-    //}
+    constructor(ip, port, delegate) {
+        super(ip,port,delegate);
+    }
 
     get type() {
         return "ORG";
@@ -39,11 +38,7 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
     }
 
     refreshUITree() {
-        this.requestElementTree({
-            "status-bar": true,
-            "keyboard": true,
-            "alert": true,
-            "normal": true
-        });
+        const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true };
+        this.requestElementTree(requestFlags);
     }
 }

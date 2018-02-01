@@ -12,6 +12,10 @@ class ORGWebSocket {
         this._delegate = null;
 	}
 
+	get ws() {
+		return this._ws;
+	}
+
 	/**
 	 * Opens a WebSocket to server given a URL and accepts a Delegate.
 	 * @param inServerURL

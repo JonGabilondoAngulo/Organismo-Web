@@ -4,7 +4,7 @@
 
 
 /**
- * Class to wrap the actions on the THREE model of a device.
+ * Class to keep the THREE model of the device and to wrap the actions on it.
  * It contains only the body of the device, not the display.
  */
 class ORG3DDeviceModel {

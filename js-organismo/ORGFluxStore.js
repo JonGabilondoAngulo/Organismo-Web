@@ -2,7 +2,6 @@
  * Created by jongabilondo on 20/07/2017.
  */
 
-
 class ORGFluxStore extends FluxUtils.Store {
 
     __onDispatch(payload) {
@@ -13,19 +12,13 @@ class ORGFluxStore extends FluxUtils.Store {
             } break;
 
             case 'beacon-selected' : {
-                ORG.scene.showHideBeaconTransformControls( payload.beacon );
+                ORG.scene.showHideBeaconTransformControls(payload.beacon);
             } break;
 
             case 'device-info-update' : {
                 ORG.UI.deviceNameLabel.text(payload.device.name);
                 ORG.UI.deviceSystemVersionLabel.text(payload.device.systemVersion);
                 ORG.UI.deviceModelLabel.text(payload.device.productName);
-
-                ORG.scene.createDeviceScreen( payload.device.displaySize.width, payload.device.displaySize.height, 0);
-                if ( ORG.scene.flagShowDevice3DModel ) {
-                    ORG.scene.showDevice3DModel();
-                }
-                ORG.scene.devicePositionHasChanged();
             } break;
 
             case 'app-info-update' : {
@@ -42,6 +35,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.UIJSONTreeManager.update(payload.tree, payload.treeType);
             } break;
             case 'ui-tree-refresh': {
+                bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting UI tree information...</div>' }); // Progress alert
                 ORG.deviceController.refreshUITree();
             } break;
             case 'uitree-node-selected': {
@@ -144,8 +138,8 @@ class ORGFluxStore extends FluxUtils.Store {
             } break;
             case 'wda-session-open-error' : {
                 bootbox.alert({
-                    title: "Could not connect to device",
-                    message: "1. Connect your device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. A localport at 8100 must be opened to talk to the device (iproxy 8100 8100)."
+                    title: "Could not connect to device.",
+                    message: "1. Connect the device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. On USB connection a localport at 8100 must be opened (iproxy 8100 8100)."
                 });
                 console.debug(payload.error);
             } break;
@@ -159,8 +153,8 @@ class ORGFluxStore extends FluxUtils.Store {
                 if (payload.code == 1006) {
                     if (payload.deviceController == "ORGDeviceController") {
                         bootbox.alert({
-                            title: "Could not connect to device",
-                            message: "1. Connect your device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. A localport at 5567 must be opened to talk to the device (iproxy 5567 5567)."
+                            title: "Could not connect to device.",
+                            message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection a localport at 5567 must be opened (iproxy 5567 5567)."
                         })
                     } else {
                         bootbox.alert("Error connecting to idevicecontrolproxy.\nMake sure the proxy is running.\nRead about it @ https://github.com/JonGabilondoAngulo/idevicecontrolproxy");

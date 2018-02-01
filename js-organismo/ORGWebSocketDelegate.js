@@ -1,6 +1,6 @@
 /**
  * Delegate class for the WebSocket to the Device.
- * It receives the callbacks for all the events on the WebSocket.
+ * Implements the callbacks for all the events on the WebSocket.
  * @constructor
  */
 class ORGWebSocketDelegate {
@@ -28,11 +28,11 @@ class ORGWebSocketDelegate {
 	 */
 	onClose(event, ws) {
 		console.log('Delegate onClose.');
-		ORG.scene.handleDeviceDisconnection();
+		//ORG.scene.handleDeviceDisconnection();
 
 		// UI updates
         ORG.dispatcher.dispatch({
-            actionType: 'websocket-closed',
+            actionType: 'device-disconnect', //'websocket-closed',
 			code: event.code,
 			reason: event.reason,
 			deviceController: ORG.deviceController.constructor.name
@@ -182,15 +182,21 @@ class ORGWebSocketDelegate {
             device: ORG.device
         });
 
+        if (ORG.scene.flagShowDevice3DModel) {
+            ORG.scene.showDevice3DModel().then(
+                (result) => {
+                    this._createDeviceScreenWithSnapshot(ORG.device);
+                }
+            );
+        } else {
+            this._createDeviceScreenWithSnapshot(ORG.device);
+		}
         //ORG.scene.createDeviceScreen( ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
-        //if ( ORG.scene.flagShowDevice3DModel ) {
-        //    ORG.scene.showDevice3DModel();
-        //}
         //ORG.scene.devicePositionHasChanged();
-        ORG.scene.createRaycasterForDeviceScreen();
-
-        // ask for the first screenshot
-        ORG.deviceController.requestScreenshot();
+        //ORG.scene.createRaycasterForDeviceScreen();
+        //
+        //// ask for the first screenshot
+        //ORG.deviceController.requestScreenshot();
     }
 
 	/**
@@ -229,7 +235,7 @@ class ORGWebSocketDelegate {
             });
 
 			// Ask for next screenshot
-			if (ORG.scene.flagContinuousScreenshot && !ORG.scene.isExpanded && ORG.deviceController.isConnected) {
+			if (ORG.scene.flagContinuousScreenshot && !ORG.scene.isExpanded && ORG.deviceController && ORG.deviceController.isConnected) {
 				ORG.deviceController.requestScreenshot();
 			}
 		}
@@ -246,7 +252,8 @@ class ORGWebSocketDelegate {
             if (ORG.scene.expanding || ORG.scene.isExpanded) {
                 ORG.scene.updateUITreeModel(jsonTree);
 			}
-		}
+            bootbox.hideAll();
+        }
 	}
 
     /**
@@ -260,6 +267,14 @@ class ORGWebSocketDelegate {
 				ORG.systemInfoManager.dataUpdate( systemInfoData );
             }
         }
+    }
+
+
+    _createDeviceScreenWithSnapshot(device) {
+        ORG.scene.createDeviceScreen(device.displaySize.width, device.displaySize.height, 0);
+        ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
+        ORG.scene.devicePositionHasChanged();
+        ORG.deviceController.requestScreenshot(); // ask for the first screenshot
     }
 
 }

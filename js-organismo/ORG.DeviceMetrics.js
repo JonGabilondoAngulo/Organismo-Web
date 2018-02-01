@@ -24,15 +24,22 @@ ORG.DeviceMetrics = {
         Points: { X:414, Y:736},
         Scale: 3,
         ProductName: "iPhone 6+"
+    },
+    iPhoneX : {
+        Body : {H : "143.6 mm", W: "70.9 mm", D: "7.7 mm"},
+        Display: {Diagonal:"150 mm", Ratio:"2.1111111" /* 19/9 */},
+        Points: { X:375, Y:812},
+        Scale: 3,
+        ProductName: "iPhone X"
     }
 };
 
 class ORGDeviceMetrics {
 
     /***
-     * Finds the device in ORG.DeviceMetrics that match the screen points passed in argument.
+     * Finds the device in ORG.DeviceMetrics that matches the screen points passed in argument.
      * @param size in screen points
-     * @returns {String}
+     * @returns {ProductName String}
      */
     static deviceWithScreenPoints(size) {
         for (let key of Object.keys(ORG.DeviceMetrics)) {

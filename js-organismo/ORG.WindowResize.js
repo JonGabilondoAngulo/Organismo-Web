@@ -27,6 +27,7 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
 
 		// UI Tree
         document.getElementById('ui-json-tree').style.height = canvasHeight-115 + 'px';
+        document.getElementById('ui-json-tree-node').style.height = canvasHeight-60 + 'px';
 	}
 
 	//callback(); // ugly to provoke resize now

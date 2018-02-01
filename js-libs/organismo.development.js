@@ -30,15 +30,22 @@ ORG.DeviceMetrics = {
         Points: { X:414, Y:736},
         Scale: 3,
         ProductName: "iPhone 6+"
+    },
+    iPhoneX : {
+        Body : {H : "143.6 mm", W: "70.9 mm", D: "7.7 mm"},
+        Display: {Diagonal:"150 mm", Ratio:"2.1111111" /* 19/9 */},
+        Points: { X:375, Y:812},
+        Scale: 3,
+        ProductName: "iPhone X"
     }
 };
 
 class ORGDeviceMetrics {
 
     /***
-     * Finds the device in ORG.DeviceMetrics that match the screen points passed in argument.
+     * Finds the device in ORG.DeviceMetrics that matches the screen points passed in argument.
      * @param size in screen points
-     * @returns {String}
+     * @returns {ProductName String}
      */
     static deviceWithScreenPoints(size) {
         for (let key of Object.keys(ORG.DeviceMetrics)) {
@@ -71,6 +78,10 @@ class ORGWebSocket {
         this._ws = null;
         this._serverURL = null;
         this._delegate = null;
+	}
+
+	get ws() {
+		return this._ws;
 	}
 
 	/**
@@ -254,8 +265,7 @@ const kORGExtrudeDuration = 500.0; // ms
  */
 class ORG3DUITreeModel {
 
-    constructor( visualizationFlag ) {
-
+    constructor(visualizationFlag) {
         this._treeData = null; // json of ui elements tree as arrived from device
         this._THREEElementTreeGroup = null; // threejs group with all the ui elements.
         this._THREEScene = null;
@@ -545,7 +555,6 @@ class ORG3DUITreeModel {
      * @private
      */
     _createTreeNode3DModel( treeNode, treeNodeParent, screenSize, displaySize, displayScale, displayPosition, zStartingPos, highestZPosition ) {
-
         var highestZPosition = highestZPosition;
         var lastCreatedParentNode = treeNodeParent;
         var newElemZPosition = zStartingPos;
@@ -687,7 +696,6 @@ class ORG3DUITreeModel {
      * @private
      */
     _calculateElementZPosition( uiTreeElement, uiTreeStartElement, uiElementWorldBox2, currentZPosition, displayPosition ) {
-
         if ( !uiTreeElement || !uiTreeStartElement ) {
             return currentZPosition;
         }
@@ -914,19 +922,20 @@ class ORG3DUITreeModel {
      * @param nodeData
      */
     _mustCreateTreeObject ( nodeData ) {
-
         if (!this._flagShowPrivate) {
             if (nodeData.private && nodeData.private == true) {
                 return false;
             }
         }
-
         if (!this._flagShowOutOfScreen) {
             if (this._treeObjectIsOutOfScreen(nodeData, deviceScreenSize)) {
                 return false;
             }
         }
         if (this._isStatusBarWindow(nodeData)) {
+            return false;
+        }
+        if (this._isNoSizeElement(nodeData)) {
             return false;
         }
         return true;
@@ -992,6 +1001,10 @@ class ORG3DUITreeModel {
 
     _isKeyboardWindow( nodeData ) {
         return (nodeData.class == "UITextEffectsWindow");
+    }
+
+    _isNoSizeElement(element) {
+        return (element.bounds.right - element.bounds.left == 0) || (element.bounds.bottom - element.bounds.top == 0);
     }
 
 }
@@ -1391,7 +1404,7 @@ const ORGSceneVisualizationMask = {
 const kORGCameraTWEENDuration = 600.0; // ms
 const kORGFloorPositionY = 0.0; // m
 const kORGDevicePositionY = 1.5; // m
-const kORGCameraPositionZ = 0.4; // m
+const kORGCameraPositionZ = 0.2; // m
 
 /**
  * The class that holds the THREE.Scene with the GLRenderer.
@@ -1533,6 +1546,13 @@ class ORG3DScene {
         return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice;
     }
 
+    set flagShowDevice3DModel(show) {
+        if (show) {
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowDevice;
+        } else {
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowDevice;
+        }    }
+
     get flagShowFloor() {
         return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowFloor;
     }
@@ -1666,6 +1686,9 @@ class ORG3DScene {
         this._uiTreeModel.removeUITreeModel( this._THREEScene);
     }
 
+    //--
+    //  DEVICE SCREEN METHODS
+    //--
     createDeviceScreen(width, height, zPosition) {
         this._addDeviceAndScreenGroup();
         this._deviceScreenSize = { width:width, height:height};
@@ -1680,24 +1703,6 @@ class ORG3DScene {
             this._deviceScreen.destroy();
             this._deviceScreen = null;
         }
-    }
-
-    setDeviceOrientation(orientation, width, height) {
-        if ( this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.removeUITreeModel( this._THREEScene);
-            this._uiExpanded = false;
-            ORG.UI.buttonExpand.text("Expand");
-        }
-
-        if ( this._deviceScreen) {
-            this.removeDeviceScreen();
-            this.createDeviceScreen(width, height, 0);
-            this.createRaycasterForDeviceScreen();
-        }
-        if ( this._device3DModel) {
-            this._device3DModel.setOrientation(orientation);
-        }
-        this.devicePositionHasChanged();
     }
 
     setDeviceScreenSize(width, height) {
@@ -1720,6 +1725,63 @@ class ORG3DScene {
             this._deviceScreen.show();
         }
     }
+
+    positionDeviceAndScreenInRealWorld() {
+        this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
+    }
+
+    //--
+    //  DEVICE 3D MODEL METHODS
+    //--
+
+    addDevice3DModel(device3DModel) {
+        this._addDeviceAndScreenGroup();
+        this._device3DModel = device3DModel;
+        this._THREEDeviceAndScreenGroup.add(this._device3DModel.THREEObject);
+        //this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
+        this.devicePositionHasChanged();
+    }
+
+    showDevice3DModel() {
+        return new Promise((resolve, reject) => {
+            this.hideDevice3DModel();
+            ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY).then(
+                function(result) {
+                    resolve(result);
+                },
+                function(error) {
+                    reject(error);
+                });
+        });
+    }
+
+    hideDevice3DModel() {
+        if ( !!this._device3DModel ) {
+            this._THREEDeviceAndScreenGroup.remove(this._device3DModel.THREEObject);
+            this._device3DModel.destroy();
+            this._device3DModel = null;
+        }
+        this.devicePositionHasChanged();
+    }
+
+    setDeviceOrientation(orientation, width, height) {
+        if ( this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.removeUITreeModel( this._THREEScene);
+            this._uiExpanded = false;
+            ORG.UI.buttonExpand.text("Expand");
+        }
+
+        if ( this._deviceScreen) {
+            this.removeDeviceScreen();
+            this.createDeviceScreen(width, height, 0);
+            this.createRaycasterForDeviceScreen();
+        }
+        if ( this._device3DModel) {
+            this._device3DModel.setOrientation(orientation);
+        }
+        this.devicePositionHasChanged();
+    }
+
 
     createRaycasterFor3DTreeModel() {
         this._uiTreeModelRaycaster = new ORG3DUITreeRaycaster( this._rendererDOMElement, this._THREECamera, this._uiTreeModel.treeGroup);
@@ -1821,6 +1883,8 @@ class ORG3DScene {
 
     expand() {
         if (!this._uiExpanded) {
+            bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>Expanding UI elements...</div>' }); // Progress alert
+
             ORG.deviceController.requestElementTree({
                 "status-bar": true,
                 "keyboard": true,
@@ -1969,28 +2033,6 @@ class ORG3DScene {
             .easing( TWEEN.Easing.Quadratic.InOut)
             .start();
 
-    }
-
-    addDevice3DModel(device3DModel) {
-        this._addDeviceAndScreenGroup();
-        this._device3DModel = device3DModel;
-        this._THREEDeviceAndScreenGroup.add(this._device3DModel.THREEObject);
-        this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
-        this.devicePositionHasChanged();
-    }
-
-    showDevice3DModel() {
-        this.hideDevice3DModel();
-        ORG3DDeviceModelLoader.loadDevice3DModel( ORG.device, this, kORGDevicePositionY ); // async. When loaded it will call "addDevice3DModel"
-    }
-
-    hideDevice3DModel() {
-        if ( !!this._device3DModel ) {
-            this._THREEDeviceAndScreenGroup.remove(this._device3DModel.THREEObject);
-            this._device3DModel.destroy();
-            this._device3DModel = null;
-        }
-        this.devicePositionHasChanged();
     }
 
     enableShowLocation() {
@@ -2158,15 +2200,15 @@ class ORG3DScene {
         light.position.set(500,-500,500);
         this._THREEScene.add(light);
 
-        light = new THREE.PointLight(0xaaaaaa);
+        light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(500,500,500);
         this._THREEScene.add(light);
 
-        light = new THREE.PointLight(0xaaaaaa);
+        light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(-500,-500,-500);
         this._THREEScene.add(light);
 
-        light = new THREE.PointLight(0xaaaaaa);
+        light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(-500,500,-500);
         this._THREEScene.add(light);
 
@@ -2178,11 +2220,11 @@ class ORG3DScene {
         //light.position.copy(  new THREE.Vector3(1.0, 1.0, 1.0));
         //this._THREEScene.add( light );
 
-        light = new THREE.HemisphereLight(   );
-        this._THREEScene.add( light );
-
-        light = new THREE.AmbientLight( 0xffffff, 0.9);
-        this._THREEScene.add(light);
+        //light = new THREE.HemisphereLight(   );
+        //this._THREEScene.add( light );
+        //
+        //light = new THREE.AmbientLight( 0xffffff, 0.9);
+        //this._THREEScene.add(light);
     }
 
     _deviceBoundingBox() {
@@ -3372,18 +3414,35 @@ class ORGDevice {
         this.screenSize = deviceInfo.screenSize;
     }
 
+    get isLikeiPhone5() {
+        return this.productName.startsWith('iPhone 5');
+    };
+    get isLikeiPhone6() {
+        return this.productName == 'iPhone 6' || this.productName == 'iPhone 7' || this.productName == 'iPhone 8';
+    };
+    get isLikeiPhone6Plus() {
+        return this.productName == 'iPhone 6+' || this.productName == 'iPhone 7+' || this.productName == 'iPhone 8+';
+    };
+    get isLikeiPhoneX() {
+        return this.productName == 'iPhone X';
+    };
+
     /**
      * Get device physical size. Gets the values from ORG.DeviceMetrics global.
      * @returns {{width: *, height: *}} in meters.
      */
     get bodySize() {
         var body = null;
-        if ( this.productName.startsWith( 'iPhone 5' )) {
+        if (this.isLikeiPhone5) {
             body = ORG.DeviceMetrics.iPhone5.Body;
-        } else if ( this.productName.startsWith( 'iPhone 6' )) {
+        } else if (this.isLikeiPhone6) {
             body = ORG.DeviceMetrics.iPhone6.Body;
+        } else if (this.isLikeiPhone6Plus) {
+            body = ORG.DeviceMetrics.iPhone6Plus.Body;
+        } else if (this.isLikeiPhoneX) {
+            body = ORG.DeviceMetrics.iPhoneX.Body;
         } else {
-            body = ORG.DeviceMetrics.iPhone5.Body;
+            body = ORG.DeviceMetrics.iPhone6.Body;
         }
         return {"width": math.unit( body.W ).toNumber('m'), "height": math.unit( body.H ).toNumber('m')};
     }
@@ -3394,12 +3453,16 @@ class ORGDevice {
      */
     get displaySize() {
         var display = null;
-        if ( this.productName.startsWith( 'iPhone 5' )) {
+        if (this.isLikeiPhone5) {
             display = ORG.DeviceMetrics.iPhone5.Display;
-        } else if ( this.productName.startsWith( 'iPhone 6' )) {
+        } else if (this.isLikeiPhone6) {
             display = ORG.DeviceMetrics.iPhone6.Display;
+        } else if (this.isLikeiPhone6Plus) {
+            display = ORG.DeviceMetrics.iPhone6Plus.Display;
+        } else if (this.isLikeiPhoneX) {
+            display = ORG.DeviceMetrics.iPhoneX.Display;
         } else {
-            display = ORG.DeviceMetrics.iPhone5.Display;
+            display = ORG.DeviceMetrics.iPhone6.Display;
         }
         return this._calculateDisplaySize( math.unit( display.Diagonal).toNumber('m'), display.Ratio );
     }
@@ -3420,6 +3483,7 @@ class ORGDevice {
         const h = w * ratio;
         return { width:w, height:h };
     }
+
 }
 /**
  * Created by jongabilondo on 22/09/2017.
@@ -3721,11 +3785,11 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
     }
 
     sendRequest(request) {
-        this.webSocket.send( request);
+        this.webSocket.send(request);
     }
 
     sendMessage(message) {
-        this.webSocket.send( message);
+        this.webSocket.send(message);
     }
 }
 /**
@@ -3739,10 +3803,9 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
  */
 class ORGDeviceController extends ORGWebSocketDeviceController {
 
-    //constructor(ip, port, delegate) {
-    //    super(ip,port, delegate);
-    //    //this.webSocketDelegate = new ORGOrganismoWSDelegate();
-    //}
+    constructor(ip, port, delegate) {
+        super(ip,port,delegate);
+    }
 
     get type() {
         return "ORG";
@@ -3769,18 +3832,17 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
     }
 
     refreshUITree() {
-        this.requestElementTree({
-            "status-bar": true,
-            "keyboard": true,
-            "alert": true,
-            "normal": true
-        });
+        const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true };
+        this.requestElementTree(requestFlags);
     }
 }
 /**
  * Created by jongabilondo on 26/02/2017.
  */
 
+/***
+ * Class to communicate with the WebDriverAgent running on the device.
+ */
 class ORGDeviceWDAController extends ORGDeviceBaseController {
 
     constructor(ip, port) {
@@ -3798,14 +3860,28 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     get RESTPrefix() {
-        return "http://" + this.IPandPort;
+        return "http://" + this.IPandPort + "/";
+    }
+
+    get RESTPrefixWithSession() {
+        return this.RESTPrefix + "session/" + this._sessionInfo.sessionId + "/";
     }
 
     openSession() {
-        const _this = this;
-        var endpointURL = this.RESTPrefix  + "/session";
+        var endpointURL = this.RESTPrefix  + "session";
         this.xhr.open("POST", endpointURL, true);
         this.xhr.onload = () => {
+
+            // request could have gone bad
+            if (this.xhr.status != 200) {
+                bootbox.alert({
+                    title: "Error requesting session from WDA.",
+                    message: this.xhr.statusText
+                });
+                return;
+            }
+
+            // Request was correct, process response
             this._sessionInfo = JSON.parse(this.xhr.responseText);
 
             // UI updates
@@ -3813,55 +3889,45 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 actionType: 'wda-session-open'
             });
 
-            bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' });
+            bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
 
-            // Get element tree, we will get the App information from it.
-            _this.requestElementTree().then(function(result) {
-                ORG.device = _this._deviceInfoFromTree(result);
-                ORG.testApp = new ORGTestApp( {name: "unknown", version: "unknown", bundleIdentifier: "unknown"} );
-                // UI updates
-                ORG.dispatcher.dispatch({
-                    actionType: 'device-info-update',
-                    device: ORG.device
-                });
-                ORG.dispatcher.dispatch({
-                    actionType: 'ui-json-tree-update',
-                    tree: result.children,
-                    treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
+            // 'Guess' the device by the size of the window.
+            this.requestWindowSize().then(
+                (result) => {
+                    ORG.device = this._deviceInfoFromWindowSize(result);
+                    ORG.testApp = new ORGTestApp( {name: "unknown", version: "unknown", bundleIdentifier: "unknown"} ); // we don't know anything about the app
 
-                });
-                /* we don't know anything about the app ...
-                ORG.dispatcher.dispatch({
-                    actionType: 'app-info-update',
-                    app: ORG.testApp
-                });*/
+                    ORG.dispatcher.dispatch({ // UI updates
+                        actionType: 'device-info-update',
+                        device: ORG.device
+                    });
 
-            }, function(err) {
-                console.log(err);
-            }).finally( function() {
-
-                // Get Screenshot. Even if the get Device/App info failed.
-                _this.requestScreenshot().then(function(result) {
-                    var base64Img = result;
-                    if (base64Img) {
-                        var img = new Image();
-                        img.src = "data:image/jpg;base64," + base64Img;
-
-                        // Be safe and do not use it in THREE until is loaded.
-                        img.onload = () => {
-                            ORG.dispatcher.dispatch({
-                                actionType: 'screenshot-update',
-                                image: img
-                            });
-                        }
+                    // Get the device's 3D model
+                    if (ORG.scene.flagShowDevice3DModel) {
+                        ORG.scene.showDevice3DModel().then(
+                            (result) => {
+                                this._createDeviceScreenWithSnapshot(ORG.device);
+                            }
+                        );
+                    } else {
+                        this._createDeviceScreenWithSnapshot(ORG.device);
                     }
+                },
+                (err) => {
+                    var safeErrorText = null;
+                    console.debug(err);
                     bootbox.hideAll();
 
-                }, function(err) {
-                    console.log(err);
-                    bootbox.hideAll();
+                    if (err instanceof DOMException) {
+                        safeErrorText = err.name + ". " + err.message;
+                    } else {
+                        safeErrorText = (err.length < 2000 ?err :err.substring(0, 2000));
+                    }
+                    bootbox.alert({
+                        title: "Error getting UI tree.",
+                        message: safeErrorText
+                    })
                 })
-            })
         };
         this.xhr.onerror = () => {
             ORG.dispatcher.dispatch({
@@ -3891,127 +3957,203 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     refreshUITree() {
-        const _this = this;
-
         bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' });
 
         // Get element tree
-        this.requestElementTree().then(function(result) {
-            ORG.dispatcher.dispatch({
-                actionType: 'ui-json-tree-update',
-                tree: result.children,
-                treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
-            });
+        this.requestElementTree().then(
+            (result) => {
+                ORG.dispatcher.dispatch({
+                    actionType: 'ui-json-tree-update',
+                    tree: result.children,
+                    treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
+                });
 
-        }, function(err) {
-            console.log(err);
-        }).finally( function() {
-            // Get Screenshot.
-            _this.requestScreenshot().then(function(result) {
-                var base64Img = result;
-                if (base64Img) {
-                    var img = new Image();
-                    img.src = "data:image/jpg;base64," + base64Img;
+                // Get Screenshot.
+                this.requestScreenshot().then(
+                    (result) => {
+                        const base64Img = result;
+                        if (base64Img) {
+                            var img = new Image();
+                            img.src = "data:image/jpg;base64," + base64Img;
 
-                    // UI updates
-                    ORG.dispatcher.dispatch({
-                        actionType: 'screenshot-update',
-                        image: img
-                    });
-                }
+                            // UI updates
+                            ORG.dispatcher.dispatch({
+                                actionType: 'screenshot-update',
+                                image: img
+                            });
+                        }
+                        bootbox.hideAll();
+
+                    },
+                    (err) => {
+                        const safeErrorText = (err.length < 2000 ?err :err.substring(0, 2000));
+                        console.debug(err);
+                        bootbox.hideAll();
+                        bootbox.alert({
+                            title: "Error getting Screenshot.",
+                            message: safeErrorText
+                        })
+                    })
+
+            },
+            (err) => {
+                console.debug(err);
                 bootbox.hideAll();
-
-            }, function(err) {
-                console.log(err);
-                bootbox.hideAll();
+                const safeErrorText = (err.length < 2000 ?((err.length==0) ?"Unknown error" :err) :err.substring(0, 2000));
+                bootbox.alert({
+                    title: "Error getting UI tree.",
+                    message: safeErrorText
+                })
             })
-        })
     }
 
     requestScreenshot() {
-        const _this = this;
 
         return new Promise((resolve, reject) => {
-            var endpointURL = _this.RESTPrefix + "/screenshot";
-            _this.xhr.open("GET", endpointURL, true);
-            _this.xhr.onload = () => {
-                var response = JSON.parse(_this.xhr.responseText);
+            var endpointURL = this.RESTPrefix + "screenshot";
+            this.xhr.open("GET", endpointURL, true);
+            this.xhr.onload = () => {
+                var response = JSON.parse(this.xhr.responseText);
                 if (response.status == 0) {
                     resolve(response.value);
                 } else {
                     reject(response.value);
                 }
             }
-            _this.xhr.onerror = () => reject(_this.xhr.statusText);
-            _this.xhr.send();
+            this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.send();
         });
     }
 
     requestElementTree() {
-        const _this = this;
 
         return new Promise((resolve, reject) => {
-            var endpointURL = _this.RESTPrefix + "/source?format=json";
-            _this.xhr.open("GET", endpointURL, true);
-            _this.xhr.onload = () => {
-                var response = JSON.parse(_this.xhr.responseText);
+            var endpointURL = this.RESTPrefix + "source?format=json";
+            this.xhr.open("GET", endpointURL, true);
+            this.xhr.onload = () => {
+                var response = JSON.parse(this.xhr.responseText);
                 if (response.status == 0) {
                     resolve(response.value);
                 } else {
                     reject(response.value);
                 }
             }
-            _this.xhr.onerror = () => reject(_this.xhr.statusText);
-            _this.xhr.send();
+            this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.send();
+        });
+    }
+
+
+    requestWindowSize() {
+
+        return new Promise((resolve, reject) => {
+            var endpointURL = this.RESTPrefixWithSession + "window/size";
+            this.xhr.open("GET", endpointURL, true);
+            this.xhr.onload = () => {
+                var response = JSON.parse(this.xhr.responseText);
+                if (response.status == 0) {
+                    resolve(response.value);
+                } else {
+                    reject(response.value);
+                }
+            }
+            this.xhr.onerror = () => {
+                reject(this.xhr.statusText);
+            }
+            this.xhr.onabort = () => {
+                reject(this.xhr.statusText);
+            }
+            this.xhr.send();
         });
     }
 
     requestDeviceInfo() {
-        const _this = this;
-
-        // Not implemented in default WDA. "/deviceInfo"
-        return new Promise((resolve, reject) => {
-            var endpointURL = _this.RESTPrefix + "/deviceInfo";
-            _this.xhr.open("GET", endpointURL, true);
-            _this.xhr.onload = () => {
-                var response = JSON.parse(_this.xhr.responseText);
-                if (response.status == 0) {
-                    resolve(response.value);
-                } else {
-                    reject(response.value);
-                }
-            }
-            _this.xhr.onerror = () => reject(_this.xhr.statusText);
-            _this.xhr.send();
-        });
+        //const _this = this;
+        //
+        //// Not implemented in default WDA. "/deviceInfo"
+        //return new Promise((resolve, reject) => {
+        //    var endpointURL = _this.RESTPrefix + "deviceInfo";
+        //    _this.xhr.open("GET", endpointURL, true);
+        //    _this.xhr.onload = () => {
+        //        var response = JSON.parse(_this.xhr.responseText);
+        //        if (response.status == 0) {
+        //            resolve(response.value);
+        //        } else {
+        //            reject(response.value);
+        //        }
+        //    }
+        //    _this.xhr.onerror = () => reject(_this.xhr.statusText);
+        //    _this.xhr.send();
+        //});
     }
 
     requestAppInfo() {
-        const _this = this;
-
-        // Not implemented in default WDA. "/appInfo"
-        return new Promise((resolve, reject) => {
-            var endpointURL = _this.RESTPrefix + "/appInfo";
-            _this.xhr.open("GET", endpointURL, true);
-            _this.xhr.onload = () => {
-                var response = JSON.parse(_this.xhr.responseText);
-                if (response.status == 0) {
-                    resolve(response.value);
-                } else {
-                    reject(response.value);
-                }
-            }
-            _this.xhr.onerror = () => reject(_this.xhr.statusText);
-            _this.xhr.send();
-        });
+        //const _this = this;
+        //
+        //// Not implemented in default WDA. "/appInfo"
+        //return new Promise((resolve, reject) => {
+        //    var endpointURL = _this.RESTPrefix + "appInfo";
+        //    _this.xhr.open("GET", endpointURL, true);
+        //    _this.xhr.onload = () => {
+        //        var response = JSON.parse(_this.xhr.responseText);
+        //        if (response.status == 0) {
+        //            resolve(response.value);
+        //        } else {
+        //            reject(response.value);
+        //        }
+        //    }
+        //    _this.xhr.onerror = () => reject(_this.xhr.statusText);
+        //    _this.xhr.send();
+        //});
     }
 
     _deviceInfoFromTree(tree) {
         // Root of tree contains Application info (very poor info)
         const screenPoints = {width: tree.rect.width, height: tree.rect.height};
         const deviceProductName = ORGDeviceMetrics.deviceWithScreenPoints(screenPoints);
-        return new ORGDevice( {name:'unknown', systemVersion: "unknown", productName: deviceProductName, screenSize: screenPoints} );
+        return new ORGDevice( {name:'', systemVersion: "", productName: deviceProductName, screenSize: screenPoints} );
     }
+
+    _deviceInfoFromWindowSize(size) {
+        const screenPoints = size;
+        const deviceProductName = ORGDeviceMetrics.deviceWithScreenPoints(screenPoints);
+        return new ORGDevice( {name:'', systemVersion: "", productName: deviceProductName, screenSize: screenPoints} );
+    }
+
+    _createDeviceScreenWithSnapshot(device) {
+        ORG.scene.createDeviceScreen(device.displaySize.width, device.displaySize.height, 0);
+        ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
+        ORG.scene.devicePositionHasChanged();
+
+        // Get screenshot.
+        this.requestScreenshot().then(
+            (result) => {
+                const base64Img = result;
+                if (base64Img) {
+                    var img = new Image();
+                    img.src = "data:image/jpg;base64," + base64Img;
+
+                    // Be safe and do not use it in THREE until is loaded.
+                    img.onload = () => {
+                        ORG.dispatcher.dispatch({
+                            actionType: 'screenshot-update',
+                            image: img
+                        });
+                    }
+                }
+                bootbox.hideAll();
+
+            },
+            (err) => {
+                console.debug(err);
+                bootbox.hideAll();
+                bootbox.alert({
+                    title: "Error getting screenshot.",
+                    message: err
+                })
+            })
+    }
+
 }
 /**
  * Created by jongabilondo on 26/02/2017.
@@ -4160,61 +4302,103 @@ class ORG3DDeviceModelLoader {
      * When load is finished it will call to the organismo scene to add the model to the three.js scene.
      * @param scene the ORG.scene to add the 3D model to.
      */
-    static loadDevice3DModel( device, scene, yPosition ) {
-        if ( device.productName.startsWith('iPhone 5')) {
-            this._load_iPhone_5( scene, device );
-        } else if ( device.productName.startsWith('iPhone 6')) {
-            this._load_iPhone_6( scene, device );
-        }
+    static loadDevice3DModel(device, scene, yPosition) {
+
+        return new Promise((resolve, reject) => {
+
+            if ( device.productName.startsWith('iPhone 5')) {
+                this._load_iPhone_5(scene,device).then(
+                    function(result) {
+                        resolve(result);
+                    },
+                    function(error) {
+                        reject(error);
+                    });
+            } else { //if ( device.productName.startsWith('iPhone 6')) {
+                this._load_iPhone_6(scene,device).then(
+                    function(result) {
+                        resolve(result);
+                    },
+                    function(error) {
+                        reject(error);
+                    });
+            }
+        });
     }
 
 // PRIVATE
 
-    static _load_iPhone_5( scene, device/*, yPosition*/ ) {
+    static _load_iPhone_5(scene, device) {
 
-        var mtlLoader = new THREE.MTLLoader();
-        mtlLoader.setPath( '3DModels/iPhone_5/' );
-        mtlLoader.load( 'iPhone_5.mtl', function( materials ) {
-            materials.preload();
+        return new Promise((resolve, reject) => {
+            var mtlLoader = new THREE.MTLLoader();
+            mtlLoader.setPath('3DModels/iPhone_5/');
+            mtlLoader.load('iPhone_5.mtl',
+                (materials) => {
+                    materials.preload();
 
-            var objLoader = new THREE.OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.setPath( '3DModels/iPhone_5/' );
-            objLoader.load( "iPhone_5.obj", function (object) {
-                // model loaded, scale and translate
-                var deviceBox =  new THREE.Box3().setFromObject(object);
-                const scale = device.bodySize.height / deviceBox.getSize().y;
-                object.scale.set( scale, scale, scale );
-                deviceBox =  new THREE.Box3().setFromObject(object);
-                object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-            });
+                    var objLoader = new THREE.OBJLoader();
+                    objLoader.setMaterials(materials);
+                    objLoader.setPath( '3DModels/iPhone_5/' );
+                    objLoader.load( "iPhone_5.obj",
+                        (object) => {
+                            // model loaded, scale and translate
+                            var deviceBox =  new THREE.Box3().setFromObject(object);
+                            const scale = device.bodySize.height / deviceBox.getSize().y;
+                            object.scale.set( scale, scale, scale );
+                            deviceBox =  new THREE.Box3().setFromObject(object);
+                            object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
+                            scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            resolve(true);
+                        },
+                        null, //on progress
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+                },
+                null, // on progress
+                (error) => {
+                    reject(error);
+                });
         });
     }
 
-    static _load_iPhone_6( scene, device/*, yPosition*/ ) {
+    static _load_iPhone_6(scene, device) {
 
-        //var mtlLoader = new THREE.MTLLoader();
-        //mtlLoader.setPath( '3DModels/iPhone_6/' );
-        //mtlLoader.load( 'iPhone_6.mtl', function( materials ) {
-        //    materials.preload();
+        return new Promise((resolve, reject) => {
+            var mtlLoader = new THREE.MTLLoader();
+            mtlLoader.setPath('3DModels/iPhone_6/');
+            mtlLoader.load('iPhone_6.mtl',
+                (materials) => {
+                    materials.preload();
 
-            var objLoader = new THREE.OBJLoader(  );
-            objLoader.setPath( '3DModels/iPhone_6/' );
-            objLoader.load( "iPhone_6.obj", function ( object ) {
-
-                // model loaded, scale and translate
-                var deviceBox =  new THREE.Box3().setFromObject( object );
-                const scale = device.bodySize.height / deviceBox.getSize().y;
-                object.scale.set( scale, scale, scale );
-                deviceBox =  new THREE.Box3().setFromObject( object );
-                object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                scene.addDevice3DModel( new ORG3DDeviceModel( scene.THREEScene, object ) );
-
-            });
-        //});
+                    var objLoader = new THREE.OBJLoader();
+                    objLoader.setPath('3DModels/iPhone_6/');
+                    objLoader.setMaterials(materials);
+                    objLoader.load("iPhone_6.obj",
+                        (object) => {
+                            // model loaded, scale and translate
+                            var deviceBox =  new THREE.Box3().setFromObject(object);
+                            const scale = device.bodySize.height / deviceBox.getSize().y;
+                            object.scale.set(scale, scale, scale);
+                            deviceBox =  new THREE.Box3().setFromObject(object);
+                            object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
+                            scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            resolve(true);
+                        },
+                        null, /*on progress*/
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+                },
+                null, // on progress
+                (error) => {
+                    reject(error);
+                })
+        })
     }
-
 }
 
 /**
@@ -4223,7 +4407,7 @@ class ORG3DDeviceModelLoader {
 
 
 /**
- * Class to wrap the actions on the THREE model of a device.
+ * Class to keep the THREE model of the device and to wrap the actions on it.
  * It contains only the body of the device, not the display.
  */
 class ORG3DDeviceModel {
@@ -4464,7 +4648,7 @@ class ORG3DDeviceScreen {
 }
 /**
  * Delegate class for the WebSocket to the Device.
- * It receives the callbacks for all the events on the WebSocket.
+ * Implements the callbacks for all the events on the WebSocket.
  * @constructor
  */
 class ORGWebSocketDelegate {
@@ -4492,11 +4676,11 @@ class ORGWebSocketDelegate {
 	 */
 	onClose(event, ws) {
 		console.log('Delegate onClose.');
-		ORG.scene.handleDeviceDisconnection();
+		//ORG.scene.handleDeviceDisconnection();
 
 		// UI updates
         ORG.dispatcher.dispatch({
-            actionType: 'websocket-closed',
+            actionType: 'device-disconnect', //'websocket-closed',
 			code: event.code,
 			reason: event.reason,
 			deviceController: ORG.deviceController.constructor.name
@@ -4646,15 +4830,21 @@ class ORGWebSocketDelegate {
             device: ORG.device
         });
 
+        if (ORG.scene.flagShowDevice3DModel) {
+            ORG.scene.showDevice3DModel().then(
+                (result) => {
+                    this._createDeviceScreenWithSnapshot(ORG.device);
+                }
+            );
+        } else {
+            this._createDeviceScreenWithSnapshot(ORG.device);
+		}
         //ORG.scene.createDeviceScreen( ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
-        //if ( ORG.scene.flagShowDevice3DModel ) {
-        //    ORG.scene.showDevice3DModel();
-        //}
         //ORG.scene.devicePositionHasChanged();
-        ORG.scene.createRaycasterForDeviceScreen();
-
-        // ask for the first screenshot
-        ORG.deviceController.requestScreenshot();
+        //ORG.scene.createRaycasterForDeviceScreen();
+        //
+        //// ask for the first screenshot
+        //ORG.deviceController.requestScreenshot();
     }
 
 	/**
@@ -4710,7 +4900,8 @@ class ORGWebSocketDelegate {
             if (ORG.scene.expanding || ORG.scene.isExpanded) {
                 ORG.scene.updateUITreeModel(jsonTree);
 			}
-		}
+            bootbox.hideAll();
+        }
 	}
 
     /**
@@ -4724,6 +4915,14 @@ class ORGWebSocketDelegate {
 				ORG.systemInfoManager.dataUpdate( systemInfoData );
             }
         }
+    }
+
+
+    _createDeviceScreenWithSnapshot(device) {
+        ORG.scene.createDeviceScreen(device.displaySize.width, device.displaySize.height, 0);
+        ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
+        ORG.scene.devicePositionHasChanged();
+        ORG.deviceController.requestScreenshot(); // ask for the first screenshot
     }
 
 }
@@ -5555,7 +5754,6 @@ class ORGLocationManager extends ORGLocationProvider {
  * Created by jongabilondo on 20/07/2017.
  */
 
-
 class ORGFluxStore extends FluxUtils.Store {
 
     __onDispatch(payload) {
@@ -5566,19 +5764,13 @@ class ORGFluxStore extends FluxUtils.Store {
             } break;
 
             case 'beacon-selected' : {
-                ORG.scene.showHideBeaconTransformControls( payload.beacon );
+                ORG.scene.showHideBeaconTransformControls(payload.beacon);
             } break;
 
             case 'device-info-update' : {
                 ORG.UI.deviceNameLabel.text(payload.device.name);
                 ORG.UI.deviceSystemVersionLabel.text(payload.device.systemVersion);
                 ORG.UI.deviceModelLabel.text(payload.device.productName);
-
-                ORG.scene.createDeviceScreen( payload.device.displaySize.width, payload.device.displaySize.height, 0);
-                if ( ORG.scene.flagShowDevice3DModel ) {
-                    ORG.scene.showDevice3DModel();
-                }
-                ORG.scene.devicePositionHasChanged();
             } break;
 
             case 'app-info-update' : {
@@ -5595,6 +5787,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.UIJSONTreeManager.update(payload.tree, payload.treeType);
             } break;
             case 'ui-tree-refresh': {
+                bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting UI tree information...</div>' }); // Progress alert
                 ORG.deviceController.refreshUITree();
             } break;
             case 'uitree-node-selected': {
@@ -5697,8 +5890,8 @@ class ORGFluxStore extends FluxUtils.Store {
             } break;
             case 'wda-session-open-error' : {
                 bootbox.alert({
-                    title: "Could not connect to device",
-                    message: "1. Connect your device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. A localport at 8100 must be opened to talk to the device (iproxy 8100 8100)."
+                    title: "Could not connect to device.",
+                    message: "1. Connect the device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. On USB connection a localport at 8100 must be opened (iproxy 8100 8100)."
                 });
                 console.debug(payload.error);
             } break;
@@ -5712,8 +5905,8 @@ class ORGFluxStore extends FluxUtils.Store {
                 if (payload.code == 1006) {
                     if (payload.deviceController == "ORGDeviceController") {
                         bootbox.alert({
-                            title: "Could not connect to device",
-                            message: "1. Connect your device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. A localport at 5567 must be opened to talk to the device (iproxy 5567 5567)."
+                            title: "Could not connect to device.",
+                            message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection a localport at 5567 must be opened (iproxy 5567 5567)."
                         })
                     } else {
                         bootbox.alert("Error connecting to idevicecontrolproxy.\nMake sure the proxy is running.\nRead about it @ https://github.com/JonGabilondoAngulo/idevicecontrolproxy");
@@ -5806,6 +5999,7 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
 
 		// UI Tree
         document.getElementById('ui-json-tree').style.height = canvasHeight-115 + 'px';
+        document.getElementById('ui-json-tree-node').style.height = canvasHeight-60 + 'px';
 	}
 
 	//callback(); // ugly to provoke resize now
@@ -5846,7 +6040,7 @@ ORG.dispatcher = new Flux.Dispatcher();
 ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
 
 ORG.fontLoader = new THREE.FontLoader();
-ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+ORG.fontLoader.load( 'https://jongabilondoangulo.github.io/js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
     ORG.font_helvetiker_regular = font;
     ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
@@ -5992,7 +6186,8 @@ ORG.UI.buttonResetItinerary = $('#reset-itinerary');
 
 
 ORG.UI.checkButtonShowDevice.change(function (e) {
-    if ($(this).is(':checked') == true) {
+    ORG.scene.flagShowDevice3DModel = $(this).is(':checked');
+    if (ORG.scene.flagShowDevice3DModel) {
         ORG.scene.showDevice3DModel();
     } else {
         ORG.scene.hideDevice3DModel();
@@ -6078,7 +6273,6 @@ ORG.UI.buttonAddBeacon.click(function (e) {
 });
 
 ORG.UI.buttonExpand.click(function (e) {
-
     if ( !ORG.deviceController.isConnected) {
         return;
     }

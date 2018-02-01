@@ -12,7 +12,7 @@ const ORGSceneVisualizationMask = {
 const kORGCameraTWEENDuration = 600.0; // ms
 const kORGFloorPositionY = 0.0; // m
 const kORGDevicePositionY = 1.5; // m
-const kORGCameraPositionZ = 0.4; // m
+const kORGCameraPositionZ = 0.2; // m
 
 /**
  * The class that holds the THREE.Scene with the GLRenderer.
@@ -154,6 +154,13 @@ class ORG3DScene {
         return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowDevice;
     }
 
+    set flagShowDevice3DModel(show) {
+        if (show) {
+            this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowDevice;
+        } else {
+            this._sceneVisualFlags &= ~ORGSceneVisualizationMask.ShowDevice;
+        }    }
+
     get flagShowFloor() {
         return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowFloor;
     }
@@ -287,6 +294,9 @@ class ORG3DScene {
         this._uiTreeModel.removeUITreeModel( this._THREEScene);
     }
 
+    //--
+    //  DEVICE SCREEN METHODS
+    //--
     createDeviceScreen(width, height, zPosition) {
         this._addDeviceAndScreenGroup();
         this._deviceScreenSize = { width:width, height:height};
@@ -301,24 +311,6 @@ class ORG3DScene {
             this._deviceScreen.destroy();
             this._deviceScreen = null;
         }
-    }
-
-    setDeviceOrientation(orientation, width, height) {
-        if ( this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.removeUITreeModel( this._THREEScene);
-            this._uiExpanded = false;
-            ORG.UI.buttonExpand.text("Expand");
-        }
-
-        if ( this._deviceScreen) {
-            this.removeDeviceScreen();
-            this.createDeviceScreen(width, height, 0);
-            this.createRaycasterForDeviceScreen();
-        }
-        if ( this._device3DModel) {
-            this._device3DModel.setOrientation(orientation);
-        }
-        this.devicePositionHasChanged();
     }
 
     setDeviceScreenSize(width, height) {
@@ -341,6 +333,63 @@ class ORG3DScene {
             this._deviceScreen.show();
         }
     }
+
+    positionDeviceAndScreenInRealWorld() {
+        this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
+    }
+
+    //--
+    //  DEVICE 3D MODEL METHODS
+    //--
+
+    addDevice3DModel(device3DModel) {
+        this._addDeviceAndScreenGroup();
+        this._device3DModel = device3DModel;
+        this._THREEDeviceAndScreenGroup.add(this._device3DModel.THREEObject);
+        //this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
+        this.devicePositionHasChanged();
+    }
+
+    showDevice3DModel() {
+        return new Promise((resolve, reject) => {
+            this.hideDevice3DModel();
+            ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY).then(
+                function(result) {
+                    resolve(result);
+                },
+                function(error) {
+                    reject(error);
+                });
+        });
+    }
+
+    hideDevice3DModel() {
+        if ( !!this._device3DModel ) {
+            this._THREEDeviceAndScreenGroup.remove(this._device3DModel.THREEObject);
+            this._device3DModel.destroy();
+            this._device3DModel = null;
+        }
+        this.devicePositionHasChanged();
+    }
+
+    setDeviceOrientation(orientation, width, height) {
+        if ( this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.removeUITreeModel( this._THREEScene);
+            this._uiExpanded = false;
+            ORG.UI.buttonExpand.text("Expand");
+        }
+
+        if ( this._deviceScreen) {
+            this.removeDeviceScreen();
+            this.createDeviceScreen(width, height, 0);
+            this.createRaycasterForDeviceScreen();
+        }
+        if ( this._device3DModel) {
+            this._device3DModel.setOrientation(orientation);
+        }
+        this.devicePositionHasChanged();
+    }
+
 
     createRaycasterFor3DTreeModel() {
         this._uiTreeModelRaycaster = new ORG3DUITreeRaycaster( this._rendererDOMElement, this._THREECamera, this._uiTreeModel.treeGroup);
@@ -442,6 +491,8 @@ class ORG3DScene {
 
     expand() {
         if (!this._uiExpanded) {
+            bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>Expanding UI elements...</div>' }); // Progress alert
+
             ORG.deviceController.requestElementTree({
                 "status-bar": true,
                 "keyboard": true,
@@ -590,28 +641,6 @@ class ORG3DScene {
             .easing( TWEEN.Easing.Quadratic.InOut)
             .start();
 
-    }
-
-    addDevice3DModel(device3DModel) {
-        this._addDeviceAndScreenGroup();
-        this._device3DModel = device3DModel;
-        this._THREEDeviceAndScreenGroup.add(this._device3DModel.THREEObject);
-        this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
-        this.devicePositionHasChanged();
-    }
-
-    showDevice3DModel() {
-        this.hideDevice3DModel();
-        ORG3DDeviceModelLoader.loadDevice3DModel( ORG.device, this, kORGDevicePositionY ); // async. When loaded it will call "addDevice3DModel"
-    }
-
-    hideDevice3DModel() {
-        if ( !!this._device3DModel ) {
-            this._THREEDeviceAndScreenGroup.remove(this._device3DModel.THREEObject);
-            this._device3DModel.destroy();
-            this._device3DModel = null;
-        }
-        this.devicePositionHasChanged();
     }
 
     enableShowLocation() {
@@ -779,15 +808,15 @@ class ORG3DScene {
         light.position.set(500,-500,500);
         this._THREEScene.add(light);
 
-        light = new THREE.PointLight(0xaaaaaa);
+        light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(500,500,500);
         this._THREEScene.add(light);
 
-        light = new THREE.PointLight(0xaaaaaa);
+        light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(-500,-500,-500);
         this._THREEScene.add(light);
 
-        light = new THREE.PointLight(0xaaaaaa);
+        light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(-500,500,-500);
         this._THREEScene.add(light);
 
@@ -799,11 +828,11 @@ class ORG3DScene {
         //light.position.copy(  new THREE.Vector3(1.0, 1.0, 1.0));
         //this._THREEScene.add( light );
 
-        light = new THREE.HemisphereLight(   );
-        this._THREEScene.add( light );
-
-        light = new THREE.AmbientLight( 0xffffff, 0.9);
-        this._THREEScene.add(light);
+        //light = new THREE.HemisphereLight(   );
+        //this._THREEScene.add( light );
+        //
+        //light = new THREE.AmbientLight( 0xffffff, 0.9);
+        //this._THREEScene.add(light);
     }
 
     _deviceBoundingBox() {

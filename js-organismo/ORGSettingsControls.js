@@ -62,7 +62,8 @@ ORG.UI.buttonResetItinerary = $('#reset-itinerary');
 
 
 ORG.UI.checkButtonShowDevice.change(function (e) {
-    if ($(this).is(':checked') == true) {
+    ORG.scene.flagShowDevice3DModel = $(this).is(':checked');
+    if (ORG.scene.flagShowDevice3DModel) {
         ORG.scene.showDevice3DModel();
     } else {
         ORG.scene.hideDevice3DModel();
@@ -148,7 +149,6 @@ ORG.UI.buttonAddBeacon.click(function (e) {
 });
 
 ORG.UI.buttonExpand.click(function (e) {
-
     if ( !ORG.deviceController.isConnected) {
         return;
     }

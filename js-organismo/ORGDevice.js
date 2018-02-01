@@ -16,18 +16,35 @@ class ORGDevice {
         this.screenSize = deviceInfo.screenSize;
     }
 
+    get isLikeiPhone5() {
+        return this.productName.startsWith('iPhone 5');
+    };
+    get isLikeiPhone6() {
+        return this.productName == 'iPhone 6' || this.productName == 'iPhone 7' || this.productName == 'iPhone 8';
+    };
+    get isLikeiPhone6Plus() {
+        return this.productName == 'iPhone 6+' || this.productName == 'iPhone 7+' || this.productName == 'iPhone 8+';
+    };
+    get isLikeiPhoneX() {
+        return this.productName == 'iPhone X';
+    };
+
     /**
      * Get device physical size. Gets the values from ORG.DeviceMetrics global.
      * @returns {{width: *, height: *}} in meters.
      */
     get bodySize() {
         var body = null;
-        if ( this.productName.startsWith( 'iPhone 5' )) {
+        if (this.isLikeiPhone5) {
             body = ORG.DeviceMetrics.iPhone5.Body;
-        } else if ( this.productName.startsWith( 'iPhone 6' )) {
+        } else if (this.isLikeiPhone6) {
             body = ORG.DeviceMetrics.iPhone6.Body;
+        } else if (this.isLikeiPhone6Plus) {
+            body = ORG.DeviceMetrics.iPhone6Plus.Body;
+        } else if (this.isLikeiPhoneX) {
+            body = ORG.DeviceMetrics.iPhoneX.Body;
         } else {
-            body = ORG.DeviceMetrics.iPhone5.Body;
+            body = ORG.DeviceMetrics.iPhone6.Body;
         }
         return {"width": math.unit( body.W ).toNumber('m'), "height": math.unit( body.H ).toNumber('m')};
     }
@@ -38,12 +55,16 @@ class ORGDevice {
      */
     get displaySize() {
         var display = null;
-        if ( this.productName.startsWith( 'iPhone 5' )) {
+        if (this.isLikeiPhone5) {
             display = ORG.DeviceMetrics.iPhone5.Display;
-        } else if ( this.productName.startsWith( 'iPhone 6' )) {
+        } else if (this.isLikeiPhone6) {
             display = ORG.DeviceMetrics.iPhone6.Display;
+        } else if (this.isLikeiPhone6Plus) {
+            display = ORG.DeviceMetrics.iPhone6Plus.Display;
+        } else if (this.isLikeiPhoneX) {
+            display = ORG.DeviceMetrics.iPhoneX.Display;
         } else {
-            display = ORG.DeviceMetrics.iPhone5.Display;
+            display = ORG.DeviceMetrics.iPhone6.Display;
         }
         return this._calculateDisplaySize( math.unit( display.Diagonal).toNumber('m'), display.Ratio );
     }
@@ -64,4 +85,5 @@ class ORGDevice {
         const h = w * ratio;
         return { width:w, height:h };
     }
+
 }

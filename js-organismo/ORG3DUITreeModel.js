@@ -28,8 +28,7 @@ const kORGExtrudeDuration = 500.0; // ms
  */
 class ORG3DUITreeModel {
 
-    constructor( visualizationFlag ) {
-
+    constructor(visualizationFlag) {
         this._treeData = null; // json of ui elements tree as arrived from device
         this._THREEElementTreeGroup = null; // threejs group with all the ui elements.
         this._THREEScene = null;
@@ -319,7 +318,6 @@ class ORG3DUITreeModel {
      * @private
      */
     _createTreeNode3DModel( treeNode, treeNodeParent, screenSize, displaySize, displayScale, displayPosition, zStartingPos, highestZPosition ) {
-
         var highestZPosition = highestZPosition;
         var lastCreatedParentNode = treeNodeParent;
         var newElemZPosition = zStartingPos;
@@ -461,7 +459,6 @@ class ORG3DUITreeModel {
      * @private
      */
     _calculateElementZPosition( uiTreeElement, uiTreeStartElement, uiElementWorldBox2, currentZPosition, displayPosition ) {
-
         if ( !uiTreeElement || !uiTreeStartElement ) {
             return currentZPosition;
         }
@@ -688,19 +685,20 @@ class ORG3DUITreeModel {
      * @param nodeData
      */
     _mustCreateTreeObject ( nodeData ) {
-
         if (!this._flagShowPrivate) {
             if (nodeData.private && nodeData.private == true) {
                 return false;
             }
         }
-
         if (!this._flagShowOutOfScreen) {
             if (this._treeObjectIsOutOfScreen(nodeData, deviceScreenSize)) {
                 return false;
             }
         }
         if (this._isStatusBarWindow(nodeData)) {
+            return false;
+        }
+        if (this._isNoSizeElement(nodeData)) {
             return false;
         }
         return true;
@@ -766,6 +764,10 @@ class ORG3DUITreeModel {
 
     _isKeyboardWindow( nodeData ) {
         return (nodeData.class == "UITextEffectsWindow");
+    }
+
+    _isNoSizeElement(element) {
+        return (element.bounds.right - element.bounds.left == 0) || (element.bounds.bottom - element.bounds.top == 0);
     }
 
 }
