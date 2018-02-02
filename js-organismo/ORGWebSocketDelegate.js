@@ -32,7 +32,13 @@ class ORGWebSocketDelegate {
 
 		// UI updates
         ORG.dispatcher.dispatch({
-            actionType: 'device-disconnect', //'websocket-closed',
+            actionType: 'websocket-closed',
+            code: event.code,
+            reason: event.reason,
+            deviceController: ORG.deviceController.constructor.name
+        });
+        ORG.dispatcher.dispatch({
+            actionType: 'device-disconnect',
 			code: event.code,
 			reason: event.reason,
 			deviceController: ORG.deviceController.constructor.name

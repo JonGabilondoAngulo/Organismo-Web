@@ -21,16 +21,14 @@ class ORGContextMenuManager {
         this._intersectionPoint = null;
         this._scene = scene; // We will need to get information from some objects in the scene
 
-        const _this = this;
-
         /**
          * Instantiate the context menu
          */
         $.contextMenu({
-            selector: '#threejs-canvas',
+            selector: '#content-wrapper',//threejs-canvas',
             trigger: 'none',
-            build: function($trigger, e) {
-                if (_this._selectedThreeObject) {
+            build: ($trigger, e) => {
+                if (this._selectedThreeObject) {
                     return {
                         items: {
                             "tap": {name: "Tap"},
@@ -58,10 +56,8 @@ class ORGContextMenuManager {
                     };
                 }
             },
-            callback: function(key, options) {
-                //var m = "clicked: " + key;
-                //window.console && console.log(m) || alert(m);
-                _this._processMenuSelection(key, _this._selectedThreeObject, _this._scene);
+            callback: (key, options) => {
+                this._processMenuSelection(key, this._selectedThreeObject, this._scene);
             }
         });
     }
@@ -72,8 +68,8 @@ class ORGContextMenuManager {
      * @param event
      */
     onContextMenu(event) {
-
-        $('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
+        $('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
+        //$('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
     }
 
     /**

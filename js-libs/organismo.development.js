@@ -2566,16 +2566,14 @@ class ORGContextMenuManager {
         this._intersectionPoint = null;
         this._scene = scene; // We will need to get information from some objects in the scene
 
-        const _this = this;
-
         /**
          * Instantiate the context menu
          */
         $.contextMenu({
-            selector: '#threejs-canvas',
+            selector: '#content-wrapper',//threejs-canvas',
             trigger: 'none',
-            build: function($trigger, e) {
-                if (_this._selectedThreeObject) {
+            build: ($trigger, e) => {
+                if (this._selectedThreeObject) {
                     return {
                         items: {
                             "tap": {name: "Tap"},
@@ -2603,10 +2601,8 @@ class ORGContextMenuManager {
                     };
                 }
             },
-            callback: function(key, options) {
-                //var m = "clicked: " + key;
-                //window.console && console.log(m) || alert(m);
-                _this._processMenuSelection(key, _this._selectedThreeObject, _this._scene);
+            callback: (key, options) => {
+                this._processMenuSelection(key, this._selectedThreeObject, this._scene);
             }
         });
     }
@@ -2617,8 +2613,8 @@ class ORGContextMenuManager {
      * @param event
      */
     onContextMenu(event) {
-
-        $('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
+        $('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
+        //$('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
     }
 
     /**
@@ -4680,7 +4676,13 @@ class ORGWebSocketDelegate {
 
 		// UI updates
         ORG.dispatcher.dispatch({
-            actionType: 'device-disconnect', //'websocket-closed',
+            actionType: 'websocket-closed',
+            code: event.code,
+            reason: event.reason,
+            deviceController: ORG.deviceController.constructor.name
+        });
+        ORG.dispatcher.dispatch({
+            actionType: 'device-disconnect',
 			code: event.code,
 			reason: event.reason,
 			deviceController: ORG.deviceController.constructor.name
@@ -4883,7 +4885,7 @@ class ORGWebSocketDelegate {
             });
 
 			// Ask for next screenshot
-			if (ORG.scene.flagContinuousScreenshot && !ORG.scene.isExpanded && ORG.deviceController.isConnected) {
+			if (ORG.scene.flagContinuousScreenshot && !ORG.scene.isExpanded && ORG.deviceController && ORG.deviceController.isConnected) {
 				ORG.deviceController.requestScreenshot();
 			}
 		}
@@ -5929,41 +5931,40 @@ ORG.SplitterResize	= function(paneSep, contentPanel, leftPane, rightPane, scene)
     // The script below constrains the target to move horizontally between a left and a right virtual boundaries.
     // - the left limit is positioned at 10% of the screen width
     // - the right limit is positioned at 90% of the screen width
-    const leftLimit = 10;
-    const rightLimit = 90;
+    const kLeftLimit = 10;
+    const kRightLimit = 90;
 
 
-    paneSep.sdrag(function (el, pageX, startX, pageY, startY, fix) {
+    paneSep.sdrag( (el, pageX, startX, pageY, startY, fix) => {
 
         fix.skipX = true;
 
-        if (pageX < window.innerWidth * leftLimit / 100) {
-            pageX = window.innerWidth * leftLimit / 100;
+        if (pageX < window.innerWidth * kLeftLimit / 100) {
+            pageX = window.innerWidth * kLeftLimit / 100;
             fix.pageX = pageX;
         }
-        if (pageX > window.innerWidth * rightLimit / 100) {
-            pageX = window.innerWidth * rightLimit / 100;
+        if (pageX > window.innerWidth * kRightLimit / 100) {
+            pageX = window.innerWidth * kRightLimit / 100;
             fix.pageX = pageX;
         }
 
-        const xOffset = pageX-startX;
+        //const xOffset = pageX-startX;
 
-        var cur = pageX / window.innerWidth * 100;
-        if (cur < 0) {
-            cur = 0;
-        }
-        if (cur > window.innerWidth) {
-            cur = window.innerWidth;
-        }
+        //var cur = pageX / window.innerWidth * 100;
+        //if (cur < 0) {
+        //    cur = 0;
+        //}
+        //if (cur > window.innerWidth) {
+        //    cur = window.innerWidth;
+        //}
 
         const contentRect = contentPanel.getBoundingClientRect();
         const leftPanelWidth = pageX + kSplitterWidth/2.0;
-        const rightPanelWidth = contentRect.width - leftPanelWidth;
-        const sceneWidth = leftPanelWidth - kSplitterWidth/2.0 - 15 - 15;
+        const rightPanelWidth = contentRect.width - leftPanelWidth - 20;
+        const sceneWidth = leftPanelWidth - kSplitterWidth/2.0 - 15 - 11;
         leftPane.style.width = leftPanelWidth + 'px';
         rightPane.style.width = rightPanelWidth + 'px';
 
-        //ORG.canvasDomElem.style.width = leftPane.style.width;
         scene.resize({width:sceneWidth, height:scene.sceneSize.height});
 
     }, null, 'horizontal');
@@ -5979,7 +5980,6 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
 	var callback	= function() {
 
 		// Canvas
-        //const canvasElem = document.getElementById('threejs-canvas');
         const rect = canvas.getBoundingClientRect();
 		const canvasTopOffset = rect.top;
 		const canvasBottomOffset = 6;
@@ -5987,16 +5987,16 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
         canvas.style.height = canvasHeight  + 'px'; //otherwise the canvas is not adapting to the renderer area
 
 		// Right Panel
-        const contentRect = contentPanel.getBoundingClientRect();
-        const leftPanelRect = leftPanel.getBoundingClientRect();
-        const rightPanelWidth = contentRect.width - leftPanelRect.width;
-        rightPanel.style.width = rightPanelWidth - 4  + 'px';
-
-        // Renderer & Camera
+        //const contentRect = contentPanel.getBoundingClientRect();
+        //const leftPanelRect = leftPanel.getBoundingClientRect();
+        //const rightPanelWidth = contentRect.width - leftPanelRect.width;
+        //rightPanel.style.width = rightPanelWidth - 4  + 'px';
+        //
+        //// Renderer & Camera
         renderer.setSize( canvas.offsetWidth, canvasHeight);
         camera.aspect = canvas.offsetWidth / canvasHeight;
 		camera.updateProjectionMatrix();
-
+        //
 		// UI Tree
         document.getElementById('ui-json-tree').style.height = canvasHeight-115 + 'px';
         document.getElementById('ui-json-tree-node').style.height = canvasHeight-60 + 'px';
