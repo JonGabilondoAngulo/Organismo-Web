@@ -11,6 +11,7 @@ const sources = [
     'js-organismo/ORG.Namespaces.js',
     'js-organismo/ORG.DeviceMetrics.js',
     'js-organismo/ORGConstants.js',
+    'js-organismo/ORGError.js',
     'js-organismo/ORGWebSocket.js',
     'js-organismo/ORGScenario.js',
     'js-organismo/ORGDeviceConnection.js',
@@ -67,6 +68,7 @@ const sources = [
     'js-organismo/ORGUIJSONTreeManager.js',
     'js-organismo/ORGUIJSONWDATreeAdaptor.js',
     'js-organismo/ORGUIJSONOrganismoTreeAdaptor.js',
+    'js-organismo/ORGConnectionActions.js',
     'js-third-party/dist.js',
     'js-third-party/epoly.js'
 ];

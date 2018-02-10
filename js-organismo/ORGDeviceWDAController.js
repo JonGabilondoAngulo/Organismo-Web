@@ -30,74 +30,70 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     openSession() {
-        var endpointURL = this.RESTPrefix  + "session";
-        this.xhr.open("POST", endpointURL, true);
-        this.xhr.onload = () => {
-
-            // request could have gone bad
-            if (this.xhr.status != 200) {
-                bootbox.alert({
-                    title: "Error requesting session from WDA.",
-                    message: this.xhr.statusText
-                });
-                return;
-            }
-
-            // Request was correct, process response
-            this._sessionInfo = JSON.parse(this.xhr.responseText);
-
-            // UI updates
-            ORG.dispatcher.dispatch({
-                actionType: 'wda-session-open'
-            });
-
-            bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
-
-            // 'Guess' the device by the size of the window.
-            this.requestWindowSize().then(
-                (result) => {
-                    ORG.device = this._deviceInfoFromWindowSize(result);
-                    ORG.testApp = new ORGTestApp( {name: "unknown", version: "unknown", bundleIdentifier: "unknown"} ); // we don't know anything about the app
-
-                    ORG.dispatcher.dispatch({ // UI updates
-                        actionType: 'device-info-update',
-                        device: ORG.device
-                    });
-
-                    // Get the device's 3D model
-                    if (ORG.scene.flagShowDevice3DModel) {
-                        ORG.scene.showDevice3DModel().then(
-                            (result) => {
-                                this._createDeviceScreenWithSnapshot(ORG.device);
-                            }
-                        );
+        return new Promise((resolve, reject) => {
+            var endpointURL = this.RESTPrefix + "session";
+            this.xhr.open("POST", endpointURL, true);
+            this.xhr.onload = () => {
+                if (this.xhr.status == 200) {
+                    const response = JSON.parse(this.xhr.responseText);
+                    if (response.status == 0) {
+                        this._sessionInfo = JSON.parse(this.xhr.responseText);
+                        resolve(this._sessionInfo);
                     } else {
-                        this._createDeviceScreenWithSnapshot(ORG.device);
+                        reject(this.xhr.responseText);
                     }
+
+                } else {
+                    reject(this.xhr.statusText);
+                }
+            }
+            this.xhr.onerror = () => {
+                reject(this.xhr.statusText);
+            }
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error opening session."));
+                }
+            }
+            this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'organismo.organismo.io'}}));
+        });
+    }
+
+    getDeviceInformation() {
+        return new Promise((resolve, reject) => {
+
+            // Get orientation
+            this.requestDeviceOrientation().then(
+                (result) => {
+                    const orientaton = result;
+
+                    // Get device screen size.
+                    this.requestWindowSize().then(
+                        (result) => {
+                            const screenSizePortrait = ORGDevice.screenSizeInPortrait(result);
+                            var device = this._deviceInfoFromWindowSize(screenSizePortrait);
+                            device.orientation = orientaton;
+                            resolve(device);
+                        },
+                        (err) => {
+                            reject(err);
+                        }
+                    ). catch(
+                        (err) => {
+                            reject(err);
+                        }
+                    )
                 },
                 (err) => {
-                    var safeErrorText = null;
-                    console.debug(err);
-                    bootbox.hideAll();
-
-                    if (err instanceof DOMException) {
-                        safeErrorText = err.name + ". " + err.message;
-                    } else {
-                        safeErrorText = (err.length < 2000 ?err :err.substring(0, 2000));
-                    }
-                    bootbox.alert({
-                        title: "Error getting UI tree.",
-                        message: safeErrorText
-                    })
-                })
-        };
-        this.xhr.onerror = () => {
-            ORG.dispatcher.dispatch({
-                actionType: 'wda-session-open-error',
-                error: this.xhr.statusText
-            });
-        };
-        this.xhr.send();
+                    reject(err);
+                }
+            ).catch(
+                (err) => {
+                    reject(err);
+                }
+            )
+        });
     }
 
     closeSession() {
@@ -118,77 +114,67 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         this.xhr.send();*/
     }
 
-    refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' });
-
-        // Get element tree
-        this.requestElementTree().then(
-            (result) => {
-                ORG.dispatcher.dispatch({
-                    actionType: 'ui-json-tree-update',
-                    tree: result.children,
-                    treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
-                });
-
-                // Get Screenshot.
-                this.requestScreenshot().then(
-                    (result) => {
-                        const base64Img = result;
-                        if (base64Img) {
-                            var img = new Image();
-                            img.src = "data:image/jpg;base64," + base64Img;
-
-                            // UI updates
-                            ORG.dispatcher.dispatch({
-                                actionType: 'screenshot-update',
-                                image: img
-                            });
-                        }
-                        bootbox.hideAll();
-
-                    },
-                    (err) => {
-                        const safeErrorText = (err.length < 2000 ?err :err.substring(0, 2000));
-                        console.debug(err);
-                        bootbox.hideAll();
-                        bootbox.alert({
-                            title: "Error getting Screenshot.",
-                            message: safeErrorText
-                        })
-                    })
-
-            },
-            (err) => {
-                console.debug(err);
-                bootbox.hideAll();
-                const safeErrorText = (err.length < 2000 ?((err.length==0) ?"Unknown error" :err) :err.substring(0, 2000));
-                bootbox.alert({
-                    title: "Error getting UI tree.",
-                    message: safeErrorText
-                })
-            })
+    requestDeviceOrientation() {
+        return new Promise((resolve, reject) => {
+            var endpointURL = this.RESTPrefixWithSession + "orientation";
+            this.xhr.open("GET", endpointURL, true);
+            this.xhr.onload = () => {
+                var response = JSON.parse(this.xhr.responseText);
+                if (response.status == 0) {
+                    var orientation = ORGDevice.ORIENTATION_PORTRAIT;
+                    switch (response.value) {
+                        case "PORTRAIT": break;
+                        case "LANDSCAPE": orientation = ORGDevice.ORIENTATION_LANDSCAPE_LEFT; break;
+                        case "UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT": orientation = ORGDevice.ORIENTATION_LANDSCAPE_RIGHT; break;
+                        case "UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN": orientation = ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN; break;
+                    }
+                    resolve(orientation);
+                } else {
+                    reject(response.value);
+                }
+            }
+            this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
+            this.xhr.send();
+        });
     }
 
     requestScreenshot() {
-
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "screenshot";
             this.xhr.open("GET", endpointURL, true);
             this.xhr.onload = () => {
                 var response = JSON.parse(this.xhr.responseText);
                 if (response.status == 0) {
-                    resolve(response.value);
+                    const base64Img = response.value;
+                    if (base64Img) {
+                        var img = new Image();
+                        img.src = "data:image/jpg;base64," + base64Img;
+                        img.onload = () => {
+                            resolve(img);
+                        }
+                    }
                 } else {
                     reject(response.value);
                 }
             }
             this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
             this.xhr.send();
         });
     }
 
     requestElementTree() {
-
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "source?format=json";
             this.xhr.open("GET", endpointURL, true);
@@ -201,13 +187,17 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 }
             }
             this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
             this.xhr.send();
         });
     }
 
-
     requestWindowSize() {
-
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefixWithSession + "window/size";
             this.xhr.open("GET", endpointURL, true);
@@ -216,7 +206,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 if (response.status == 0) {
                     resolve(response.value);
                 } else {
-                    reject(response.value);
+                    reject(response.status);
                 }
             }
             this.xhr.onerror = () => {
@@ -225,48 +215,14 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             this.xhr.onabort = () => {
                 reject(this.xhr.statusText);
             }
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
             this.xhr.send();
         });
-    }
-
-    requestDeviceInfo() {
-        //const _this = this;
-        //
-        //// Not implemented in default WDA. "/deviceInfo"
-        //return new Promise((resolve, reject) => {
-        //    var endpointURL = _this.RESTPrefix + "deviceInfo";
-        //    _this.xhr.open("GET", endpointURL, true);
-        //    _this.xhr.onload = () => {
-        //        var response = JSON.parse(_this.xhr.responseText);
-        //        if (response.status == 0) {
-        //            resolve(response.value);
-        //        } else {
-        //            reject(response.value);
-        //        }
-        //    }
-        //    _this.xhr.onerror = () => reject(_this.xhr.statusText);
-        //    _this.xhr.send();
-        //});
-    }
-
-    requestAppInfo() {
-        //const _this = this;
-        //
-        //// Not implemented in default WDA. "/appInfo"
-        //return new Promise((resolve, reject) => {
-        //    var endpointURL = _this.RESTPrefix + "appInfo";
-        //    _this.xhr.open("GET", endpointURL, true);
-        //    _this.xhr.onload = () => {
-        //        var response = JSON.parse(_this.xhr.responseText);
-        //        if (response.status == 0) {
-        //            resolve(response.value);
-        //        } else {
-        //            reject(response.value);
-        //        }
-        //    }
-        //    _this.xhr.onerror = () => reject(_this.xhr.statusText);
-        //    _this.xhr.send();
-        //});
     }
 
     _deviceInfoFromTree(tree) {
@@ -281,39 +237,4 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         const deviceProductName = ORGDeviceMetrics.deviceWithScreenPoints(screenPoints);
         return new ORGDevice( {name:'', systemVersion: "", productName: deviceProductName, screenSize: screenPoints} );
     }
-
-    _createDeviceScreenWithSnapshot(device) {
-        ORG.scene.createDeviceScreen(device.displaySize.width, device.displaySize.height, 0);
-        ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
-        ORG.scene.devicePositionHasChanged();
-
-        // Get screenshot.
-        this.requestScreenshot().then(
-            (result) => {
-                const base64Img = result;
-                if (base64Img) {
-                    var img = new Image();
-                    img.src = "data:image/jpg;base64," + base64Img;
-
-                    // Be safe and do not use it in THREE until is loaded.
-                    img.onload = () => {
-                        ORG.dispatcher.dispatch({
-                            actionType: 'screenshot-update',
-                            image: img
-                        });
-                    }
-                }
-                bootbox.hideAll();
-
-            },
-            (err) => {
-                console.debug(err);
-                bootbox.hideAll();
-                bootbox.alert({
-                    title: "Error getting screenshot.",
-                    message: err
-                })
-            })
-    }
-
 }

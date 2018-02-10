@@ -32,9 +32,9 @@ class ORG3DUIElement {
      * @return THREE.Box2 with the bounds of the element in the screen.
      */
     getBoundsInDeviceScreen(device, deviceScreen) {
-        const deviceDisplaySize = device.displaySize;
+        const deviceDisplaySize = device.displaySizeWithOrientation;
         const deviceDisplayScale = device.displayScale;
-        const deviceScreenSize = device.screenSize; // In points
+        const deviceScreenSize = device.screenSizeWithOrientation; // In points
         const screenPlanePosition = deviceScreen.screenWorldPosition; // in world coordinates
         const elementBounds = this.bounds; // In points
 

@@ -51,7 +51,8 @@ class ORGContextMenuManager {
                     return {
                         items: {
                             "reset-camera-position": {name: "Reset Camera Position"},
-                            "reset-device-position": {name: "Reset Device Position"}
+                            "reset-device-position": {name: "Reset Device Position"},
+                            "device-screen-closeup": {name: "Device Screen Closeup"}
                         }
                     };
                 }
@@ -68,6 +69,9 @@ class ORGContextMenuManager {
      * @param event
      */
     onContextMenu(event) {
+        if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
+            return;
+        }
         $('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
         //$('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
     }
@@ -150,6 +154,9 @@ class ORGContextMenuManager {
             } break;
             case 'reset-device-position' : {
                 scene.resetDevicePosition();
+            } break;
+            case 'device-screen-closeup' : {
+                scene.deviceScreenCloseup();
             } break;
         }
     }

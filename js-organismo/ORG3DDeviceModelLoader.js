@@ -16,7 +16,7 @@ class ORG3DDeviceModelLoader {
 
         return new Promise((resolve, reject) => {
 
-            if ( device.productName.startsWith('iPhone 5')) {
+            if (device.productName.startsWith('iPhone 5')) {
                 this._load_iPhone_5(scene,device).then(
                     function(result) {
                         resolve(result);
@@ -59,6 +59,7 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            scene.setDeviceOrientation2(device.orientation);
                             resolve(true);
                         },
                         null, //on progress
@@ -95,6 +96,7 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            scene.setDeviceOrientation2(device.orientation);
                             resolve(true);
                         },
                         null, /*on progress*/

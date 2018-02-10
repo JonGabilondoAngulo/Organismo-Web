@@ -15,16 +15,25 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.scene.showHideBeaconTransformControls(payload.beacon);
             } break;
 
-            case 'device-info-update' : {
+            case 'device-info-update': {
                 ORG.UI.deviceNameLabel.text(payload.device.name);
                 ORG.UI.deviceSystemVersionLabel.text(payload.device.systemVersion);
                 ORG.UI.deviceModelLabel.text(payload.device.productName);
             } break;
 
-            case 'app-info-update' : {
+            case 'app-info-update': {
                 ORG.UI.testAppNameLabel.text(payload.app.name );
                 ORG.UI.testAppVersionLabel.text(payload.app.version );
                 ORG.UI.testAppBundleIdLabel.text(payload.app.bundleIdentifier );
+            } break;
+
+            case 'device-orientation-changed': {
+                if (ORG.device) {
+                    ORG.device.orientation = payload.orientation;
+                }
+                if (ORG.scene) {
+                    ORG.scene.setDeviceOrientation2(payload.orientation);
+                }
             } break;
 
             //************************************************************
@@ -34,10 +43,10 @@ class ORGFluxStore extends FluxUtils.Store {
             case 'ui-json-tree-update': {
                 ORG.UIJSONTreeManager.update(payload.tree, payload.treeType);
             } break;
-            case 'ui-tree-refresh': {
-                bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting UI tree information...</div>' }); // Progress alert
-                ORG.deviceController.refreshUITree();
-            } break;
+            //case 'ui-tree-refresh': {
+            //    bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting UI tree information...</div>' }); // Progress alert
+            //    ORG.deviceController.refreshUITree();
+            //} break;
             case 'uitree-node-selected': {
                 $('#ui-json-tree-node').html(payload.html);
             } break;

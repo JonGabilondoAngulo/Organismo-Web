@@ -67,6 +67,29 @@ class ORGDeviceMetrics {
 // var ORGRequest_screenshot = "screenshot";
 // var ORGRequest_elementTree = "element-tree";
 /**
+ * Created by jongabilondo on 09/02/2018.
+ */
+
+
+const ORGERR = {
+    ERR_GENERAL: 100,
+    ERR_CONNECTION_REFUSED: 1000
+}
+
+class ORGError extends Error {
+
+    constructor(id, message) {
+        super(message);
+        this.name = "ORG Error";
+        this.id = id;
+    }
+
+    static generalError(message) {
+        return new ORGError(ORGERR.ERR_GENERAL, message);
+    }
+
+}
+/**
  * Class wrapper for a JS WebSocket to communicate with a Device.
  * It implements the methods for creation, open, close, sending and receiving.
  * It accepts a Delegate class that will be called on the following events: onOpen, onCLose, onMessage, onError.
@@ -1435,7 +1458,7 @@ class ORG3DScene {
         this._THREEDeviceAndScreenGroup = null; // Holds the screen and the device model
         this._keyboardState = null;
         this._threeClock = null;
-        this._deviceScreenSize = null;
+        //this._deviceScreenSize = null;
         this._uiExpanded = false;
         this._canvasDomElement = null; // the table cell where the renderer will be created, it contains _rendererDOMElement
         this._rendererDOMElement = null; // threejs scene is displayed in this DOM element
@@ -1691,7 +1714,6 @@ class ORG3DScene {
     //--
     createDeviceScreen(width, height, zPosition) {
         this._addDeviceAndScreenGroup();
-        this._deviceScreenSize = { width:width, height:height};
         this._deviceScreen = new ORG3DDeviceScreen(width, height, 0/*kORGDevicePositionY*/, zPosition, this._THREEScene);
         this._THREEDeviceAndScreenGroup.add( this._deviceScreen.screenPlane );
     }
@@ -1738,13 +1760,17 @@ class ORG3DScene {
         this._addDeviceAndScreenGroup();
         this._device3DModel = device3DModel;
         this._THREEDeviceAndScreenGroup.add(this._device3DModel.THREEObject);
-        //this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
         this.devicePositionHasChanged();
     }
 
     showDevice3DModel() {
         return new Promise((resolve, reject) => {
             this.hideDevice3DModel();
+
+            if (!this.flagShowDevice3DModel) {
+                reject();
+            }
+
             ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY).then(
                 function(result) {
                     resolve(result);
@@ -1780,6 +1806,35 @@ class ORG3DScene {
             this._device3DModel.setOrientation(orientation);
         }
         this.devicePositionHasChanged();
+    }
+
+    setDeviceOrientation2(orientation) {
+        if (!this._THREEDeviceAndScreenGroup) {
+            return;
+        }
+
+        // Recreate the screen with new size
+        if (this._deviceScreen) {
+            const screenSize = ORG.device.displaySizeWithOrientation;
+            this.removeDeviceScreen();
+            this.createDeviceScreen( screenSize.width, screenSize.height, 0);
+            this.createRaycasterForDeviceScreen();
+        }
+
+        // Rotate the device
+        this._device3DModel.setOrientation2(ORG.device.orientation);
+
+        //var rotation = 0;
+        //switch (ORG.device.orientation) {
+        //    case ORGDevice.ORIENTATION_PORTRAIT: break;
+        //    case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: rotation = THREE.Math.degToRad(180); break;
+        //    case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: rotation = THREE.Math.degToRad(90); break;
+        //    case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: rotation = THREE.Math.degToRad(-90); break;
+        //}
+        //const positionBackup = this._THREEDeviceAndScreenGroup.position;
+        //this._THREEDeviceAndScreenGroup.position.set(0, 0, 0);
+        //this._THREEDeviceAndScreenGroup.rotation.set(0, 0, rotation);
+        //this._THREEDeviceAndScreenGroup.position.set(positionBackup.x, positionBackup.y, positionBackup.z);
     }
 
 
@@ -1997,6 +2052,38 @@ class ORG3DScene {
             this._THREEDeviceAndScreenGroup.rotation.set( 0, 0, 0 );
             this._THREEDeviceAndScreenGroup.position.set( 0, kORGDevicePositionY, 0);
         }
+    }
+
+
+    /***
+     * Move the camera to the position that the device screen will fit on the scene.
+     */
+    deviceScreenCloseup() {
+        if (!this._deviceScreen) {
+            return;
+        }
+
+        const maxDim = Math.max(this._deviceScreen.screenSize.width, this._deviceScreen.screenSize.height);
+        const fov = this._THREECamera.fov * (Math.PI / 180);
+        const distance = Math.abs(maxDim/2 / Math.tan(fov / 2)) * 1.01;
+
+        // Avoid flickering by stopping screen updates
+        const liveScreen = this.flagContinuousScreenshot;
+        if ( liveScreen) {
+            this.setLiveScreen( false);
+        }
+
+        const _this = this;
+        new TWEEN.Tween(this._THREECamera.position).to( {
+            x: 0,
+            y: kORGDevicePositionY,
+            z: distance}, kORGCameraTWEENDuration)
+            .easing(TWEEN.Easing.Quadratic.InOut)
+            .onComplete( () => {
+                if (liveScreen) {
+                    _this.setLiveScreen( true);
+                }
+            }).start();
     }
 
     /**
@@ -2596,7 +2683,8 @@ class ORGContextMenuManager {
                     return {
                         items: {
                             "reset-camera-position": {name: "Reset Camera Position"},
-                            "reset-device-position": {name: "Reset Device Position"}
+                            "reset-device-position": {name: "Reset Device Position"},
+                            "device-screen-closeup": {name: "Device Screen Closeup"}
                         }
                     };
                 }
@@ -2613,6 +2701,9 @@ class ORGContextMenuManager {
      * @param event
      */
     onContextMenu(event) {
+        if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
+            return;
+        }
         $('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
         //$('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
     }
@@ -2695,6 +2786,9 @@ class ORGContextMenuManager {
             } break;
             case 'reset-device-position' : {
                 scene.resetDevicePosition();
+            } break;
+            case 'device-screen-closeup' : {
+                scene.deviceScreenCloseup();
             } break;
         }
     }
@@ -3408,8 +3502,25 @@ class ORGDevice {
         this.systemVersion = deviceInfo.systemVersion;
         this.productName = deviceInfo.productName;
         this.screenSize = deviceInfo.screenSize;
+        this._orientation = ORGDevice.ORIENTATION_PORTRAIT;
+        this._bodySize = this._bodySizeOfModel();
+        this._displaySize = this._displaySizeOfModel();
     }
 
+    static screenSizeInPortrait(size) {
+        if (size.width > size.height) {
+            return {width: size.height, height: size.width};
+        } else {
+            return size;
+        }
+    }
+
+    set orientation(orientation) {
+        this._orientation = orientation;
+    };
+    get orientation() {
+        return this._orientation;
+    };
     get isLikeiPhone5() {
         return this.productName.startsWith('iPhone 5');
     };
@@ -3428,6 +3539,83 @@ class ORGDevice {
      * @returns {{width: *, height: *}} in meters.
      */
     get bodySize() {
+        return Object.assign({}, this._bodySize);
+    }
+
+    /***
+     * Returns the size considering the orientation. If landascape, it will swap the portrait mode width and height.
+     * @returns {size}
+     */
+    get screenSizeWithOrientation() {
+        var screenSize = Object.assign({}, this.screenSize);
+        switch (this._orientation) {
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                screenSize = { width: screenSize.height, height: screenSize.width};
+            } break;
+        }
+        return screenSize;
+    }
+
+    /***
+     * Return the rotation in Z axis for the current orientation.
+     * @returns {number}
+     */
+    get orientationRotation() {
+        var rotation = 0;
+        switch (this._orientation) {
+            case ORGDevice.ORIENTATION_PORTRAIT: {
+            } break;
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+                rotation = THREE.Math.degToRad(180);
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                rotation = THREE.Math.degToRad(-90);
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+                rotation = THREE.Math.degToRad(90);
+            break;
+        }
+        return rotation;
+    }
+
+
+    /**
+     * Get displays' physical size. Gets the values from ORG.DeviceMetrics global.
+     * @returns {{width, height}|*} in meters.
+     */
+    get displaySize() {
+        return Object.assign({}, this._displaySize);
+    }
+
+    /***
+     * Returns the size considering the orientation. If landascape, it will swap the portrait mode width and height.
+     * @returns {size}
+     */
+    get displaySizeWithOrientation() {
+        var displaySize = Object.assign({}, this._displaySize);
+        switch (this._orientation) {
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                displaySize = { width: displaySize.height, height: displaySize.width};
+            } break;
+        }
+        return displaySize;
+    }
+
+    /**
+     * Scale from screen points to real device units. Considers orientation.
+     * @returns {{x: number, y: number}}
+     */
+    get displayScale() {
+        const displaySize = this.displaySizeWithOrientation;
+        const screenSize = this.screenSizeWithOrientation;
+        return {x:displaySize.width/screenSize.width, y:displaySize.height/screenSize.height};
+    }
+
+    // PRIVATE
+
+    _bodySizeOfModel() {
         var body = null;
         if (this.isLikeiPhone5) {
             body = ORG.DeviceMetrics.iPhone5.Body;
@@ -3443,11 +3631,7 @@ class ORGDevice {
         return {"width": math.unit( body.W ).toNumber('m'), "height": math.unit( body.H ).toNumber('m')};
     }
 
-    /**
-     * Get displays' physical size. Gets the values from ORG.DeviceMetrics global.
-     * @returns {{width, height}|*} in meters.
-     */
-    get displaySize() {
+    _displaySizeOfModel() {
         var display = null;
         if (this.isLikeiPhone5) {
             display = ORG.DeviceMetrics.iPhone5.Display;
@@ -3463,17 +3647,6 @@ class ORGDevice {
         return this._calculateDisplaySize( math.unit( display.Diagonal).toNumber('m'), display.Ratio );
     }
 
-    /**
-     * Scale from pixels to real device size
-     * @returns {{x: number, y: number}}
-     */
-    get displayScale() {
-        const displaySize = this.displaySize;
-        return { x:displaySize.width/this.screenSize.width, y:displaySize.height/this.screenSize.height};
-    }
-
-    // PRIVATE
-
     _calculateDisplaySize( diagonal, ratio ) {
         const w = Math.sqrt( Math.pow( diagonal, 2) / (1.0 +  Math.pow( ratio, 2)));
         const h = w * ratio;
@@ -3481,6 +3654,12 @@ class ORGDevice {
     }
 
 }
+
+ORGDevice.ORIENTATION_PORTRAIT = 0;
+ORGDevice.ORIENTATION_LANDSCAPE_LEFT = 1;
+ORGDevice.ORIENTATION_LANDSCAPE_RIGHT = 2;
+ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN = 3;
+
 /**
  * Created by jongabilondo on 22/09/2017.
  */
@@ -3864,74 +4043,70 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     openSession() {
-        var endpointURL = this.RESTPrefix  + "session";
-        this.xhr.open("POST", endpointURL, true);
-        this.xhr.onload = () => {
-
-            // request could have gone bad
-            if (this.xhr.status != 200) {
-                bootbox.alert({
-                    title: "Error requesting session from WDA.",
-                    message: this.xhr.statusText
-                });
-                return;
-            }
-
-            // Request was correct, process response
-            this._sessionInfo = JSON.parse(this.xhr.responseText);
-
-            // UI updates
-            ORG.dispatcher.dispatch({
-                actionType: 'wda-session-open'
-            });
-
-            bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
-
-            // 'Guess' the device by the size of the window.
-            this.requestWindowSize().then(
-                (result) => {
-                    ORG.device = this._deviceInfoFromWindowSize(result);
-                    ORG.testApp = new ORGTestApp( {name: "unknown", version: "unknown", bundleIdentifier: "unknown"} ); // we don't know anything about the app
-
-                    ORG.dispatcher.dispatch({ // UI updates
-                        actionType: 'device-info-update',
-                        device: ORG.device
-                    });
-
-                    // Get the device's 3D model
-                    if (ORG.scene.flagShowDevice3DModel) {
-                        ORG.scene.showDevice3DModel().then(
-                            (result) => {
-                                this._createDeviceScreenWithSnapshot(ORG.device);
-                            }
-                        );
+        return new Promise((resolve, reject) => {
+            var endpointURL = this.RESTPrefix + "session";
+            this.xhr.open("POST", endpointURL, true);
+            this.xhr.onload = () => {
+                if (this.xhr.status == 200) {
+                    const response = JSON.parse(this.xhr.responseText);
+                    if (response.status == 0) {
+                        this._sessionInfo = JSON.parse(this.xhr.responseText);
+                        resolve(this._sessionInfo);
                     } else {
-                        this._createDeviceScreenWithSnapshot(ORG.device);
+                        reject(this.xhr.responseText);
                     }
+
+                } else {
+                    reject(this.xhr.statusText);
+                }
+            }
+            this.xhr.onerror = () => {
+                reject(this.xhr.statusText);
+            }
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error opening session."));
+                }
+            }
+            this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'organismo.organismo.io'}}));
+        });
+    }
+
+    getDeviceInformation() {
+        return new Promise((resolve, reject) => {
+
+            // Get orientation
+            this.requestDeviceOrientation().then(
+                (result) => {
+                    const orientaton = result;
+
+                    // Get device screen size.
+                    this.requestWindowSize().then(
+                        (result) => {
+                            const screenSizePortrait = ORGDevice.screenSizeInPortrait(result);
+                            var device = this._deviceInfoFromWindowSize(screenSizePortrait);
+                            device.orientation = orientaton;
+                            resolve(device);
+                        },
+                        (err) => {
+                            reject(err);
+                        }
+                    ). catch(
+                        (err) => {
+                            reject(err);
+                        }
+                    )
                 },
                 (err) => {
-                    var safeErrorText = null;
-                    console.debug(err);
-                    bootbox.hideAll();
-
-                    if (err instanceof DOMException) {
-                        safeErrorText = err.name + ". " + err.message;
-                    } else {
-                        safeErrorText = (err.length < 2000 ?err :err.substring(0, 2000));
-                    }
-                    bootbox.alert({
-                        title: "Error getting UI tree.",
-                        message: safeErrorText
-                    })
-                })
-        };
-        this.xhr.onerror = () => {
-            ORG.dispatcher.dispatch({
-                actionType: 'wda-session-open-error',
-                error: this.xhr.statusText
-            });
-        };
-        this.xhr.send();
+                    reject(err);
+                }
+            ).catch(
+                (err) => {
+                    reject(err);
+                }
+            )
+        });
     }
 
     closeSession() {
@@ -3952,77 +4127,67 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         this.xhr.send();*/
     }
 
-    refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' });
-
-        // Get element tree
-        this.requestElementTree().then(
-            (result) => {
-                ORG.dispatcher.dispatch({
-                    actionType: 'ui-json-tree-update',
-                    tree: result.children,
-                    treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
-                });
-
-                // Get Screenshot.
-                this.requestScreenshot().then(
-                    (result) => {
-                        const base64Img = result;
-                        if (base64Img) {
-                            var img = new Image();
-                            img.src = "data:image/jpg;base64," + base64Img;
-
-                            // UI updates
-                            ORG.dispatcher.dispatch({
-                                actionType: 'screenshot-update',
-                                image: img
-                            });
-                        }
-                        bootbox.hideAll();
-
-                    },
-                    (err) => {
-                        const safeErrorText = (err.length < 2000 ?err :err.substring(0, 2000));
-                        console.debug(err);
-                        bootbox.hideAll();
-                        bootbox.alert({
-                            title: "Error getting Screenshot.",
-                            message: safeErrorText
-                        })
-                    })
-
-            },
-            (err) => {
-                console.debug(err);
-                bootbox.hideAll();
-                const safeErrorText = (err.length < 2000 ?((err.length==0) ?"Unknown error" :err) :err.substring(0, 2000));
-                bootbox.alert({
-                    title: "Error getting UI tree.",
-                    message: safeErrorText
-                })
-            })
+    requestDeviceOrientation() {
+        return new Promise((resolve, reject) => {
+            var endpointURL = this.RESTPrefixWithSession + "orientation";
+            this.xhr.open("GET", endpointURL, true);
+            this.xhr.onload = () => {
+                var response = JSON.parse(this.xhr.responseText);
+                if (response.status == 0) {
+                    var orientation = ORGDevice.ORIENTATION_PORTRAIT;
+                    switch (response.value) {
+                        case "PORTRAIT": break;
+                        case "LANDSCAPE": orientation = ORGDevice.ORIENTATION_LANDSCAPE_LEFT; break;
+                        case "UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT": orientation = ORGDevice.ORIENTATION_LANDSCAPE_RIGHT; break;
+                        case "UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN": orientation = ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN; break;
+                    }
+                    resolve(orientation);
+                } else {
+                    reject(response.value);
+                }
+            }
+            this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
+            this.xhr.send();
+        });
     }
 
     requestScreenshot() {
-
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "screenshot";
             this.xhr.open("GET", endpointURL, true);
             this.xhr.onload = () => {
                 var response = JSON.parse(this.xhr.responseText);
                 if (response.status == 0) {
-                    resolve(response.value);
+                    const base64Img = response.value;
+                    if (base64Img) {
+                        var img = new Image();
+                        img.src = "data:image/jpg;base64," + base64Img;
+                        img.onload = () => {
+                            resolve(img);
+                        }
+                    }
                 } else {
                     reject(response.value);
                 }
             }
             this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
             this.xhr.send();
         });
     }
 
     requestElementTree() {
-
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "source?format=json";
             this.xhr.open("GET", endpointURL, true);
@@ -4035,13 +4200,17 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 }
             }
             this.xhr.onerror = () => reject(this.xhr.statusText);
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
             this.xhr.send();
         });
     }
 
-
     requestWindowSize() {
-
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefixWithSession + "window/size";
             this.xhr.open("GET", endpointURL, true);
@@ -4050,7 +4219,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 if (response.status == 0) {
                     resolve(response.value);
                 } else {
-                    reject(response.value);
+                    reject(response.status);
                 }
             }
             this.xhr.onerror = () => {
@@ -4059,48 +4228,14 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             this.xhr.onabort = () => {
                 reject(this.xhr.statusText);
             }
+            this.xhr.onreadystatechange = () => {
+                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
+                }
+            }
             this.xhr.send();
         });
-    }
-
-    requestDeviceInfo() {
-        //const _this = this;
-        //
-        //// Not implemented in default WDA. "/deviceInfo"
-        //return new Promise((resolve, reject) => {
-        //    var endpointURL = _this.RESTPrefix + "deviceInfo";
-        //    _this.xhr.open("GET", endpointURL, true);
-        //    _this.xhr.onload = () => {
-        //        var response = JSON.parse(_this.xhr.responseText);
-        //        if (response.status == 0) {
-        //            resolve(response.value);
-        //        } else {
-        //            reject(response.value);
-        //        }
-        //    }
-        //    _this.xhr.onerror = () => reject(_this.xhr.statusText);
-        //    _this.xhr.send();
-        //});
-    }
-
-    requestAppInfo() {
-        //const _this = this;
-        //
-        //// Not implemented in default WDA. "/appInfo"
-        //return new Promise((resolve, reject) => {
-        //    var endpointURL = _this.RESTPrefix + "appInfo";
-        //    _this.xhr.open("GET", endpointURL, true);
-        //    _this.xhr.onload = () => {
-        //        var response = JSON.parse(_this.xhr.responseText);
-        //        if (response.status == 0) {
-        //            resolve(response.value);
-        //        } else {
-        //            reject(response.value);
-        //        }
-        //    }
-        //    _this.xhr.onerror = () => reject(_this.xhr.statusText);
-        //    _this.xhr.send();
-        //});
     }
 
     _deviceInfoFromTree(tree) {
@@ -4115,41 +4250,6 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         const deviceProductName = ORGDeviceMetrics.deviceWithScreenPoints(screenPoints);
         return new ORGDevice( {name:'', systemVersion: "", productName: deviceProductName, screenSize: screenPoints} );
     }
-
-    _createDeviceScreenWithSnapshot(device) {
-        ORG.scene.createDeviceScreen(device.displaySize.width, device.displaySize.height, 0);
-        ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
-        ORG.scene.devicePositionHasChanged();
-
-        // Get screenshot.
-        this.requestScreenshot().then(
-            (result) => {
-                const base64Img = result;
-                if (base64Img) {
-                    var img = new Image();
-                    img.src = "data:image/jpg;base64," + base64Img;
-
-                    // Be safe and do not use it in THREE until is loaded.
-                    img.onload = () => {
-                        ORG.dispatcher.dispatch({
-                            actionType: 'screenshot-update',
-                            image: img
-                        });
-                    }
-                }
-                bootbox.hideAll();
-
-            },
-            (err) => {
-                console.debug(err);
-                bootbox.hideAll();
-                bootbox.alert({
-                    title: "Error getting screenshot.",
-                    message: err
-                })
-            })
-    }
-
 }
 /**
  * Created by jongabilondo on 26/02/2017.
@@ -4302,7 +4402,7 @@ class ORG3DDeviceModelLoader {
 
         return new Promise((resolve, reject) => {
 
-            if ( device.productName.startsWith('iPhone 5')) {
+            if (device.productName.startsWith('iPhone 5')) {
                 this._load_iPhone_5(scene,device).then(
                     function(result) {
                         resolve(result);
@@ -4345,6 +4445,7 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            scene.setDeviceOrientation2(device.orientation);
                             resolve(true);
                         },
                         null, //on progress
@@ -4381,6 +4482,7 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            scene.setDeviceOrientation2(device.orientation);
                             resolve(true);
                         },
                         null, /*on progress*/
@@ -4441,30 +4543,75 @@ class ORG3DDeviceModel {
             return;
         }
 
+        var b = new THREE.Box3().setFromObject(this.threeObj);
+        var position = b.getCenter();
+        this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
+
         switch(orientation) {
             case "portrait" :
                 var rotation = this.threeObj.rotation;
-                var b = new THREE.Box3().setFromObject(this.threeObj);
-                var position = b.getCenter();
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
                 this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( -rotation.z ));
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
                 break;
             case "landscapeLeft" :
-                var b = new THREE.Box3().setFromObject(this.threeObj);
-                var position = b.getCenter();
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
                 this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad( -90 ) ));
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
                 break;
             case "landscapeRight" :
-                var b = new THREE.Box3().setFromObject(this.threeObj);
-                var position = b.getCenter();
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
                 this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad( 90 ) ));
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
                 break;
         }
+        this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, -position.z ) );
+    }
+
+    setOrientation2(orientation) {
+        if (!this.threeObj) {
+            return;
+        }
+
+        //const positionBackup = this.threeObj.position.clone();
+        //this.threeObj.position.set(positionBackup.x, positionBackup.y, -positionBackup.z);
+        //
+        /*switch (orientation) {
+            case ORGDevice.ORIENTATION_PORTRAIT: {
+                this.threeObj.rotation.set(0, 0, 0);
+            } break;
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(180));
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(-90));
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(90));
+                break;
+        }*/
+        //this.threeObj.position.copy(positionBackup);
+
+
+        // Make the rotation at 0, 0, 0.
+        //const b = new THREE.Box3().setFromObject(this.threeObj);
+        //const position = b.getCenter();
+        ////this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
+        //
+
+        var rotation = this.threeObj.rotation;
+        this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
+
+        switch (orientation) {
+            case ORGDevice.ORIENTATION_PORTRAIT: {
+                //var rotation = this.threeObj.rotation;
+                //this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
+            } break;
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+                this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(180)));
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(-90)));
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+                this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad(90)));
+                break;
+        }
+        //this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
     }
 
     getBoundingBox() {
@@ -4543,6 +4690,11 @@ class ORG3DDeviceScreen {
     set nextScreenshotImage(image) {
         this._nextScreenshotImage = image;
     }
+
+    set rotationZ(degrees) {
+        this._threeScreenPlane.rotation.set(0,0,degrees);
+    }
+
 
     hide() {
         if (this._threeScreenPlane) {
@@ -5769,16 +5921,25 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.scene.showHideBeaconTransformControls(payload.beacon);
             } break;
 
-            case 'device-info-update' : {
+            case 'device-info-update': {
                 ORG.UI.deviceNameLabel.text(payload.device.name);
                 ORG.UI.deviceSystemVersionLabel.text(payload.device.systemVersion);
                 ORG.UI.deviceModelLabel.text(payload.device.productName);
             } break;
 
-            case 'app-info-update' : {
+            case 'app-info-update': {
                 ORG.UI.testAppNameLabel.text(payload.app.name );
                 ORG.UI.testAppVersionLabel.text(payload.app.version );
                 ORG.UI.testAppBundleIdLabel.text(payload.app.bundleIdentifier );
+            } break;
+
+            case 'device-orientation-changed': {
+                if (ORG.device) {
+                    ORG.device.orientation = payload.orientation;
+                }
+                if (ORG.scene) {
+                    ORG.scene.setDeviceOrientation2(payload.orientation);
+                }
             } break;
 
             //************************************************************
@@ -5788,10 +5949,10 @@ class ORGFluxStore extends FluxUtils.Store {
             case 'ui-json-tree-update': {
                 ORG.UIJSONTreeManager.update(payload.tree, payload.treeType);
             } break;
-            case 'ui-tree-refresh': {
-                bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting UI tree information...</div>' }); // Progress alert
-                ORG.deviceController.refreshUITree();
-            } break;
+            //case 'ui-tree-refresh': {
+            //    bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting UI tree information...</div>' }); // Progress alert
+            //    ORG.deviceController.refreshUITree();
+            //} break;
             case 'uitree-node-selected': {
                 $('#ui-json-tree-node').html(payload.html);
             } break;
@@ -6040,7 +6201,7 @@ ORG.dispatcher = new Flux.Dispatcher();
 ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
 
 ORG.fontLoader = new THREE.FontLoader();
-ORG.fontLoader.load( 'https://jongabilondoangulo.github.io/js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
     ORG.font_helvetiker_regular = font;
     ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
@@ -6083,43 +6244,12 @@ ORG.UI.testAppBundleIdLabel = $('#testapp-bundleid-label');
 ORG.UI.dropdownDriver = $('#selected'); // the button that holds the text
 
 $(".dropdown-menu a").click(function(){
-
     $(this).parents(".btn-group").children(":first").text($(this).text());
     $(this).parents(".btn-group").children(":first").val($(this).data("value"));
 });
 
-ORG.UI.connectButton.click(function(e) {
-    const serverUrl = $('#device-url');
-    var deviceURL = serverUrl.val();
-    if (deviceURL == "") {
-        deviceURL = "localhost";
-    }
-
-    // Create the controller for the selected protocol.
-    const driverName = ORG.UI.dropdownDriver.text().split(' ');
-    if (driverName[0] == "Organismo") {
-        if (! (ORG.deviceController instanceof ORGDeviceController)) {
-            ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
-        }
-    } else if (driverName[0] == "iDeviceControlProxy") {
-        if (! (ORG.deviceController instanceof ORGiMobileDeviceController)) {
-            ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
-        }
-    } else if (driverName[0] == "WDA") {
-        if (! (ORG.deviceController instanceof ORGDeviceWDAController)) {
-            ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
-        }
-    }
-
-    // Connect ot disconnect.
-    if (ORG.deviceController.isConnected) {
-        ORG.deviceController.closeSession(); // It's not like disconnecting the device. On Disconnection the device disappears. Closing session the Device stays.
-        ORG.dispatcher.dispatch({
-            actionType: 'device-disconnect'
-        });
-    } else {
-        ORG.deviceController.openSession();  // Connect
-    }
+ORG.UI.connectButton.click(function() {
+    ORGConnectionActions.connect();
 });
 
 
@@ -6158,9 +6288,7 @@ ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
 ORG.UI.refreshUITree.click(function (e) {
-    ORG.dispatcher.dispatch({
-        actionType: 'ui-tree-refresh'
-    });
+    ORGConnectionActions.refreshUITree();
 });
 
 // Sliders
@@ -6905,9 +7033,9 @@ class ORG3DUIElement {
      * @return THREE.Box2 with the bounds of the element in the screen.
      */
     getBoundsInDeviceScreen(device, deviceScreen) {
-        const deviceDisplaySize = device.displaySize;
+        const deviceDisplaySize = device.displaySizeWithOrientation;
         const deviceDisplayScale = device.displayScale;
-        const deviceScreenSize = device.screenSize; // In points
+        const deviceScreenSize = device.screenSizeWithOrientation; // In points
         const screenPlanePosition = deviceScreen.screenWorldPosition; // in world coordinates
         const elementBounds = this.bounds; // In points
 
@@ -7194,6 +7322,234 @@ class ORGUIJSONOrganismoTreeAdaptor {
         return (key == "text" || key == "state" || key == "subviews" || key == "nodes" || key == "$el" || key == "screenshot" || key == "nodeId" || key == "parentId");
     }
 
+}
+/**
+ * Created by jongabilondo on 05/02/2018.
+ */
+
+class ORGConnectionActions {
+
+    static connect() {
+        const serverUrl = $('#device-url');
+        var deviceURL = serverUrl.val();
+        if (deviceURL == "") {
+            deviceURL = "localhost";
+        }
+
+        // Create the controller for the selected protocol.
+        const driverName = ORG.UI.dropdownDriver.text().split(' ');
+        if (driverName[0] == "Organismo") {
+            if (! (ORG.deviceController instanceof ORGDeviceController)) {
+                ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
+            }
+        } else if (driverName[0] == "iDeviceControlProxy") {
+            if (! (ORG.deviceController instanceof ORGiMobileDeviceController)) {
+                ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
+            }
+        } else if (driverName[0] == "WDA") {
+            if (! (ORG.deviceController instanceof ORGDeviceWDAController)) {
+                ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
+            }
+        }
+
+        // Connect / disconnect.
+        if (ORG.deviceController.isConnected) {
+            this.disconnect();
+        } else {
+            this.connectWithController(ORG.deviceController);
+        }
+    }
+
+    static disconnect() {
+        ORG.deviceController.closeSession(); // It's not equivalent to disconnecting the device. On Disconnection the device disappears. Closing session the Device stays.
+        ORG.dispatcher.dispatch({
+            actionType: 'device-disconnect'
+        });
+    }
+
+    static connectWithController(controller) {
+        var screenshot;
+        this.openSession(controller)
+            .then(this.getDeviceInformation)
+            .then(this.getScreenshot)
+            .then(
+                (result) => {
+                    screenshot = result;
+
+                    this.getDeviceModel()
+                        .then((result) => {
+                            this.addDeviceToScene(screenshot);
+                        }, (err) => {
+                            this.handleError(err);
+                        })
+                        .catch((err) => {
+                            bootbox.hideAll();
+                            this.handleError(err);
+                        })
+                        .finally(() => {
+                            bootbox.hideAll();
+                        })
+
+                }, (err) => {
+                    bootbox.hideAll();
+                    this.handleError(err);
+                })
+            .catch((err) => {
+                bootbox.hideAll();
+                this.handleError(err);
+            })
+    }
+
+    static refreshUITree() {
+        bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</div>' });
+
+        // Get orientation
+        ORG.deviceController.requestDeviceOrientation().then(
+            (result) => {
+                const orientaton = result; // update UI bellow once we get the screenshot
+
+                // Get element tree
+                ORG.deviceController.requestElementTree().then(
+                    (result) => {
+                        ORG.dispatcher.dispatch({
+                            actionType: 'ui-json-tree-update',
+                            tree: result.children,
+                            treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
+                        });
+
+                        // Get Screenshot.
+                        ORG.deviceController.requestScreenshot().then(
+                            (result) => {
+                                const img = result;
+                                if (orientaton != ORG.device.orientation) {
+                                    ORG.dispatcher.dispatch({
+                                        actionType: 'device-orientation-changed',
+                                        orientation: orientaton
+                                    });
+                                }
+                                ORG.dispatcher.dispatch({
+                                    actionType: 'screenshot-update',
+                                    image: img
+                                });
+                                bootbox.hideAll();
+                            }
+                        ).catch((err) => {
+                            bootbox.hideAll();
+                            this.handleError(err);
+                        })
+                    }
+                ).catch((err) => {
+                    bootbox.hideAll();
+                    this.handleError(err);
+                })
+            }
+        ).catch((err) => {
+                bootbox.hideAll();
+                this.handleError(err);
+        })
+    }
+
+    static openSession(controller) {
+        return new Promise( (resolve, reject) => {
+            controller.openSession().then(
+                (result) => {
+                    ORG.dispatcher.dispatch({
+                        actionType: 'wda-session-open'
+                    });
+
+                    bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
+
+                    resolve();
+                }, (err) => {
+                    reject(err);
+                }
+            ).catch( (err) => {
+                reject(err);
+            })
+        })
+    }
+
+    static getDeviceInformation() {
+        return new Promise( (resolve, reject) => {
+            ORG.deviceController.getDeviceInformation().then(
+                (result) => {
+                    ORG.device = result;
+                    ORG.testApp = new ORGTestApp( {name: "unknown", version: "unknown", bundleIdentifier: "unknown"} ); // we don't know anything about the app
+
+                    ORG.dispatcher.dispatch({
+                        actionType: 'device-info-update',
+                        device: ORG.device
+                    })
+                    resolve();
+                }, (err) => {
+                    reject(err);
+                }
+            ).catch( (err) => {
+                reject(err);
+            })
+        })
+    }
+
+    static getScreenshot() {
+        return new Promise( (resolve, reject) => {
+            ORG.deviceController.requestScreenshot().then(
+                (result) => {
+                    resolve(result);
+                }, (err) => {
+                    reject(err);
+                }
+            ).catch( (err) => {
+                reject(err);
+            })
+        })
+    }
+
+    static getDeviceModel() {
+        return new Promise( (resolve, reject) => {
+            ORG.scene.showDevice3DModel().then(
+                (result) => {
+                    resolve();
+                }, (err) => {
+                    reject(err);
+                }
+            ).catch( (err) => {
+                reject(err);
+            })
+        })
+    }
+
+    static addDeviceToScene(screenshot) {
+        //return new Promise( (resolve, reject) => {
+            // Now create the screen and show the snapshot
+            ORG.scene.createDeviceScreen(ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
+            ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
+            ORG.scene.devicePositionHasChanged();
+            ORG.scene.setDeviceOrientation2(ORG.device.orientation);
+
+            ORG.dispatcher.dispatch({
+                actionType: 'screenshot-update',
+                image: screenshot
+            });
+            //resolve();
+          //})
+    }
+
+    static handleError(err) {
+        if (err instanceof ORGError) {
+            if (err.id == ORGERR.ERR_CONNECTION_REFUSED) {
+                ORG.dispatcher.dispatch({
+                    actionType: 'wda-session-open-error',
+                    error: err.message
+                })
+            }
+        } else if (typeof err === "string") {
+            const safeErrorText = (err.length < 2000 ?((err.length==0) ?"Unknown error" :err) :err.substring(0, 2000));
+            bootbox.alert({
+                title: "Error",
+                message: safeErrorText
+            });
+        }
+    }
 }
 /**
  * Created by jongabilondo on 04/05/2016.

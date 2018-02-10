@@ -70,6 +70,11 @@ class ORG3DDeviceScreen {
         this._nextScreenshotImage = image;
     }
 
+    set rotationZ(degrees) {
+        this._threeScreenPlane.rotation.set(0,0,degrees);
+    }
+
+
     hide() {
         if (this._threeScreenPlane) {
             this._threeScreenPlane.visible = false;

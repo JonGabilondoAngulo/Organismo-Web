@@ -14,8 +14,25 @@ class ORGDevice {
         this.systemVersion = deviceInfo.systemVersion;
         this.productName = deviceInfo.productName;
         this.screenSize = deviceInfo.screenSize;
+        this._orientation = ORGDevice.ORIENTATION_PORTRAIT;
+        this._bodySize = this._bodySizeOfModel();
+        this._displaySize = this._displaySizeOfModel();
     }
 
+    static screenSizeInPortrait(size) {
+        if (size.width > size.height) {
+            return {width: size.height, height: size.width};
+        } else {
+            return size;
+        }
+    }
+
+    set orientation(orientation) {
+        this._orientation = orientation;
+    };
+    get orientation() {
+        return this._orientation;
+    };
     get isLikeiPhone5() {
         return this.productName.startsWith('iPhone 5');
     };
@@ -34,6 +51,83 @@ class ORGDevice {
      * @returns {{width: *, height: *}} in meters.
      */
     get bodySize() {
+        return Object.assign({}, this._bodySize);
+    }
+
+    /***
+     * Returns the size considering the orientation. If landascape, it will swap the portrait mode width and height.
+     * @returns {size}
+     */
+    get screenSizeWithOrientation() {
+        var screenSize = Object.assign({}, this.screenSize);
+        switch (this._orientation) {
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                screenSize = { width: screenSize.height, height: screenSize.width};
+            } break;
+        }
+        return screenSize;
+    }
+
+    /***
+     * Return the rotation in Z axis for the current orientation.
+     * @returns {number}
+     */
+    get orientationRotation() {
+        var rotation = 0;
+        switch (this._orientation) {
+            case ORGDevice.ORIENTATION_PORTRAIT: {
+            } break;
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+                rotation = THREE.Math.degToRad(180);
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                rotation = THREE.Math.degToRad(-90);
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+                rotation = THREE.Math.degToRad(90);
+            break;
+        }
+        return rotation;
+    }
+
+
+    /**
+     * Get displays' physical size. Gets the values from ORG.DeviceMetrics global.
+     * @returns {{width, height}|*} in meters.
+     */
+    get displaySize() {
+        return Object.assign({}, this._displaySize);
+    }
+
+    /***
+     * Returns the size considering the orientation. If landascape, it will swap the portrait mode width and height.
+     * @returns {size}
+     */
+    get displaySizeWithOrientation() {
+        var displaySize = Object.assign({}, this._displaySize);
+        switch (this._orientation) {
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                displaySize = { width: displaySize.height, height: displaySize.width};
+            } break;
+        }
+        return displaySize;
+    }
+
+    /**
+     * Scale from screen points to real device units. Considers orientation.
+     * @returns {{x: number, y: number}}
+     */
+    get displayScale() {
+        const displaySize = this.displaySizeWithOrientation;
+        const screenSize = this.screenSizeWithOrientation;
+        return {x:displaySize.width/screenSize.width, y:displaySize.height/screenSize.height};
+    }
+
+    // PRIVATE
+
+    _bodySizeOfModel() {
         var body = null;
         if (this.isLikeiPhone5) {
             body = ORG.DeviceMetrics.iPhone5.Body;
@@ -49,11 +143,7 @@ class ORGDevice {
         return {"width": math.unit( body.W ).toNumber('m'), "height": math.unit( body.H ).toNumber('m')};
     }
 
-    /**
-     * Get displays' physical size. Gets the values from ORG.DeviceMetrics global.
-     * @returns {{width, height}|*} in meters.
-     */
-    get displaySize() {
+    _displaySizeOfModel() {
         var display = null;
         if (this.isLikeiPhone5) {
             display = ORG.DeviceMetrics.iPhone5.Display;
@@ -69,17 +159,6 @@ class ORGDevice {
         return this._calculateDisplaySize( math.unit( display.Diagonal).toNumber('m'), display.Ratio );
     }
 
-    /**
-     * Scale from pixels to real device size
-     * @returns {{x: number, y: number}}
-     */
-    get displayScale() {
-        const displaySize = this.displaySize;
-        return { x:displaySize.width/this.screenSize.width, y:displaySize.height/this.screenSize.height};
-    }
-
-    // PRIVATE
-
     _calculateDisplaySize( diagonal, ratio ) {
         const w = Math.sqrt( Math.pow( diagonal, 2) / (1.0 +  Math.pow( ratio, 2)));
         const h = w * ratio;
@@ -87,3 +166,8 @@ class ORGDevice {
     }
 
 }
+
+ORGDevice.ORIENTATION_PORTRAIT = 0;
+ORGDevice.ORIENTATION_LANDSCAPE_LEFT = 1;
+ORGDevice.ORIENTATION_LANDSCAPE_RIGHT = 2;
+ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN = 3;

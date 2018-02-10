@@ -43,7 +43,7 @@ class ORG3DScene {
         this._THREEDeviceAndScreenGroup = null; // Holds the screen and the device model
         this._keyboardState = null;
         this._threeClock = null;
-        this._deviceScreenSize = null;
+        //this._deviceScreenSize = null;
         this._uiExpanded = false;
         this._canvasDomElement = null; // the table cell where the renderer will be created, it contains _rendererDOMElement
         this._rendererDOMElement = null; // threejs scene is displayed in this DOM element
@@ -299,7 +299,6 @@ class ORG3DScene {
     //--
     createDeviceScreen(width, height, zPosition) {
         this._addDeviceAndScreenGroup();
-        this._deviceScreenSize = { width:width, height:height};
         this._deviceScreen = new ORG3DDeviceScreen(width, height, 0/*kORGDevicePositionY*/, zPosition, this._THREEScene);
         this._THREEDeviceAndScreenGroup.add( this._deviceScreen.screenPlane );
     }
@@ -346,13 +345,17 @@ class ORG3DScene {
         this._addDeviceAndScreenGroup();
         this._device3DModel = device3DModel;
         this._THREEDeviceAndScreenGroup.add(this._device3DModel.THREEObject);
-        //this._THREEDeviceAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
         this.devicePositionHasChanged();
     }
 
     showDevice3DModel() {
         return new Promise((resolve, reject) => {
             this.hideDevice3DModel();
+
+            if (!this.flagShowDevice3DModel) {
+                reject();
+            }
+
             ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY).then(
                 function(result) {
                     resolve(result);
@@ -388,6 +391,35 @@ class ORG3DScene {
             this._device3DModel.setOrientation(orientation);
         }
         this.devicePositionHasChanged();
+    }
+
+    setDeviceOrientation2(orientation) {
+        if (!this._THREEDeviceAndScreenGroup) {
+            return;
+        }
+
+        // Recreate the screen with new size
+        if (this._deviceScreen) {
+            const screenSize = ORG.device.displaySizeWithOrientation;
+            this.removeDeviceScreen();
+            this.createDeviceScreen( screenSize.width, screenSize.height, 0);
+            this.createRaycasterForDeviceScreen();
+        }
+
+        // Rotate the device
+        this._device3DModel.setOrientation2(ORG.device.orientation);
+
+        //var rotation = 0;
+        //switch (ORG.device.orientation) {
+        //    case ORGDevice.ORIENTATION_PORTRAIT: break;
+        //    case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: rotation = THREE.Math.degToRad(180); break;
+        //    case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: rotation = THREE.Math.degToRad(90); break;
+        //    case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: rotation = THREE.Math.degToRad(-90); break;
+        //}
+        //const positionBackup = this._THREEDeviceAndScreenGroup.position;
+        //this._THREEDeviceAndScreenGroup.position.set(0, 0, 0);
+        //this._THREEDeviceAndScreenGroup.rotation.set(0, 0, rotation);
+        //this._THREEDeviceAndScreenGroup.position.set(positionBackup.x, positionBackup.y, positionBackup.z);
     }
 
 
@@ -605,6 +637,38 @@ class ORG3DScene {
             this._THREEDeviceAndScreenGroup.rotation.set( 0, 0, 0 );
             this._THREEDeviceAndScreenGroup.position.set( 0, kORGDevicePositionY, 0);
         }
+    }
+
+
+    /***
+     * Move the camera to the position that the device screen will fit on the scene.
+     */
+    deviceScreenCloseup() {
+        if (!this._deviceScreen) {
+            return;
+        }
+
+        const maxDim = Math.max(this._deviceScreen.screenSize.width, this._deviceScreen.screenSize.height);
+        const fov = this._THREECamera.fov * (Math.PI / 180);
+        const distance = Math.abs(maxDim/2 / Math.tan(fov / 2)) * 1.01;
+
+        // Avoid flickering by stopping screen updates
+        const liveScreen = this.flagContinuousScreenshot;
+        if ( liveScreen) {
+            this.setLiveScreen( false);
+        }
+
+        const _this = this;
+        new TWEEN.Tween(this._THREECamera.position).to( {
+            x: 0,
+            y: kORGDevicePositionY,
+            z: distance}, kORGCameraTWEENDuration)
+            .easing(TWEEN.Easing.Quadratic.InOut)
+            .onComplete( () => {
+                if (liveScreen) {
+                    _this.setLiveScreen( true);
+                }
+            }).start();
     }
 
     /**

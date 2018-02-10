@@ -34,9 +34,7 @@ ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
 ORG.UI.refreshUITree.click(function (e) {
-    ORG.dispatcher.dispatch({
-        actionType: 'ui-tree-refresh'
-    });
+    ORGConnectionActions.refreshUITree();
 });
 
 // Sliders

@@ -20,7 +20,7 @@ ORG.dispatcher = new Flux.Dispatcher();
 ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
 
 ORG.fontLoader = new THREE.FontLoader();
-ORG.fontLoader.load( 'https://jongabilondoangulo.github.io/js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
     ORG.font_helvetiker_regular = font;
     ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
