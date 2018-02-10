@@ -7356,7 +7356,14 @@ class ORGConnectionActions {
         if (ORG.deviceController.isConnected) {
             this.disconnect();
         } else {
-            this.connectWithController(ORG.deviceController);
+            switch (ORG.deviceController.type) {
+                case "ORG": {
+                    ORG.deviceController.openSession();
+                } break;
+                case "WDA": {
+                    this.connectWithController(ORG.deviceController);
+                } break;
+            }
         }
     }
 
@@ -7367,44 +7374,51 @@ class ORGConnectionActions {
         });
     }
 
-    static connectWithController(controller) {
-        var screenshot;
-        this.openSession(controller)
-            .then(this.getDeviceInformation)
-            .then(this.getScreenshot)
-            .then(
-                (result) => {
-                    screenshot = result;
-
-                    this.getDeviceModel()
-                        .then((result) => {
-                            this.addDeviceToScene(screenshot);
-                        }, (err) => {
-                            this.handleError(err);
-                        })
-                        .catch((err) => {
-                            bootbox.hideAll();
-                            this.handleError(err);
-                        })
-                        .finally(() => {
-                            bootbox.hideAll();
-                        })
-
-                }, (err) => {
-                    bootbox.hideAll();
-                    this.handleError(err);
-                })
-            .catch((err) => {
-                bootbox.hideAll();
-                this.handleError(err);
-            })
+    static async connectWithController(controller) {
+        try {
+            var session = await this.openSession();
+            var device = await this.getDeviceInformation();
+            var screenshot = await this.getScreenshot();
+            var model = await this.getDeviceModel();
+            this.addDeviceToScene(screenshot);
+        } catch(err) {
+            this.handleError(err);
+        } finally {
+            bootbox.hideAll();
+        }
     }
 
-    static refreshUITree() {
+    static async refreshUITree() {
         bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</div>' });
 
+        try {
+            var orientation = await ORG.deviceController.requestDeviceOrientation();
+            var tree = await ORG.deviceController.requestElementTree();
+            var screenshot = await this.getScreenshot();
+
+            ORG.dispatcher.dispatch({
+                actionType: 'ui-json-tree-update',
+                tree: tree.children,
+                treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
+            });
+            if (orientation != ORG.device.orientation) {
+                ORG.dispatcher.dispatch({
+                    actionType: 'device-orientation-changed',
+                    orientation: orientation
+                });
+            }
+            ORG.dispatcher.dispatch({
+                actionType: 'screenshot-update',
+                image: screenshot
+            });
+        } catch(err) {
+            this.handleError(err);
+        } finally {
+            bootbox.hideAll();
+        }
+
         // Get orientation
-        ORG.deviceController.requestDeviceOrientation().then(
+       /* ORG.deviceController.requestDeviceOrientation().then(
             (result) => {
                 const orientaton = result; // update UI bellow once we get the screenshot
 
@@ -7446,12 +7460,12 @@ class ORGConnectionActions {
         ).catch((err) => {
                 bootbox.hideAll();
                 this.handleError(err);
-        })
+        })*/
     }
 
-    static openSession(controller) {
+    static openSession() {
         return new Promise( (resolve, reject) => {
-            controller.openSession().then(
+            ORG.deviceController.openSession().then(
                 (result) => {
                     ORG.dispatcher.dispatch({
                         actionType: 'wda-session-open'
@@ -7459,7 +7473,7 @@ class ORGConnectionActions {
 
                     bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
 
-                    resolve();
+                    resolve(result);
                 }, (err) => {
                     reject(err);
                 }
@@ -7480,7 +7494,7 @@ class ORGConnectionActions {
                         actionType: 'device-info-update',
                         device: ORG.device
                     })
-                    resolve();
+                    resolve(result);
                 }, (err) => {
                     reject(err);
                 }
@@ -7491,6 +7505,14 @@ class ORGConnectionActions {
     }
 
     static getScreenshot() {
+/*        return Promise.all(
+            ORG.deviceController.requestScreenshot())
+            .then( (result) => { console.debug(result) },
+            (err) => { console.debug(err) })
+            /!*.catch( (err) => {
+                Promise.reject(err);
+            });*!/*/
+
         return new Promise( (resolve, reject) => {
             ORG.deviceController.requestScreenshot().then(
                 (result) => {
