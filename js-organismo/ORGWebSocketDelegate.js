@@ -136,7 +136,30 @@ class ORGWebSocketDelegate {
 	 * @param messageJSON
 	 */
 	_processResponse(messageJSON) {
-		if ( messageJSON.request == ORG.Request.DeviceInfo) {
+		switch (messageJSON.request) {
+			case ORG.Request.DeviceInfo: {
+                this._processResponseDeviceInfo(messageJSON.data);
+            } break;
+			case ORG.Request.AppInfo: {
+                this._processResponseAppInfo(messageJSON);
+            } break;
+			case ORG.Request.Screenshot: {
+                this._processReportScreenshot(messageJSON);
+            } break;
+			case ORG.Request.ElementTree: {
+                this._processReportElementTree(messageJSON);
+            }break;
+			case ORG.Request.SystemInfo: {
+                this._processReportSystemInfo(messageJSON);
+            } break;
+            case ORG.Request.ClassHierarchy: {
+                this._processResponseClassHierarchy(messageJSON);
+            } break;
+			default: {
+				console.debug('Unknown response from Device.');
+			}
+		}
+		/*if ( messageJSON.request == ORG.Request.DeviceInfo) {
 			this._processResponseDeviceInfo(messageJSON.data);
 		} else if ( messageJSON.request == ORG.Request.AppInfo) {
             this._processResponseAppInfo(messageJSON);
@@ -146,7 +169,7 @@ class ORGWebSocketDelegate {
             this._processReportElementTree(messageJSON);
         } else if ( messageJSON.request == ORG.Request.SystemInfo) {
             this._processReportSystemInfo(messageJSON);
-		}
+		}*/
 	}
 
 	/**
@@ -210,7 +233,6 @@ class ORGWebSocketDelegate {
 	 * @param messageJSON
 	 */
 	_processResponseAppInfo(messageJSON) {
-
 		ORG.testApp = new ORGTestApp( messageJSON.data );
 
         // UI updates
@@ -223,6 +245,15 @@ class ORGWebSocketDelegate {
         //ORG.UI.testAppVersionLabel.text( ORG.testApp.version );
         //ORG.UI.testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
 	}
+
+    /***
+     * Method to process a response with class hierarchy info coming from the Device.
+     * @param messageJSON
+     * @private
+     */
+	_processResponseClassHierarchy(messageJSON) {
+        ORG.UIJSONTreeManager.showClassHierarchy(messageJSON.data);
+    }
 
 	/**
 	 * Method to process a message response with screenshot information.
@@ -269,7 +300,7 @@ class ORGWebSocketDelegate {
     _processReportSystemInfo( reportData ) {
         var systemInfoData = reportData.data;
         if ( !!systemInfoData ) {
-			if ( ORG.systemInfoManager) {
+			if (ORG.systemInfoManager) {
 				ORG.systemInfoManager.dataUpdate( systemInfoData );
             }
         }

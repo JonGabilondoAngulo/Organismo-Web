@@ -105,7 +105,7 @@ class ORG3DDeviceScreen {
      * @param element3D - A ORG3DUIElement that can be WDA/Org ...
      */
     highlightUIElement(element3D) {
-        if (element3D) {
+        if (element3D && element3D.hasSize) {
             // Calculate element bounds in device screen in 3D world
             const kZOffsetFromScreen = 0.0005;
             const elementBox2InScreen = element3D.getBoundsInDeviceScreen(ORG.device, this);

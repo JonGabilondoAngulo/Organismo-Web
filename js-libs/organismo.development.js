@@ -5,6 +5,22 @@
 var ORG = ORG || {};
 ORG.UI = {};
 /**
+ * Created by jongabilondo on 14/02/2018.
+ */
+
+// Constants
+ORG.Request = {
+    Request : "request",
+    Update : "update",
+    AppInfo : "app-info",
+    DeviceInfo : "device-info",
+    SystemInfo : "system-info",
+    Screenshot : "screenshot",
+    ElementTree : "element-tree",
+    ClassHierarchy : "class-hierarchy"
+};
+
+/**
  * Created by jongabilondo on 24/01/2018.
  */
 
@@ -1424,7 +1440,7 @@ const ORGSceneVisualizationMask = {
     ShowLocation : 0x8,
     ContinuousUpdate : 0x10
 }
-const kORGCameraTWEENDuration = 600.0; // ms
+const kORGCameraTWEENDuration = 2000.0; // ms
 const kORGFloorPositionY = 0.0; // m
 const kORGDevicePositionY = 1.5; // m
 const kORGCameraPositionZ = 0.2; // m
@@ -1538,6 +1554,9 @@ class ORG3DScene {
         this._expanding = expanding;
     }
 
+    get contextMenuManager() {
+        return this._contextMenuManager;
+    }
     /**
      * Scene flags
      */
@@ -1772,10 +1791,10 @@ class ORG3DScene {
             }
 
             ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY).then(
-                function(result) {
+                (result) => {
                     resolve(result);
                 },
-                function(error) {
+                (error) => {
                     reject(error);
                 });
         });
@@ -1952,7 +1971,7 @@ class ORG3DScene {
 
     collapseAndExpandAnimated() {
         const _this = this;
-        this.collapse( function () {
+        this.collapse( () => {
             _this.expand();
         } )
     }
@@ -1967,7 +1986,7 @@ class ORG3DScene {
             const _this = this;
             const requestScreenshot = this.flagContinuousScreenshot;
 
-            this._uiTreeModel.collapseWithCompletion( function() {
+            this._uiTreeModel.collapseWithCompletion( () => {
                 if (_this._deviceScreen) {
                     _this._deviceScreen.show();
                 }
@@ -2028,7 +2047,7 @@ class ORG3DScene {
             y: kORGDevicePositionY,
             z: kORGCameraPositionZ}, kORGCameraTWEENDuration)
             .easing( TWEEN.Easing.Quadratic.InOut)
-            .onComplete(function () {
+            .onComplete( () => {
                 if (liveScreen) {
                     _this.setLiveScreen( true);
                 }
@@ -2078,7 +2097,7 @@ class ORG3DScene {
             x: 0,
             y: kORGDevicePositionY,
             z: distance}, kORGCameraTWEENDuration)
-            .easing(TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quintic.InOut)
             .onComplete( () => {
                 if (liveScreen) {
                     _this.setLiveScreen( true);
@@ -2245,7 +2264,7 @@ class ORG3DScene {
         this._threeClock = new THREE.Clock();
 
         // Create the rightMouse click manager
-        this._contextMenuManager = new ORGContextMenuManager(this);
+        this._contextMenuManager = new ORGContextMenuManager(this, '#threejs-canvas');
 
         // Create a mouse event listener and associate delegates
         this._mouseListener = new ORGMouseListener( this._rendererDOMElement);
@@ -2349,7 +2368,7 @@ class ORG3DScene {
 
         const _this = this;
 
-        requestAnimationFrame( function() {
+        requestAnimationFrame( () => {
             _this._THREERenderer.render( _this._THREEScene, _this._THREECamera);
             _this._THREEOrbitControls.update();
             _this._updateScene();
@@ -2543,7 +2562,7 @@ class ORGMessageBuilder {
 
     static deviceInfo() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.DeviceInfo
             }
@@ -2553,7 +2572,7 @@ class ORGMessageBuilder {
 
     static systemInfo() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.SystemInfo
             }
@@ -2563,7 +2582,7 @@ class ORGMessageBuilder {
 
     static appInfo() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.AppInfo
             }
@@ -2573,7 +2592,7 @@ class ORGMessageBuilder {
 
     static takeScreenshot() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.Screenshot
             }
@@ -2583,7 +2602,7 @@ class ORGMessageBuilder {
 
     static elementTree(parameters) {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.ElementTree,
                 parameters: parameters
@@ -2594,7 +2613,7 @@ class ORGMessageBuilder {
 
     static gesture(gesture, parameters) {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: gesture,
                 parameters:parameters
@@ -2603,9 +2622,9 @@ class ORGMessageBuilder {
         return JSON.stringify(msg);
     }
 
-    static locationUpdate( location, elevation) {
+    static locationUpdate(location, elevation) {
         var msg = {
-            type: "update",
+            type: ORG.Request.Update,
             data: {
             }
         };
@@ -2618,15 +2637,26 @@ class ORGMessageBuilder {
         return JSON.stringify(msg);
     }
 
-    static attitudeUpdate( quaternion) {
+    static attitudeUpdate(quaternion) {
         var msg = {
-            type: "update",
+            type: ORG.Request.Update,
             data: {
             }
         };
         if (quaternion) {
             msg.data.deviceAttitude = { qx:quaternion.x, qy:quaternion.z, qz:quaternion.y, qw:quaternion.w };
         }
+        return JSON.stringify(msg);
+    }
+
+    static classHierarchy(className) {
+        var msg = {
+            type: ORG.Request.Request,
+            data: {
+                request: ORG.Request.ClassHierarchy,
+                parameters:{className: className}
+            }
+        };
         return JSON.stringify(msg);
     }
 }
@@ -2647,17 +2677,19 @@ class ORGContextMenuManager {
     /**
      *
      * @param scene The ORG scene.
+     * @param contextElement the element where the context menu shows up.
      */
-    constructor( scene ) {
+    constructor(scene, contextElement) {
         this._selectedThreeObject = null; // the three obj where the mouse is on.
         this._intersectionPoint = null;
         this._scene = scene; // We will need to get information from some objects in the scene
+        this._contextElement = contextElement;
 
         /**
          * Instantiate the context menu
          */
         $.contextMenu({
-            selector: '#content-wrapper',//threejs-canvas',
+            selector: this._contextElement,
             trigger: 'none',
             build: ($trigger, e) => {
                 if (this._selectedThreeObject) {
@@ -2704,8 +2736,8 @@ class ORGContextMenuManager {
         if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
             return;
         }
-        $('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
-        //$('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
+        //$('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
+        $(this._contextElement).contextMenu({x:event.clientX, y:event.clientY});
     }
 
     /**
@@ -2789,6 +2821,113 @@ class ORGContextMenuManager {
             } break;
             case 'device-screen-closeup' : {
                 scene.deviceScreenCloseup();
+            } break;
+        }
+    }
+}
+/**
+ * Created by jongabilondo on 13/02/2018.
+ */
+
+/***
+ * Class to wrapp the functionality of the UITree context menu
+ */
+class ORGUITreeContextMenuManager {
+
+    /**
+     *
+     * @param contextElement the element where the context menu shows up.
+     */
+    constructor(contextElement) {
+        this._node = null;
+        this._contextElement = contextElement;
+
+        // Instantiate the context menu
+        $.contextMenu({
+            selector: this._contextElement,
+            trigger: 'none',
+            build: ($trigger, e) => {
+                if (ORG.deviceController.type == "WDA") {
+                    return {
+                        items: {
+                            "tap": {name: "Tap"},
+                            "long-press": {name: "Long Press"},
+                            "swipe": {
+                                name: "Swipe",
+                                items: {
+                                    "swipe-left": {name: "Left"},
+                                    "swipe-right": {name: "Right"},
+                                    "swipe-up": {name: "Up"},
+                                    "swipe-down": {name: "Down"},
+                                }
+                            },
+                            "-": {name: "-"},
+                            "look-at": {name: "Look at"},
+                            "look-front-at": {name: "Look Front at"}
+                        }
+                    };
+                } else {
+                    return {
+                        items: {
+                            "show-class-hierarchy": {name: "Class Hierarchy"}
+                        }
+                    };
+                }
+            },
+            callback: (key, options) => {
+                this._processMenuSelection(key);
+            }
+        });
+    }
+
+
+    /**
+     * Shows the context menu at the point of event.
+     * @param event
+     */
+    onContextMenu(event, node) {
+        if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
+            return;
+        }
+        this._node = node.representedNode;
+        $(this._contextElement).contextMenu({x:node.clientX, y:node.clientY});
+    }
+
+    /**
+     * The user has selected a menu option. This function will respond to the selection.
+     * @param menuOptionKey The string that represents the selected menu option.
+     */
+    _processMenuSelection(menuOptionKey) {
+
+        switch (menuOptionKey) {
+            case 'tap': {
+                alert('Not implemented');
+            } break;
+            case 'long-press': {
+                alert('Not implemented');
+            } break;
+            case 'swipe-left': {
+                alert('Not implemented');
+            } break;
+            case 'swipe-right': {
+                alert('Not implemented');
+            } break;
+            case 'swipe-up': {
+                alert('Not implemented');
+            } break;
+            case 'swipe-down': {
+                alert('Not implemented');
+            } break;
+            case 'look-at' : {
+                alert('Not implemented');
+            } break;
+            case 'look-front-at': {
+                alert('Not implemented');
+            } break;
+            case 'show-class-hierarchy': {
+                if (this._node && (typeof this._node.class != undefined)) {
+                    ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.class));
+                }
             } break;
         }
     }
@@ -4726,7 +4865,7 @@ class ORG3DDeviceScreen {
      * @param element3D - A ORG3DUIElement that can be WDA/Org ...
      */
     highlightUIElement(element3D) {
-        if (element3D) {
+        if (element3D && element3D.hasSize) {
             // Calculate element bounds in device screen in 3D world
             const kZOffsetFromScreen = 0.0005;
             const elementBox2InScreen = element3D.getBoundsInDeviceScreen(ORG.device, this);
@@ -4932,7 +5071,30 @@ class ORGWebSocketDelegate {
 	 * @param messageJSON
 	 */
 	_processResponse(messageJSON) {
-		if ( messageJSON.request == ORG.Request.DeviceInfo) {
+		switch (messageJSON.request) {
+			case ORG.Request.DeviceInfo: {
+                this._processResponseDeviceInfo(messageJSON.data);
+            } break;
+			case ORG.Request.AppInfo: {
+                this._processResponseAppInfo(messageJSON);
+            } break;
+			case ORG.Request.Screenshot: {
+                this._processReportScreenshot(messageJSON);
+            } break;
+			case ORG.Request.ElementTree: {
+                this._processReportElementTree(messageJSON);
+            }break;
+			case ORG.Request.SystemInfo: {
+                this._processReportSystemInfo(messageJSON);
+            } break;
+            case ORG.Request.ClassHierarchy: {
+                this._processResponseClassHierarchy(messageJSON);
+            } break;
+			default: {
+				console.debug('Unknown response from Device.');
+			}
+		}
+		/*if ( messageJSON.request == ORG.Request.DeviceInfo) {
 			this._processResponseDeviceInfo(messageJSON.data);
 		} else if ( messageJSON.request == ORG.Request.AppInfo) {
             this._processResponseAppInfo(messageJSON);
@@ -4942,7 +5104,7 @@ class ORGWebSocketDelegate {
             this._processReportElementTree(messageJSON);
         } else if ( messageJSON.request == ORG.Request.SystemInfo) {
             this._processReportSystemInfo(messageJSON);
-		}
+		}*/
 	}
 
 	/**
@@ -5006,7 +5168,6 @@ class ORGWebSocketDelegate {
 	 * @param messageJSON
 	 */
 	_processResponseAppInfo(messageJSON) {
-
 		ORG.testApp = new ORGTestApp( messageJSON.data );
 
         // UI updates
@@ -5019,6 +5180,15 @@ class ORGWebSocketDelegate {
         //ORG.UI.testAppVersionLabel.text( ORG.testApp.version );
         //ORG.UI.testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
 	}
+
+    /***
+     * Method to process a response with class hierarchy info coming from the Device.
+     * @param messageJSON
+     * @private
+     */
+	_processResponseClassHierarchy(messageJSON) {
+        ORG.UIJSONTreeManager.showClassHierarchy(messageJSON.data);
+    }
 
 	/**
 	 * Method to process a message response with screenshot information.
@@ -5065,7 +5235,7 @@ class ORGWebSocketDelegate {
     _processReportSystemInfo( reportData ) {
         var systemInfoData = reportData.data;
         if ( !!systemInfoData ) {
-			if ( ORG.systemInfoManager) {
+			if (ORG.systemInfoManager) {
 				ORG.systemInfoManager.dataUpdate( systemInfoData );
             }
         }
@@ -5963,6 +6133,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.scene.highlightUIElement(null);
             } break;
 
+
             //************************************************************
             // 3D UI TREE
             //************************************************************
@@ -6180,13 +6351,6 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
 }
 
 
-// Constants
-ORG.Request = {
-    AppInfo : "app-info",
-    DeviceInfo : "device-info",
-    SystemInfo : "system-info",
-    Screenshot : "screenshot",
-    ElementTree : "element-tree"};
 
 ORG.contentWrapper = document.getElementById('content-wrapper');
 ORG.leftSection = document.getElementById('3d-canvas-col');
@@ -6201,7 +6365,7 @@ ORG.dispatcher = new Flux.Dispatcher();
 ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
 
 ORG.fontLoader = new THREE.FontLoader();
-ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json',  ( font ) => {
 
     ORG.font_helvetiker_regular = font;
     ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
@@ -6219,6 +6383,7 @@ ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.
 
     // UI JSON Tree
     ORG.UIJSONTreeManager = new ORGUIJSONTreeManager(document.getElementById('ui-json-tree'), document.getElementById('ui-json-tree-node'));
+    ORG.UIJSONTreeContextMenuManager = new ORGUITreeContextMenuManager('#ui-json-tree');
 
     // Install handler for Window Resize
     var resizer = ORG.WindowResize( ORG.scene.THREERenderer, ORG.scene.THREECamera, ORG.canvasDomElem, ORG.contentWrapper, ORG.leftSection, ORG.rightSection);
@@ -6288,7 +6453,11 @@ ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
 ORG.UI.refreshUITree.click(function (e) {
-    ORGConnectionActions.refreshUITree();
+    if (ORG.deviceController.type == "WDA") {
+        ORGConnectionActions.refreshUITree();
+    } else {
+        ORG.deviceController.refreshUITree();
+    }
 });
 
 // Sliders
@@ -7026,6 +7195,10 @@ class ORG3DUIElement {
         throw new Error("Subclasses must override this method.");
     }
 
+    get hasSize() {
+        throw new Error("Subclasses must override this method.");
+    }
+
     /***
      * Calculates the Box2 of the element in the given device screen.
      * @param device. The ORGDevice of the connected device.
@@ -7066,6 +7239,11 @@ class ORG3DWDAUIElement extends ORG3DUIElement {
             right: this.elementJSON.rect.x + this.elementJSON.rect.width};
     }
 
+    get hasSize() {
+        const bounds = this.bounds;
+        return (bounds.right - bounds.left) > 0 && (bounds.bottom - bounds.top) > 0;
+    }
+
 }
 /**
  * Created by jongabilondo on 25/01/2018.
@@ -7077,6 +7255,12 @@ class ORG3DORGUIElement extends ORG3DUIElement {
     get bounds() {
         return this.elementJSON.bounds;
     }
+
+    get hasSize() {
+        const bounds = this.bounds;
+        return (bounds.right - bounds.left) > 0 && (bounds.bottom - bounds.top) > 0;
+    }
+
 }
 /**
  * Created by jongabilondo on 02/12/2017.
@@ -7092,7 +7276,6 @@ class ORGUIJSONTreeManager {
     }
 
     update(jsonTree, treeType) {
-
         if (treeType === undefined) {
             console.debug('Tree update requested but type undefined.');
             return;
@@ -7124,15 +7307,25 @@ class ORGUIJSONTreeManager {
             showBorder:false,
             expandIcon:'glyphicon glyphicon-triangle-right',
             collapseIcon:'glyphicon glyphicon-triangle-bottom',
-            onNodeSelected: function (event, node) { _this._nodeSelected(event, node);},
-            onNodeEnter: function (event, node) { _this._nodeEnter(event, node);},
-            onNodeLeave: function (event, node) { _this._nodeLeave(event, node);},
+            onNodeSelected: (event, node) => { _this._nodeSelected(event, node);},
+            onNodeEnter: (event, node) => { _this._nodeEnter(event, node);},
+            onNodeLeave: (event, node) => { _this._nodeLeave(event, node);},
+            onNodeContextMenu: (event, node) => { _this._nodeContextMenu(event, node);}
         } );
     }
 
     remove() {
         $(this._treePlaceholder).treeview('remove');
         $(this._nodePlaceholder).html("");
+    }
+
+    showClassHierarchy(classHierarchy) {
+        var html = "<h4><b>" + "Hierarchy" + "</b></h4>";
+
+        for (let className of classHierarchy) {
+            html += '<div style="text-align: center;"><h4><span class="label label-primary text-center">' + className + '</span></h4></div>';
+        }
+        $(this._nodePlaceholder).html(html);
     }
 
     _nodeSelected(event, node) {
@@ -7174,6 +7367,13 @@ class ORGUIJSONTreeManager {
         ORG.dispatcher.dispatch({
             actionType: 'uitree-node-leave'
         });
+    }
+
+    _nodeContextMenu(event, node) {
+        //event.clientX = node.clientX;
+        //event.clientY = node.clientY;
+        ORG.UIJSONTreeContextMenuManager.onContextMenu(event, node);
+        //$('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
     }
 }
 
@@ -7382,7 +7582,7 @@ class ORGConnectionActions {
             var model = await this.getDeviceModel();
             this.addDeviceToScene(screenshot);
         } catch(err) {
-            this.handleError(err);
+            this._handleError(err);
         } finally {
             bootbox.hideAll();
         }
@@ -7412,55 +7612,10 @@ class ORGConnectionActions {
                 image: screenshot
             });
         } catch(err) {
-            this.handleError(err);
+            this._handleError(err);
         } finally {
             bootbox.hideAll();
         }
-
-        // Get orientation
-       /* ORG.deviceController.requestDeviceOrientation().then(
-            (result) => {
-                const orientaton = result; // update UI bellow once we get the screenshot
-
-                // Get element tree
-                ORG.deviceController.requestElementTree().then(
-                    (result) => {
-                        ORG.dispatcher.dispatch({
-                            actionType: 'ui-json-tree-update',
-                            tree: result.children,
-                            treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
-                        });
-
-                        // Get Screenshot.
-                        ORG.deviceController.requestScreenshot().then(
-                            (result) => {
-                                const img = result;
-                                if (orientaton != ORG.device.orientation) {
-                                    ORG.dispatcher.dispatch({
-                                        actionType: 'device-orientation-changed',
-                                        orientation: orientaton
-                                    });
-                                }
-                                ORG.dispatcher.dispatch({
-                                    actionType: 'screenshot-update',
-                                    image: img
-                                });
-                                bootbox.hideAll();
-                            }
-                        ).catch((err) => {
-                            bootbox.hideAll();
-                            this.handleError(err);
-                        })
-                    }
-                ).catch((err) => {
-                    bootbox.hideAll();
-                    this.handleError(err);
-                })
-            }
-        ).catch((err) => {
-                bootbox.hideAll();
-                this.handleError(err);
-        })*/
     }
 
     static openSession() {
@@ -7505,14 +7660,6 @@ class ORGConnectionActions {
     }
 
     static getScreenshot() {
-/*        return Promise.all(
-            ORG.deviceController.requestScreenshot())
-            .then( (result) => { console.debug(result) },
-            (err) => { console.debug(err) })
-            /!*.catch( (err) => {
-                Promise.reject(err);
-            });*!/*/
-
         return new Promise( (resolve, reject) => {
             ORG.deviceController.requestScreenshot().then(
                 (result) => {
@@ -7556,7 +7703,11 @@ class ORGConnectionActions {
           //})
     }
 
-    static handleError(err) {
+    static getElementClassHierarchy(element) {
+        ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(element.className));
+    }
+
+    static _handleError(err) {
         if (err instanceof ORGError) {
             if (err.id == ORGERR.ERR_CONNECTION_REFUSED) {
                 ORG.dispatcher.dispatch({

@@ -9,7 +9,7 @@ class ORGMessageBuilder {
 
     static deviceInfo() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.DeviceInfo
             }
@@ -19,7 +19,7 @@ class ORGMessageBuilder {
 
     static systemInfo() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.SystemInfo
             }
@@ -29,7 +29,7 @@ class ORGMessageBuilder {
 
     static appInfo() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.AppInfo
             }
@@ -39,7 +39,7 @@ class ORGMessageBuilder {
 
     static takeScreenshot() {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.Screenshot
             }
@@ -49,7 +49,7 @@ class ORGMessageBuilder {
 
     static elementTree(parameters) {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: ORG.Request.ElementTree,
                 parameters: parameters
@@ -60,7 +60,7 @@ class ORGMessageBuilder {
 
     static gesture(gesture, parameters) {
         var msg = {
-            type: "request",
+            type: ORG.Request.Request,
             data: {
                 request: gesture,
                 parameters:parameters
@@ -69,9 +69,9 @@ class ORGMessageBuilder {
         return JSON.stringify(msg);
     }
 
-    static locationUpdate( location, elevation) {
+    static locationUpdate(location, elevation) {
         var msg = {
-            type: "update",
+            type: ORG.Request.Update,
             data: {
             }
         };
@@ -84,15 +84,26 @@ class ORGMessageBuilder {
         return JSON.stringify(msg);
     }
 
-    static attitudeUpdate( quaternion) {
+    static attitudeUpdate(quaternion) {
         var msg = {
-            type: "update",
+            type: ORG.Request.Update,
             data: {
             }
         };
         if (quaternion) {
             msg.data.deviceAttitude = { qx:quaternion.x, qy:quaternion.z, qz:quaternion.y, qw:quaternion.w };
         }
+        return JSON.stringify(msg);
+    }
+
+    static classHierarchy(className) {
+        var msg = {
+            type: ORG.Request.Request,
+            data: {
+                request: ORG.Request.ClassHierarchy,
+                parameters:{className: className}
+            }
+        };
         return JSON.stringify(msg);
     }
 }

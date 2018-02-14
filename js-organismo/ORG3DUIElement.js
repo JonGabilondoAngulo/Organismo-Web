@@ -25,6 +25,10 @@ class ORG3DUIElement {
         throw new Error("Subclasses must override this method.");
     }
 
+    get hasSize() {
+        throw new Error("Subclasses must override this method.");
+    }
+
     /***
      * Calculates the Box2 of the element in the given device screen.
      * @param device. The ORGDevice of the connected device.

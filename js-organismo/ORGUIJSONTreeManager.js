@@ -12,7 +12,6 @@ class ORGUIJSONTreeManager {
     }
 
     update(jsonTree, treeType) {
-
         if (treeType === undefined) {
             console.debug('Tree update requested but type undefined.');
             return;
@@ -44,15 +43,25 @@ class ORGUIJSONTreeManager {
             showBorder:false,
             expandIcon:'glyphicon glyphicon-triangle-right',
             collapseIcon:'glyphicon glyphicon-triangle-bottom',
-            onNodeSelected: function (event, node) { _this._nodeSelected(event, node);},
-            onNodeEnter: function (event, node) { _this._nodeEnter(event, node);},
-            onNodeLeave: function (event, node) { _this._nodeLeave(event, node);},
+            onNodeSelected: (event, node) => { _this._nodeSelected(event, node);},
+            onNodeEnter: (event, node) => { _this._nodeEnter(event, node);},
+            onNodeLeave: (event, node) => { _this._nodeLeave(event, node);},
+            onNodeContextMenu: (event, node) => { _this._nodeContextMenu(event, node);}
         } );
     }
 
     remove() {
         $(this._treePlaceholder).treeview('remove');
         $(this._nodePlaceholder).html("");
+    }
+
+    showClassHierarchy(classHierarchy) {
+        var html = "<h4><b>" + "Hierarchy" + "</b></h4>";
+
+        for (let className of classHierarchy) {
+            html += '<div style="text-align: center;"><h4><span class="label label-primary text-center">' + className + '</span></h4></div>';
+        }
+        $(this._nodePlaceholder).html(html);
     }
 
     _nodeSelected(event, node) {
@@ -94,6 +103,13 @@ class ORGUIJSONTreeManager {
         ORG.dispatcher.dispatch({
             actionType: 'uitree-node-leave'
         });
+    }
+
+    _nodeContextMenu(event, node) {
+        //event.clientX = node.clientX;
+        //event.clientY = node.clientY;
+        ORG.UIJSONTreeContextMenuManager.onContextMenu(event, node);
+        //$('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
     }
 }
 

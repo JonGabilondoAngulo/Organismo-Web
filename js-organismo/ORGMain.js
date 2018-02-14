@@ -1,11 +1,4 @@
 
-// Constants
-ORG.Request = {
-    AppInfo : "app-info",
-    DeviceInfo : "device-info",
-    SystemInfo : "system-info",
-    Screenshot : "screenshot",
-    ElementTree : "element-tree"};
 
 ORG.contentWrapper = document.getElementById('content-wrapper');
 ORG.leftSection = document.getElementById('3d-canvas-col');
@@ -20,7 +13,7 @@ ORG.dispatcher = new Flux.Dispatcher();
 ORG.fluxStore = new ORGFluxStore(ORG.dispatcher);
 
 ORG.fontLoader = new THREE.FontLoader();
-ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.typeface.json',  ( font ) => {
 
     ORG.font_helvetiker_regular = font;
     ORG.scene = new ORG3DScene(ORG.canvasDomElem, {"width":320, "height":568});
@@ -38,6 +31,7 @@ ORG.fontLoader.load( 'js-third-party/three.js/examples/fonts/helvetiker_regular.
 
     // UI JSON Tree
     ORG.UIJSONTreeManager = new ORGUIJSONTreeManager(document.getElementById('ui-json-tree'), document.getElementById('ui-json-tree-node'));
+    ORG.UIJSONTreeContextMenuManager = new ORGUITreeContextMenuManager('#ui-json-tree');
 
     // Install handler for Window Resize
     var resizer = ORG.WindowResize( ORG.scene.THREERenderer, ORG.scene.THREECamera, ORG.canvasDomElem, ORG.contentWrapper, ORG.leftSection, ORG.rightSection);

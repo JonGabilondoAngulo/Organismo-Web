@@ -8,4 +8,10 @@ class ORG3DORGUIElement extends ORG3DUIElement {
     get bounds() {
         return this.elementJSON.bounds;
     }
+
+    get hasSize() {
+        const bounds = this.bounds;
+        return (bounds.right - bounds.left) > 0 && (bounds.bottom - bounds.top) > 0;
+    }
+
 }

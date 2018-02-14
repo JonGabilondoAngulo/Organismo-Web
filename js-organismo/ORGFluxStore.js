@@ -57,6 +57,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.scene.highlightUIElement(null);
             } break;
 
+
             //************************************************************
             // 3D UI TREE
             //************************************************************

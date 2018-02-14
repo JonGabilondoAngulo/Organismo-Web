@@ -34,7 +34,11 @@ ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
 ORG.UI.refreshUITree.click(function (e) {
-    ORGConnectionActions.refreshUITree();
+    if (ORG.deviceController.type == "WDA") {
+        ORGConnectionActions.refreshUITree();
+    } else {
+        ORG.deviceController.refreshUITree();
+    }
 });
 
 // Sliders

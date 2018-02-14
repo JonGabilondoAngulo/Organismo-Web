@@ -57,7 +57,7 @@ class ORGConnectionActions {
             var model = await this.getDeviceModel();
             this.addDeviceToScene(screenshot);
         } catch(err) {
-            this.handleError(err);
+            this._handleError(err);
         } finally {
             bootbox.hideAll();
         }
@@ -87,7 +87,7 @@ class ORGConnectionActions {
                 image: screenshot
             });
         } catch(err) {
-            this.handleError(err);
+            this._handleError(err);
         } finally {
             bootbox.hideAll();
         }
@@ -135,14 +135,6 @@ class ORGConnectionActions {
     }
 
     static getScreenshot() {
-/*        return Promise.all(
-            ORG.deviceController.requestScreenshot())
-            .then( (result) => { console.debug(result) },
-            (err) => { console.debug(err) })
-            /!*.catch( (err) => {
-                Promise.reject(err);
-            });*!/*/
-
         return new Promise( (resolve, reject) => {
             ORG.deviceController.requestScreenshot().then(
                 (result) => {
@@ -186,7 +178,11 @@ class ORGConnectionActions {
           //})
     }
 
-    static handleError(err) {
+    static getElementClassHierarchy(element) {
+        ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(element.className));
+    }
+
+    static _handleError(err) {
         if (err instanceof ORGError) {
             if (err.id == ORGERR.ERR_CONNECTION_REFUSED) {
                 ORG.dispatcher.dispatch({

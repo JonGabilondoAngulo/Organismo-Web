@@ -9,7 +9,7 @@ const ORGSceneVisualizationMask = {
     ShowLocation : 0x8,
     ContinuousUpdate : 0x10
 }
-const kORGCameraTWEENDuration = 600.0; // ms
+const kORGCameraTWEENDuration = 2000.0; // ms
 const kORGFloorPositionY = 0.0; // m
 const kORGDevicePositionY = 1.5; // m
 const kORGCameraPositionZ = 0.2; // m
@@ -123,6 +123,9 @@ class ORG3DScene {
         this._expanding = expanding;
     }
 
+    get contextMenuManager() {
+        return this._contextMenuManager;
+    }
     /**
      * Scene flags
      */
@@ -357,10 +360,10 @@ class ORG3DScene {
             }
 
             ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY).then(
-                function(result) {
+                (result) => {
                     resolve(result);
                 },
-                function(error) {
+                (error) => {
                     reject(error);
                 });
         });
@@ -537,7 +540,7 @@ class ORG3DScene {
 
     collapseAndExpandAnimated() {
         const _this = this;
-        this.collapse( function () {
+        this.collapse( () => {
             _this.expand();
         } )
     }
@@ -552,7 +555,7 @@ class ORG3DScene {
             const _this = this;
             const requestScreenshot = this.flagContinuousScreenshot;
 
-            this._uiTreeModel.collapseWithCompletion( function() {
+            this._uiTreeModel.collapseWithCompletion( () => {
                 if (_this._deviceScreen) {
                     _this._deviceScreen.show();
                 }
@@ -613,7 +616,7 @@ class ORG3DScene {
             y: kORGDevicePositionY,
             z: kORGCameraPositionZ}, kORGCameraTWEENDuration)
             .easing( TWEEN.Easing.Quadratic.InOut)
-            .onComplete(function () {
+            .onComplete( () => {
                 if (liveScreen) {
                     _this.setLiveScreen( true);
                 }
@@ -663,7 +666,7 @@ class ORG3DScene {
             x: 0,
             y: kORGDevicePositionY,
             z: distance}, kORGCameraTWEENDuration)
-            .easing(TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quintic.InOut)
             .onComplete( () => {
                 if (liveScreen) {
                     _this.setLiveScreen( true);
@@ -830,7 +833,7 @@ class ORG3DScene {
         this._threeClock = new THREE.Clock();
 
         // Create the rightMouse click manager
-        this._contextMenuManager = new ORGContextMenuManager(this);
+        this._contextMenuManager = new ORGContextMenuManager(this, '#threejs-canvas');
 
         // Create a mouse event listener and associate delegates
         this._mouseListener = new ORGMouseListener( this._rendererDOMElement);
@@ -934,7 +937,7 @@ class ORG3DScene {
 
         const _this = this;
 
-        requestAnimationFrame( function() {
+        requestAnimationFrame( () => {
             _this._THREERenderer.render( _this._THREEScene, _this._THREECamera);
             _this._THREEOrbitControls.update();
             _this._updateScene();

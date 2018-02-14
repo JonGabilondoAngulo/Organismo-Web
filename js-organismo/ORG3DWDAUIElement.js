@@ -13,4 +13,9 @@ class ORG3DWDAUIElement extends ORG3DUIElement {
             right: this.elementJSON.rect.x + this.elementJSON.rect.width};
     }
 
+    get hasSize() {
+        const bounds = this.bounds;
+        return (bounds.right - bounds.left) > 0 && (bounds.bottom - bounds.top) > 0;
+    }
+
 }

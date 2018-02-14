@@ -9,6 +9,7 @@ var gulp = require('gulp')
 
 const sources = [
     'js-organismo/ORG.Namespaces.js',
+    'js-organismo/ORG.Constants.js',
     'js-organismo/ORG.DeviceMetrics.js',
     'js-organismo/ORGConstants.js',
     'js-organismo/ORGError.js',
@@ -22,6 +23,7 @@ const sources = [
     'js-organismo/ORG3DScene.js',
     'js-organismo/ORGMessageBuilder.js',
     'js-organismo/ORGContextMenuManager.js',
+    'js-organismo/ORGUITreeContextMenuManager.js',
     'js-organismo/ORGFloorMap.js',
     'js-organismo/ORGLocationProvider.js',
     'js-organismo/ORGMap.js',

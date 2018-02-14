@@ -15,17 +15,19 @@ class ORGContextMenuManager {
     /**
      *
      * @param scene The ORG scene.
+     * @param contextElement the element where the context menu shows up.
      */
-    constructor( scene ) {
+    constructor(scene, contextElement) {
         this._selectedThreeObject = null; // the three obj where the mouse is on.
         this._intersectionPoint = null;
         this._scene = scene; // We will need to get information from some objects in the scene
+        this._contextElement = contextElement;
 
         /**
          * Instantiate the context menu
          */
         $.contextMenu({
-            selector: '#content-wrapper',//threejs-canvas',
+            selector: this._contextElement,
             trigger: 'none',
             build: ($trigger, e) => {
                 if (this._selectedThreeObject) {
@@ -72,8 +74,8 @@ class ORGContextMenuManager {
         if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
             return;
         }
-        $('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
-        //$('#threejs-canvas').contextMenu({x:event.clientX, y:event.clientY});
+        //$('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
+        $(this._contextElement).contextMenu({x:event.clientX, y:event.clientY});
     }
 
     /**
