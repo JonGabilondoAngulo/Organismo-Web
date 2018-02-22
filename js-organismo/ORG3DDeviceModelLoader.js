@@ -58,9 +58,10 @@ class ORG3DDeviceModelLoader {
                             object.scale.set( scale, scale, scale );
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                            scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            scene.setDeviceOrientation2(device.orientation);
-                            resolve(true);
+                            var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
+                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            //scene.setDeviceOrientation2(device.orientation);
+                            resolve(deviceModel);
                         },
                         null, //on progress
                         (error) => {
@@ -95,9 +96,10 @@ class ORG3DDeviceModelLoader {
                             object.scale.set(scale, scale, scale);
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                            scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            scene.setDeviceOrientation2(device.orientation);
-                            resolve(true);
+                            var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
+                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            //scene.setDeviceOrientation2(device.orientation);
+                            resolve(deviceModel);
                         },
                         null, /*on progress*/
                         (error) => {

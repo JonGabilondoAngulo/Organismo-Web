@@ -149,9 +149,14 @@ class ORGFluxStore extends FluxUtils.Store {
             case 'wda-session-open-error' : {
                 bootbox.alert({
                     title: "Could not connect to device.",
-                    message: "1. Connect the device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. On USB connection a localport at 8100 must be opened (iproxy 8100 8100)."
+                    message: "1. Connect the device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. On USB connection, a localport at 8100 must be opened (iproxy 8100 8100)."
                 });
-                console.debug(payload.error);
+            } break;
+            case 'ws-session-open-error' : {
+                bootbox.alert({
+                    title: "Could not connect to device.",
+                    message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection, a localport at 5567 must be opened (iproxy 5567 5567)."
+                });
             } break;
             case 'wda-session-closed' :
             case 'websocket-closed' : {
@@ -164,7 +169,7 @@ class ORGFluxStore extends FluxUtils.Store {
                     if (payload.deviceController == "ORGDeviceController") {
                         bootbox.alert({
                             title: "Could not connect to device.",
-                            message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection a localport at 5567 must be opened (iproxy 5567 5567)."
+                            message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection, a localport at 5567 must be opened (iproxy 5567 5567)."
                         })
                     } else {
                         bootbox.alert("Error connecting to idevicecontrolproxy.\nMake sure the proxy is running.\nRead about it @ https://github.com/JonGabilondoAngulo/idevicecontrolproxy");
@@ -172,7 +177,6 @@ class ORGFluxStore extends FluxUtils.Store {
                 }
             }
         }
-
 
     }
 }

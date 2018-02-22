@@ -74,7 +74,6 @@ class ORGContextMenuManager {
         if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
             return;
         }
-        //$('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
         $(this._contextElement).contextMenu({x:event.clientX, y:event.clientY});
     }
 

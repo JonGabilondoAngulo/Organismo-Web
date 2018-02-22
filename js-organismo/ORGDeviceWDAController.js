@@ -42,7 +42,6 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                     } else {
                         reject(this.xhr.responseText);
                     }
-
                 } else {
                     reject(this.xhr.statusText);
                 }
@@ -51,20 +50,38 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 reject(this.xhr.statusText);
             }
             this.xhr.onreadystatechange = () => {
-                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                // Solution to get connection errors. Pitty there is no proper way to something so basic.
                 if (this.xhr.readyState == 4 && this.xhr.status == 0) {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error opening session."));
                 }
             }
-            this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'organismo.organismo.io'}}));
+            this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'com.apple.mobilephone'}}));
         });
+    }
+
+    closeSession() {
+        // UI updates
+        ORG.dispatcher.dispatch({
+            actionType: 'wda-session-closed'
+        });
+
+        /* THIS IS NOT WORKING
+         const _this = this;
+         var endpointURL = this.RESTPrefix + "/";
+         this.xhr.open("DELETE", endpointURL, true);
+         this.xhr.onreadystatechange = function() {
+         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+         _this._sessionInfo = null;
+         }
+         }
+         this.xhr.send();*/
     }
 
     getDeviceInformation() {
         return new Promise((resolve, reject) => {
 
             // Get orientation
-            this.requestDeviceOrientation().then(
+            this.getDeviceOrientation().then(
                 (result) => {
                     const orientaton = result;
 
@@ -96,25 +113,13 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         });
     }
 
-    closeSession() {
-        // UI updates
-        ORG.dispatcher.dispatch({
-            actionType: 'wda-session-closed'
+    getAppInformation() {
+        return new Promise((resolve, reject) => {
+            resolve(new ORGTestApp( {name: "", version: "", bundleIdentifier: ""} ));
         });
-
-        /* THIS IS NOT WORKING
-        const _this = this;
-        var endpointURL = this.RESTPrefix + "/";
-        this.xhr.open("DELETE", endpointURL, true);
-        this.xhr.onreadystatechange = function() {
-            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-                _this._sessionInfo = null;
-            }
-        }
-        this.xhr.send();*/
     }
 
-    requestDeviceOrientation() {
+    getDeviceOrientation() {
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefixWithSession + "orientation";
             this.xhr.open("GET", endpointURL, true);
@@ -144,7 +149,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         });
     }
 
-    requestScreenshot() {
+    getScreenshot() {
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "screenshot";
             this.xhr.open("GET", endpointURL, true);
@@ -152,12 +157,14 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 var response = JSON.parse(this.xhr.responseText);
                 if (response.status == 0) {
                     const base64Img = response.value;
-                    if (base64Img) {
+                    if (base64Img && Object.keys(base64Img).length) {
                         var img = new Image();
                         img.src = "data:image/jpg;base64," + base64Img;
                         img.onload = () => {
                             resolve(img);
                         }
+                    } else {
+                        reject(new ORGError(ORGERR.ERR_GENERAL, "Could not get screenshot."));
                     }
                 } else {
                     reject(response.value);
@@ -174,7 +181,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         });
     }
 
-    requestElementTree() {
+    getElementTree() {
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "source?format=json";
             this.xhr.open("GET", endpointURL, true);

@@ -89,7 +89,8 @@ class ORGDeviceMetrics {
 
 const ORGERR = {
     ERR_GENERAL: 100,
-    ERR_CONNECTION_REFUSED: 1000
+    ERR_CONNECTION_REFUSED: 1000,
+    ERR_WS_CONNECTION_REFUSED: 1001
 }
 
 class ORGError extends Error {
@@ -2736,7 +2737,6 @@ class ORGContextMenuManager {
         if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
             return;
         }
-        //$('#content-wrapper').contextMenu({x:event.clientX, y:event.clientY});
         $(this._contextElement).contextMenu({x:event.clientX, y:event.clientY});
     }
 
@@ -4084,6 +4084,7 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
         this.session = null;
         this.webSocketDelegate = delegate;
         this.webSocket = new ORGWebSocket();
+        this._ws = null;
     }
 
     get isConnected() {
@@ -4091,7 +4092,81 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
     }
 
     openSession() {
-        this.webSocket.open(this.IPandPort, this.webSocketDelegate);
+        //this.webSocket.open(this.IPandPort, this.webSocketDelegate);
+        return new Promise((resolve, reject) => {
+            const eConnectionRefused = new ORGError(ORGERR.ERR_WS_CONNECTION_REFUSED, "Error opening session.");
+            const url = "ws://" + this.IPandPort + "/main";
+            this._ws = new WebSocket(url);
+            this._ws.onopen = () => {
+                resolve({sessionId: 0});
+            };
+            this._ws.onclose = () => {
+                reject(eConnectionRefused)
+            };
+            this._ws.onmessage = (event) => {
+                reject(eConnectionRefused)
+            };
+            this._ws.onerror = (event) => {
+                reject(eConnectionRefused)
+            };
+        });
+    }
+
+    getDeviceInformation() {
+        return new Promise((resolve, reject) => {
+            this._ws.onopen = null;
+            this._ws.onclose = () => {
+                reject();
+            };
+            this._ws.onmessage = (msg) => {
+                const device = new ORGDevice(msg.data);
+                resolve(device);
+            };
+            this._ws.onerror = (event) => {
+                reject(event);
+            };
+            this._ws.send(ORGMessageBuilder.deviceInfo());
+        });
+    }
+
+    getAppInformation() {
+        return new Promise((resolve, reject) => {
+            this._ws.onopen = null;
+            this._ws.onclose = () => {
+                reject();
+            };
+            this._ws.onmessage = (msg) => {
+                const appInfo = new ORGTestApp(msg.data);
+                resolve(appInfo);
+            };
+            this._ws.onerror = (event) => {
+                reject(event);
+            };
+            this._ws.send(ORGMessageBuilder.appInfo());
+        });
+    }
+
+    getScreenshot() {
+        return new Promise((resolve, reject) => {
+            this._ws.onopen = null;
+            this._ws.onclose = () => {
+                reject();
+            };
+            this._ws.onmessage = (msg) => {
+                var base64Img = msg.data.screenshot;
+                if (base64Img) {
+                    var img = new Image();
+                    img.src = "data:image/jpg;base64," + base64Img;
+                    img.onload = () => {
+                        resolve(img);
+                    }
+                }
+            };
+            this._ws.onerror = (event) => {
+                reject(event);
+            };
+            this._ws.send(ORGMessageBuilder.takeScreenshot());
+        })
     }
 
     closeSession() {
@@ -4194,7 +4269,6 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                     } else {
                         reject(this.xhr.responseText);
                     }
-
                 } else {
                     reject(this.xhr.statusText);
                 }
@@ -4203,20 +4277,38 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 reject(this.xhr.statusText);
             }
             this.xhr.onreadystatechange = () => {
-                // Solution to get connection errors. Pitty there is no proper way to something so important.
+                // Solution to get connection errors. Pitty there is no proper way to something so basic.
                 if (this.xhr.readyState == 4 && this.xhr.status == 0) {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error opening session."));
                 }
             }
-            this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'organismo.organismo.io'}}));
+            this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'com.apple.mobilephone'}}));
         });
+    }
+
+    closeSession() {
+        // UI updates
+        ORG.dispatcher.dispatch({
+            actionType: 'wda-session-closed'
+        });
+
+        /* THIS IS NOT WORKING
+         const _this = this;
+         var endpointURL = this.RESTPrefix + "/";
+         this.xhr.open("DELETE", endpointURL, true);
+         this.xhr.onreadystatechange = function() {
+         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+         _this._sessionInfo = null;
+         }
+         }
+         this.xhr.send();*/
     }
 
     getDeviceInformation() {
         return new Promise((resolve, reject) => {
 
             // Get orientation
-            this.requestDeviceOrientation().then(
+            this.getDeviceOrientation().then(
                 (result) => {
                     const orientaton = result;
 
@@ -4248,25 +4340,13 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         });
     }
 
-    closeSession() {
-        // UI updates
-        ORG.dispatcher.dispatch({
-            actionType: 'wda-session-closed'
+    getAppInformation() {
+        return new Promise((resolve, reject) => {
+            resolve(new ORGTestApp( {name: "", version: "", bundleIdentifier: ""} ));
         });
-
-        /* THIS IS NOT WORKING
-        const _this = this;
-        var endpointURL = this.RESTPrefix + "/";
-        this.xhr.open("DELETE", endpointURL, true);
-        this.xhr.onreadystatechange = function() {
-            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-                _this._sessionInfo = null;
-            }
-        }
-        this.xhr.send();*/
     }
 
-    requestDeviceOrientation() {
+    getDeviceOrientation() {
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefixWithSession + "orientation";
             this.xhr.open("GET", endpointURL, true);
@@ -4296,7 +4376,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         });
     }
 
-    requestScreenshot() {
+    getScreenshot() {
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "screenshot";
             this.xhr.open("GET", endpointURL, true);
@@ -4304,12 +4384,14 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 var response = JSON.parse(this.xhr.responseText);
                 if (response.status == 0) {
                     const base64Img = response.value;
-                    if (base64Img) {
+                    if (base64Img && Object.keys(base64Img).length) {
                         var img = new Image();
                         img.src = "data:image/jpg;base64," + base64Img;
                         img.onload = () => {
                             resolve(img);
                         }
+                    } else {
+                        reject(new ORGError(ORGERR.ERR_GENERAL, "Could not get screenshot."));
                     }
                 } else {
                     reject(response.value);
@@ -4326,7 +4408,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         });
     }
 
-    requestElementTree() {
+    getElementTree() {
         return new Promise((resolve, reject) => {
             var endpointURL = this.RESTPrefix + "source?format=json";
             this.xhr.open("GET", endpointURL, true);
@@ -4583,9 +4665,10 @@ class ORG3DDeviceModelLoader {
                             object.scale.set( scale, scale, scale );
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                            scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            scene.setDeviceOrientation2(device.orientation);
-                            resolve(true);
+                            var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
+                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            //scene.setDeviceOrientation2(device.orientation);
+                            resolve(deviceModel);
                         },
                         null, //on progress
                         (error) => {
@@ -4620,9 +4703,10 @@ class ORG3DDeviceModelLoader {
                             object.scale.set(scale, scale, scale);
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                            scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            scene.setDeviceOrientation2(device.orientation);
-                            resolve(true);
+                            var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
+                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
+                            //scene.setDeviceOrientation2(device.orientation);
+                            resolve(deviceModel);
                         },
                         null, /*on progress*/
                         (error) => {
@@ -6225,9 +6309,14 @@ class ORGFluxStore extends FluxUtils.Store {
             case 'wda-session-open-error' : {
                 bootbox.alert({
                     title: "Could not connect to device.",
-                    message: "1. Connect the device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. On USB connection a localport at 8100 must be opened (iproxy 8100 8100)."
+                    message: "1. Connect the device.<br/>2. The WebDriverAgent must be running on your device.<br/>3. On USB connection, a localport at 8100 must be opened (iproxy 8100 8100)."
                 });
-                console.debug(payload.error);
+            } break;
+            case 'ws-session-open-error' : {
+                bootbox.alert({
+                    title: "Could not connect to device.",
+                    message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection, a localport at 5567 must be opened (iproxy 5567 5567)."
+                });
             } break;
             case 'wda-session-closed' :
             case 'websocket-closed' : {
@@ -6240,7 +6329,7 @@ class ORGFluxStore extends FluxUtils.Store {
                     if (payload.deviceController == "ORGDeviceController") {
                         bootbox.alert({
                             title: "Could not connect to device.",
-                            message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection a localport at 5567 must be opened (iproxy 5567 5567)."
+                            message: "1. Connect the device.<br/>2. The iOS application enabled for Organismo must be front.<br/>3. On USB connection, a localport at 5567 must be opened (iproxy 5567 5567)."
                         })
                     } else {
                         bootbox.alert("Error connecting to idevicecontrolproxy.\nMake sure the proxy is running.\nRead about it @ https://github.com/JonGabilondoAngulo/idevicecontrolproxy");
@@ -6248,7 +6337,6 @@ class ORGFluxStore extends FluxUtils.Store {
                 }
             }
         }
-
 
     }
 }
@@ -7558,7 +7646,7 @@ class ORGConnectionActions {
         } else {
             switch (ORG.deviceController.type) {
                 case "ORG": {
-                    ORG.deviceController.openSession();
+                    this.connectWithController(ORG.deviceController);
                 } break;
                 case "WDA": {
                     this.connectWithController(ORG.deviceController);
@@ -7576,15 +7664,48 @@ class ORGConnectionActions {
 
     static async connectWithController(controller) {
         try {
-            var session = await this.openSession();
-            var device = await this.getDeviceInformation();
-            var screenshot = await this.getScreenshot();
-            var model = await this.getDeviceModel();
-            this.addDeviceToScene(screenshot);
-        } catch(err) {
-            this._handleError(err);
-        } finally {
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</div>' }); // Progress alert
+            // 1. Open session
+            var session = await controller.openSession();
+            ORG.dispatcher.dispatch({
+                actionType: 'wda-session-open'
+            });
+
             bootbox.hideAll();
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
+
+            // 2. Get device info
+            ORG.device = await controller.getDeviceInformation();
+            ORG.dispatcher.dispatch({
+                actionType: 'device-info-update',
+                device: ORG.device
+            })
+
+            // 3. Get App info
+            ORG.testApp = await controller.getAppInformation();
+            ORG.dispatcher.dispatch({
+                actionType: 'app-info-update',
+                app: ORG.testApp
+            });
+
+            // 4. Get screenshot
+            var screenshot = await controller.getScreenshot();
+
+            // 5. Get device 3D model
+            var model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY);//this.getDeviceModel();
+
+            // 6. Add device with screenshot to scene
+            this.addDeviceToScene(model, screenshot);
+            ORG.dispatcher.dispatch({
+                actionType: 'screenshot-update',
+                image: screenshot
+            });
+
+            bootbox.hideAll();
+
+        } catch(err) {
+            bootbox.hideAll();
+            this._handleError(err);
         }
     }
 
@@ -7592,9 +7713,10 @@ class ORGConnectionActions {
         bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</div>' });
 
         try {
-            var orientation = await ORG.deviceController.requestDeviceOrientation();
-            var tree = await ORG.deviceController.requestElementTree();
-            var screenshot = await this.getScreenshot();
+            var controller = ORG.deviceController;
+            var orientation = await controller.getDeviceOrientation();
+            var tree = await controller.getElementTree();
+            var screenshot = await controller.getScreenshot();
 
             ORG.dispatcher.dispatch({
                 actionType: 'ui-json-tree-update',
@@ -7611,96 +7733,22 @@ class ORGConnectionActions {
                 actionType: 'screenshot-update',
                 image: screenshot
             });
-        } catch(err) {
-            this._handleError(err);
-        } finally {
             bootbox.hideAll();
+        } catch(err) {
+            bootbox.hideAll();
+            this._handleError(err);
         }
     }
 
-    static openSession() {
-        return new Promise( (resolve, reject) => {
-            ORG.deviceController.openSession().then(
-                (result) => {
-                    ORG.dispatcher.dispatch({
-                        actionType: 'wda-session-open'
-                    });
-
-                    bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
-
-                    resolve(result);
-                }, (err) => {
-                    reject(err);
-                }
-            ).catch( (err) => {
-                reject(err);
-            })
-        })
-    }
-
-    static getDeviceInformation() {
-        return new Promise( (resolve, reject) => {
-            ORG.deviceController.getDeviceInformation().then(
-                (result) => {
-                    ORG.device = result;
-                    ORG.testApp = new ORGTestApp( {name: "unknown", version: "unknown", bundleIdentifier: "unknown"} ); // we don't know anything about the app
-
-                    ORG.dispatcher.dispatch({
-                        actionType: 'device-info-update',
-                        device: ORG.device
-                    })
-                    resolve(result);
-                }, (err) => {
-                    reject(err);
-                }
-            ).catch( (err) => {
-                reject(err);
-            })
-        })
-    }
-
-    static getScreenshot() {
-        return new Promise( (resolve, reject) => {
-            ORG.deviceController.requestScreenshot().then(
-                (result) => {
-                    resolve(result);
-                }, (err) => {
-                    reject(err);
-                }
-            ).catch( (err) => {
-                reject(err);
-            })
-        })
-    }
-
-    static getDeviceModel() {
-        return new Promise( (resolve, reject) => {
-            ORG.scene.showDevice3DModel().then(
-                (result) => {
-                    resolve();
-                }, (err) => {
-                    reject(err);
-                }
-            ).catch( (err) => {
-                reject(err);
-            })
-        })
-    }
-
-    static addDeviceToScene(screenshot) {
-        //return new Promise( (resolve, reject) => {
-            // Now create the screen and show the snapshot
-            ORG.scene.createDeviceScreen(ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
-            ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
-            ORG.scene.devicePositionHasChanged();
+    static addDeviceToScene(model, screenshot) {
+        if (model) {
+            ORG.scene.addDevice3DModel(model);
             ORG.scene.setDeviceOrientation2(ORG.device.orientation);
-
-            ORG.dispatcher.dispatch({
-                actionType: 'screenshot-update',
-                image: screenshot
-            });
-            //resolve();
-          //})
+        }
+        ORG.scene.createDeviceScreen(ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
+        ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
+        ORG.scene.devicePositionHasChanged();
+        ORG.scene.setDeviceOrientation2(ORG.device.orientation);
     }
 
     static getElementClassHierarchy(element) {
@@ -7709,17 +7757,41 @@ class ORGConnectionActions {
 
     static _handleError(err) {
         if (err instanceof ORGError) {
-            if (err.id == ORGERR.ERR_CONNECTION_REFUSED) {
-                ORG.dispatcher.dispatch({
-                    actionType: 'wda-session-open-error',
-                    error: err.message
-                })
+            switch (err.id) {
+                case ORGERR.ERR_CONNECTION_REFUSED: {
+                    ORG.dispatcher.dispatch({
+                        actionType: 'wda-session-open-error',
+                        error: err.message
+                    })
+                } break;
+                case ORGERR.ERR_WS_CONNECTION_REFUSED: {
+                    ORG.dispatcher.dispatch({
+                        actionType: 'ws-session-open-error',
+                        error: err.message
+                    })
+                } break;
+                default: {
+                    bootbox.alert({
+                        title: "Error",
+                        message: err.message
+                    });
+                }
             }
+        } else if (err instanceof DOMException) {
+            bootbox.alert({
+                title: err.name,
+                message: err.message
+            });
         } else if (typeof err === "string") {
-            const safeErrorText = (err.length < 2000 ?((err.length==0) ?"Unknown error" :err) :err.substring(0, 2000));
+            const safeErrorText = (err.length < 2000 ? ((err.length == 0) ? "Unknown error" : err) : err.substring(0, 2000));
             bootbox.alert({
                 title: "Error",
                 message: safeErrorText
+            });
+        } else {
+            bootbox.alert({
+                title: "Error",
+                message: "Unknown error."
             });
         }
     }
