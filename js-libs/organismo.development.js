@@ -1908,7 +1908,7 @@ class ORG3DScene {
 
     setLiveScreen(live) {
         this.flagContinuousScreenshot = live;
-        if ( this._deviceScreen) {
+        if (this._deviceScreen && ORG.deviceController.hasContinuousUpdate) {
             if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate) && !this._uiExpanded) {
                 ORG.deviceController.requestScreenshot();
             }
@@ -2038,8 +2038,8 @@ class ORG3DScene {
     resetCameraPosition() {
         // Avoid flickering by stopping screen updates
         const liveScreen = this.flagContinuousScreenshot;
-        if ( liveScreen) {
-            this.setLiveScreen( false);
+        if (liveScreen) {
+            this.setLiveScreen(false);
         }
 
         const _this = this;
@@ -2047,10 +2047,10 @@ class ORG3DScene {
             x: 0,
             y: kORGDevicePositionY,
             z: kORGCameraPositionZ}, kORGCameraTWEENDuration)
-            .easing( TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quadratic.InOut)
             .onComplete( () => {
                 if (liveScreen) {
-                    _this.setLiveScreen( true);
+                    _this.setLiveScreen(true);
                 }
             }).start();
 
@@ -2060,7 +2060,7 @@ class ORG3DScene {
             x: 0,
             y: kORGDevicePositionY,
             z: 0}, kORGCameraTWEENDuration)
-            .easing( TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quadratic.InOut)
             .start();
     }
 
@@ -2090,7 +2090,7 @@ class ORG3DScene {
         // Avoid flickering by stopping screen updates
         const liveScreen = this.flagContinuousScreenshot;
         if ( liveScreen) {
-            this.setLiveScreen( false);
+            this.setLiveScreen(false);
         }
 
         const _this = this;
@@ -2101,7 +2101,7 @@ class ORG3DScene {
             .easing(TWEEN.Easing.Quintic.InOut)
             .onComplete( () => {
                 if (liveScreen) {
-                    _this.setLiveScreen( true);
+                    _this.setLiveScreen(true);
                 }
             }).start();
     }
@@ -4037,32 +4037,35 @@ class ORGDeviceBaseController {
     }
     get type() {
         _throwError();
-    };
+    }
     get isConnected() {
         _throwError();
-    };
+    }
     get IPandPort() {
         return this._ip + ":" + this._port;
-    };
+    }
+    get hasContinuousUpdate() {
+        return false;
+    }
 
     openSession() {
         this._throwError();
-    };
+    }
     closeSession() {
         this._throwError();
-    };
+    }
     screenshot() {
         this._throwError();
-    };
+    }
     elementTree() {
         this._throwError();
-    };
+    }
     refreshUITree() {
         this._throwError();
-    };
+    }
     _throwError() {
         throw new Error("Executing base class method. Subclass must implement this method.");
-    };
+    }
 }
 /**
  * Created by jongabilondo on 26/02/2017.
@@ -4089,6 +4092,10 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
 
     get isConnected() {
         return this.webSocket.isConnected();
+    }
+
+    get hasContinuousUpdate() {
+        return true;
     }
 
     openSession() {

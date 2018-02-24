@@ -476,7 +476,7 @@ class ORG3DScene {
 
     setLiveScreen(live) {
         this.flagContinuousScreenshot = live;
-        if ( this._deviceScreen) {
+        if (this._deviceScreen && ORG.deviceController.hasContinuousUpdate) {
             if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate) && !this._uiExpanded) {
                 ORG.deviceController.requestScreenshot();
             }
@@ -606,8 +606,8 @@ class ORG3DScene {
     resetCameraPosition() {
         // Avoid flickering by stopping screen updates
         const liveScreen = this.flagContinuousScreenshot;
-        if ( liveScreen) {
-            this.setLiveScreen( false);
+        if (liveScreen) {
+            this.setLiveScreen(false);
         }
 
         const _this = this;
@@ -615,10 +615,10 @@ class ORG3DScene {
             x: 0,
             y: kORGDevicePositionY,
             z: kORGCameraPositionZ}, kORGCameraTWEENDuration)
-            .easing( TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quadratic.InOut)
             .onComplete( () => {
                 if (liveScreen) {
-                    _this.setLiveScreen( true);
+                    _this.setLiveScreen(true);
                 }
             }).start();
 
@@ -628,7 +628,7 @@ class ORG3DScene {
             x: 0,
             y: kORGDevicePositionY,
             z: 0}, kORGCameraTWEENDuration)
-            .easing( TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quadratic.InOut)
             .start();
     }
 
@@ -658,7 +658,7 @@ class ORG3DScene {
         // Avoid flickering by stopping screen updates
         const liveScreen = this.flagContinuousScreenshot;
         if ( liveScreen) {
-            this.setLiveScreen( false);
+            this.setLiveScreen(false);
         }
 
         const _this = this;
@@ -669,7 +669,7 @@ class ORG3DScene {
             .easing(TWEEN.Easing.Quintic.InOut)
             .onComplete( () => {
                 if (liveScreen) {
-                    _this.setLiveScreen( true);
+                    _this.setLiveScreen(true);
                 }
             }).start();
     }

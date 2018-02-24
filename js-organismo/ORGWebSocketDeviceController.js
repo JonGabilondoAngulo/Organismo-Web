@@ -25,6 +25,10 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
         return this.webSocket.isConnected();
     }
 
+    get hasContinuousUpdate() {
+        return true;
+    }
+
     openSession() {
         //this.webSocket.open(this.IPandPort, this.webSocketDelegate);
         return new Promise((resolve, reject) => {

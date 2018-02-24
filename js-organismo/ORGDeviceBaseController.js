@@ -15,30 +15,33 @@ class ORGDeviceBaseController {
     }
     get type() {
         _throwError();
-    };
+    }
     get isConnected() {
         _throwError();
-    };
+    }
     get IPandPort() {
         return this._ip + ":" + this._port;
-    };
+    }
+    get hasContinuousUpdate() {
+        return false;
+    }
 
     openSession() {
         this._throwError();
-    };
+    }
     closeSession() {
         this._throwError();
-    };
+    }
     screenshot() {
         this._throwError();
-    };
+    }
     elementTree() {
         this._throwError();
-    };
+    }
     refreshUITree() {
         this._throwError();
-    };
+    }
     _throwError() {
         throw new Error("Executing base class method. Subclass must implement this method.");
-    };
+    }
 }
