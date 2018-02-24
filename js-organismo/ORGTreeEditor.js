@@ -17,8 +17,8 @@ var jse_json = { screenshot: "1234567890", other:"hello", class:"UIWindow" ,
 ORG.treeEditor = new JSONEditor(jse_container, jse_options, jse_json);
 
 function sortTreeNodes(nodes) {
-    var sortedNodes = [];
-    for (var i = 0; i < nodes.length; i++) {
+    let sortedNodes = [];
+    for (let i = 0; i < nodes.length; i++) {
         var node = nodes[i];
         var nodeField = node.getField();
         if (nodeField === "class") {
@@ -33,31 +33,31 @@ function sortTreeNodes(nodes) {
 function formatNode( node ) {
 
     var fieldName = node.getField();
-    if (fieldName == "screenshot") {
+    if (fieldName === "screenshot") {
         return null;
         //var screenshotBytes = node.getValue();
         //if (screenshotBytes) {
         //    node.setValue( screenshotBytes.length + " Bytes" );
         //}
-    } else if (fieldName == "ignore") {
+    } else if (fieldName === "ignore") {
         return null;
     } else if (fieldName === undefined) {
 
     }
 
-    if (node.type == 'object') {
+    if (node.type === 'object') {
         // show only the class name
         if (node.dom.value && node.dom.field) {
-            for (var i=0 ; i < node.childs.length; i++) {
-                var child = node.childs[i];
-                if (child.field == "class") {
+            for (let i=0 ; i < node.childs.length; i++) {
+                let child = node.childs[i];
+                if (child.field === "class") {
                     node.dom.value.innerHTML = '';
                     node.dom.field.innerHTML = child.value;
                     break;
                 }
             }
         }
-    } else if (node.type == 'array') {
+    } else if (node.type === 'array') {
         if (node.dom.value) {
             node.dom.value.innerHTML = '';
         }

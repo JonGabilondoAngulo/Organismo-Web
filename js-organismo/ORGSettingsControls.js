@@ -33,8 +33,8 @@ ORG.UI.sliderTreeLayersRange = $('#ex2');
 ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
-ORG.UI.refreshUITree.click(function (e) {
-    if (ORG.deviceController.type == "WDA") {
+ORG.UI.refreshUITree.click(function () {
+    if (ORG.deviceController.type === "WDA") {
         ORGConnectionActions.refreshUITree();
     } else {
         ORG.deviceController.refreshUITree();
@@ -63,7 +63,7 @@ ORG.UI.sliderTreeLayersRange.on("slide", function(slideEvt) {
 ORG.UI.buttonResetItinerary = $('#reset-itinerary');
 
 
-ORG.UI.checkButtonShowDevice.change(function (e) {
+ORG.UI.checkButtonShowDevice.change(function () {
     ORG.scene.flagShowDevice3DModel = $(this).is(':checked');
     if (ORG.scene.flagShowDevice3DModel) {
         ORG.scene.showDevice3DModel();
@@ -72,85 +72,85 @@ ORG.UI.checkButtonShowDevice.change(function (e) {
     }
 });
 
-ORG.UI.checkButtonShowSystemInfo.change(function (e) {
-    if ($(this).is(':checked') == true) {
+ORG.UI.checkButtonShowSystemInfo.change(function () {
+    if ($(this).is(':checked') === true) {
         ORG.systemInfoManager.start();
     } else {
         ORG.systemInfoManager.stop();
     }
 });
 
-ORG.UI.checkButtonShowFloor.change(function (e) {
-    if ($(this).is(':checked') == true) {
+ORG.UI.checkButtonShowFloor.change(function () {
+    if ($(this).is(':checked') === true) {
         ORG.scene.createFloor();
     } else {
         ORG.scene.removeFloor();
     }
 });
 
-ORG.UI.checkButtonShowLocation.change(function (e) {
-    if ($(this).is(':checked') == true) {
+ORG.UI.checkButtonShowLocation.change(function () {
+    if ($(this).is(':checked') === true) {
         ORG.scene.enableShowLocation();
     } else {
         ORG.scene.disableShowLocation();
     }
 });
 
-ORG.UI.checkButtonShowTextures.change(function (e) {
+ORG.UI.checkButtonShowTextures.change(function () {
     ORG.scene.flagShowScreenshots = $(this).is(':checked');
 });
 
-ORG.UI.checkButtonShowInteractive.change(function (e) {
+ORG.UI.checkButtonShowInteractive.change(function () {
     ORG.scene.flagShowInteractiveViews = $(this).is(':checked');
 });
 
-ORG.UI.checkButtonShowNonInteractive.change(function (e) {
+ORG.UI.checkButtonShowNonInteractive.change(function () {
     ORG.scene.flagShowNonInteractiveViews = $(this).is(':checked');
 });
 
-ORG.UI.checkButtonShowPrivate.change(function (e) {
+ORG.UI.checkButtonShowPrivate.change(function () {
     ORG.scene.flagShowPrivateClasses = $(this).is(':checked');
 });
 
-ORG.UI.checkButtonShowTooltips.change(function (e) {
+ORG.UI.checkButtonShowTooltips.change(function () {
     ORG.scene.showTooltips($(this).is(':checked'));
 });
 
-ORG.UI.checkButtonShowHiddenViews.change(function (e) {
+ORG.UI.checkButtonShowHiddenViews.change(function () {
     ORG.scene.flagShowHiddenViews = $(this).is(':checked');
 });
 
-ORG.UI.checkButtonLiveScreen.change(function (e) {
+ORG.UI.checkButtonLiveScreen.change(function () {
     ORG.scene.setLiveScreen($(this).is(':checked'));
 });
 
-ORG.UI.checkButtonShowNormalWindow.change(function (e) {
+ORG.UI.checkButtonShowNormalWindow.change(function () {
     ORG.scene.setShowNormalWindow($(this).is(':checked'));
 });
-ORG.UI.checkButtonShowKeyboardWindow.change(function (e) {
+ORG.UI.checkButtonShowKeyboardWindow.change(function () {
     ORG.scene.flagShowKeyboardWindow = $(this).is(':checked');
 });
-ORG.UI.checkButtonShowAlertWindow.change(function (e) {
+ORG.UI.checkButtonShowAlertWindow.change(function () {
     ORG.scene.setShowAlertWindow($(this).is(':checked'));
 });
 
-ORG.UI.buttonResetCamera.click(function (e) {
+ORG.UI.buttonResetCamera.click(function () {
     ORG.scene.resetCameraPosition();
 });
 
-ORG.UI.buttonRotateDevice.click(function (e) {
+ORG.UI.buttonRotateDevice.click(function () {
     ORG.scene.showHideDeviceTransformControls("rotate");
 });
 
-ORG.UI.buttonTranslateDevice.click(function (e) {
+ORG.UI.buttonTranslateDevice.click(function () {
     ORG.scene.showHideDeviceTransformControls("translate");
 });
 
-ORG.UI.buttonAddBeacon.click(function (e) {
+ORG.UI.buttonAddBeacon.click(function () {
     ORG.scene.addBeacon();
 });
 
-ORG.UI.buttonExpand.click(function (e) {
+ORG.UI.buttonExpand.click(function () {
     if ( !ORG.deviceController.isConnected) {
         return;
     }
@@ -163,22 +163,22 @@ ORG.UI.buttonExpand.click(function (e) {
     }
 });
 
-ORG.UI.buttonResetItinerary.click(function (e) {
+ORG.UI.buttonResetItinerary.click(function () {
     ORG.map.resetItinerary();
 });
-ORG.UI.buttonItineraryStart.click(function (e) {
+ORG.UI.buttonItineraryStart.click(function () {
     ORG.map.run();
 });
-ORG.UI.buttonItineraryStop.click(function (e) {
+ORG.UI.buttonItineraryStop.click(function () {
     ORG.map.stop();
 });
-ORG.UI.buttonItineraryPause.click(function (e) {
+ORG.UI.buttonItineraryPause.click(function () {
     ORG.map.pause();
 });
-ORG.UI.buttonItineraryResume.click(function (e) {
+ORG.UI.buttonItineraryResume.click(function () {
     ORG.map.resume();
 });
 
-ORG.UI.buttonSendLocation.click(function(e) {
+ORG.UI.buttonSendLocation.click(function() {
     ORG.map.sendStartLocationToDevice();
 });

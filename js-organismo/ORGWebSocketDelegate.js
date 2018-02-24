@@ -101,7 +101,7 @@ class ORGWebSocketDelegate {
 	 */
 	onMessage(event, ws) {
 
-		var messageJSON = JSON.parse(event.data);
+		let messageJSON = JSON.parse(event.data);
 		if (messageJSON) {
 			//console.log("onMessage. parse OK");
 		} else {
@@ -109,13 +109,12 @@ class ORGWebSocketDelegate {
 			return;
 		}
 		if (messageJSON) {
-			if (messageJSON.type == "response") {
+			if (messageJSON.type === "response") {
 				this._processResponse(messageJSON);
-			} else if (messageJSON.type == "notification") {
+			} else if (messageJSON.type === "notification") {
 				this._processNotification(messageJSON.body);
-			} else if (messageJSON.command == "CoreMotionFeed") {
-				var motionMessage = messageJSON.content;
-				this._processMotionFeedMessage(motionMessage);
+			} else if (messageJSON.command === "CoreMotionFeed") {
+				this._processMotionFeedMessage(messageJSON.content);
 			}
 		}
 	};
@@ -177,7 +176,7 @@ class ORGWebSocketDelegate {
 	 * @param messageBody
 	 */
 	_processNotification(messageBody) {
-		if ( messageBody.notification == "orientation-change") {
+		if ( messageBody.notification === "orientation-change") {
             this._processNotificationOrientationChanged(messageBody.parameters);
 		}
 	}
@@ -260,7 +259,7 @@ class ORGWebSocketDelegate {
 	 * @param messageJSON
 	 */
 	_processReportScreenshot( messageJSON) {
-		var base64Img = messageJSON.data.screenshot;
+		let base64Img = messageJSON.data.screenshot;
 		if (base64Img) {
 			var img = new Image();
 			img.src = "data:image/jpg;base64," + base64Img;

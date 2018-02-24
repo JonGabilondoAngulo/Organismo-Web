@@ -33,7 +33,7 @@ class ORG3DSceneRaycaster {
 
     removeDelegate( delegate ) {
         for (let i=0; i<this._listeners.length; i++) {
-            if ( this._listeners[i] == delegate) {
+            if ( this._listeners[i] === delegate) {
                 this._listeners.splice( i, 1);
                 break;
             }
@@ -57,9 +57,9 @@ class ORG3DSceneRaycaster {
     onMouseUp( event ) {
         this._isMouseDown = false;
 
-        var canvasW = $(this._rendererDomElement).width();
-        var canvasH = $(this._rendererDomElement).height();
-        var canvasOffset = $(this._rendererDomElement).offset();
+        const canvasW = $(this._rendererDomElement).width();
+        const canvasH = $(this._rendererDomElement).height();
+        const canvasOffset = $(this._rendererDomElement).offset();
 
         // calculate mouse position in normalized device coordinates
         // (-1 to +1) for both components
@@ -70,8 +70,8 @@ class ORG3DSceneRaycaster {
         var intersects = this._raycaster.intersectObject( this._THREETargetObject, true ); // returns always an array. The first one is the closest object.
         if ( intersects && intersects.length ) {
             const intersected = intersects[0];
-            if ( intersected.object.type == "Mesh" ) {
-                if ( (intersected.object.parent.type == "Group") && (intersected.object.parent.name == "ORG.Beacon.Group")) {
+            if ( intersected.object.type === "Mesh" ) {
+                if ( (intersected.object.parent.type === "Group") && (intersected.object.parent.name === "ORG.Beacon.Group")) {
                     ORG.dispatcher.dispatch({
                         actionType: 'beacon-selected',
                         beacon : intersected.object.parent

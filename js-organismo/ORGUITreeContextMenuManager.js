@@ -20,7 +20,7 @@ class ORGUITreeContextMenuManager {
             selector: this._contextElement,
             trigger: 'none',
             build: ($trigger, e) => {
-                if (ORG.deviceController.type == "WDA") {
+                if (ORG.deviceController.type === "WDA") {
                     return {
                         items: {
                             "tap": {name: "Tap"},
@@ -59,7 +59,7 @@ class ORGUITreeContextMenuManager {
      * @param event
      */
     onContextMenu(event, node) {
-        if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
+        if (!ORG.deviceController || ORG.deviceController.isConnected === false) {
             return;
         }
         this._node = node.representedNode;
@@ -98,7 +98,7 @@ class ORGUITreeContextMenuManager {
                 alert('Not implemented');
             } break;
             case 'show-class-hierarchy': {
-                if (this._node && (typeof this._node.class != undefined)) {
+                if (this._node && (typeof this._node.class !== undefined)) {
                     ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.class));
                 }
             } break;

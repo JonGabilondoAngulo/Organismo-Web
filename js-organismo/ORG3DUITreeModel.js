@@ -44,7 +44,7 @@ class ORG3DUITreeModel {
     }
 
     get isExpanded() {
-        return this.treeGroup != null;
+        return this.treeGroup !== null;
     }
 
     set visualizationFlags( flags ) {
@@ -112,7 +112,7 @@ class ORG3DUITreeModel {
     hideTextures( hide ) {
         if (this._THREEElementTreeGroup) {
             this._THREEElementTreeGroup.traverse(function (child) {
-                if (child.type == "Mesh") {
+                if (child.type === "Mesh") {
                     if (hide) {
                         child.material.map = null;
                         child.material.color = new THREE.Color(0x000000);
@@ -133,7 +133,7 @@ class ORG3DUITreeModel {
     hideNonInteractiveViews( hide ) {
         if (this._THREEElementTreeGroup) {
             this._THREEElementTreeGroup.traverse(function (child) {
-                if (child.type == "Group") {
+                if (child.type === "Group") {
                     if (hide) {
                         const nodeData = child.userData;
                         if (nodeData) {
@@ -152,7 +152,7 @@ class ORG3DUITreeModel {
     showConnections( show , threeScene) {
         if ( this._THREEElementTreeGroup ) {
             this._THREEElementTreeGroup.traverse(function (child) {
-                if ( child.type == "Group" ) {
+                if ( child.type === "Group" ) {
                     const nodeData = child.userData;
                     if ( _nodeIsInteractive(nodeData) ) {
                         const mesh = child.children[0];
@@ -176,12 +176,12 @@ class ORG3DUITreeModel {
             let firstPosition = 0;
             for ( let i in allElements ) {
                 let currentElementGroup = allElements[i];
-                if ( i == 0 ) {
+                if ( i === 0 ) {
                     firstPosition = currentElementGroup.position;
                     continue;
                 }
 
-                if ( currentElementGroup.type == "Group" ) {
+                if ( currentElementGroup.type === "Group" ) {
                     const layerNum = (currentElementGroup.userData.originalWorldZPosition - firstPosition.z) / kORGMinimalPlaneDistance; // layer of the element
                     currentElementGroup.position.z = firstPosition.z + (layerNum * this._planeDistance);
                 } else {
@@ -197,7 +197,7 @@ class ORG3DUITreeModel {
 
         const allElements = this._THREEElementTreeGroup.children;
         for ( let currentElementGroup of allElements ) {
-            if ( currentElementGroup.type == "Group" ) {
+            if ( currentElementGroup.type === "Group" ) {
                 const nodeData = currentElementGroup.userData;
                 if ( !!nodeData ) {
                     currentElementGroup.visible = ( nodeData.expandedTreeLayer < maxVisibleLayer );
@@ -217,9 +217,9 @@ class ORG3DUITreeModel {
         if (elementNode) {
             const allElements = this._THREEElementTreeGroup.children;
             for ( let currentElementGroup of allElements ) {
-                if ( currentElementGroup.type == "Group" ) {
+                if ( currentElementGroup.type === "Group" ) {
                     const nodeData = currentElementGroup.userData;
-                    if ( !!nodeData && !!nodeData.pointer && nodeData.pointer == elementNode.pointer ) {
+                    if ( !!nodeData && !!nodeData.pointer && (nodeData.pointer === elementNode.pointer)) {
                         this._nodeHighlighter.mouseOverElement(currentElementGroup);
                         break;
                     }
@@ -318,11 +318,10 @@ class ORG3DUITreeModel {
      * @private
      */
     _createTreeNode3DModel( treeNode, treeNodeParent, screenSize, displaySize, displayScale, displayPosition, zStartingPos, highestZPosition ) {
-        var highestZPosition = highestZPosition;
         var lastCreatedParentNode = treeNodeParent;
         var newElemZPosition = zStartingPos;
 
-        if ( typeof( treeNode ) != "object" ) {
+        if ( typeof( treeNode ) !== "object" ) {
             console.log("what is this ? Tree node that is not an object ?");
             return highestZPosition;
         }
@@ -402,12 +401,10 @@ class ORG3DUITreeModel {
     /**
      * Creates and returns THREE.Group for an UI element with a plane plus a box helper for highlight. It assigns a texture.
      * @param uiElementDescription
+     * @param elementWorldBoundsBox2
      * @param THREEScreenshotTexture
-     * @param displaySize - Real display size (m)
-     * @param displayScale - Scale to transform pixels to real size
-     * @param displayPosition - The translation of the display in the 3D scene, usually it's above the floor.
      * @param zPosition - z axis position for the 3d object
-     * @returns {* THREE.Group }
+     * @returns THREE.Group
      * @private
      */
     _createUIElementObject( uiElementDescription, elementWorldBoundsBox2, THREEScreenshotTexture, zPosition ) {
@@ -463,7 +460,7 @@ class ORG3DUITreeModel {
             return currentZPosition;
         }
 
-        if ( uiTreeElement == uiTreeStartElement ) {
+        if ( uiTreeElement === uiTreeStartElement ) {
             return currentZPosition; // we have arrived to the element itself, no more to search
         }
 
@@ -495,7 +492,7 @@ class ORG3DUITreeModel {
         const subElements = uiTreeStartElement.subviews;
         if ( subElements ) {
             for ( let i = 0; i < subElements.length; i++ ) {
-                if ( uiTreeElement == subElements[i] ) {
+                if ( uiTreeElement === subElements[i] ) {
                     break; // we have arrived to the element itself, no more to search
                 }
                 zPosition = this._calculateElementZPosition( uiTreeElement, subElements[i], uiElementWorldBox2, zPosition, displayPosition); // calculate against next level in tree
@@ -546,10 +543,10 @@ class ORG3DUITreeModel {
         if (this._THREEElementTreeGroup) {
             const _this = this;
             this._THREEElementTreeGroup.traverse(function (child) {
-                if (child.type == "Group") {
-                    var nodeData = child.userData;
+                if (child.type === "Group") {
+                    let nodeData = child.userData;
                     if (nodeData) {
-                        this._hideNodeGroup(child, _this._mustHideTreeObject( nodeData));
+                        this._hideNodeGroup(child, _this._mustHideTreeObject(nodeData));
                     }
                 }
             });
@@ -613,14 +610,14 @@ class ORG3DUITreeModel {
         if ( !!treeJson ) {
             for (let i = 0; i < treeJson.length; i++) {
                 const treeNode = treeJson[i];
-                if (!!treeNode && typeof(treeNode)=="object") {
+                if (!!treeNode && typeof(treeNode)==="object") {
                     var mesh = treeNode.threeObj;
                     if (mesh) {
                         //console.log("FOUND OBJECT:",mesh, i);
 
                         if (treeNode.class == "UITextEffectsWindow") {
                             continue;
-                        } else if (treeNode.private == true) {
+                        } else if (treeNode.private === true) {
                             continue;
                         } else {
                             mesh.material.opacity = opacity;
@@ -660,7 +657,7 @@ class ORG3DUITreeModel {
         var mustBeHidden = false;
         if (nodeData.hidden && !this._flagShowHiddenViews) {
             mustBeHidden = true;
-        } else if (nodeData.hidden==false && this.flagShowHiddenViewsOnly) {
+        } else if (nodeData.hidden===false && this.flagShowHiddenViewsOnly) {
             mustBeHidden = true;
         } else if (this._nodeIsInteractive(nodeData)) {
             mustBeHidden = !this._flagShowInteractiveViews;
@@ -671,10 +668,7 @@ class ORG3DUITreeModel {
     }
 
     _mustCreateTreeBranch( nodeData ) {
-        if (this._isKeyboardWindow(nodeData) && !this._flagShowKeyboard) {
-            return false;
-        }
-        return true;
+        return !(this._isKeyboardWindow(nodeData) && !this._flagShowKeyboard);
     }
 
 
@@ -686,7 +680,7 @@ class ORG3DUITreeModel {
      */
     _mustCreateTreeObject ( nodeData ) {
         if (!this._flagShowPrivate) {
-            if (nodeData.private && nodeData.private == true) {
+            if (nodeData.private && nodeData.private === true) {
                 return false;
             }
         }
@@ -730,32 +724,32 @@ class ORG3DUITreeModel {
         if (treeNode.controlEvents) {
             return true;
         }
-        if (treeNode.class == "UITextField" && treeNode.userInteractionEnabled) {
+        if (treeNode.class === "UITextField" && treeNode.userInteractionEnabled) {
             return true;
         }
-        if (treeNode.class == "MKMapView" && treeNode.userInteractionEnabled) {
+        if (treeNode.class === "MKMapView" && treeNode.userInteractionEnabled) {
             return true;
         }
-        if (treeNode.class == "_MKUserTrackingButton" && treeNode.userInteractionEnabled) {
+        if (treeNode.class === "_MKUserTrackingButton" && treeNode.userInteractionEnabled) {
             return true;
         }
     }
 
     _hideNodeGroup( threeNodeGroup, hide ) {
-        var mesh = threeNodeGroup.children[0]; // the first is the mesh, second is the BoxHelper
+        let mesh = threeNodeGroup.children[0]; // the first is the mesh, second is the BoxHelper
         if (mesh) {
             mesh.visible = !hide;
         }
-        var boxHelper = threeNodeGroup.children[1];
+        let boxHelper = threeNodeGroup.children[1];
         if (boxHelper) {
             boxHelper.visible = !hide;
         }
     }
 
     _isStatusBarWindow( inUIElement ) {
-        if (inUIElement.nativeClass == "UIAWindow") {
+        if (inUIElement.nativeClass === "UIAWindow") {
             const child = inUIElement.subviews[0];
-            if (child.nativeClass == "UIAStatusBar") {
+            if (child.nativeClass === "UIAStatusBar") {
                 return true;
             }
         }
@@ -763,11 +757,11 @@ class ORG3DUITreeModel {
     }
 
     _isKeyboardWindow( nodeData ) {
-        return (nodeData.class == "UITextEffectsWindow");
+        return (nodeData.class === "UITextEffectsWindow");
     }
 
     _isNoSizeElement(element) {
-        return (element.bounds.right - element.bounds.left == 0) || (element.bounds.bottom - element.bounds.top == 0);
+        return (element.bounds.right - element.bounds.left === 0) || (element.bounds.bottom - element.bounds.top === 0);
     }
 
 }

@@ -17,16 +17,16 @@ class ORG3DUIElementHighlight {
     /**
      * Implementation of the Raycaster method to receive the UI element the mouse in on.
      * This method will manage the show and hide the highlights of the 3d objects.
-     * @param threeElement
+     * @param THREEElement
      */
     mouseOverElement( THREEElement ) {
         if ( !!THREEElement ) {
             // Mouse is over some UI element
 
-            var mustHilite = false;
+            let mustHilite = false;
             if ( !this._hilitedObj) {
                 mustHilite = true;
-            } else if ( this._hilitedObj.id != THREEElement.id ) {
+            } else if ( this._hilitedObj.id !== THREEElement.id ) {
                 this._highlightUIElement( this._hilitedObj, false);
                 mustHilite = true;
             }
@@ -51,13 +51,11 @@ class ORG3DUIElementHighlight {
      * @param hilite
      */
     _highlightUIElement( THREEElement, hilite) {
-
         if ( !!THREEElement ) {
-
-            var boxHelper = null;
-            if (THREEElement.type == "Group") {
+            let boxHelper = null;
+            if (THREEElement.type === "Group") {
                 boxHelper = THREEElement.children[0];
-            } else if ( THREEElement.geometry.type == "PlaneBufferGeometry" || THREEElement.geometry.type == "BoxGeometry" ) {
+            } else if ( THREEElement.geometry.type === "PlaneBufferGeometry" || THREEElement.geometry.type === "BoxGeometry" ) {
                 const parent = THREEElement.parent; // parent must be a group, holds edgesHelper and the uiobject plane
                 if ( parent ) {
                     boxHelper = parent.children[0];

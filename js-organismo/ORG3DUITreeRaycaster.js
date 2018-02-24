@@ -33,7 +33,7 @@ class ORG3DUITreeRaycaster {
 
     removeDelegate( delegate ) {
         for (let i=0; i<this._listeners.length; i++) {
-            if ( this._listeners[i] == delegate) {
+            if ( this._listeners[i] === delegate) {
                 this._listeners.splice( i, 1);
                 break;
             }
@@ -88,12 +88,12 @@ class ORG3DUITreeRaycaster {
             intersectionPoint = intersects[0].point;
 
             // Make sure the object is the uiobj plane and not the edges helper
-            if ( elementToHilite.type == "LineSegments" /*BoxHelper*/) {
+            if ( elementToHilite.type === "LineSegments" /*BoxHelper*/) {
                 const parent = elementToHilite.parent; // parent must be a group, holds edgesHelper and the uiobject plane
                 elementToHilite = null;
                 if ( parent ) {
                     for ( let i in parent.children ) {
-                        if ( parent.children[i].type == "Mesh" ) {
+                        if ( parent.children[i].type === "Mesh" ) {
                             elementToHilite = parent.children[i];
                             break;
                         }
