@@ -127,6 +127,41 @@ class ORGConnectionActions {
         }
     }
 
+    static async pressHome() {
+        try {
+            await ORG.deviceController.sendPressHome();
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+    static async lockDevice() {
+        try {
+            await ORG.deviceController.sendLock();
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+    static async unlockDevice() {
+        try {
+            await ORG.deviceController.sendUnlock();
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+    static async refreshScreen() {
+        try {
+            let screenshot = await ORG.deviceController.getScreenshot();
+            if (screenshot) {
+                ORG.dispatcher.dispatch({
+                    actionType: 'screenshot-update',
+                    image: screenshot
+                });
+            }
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+
     static addDeviceToScene(model, screenshot) {
         if (model) {
             ORG.scene.addDevice3DModel(model);

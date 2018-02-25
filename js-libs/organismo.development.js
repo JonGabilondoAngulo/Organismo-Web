@@ -2687,31 +2687,12 @@ class ORGContextMenuManager {
             build: ($trigger, e) => {
                 if (this._selectedThreeObject) {
                     return {
-                        items: {
-                            "tap": {name: "Tap"},
-                            "long-press": {name: "Long Press"},
-                            "swipe": {
-                                name: "Swipe",
-                                items: {
-                                    "swipe-left": {name: "Left"},
-                                    "swipe-right": {name: "Right"},
-                                    "swipe-up": {name: "Up"},
-                                    "swipe-down": {name: "Down"},
-                                }
-                            },
-                            "-": {name: "-"},
-                            "look-at": {name: "Look at"},
-                            "look-front-at": {name: "Look Front at"}
-                        }
-                    };
+                        items: this._menuItemsForScreen()
+                    }
                 } else {
                     return {
-                        items: {
-                            "reset-camera-position": {name: "Reset Camera Position"},
-                            "reset-device-position": {name: "Reset Device Position"},
-                            "device-screen-closeup": {name: "Device Screen Closeup"}
-                        }
-                    };
+                        items: this._menuItemsForOutOfScreen()
+                    }
                 }
             },
             callback: (key, options) => {
@@ -2764,6 +2745,18 @@ class ORGContextMenuManager {
         const parameters = {location:{x:appX, y:appY}};
 
         switch (menuOptionKey) {
+            case 'press-home' : {
+                ORGConnectionActions.pressHome();
+            } break;
+            case 'lock-device' : {
+                ORGConnectionActions.lockDevice();
+            } break;
+            case 'unlock-device' : {
+                ORGConnectionActions.unlockDevice();
+            } break;
+            case 'refresh-screen' : {
+                ORGConnectionActions.refreshScreen();
+            } break;
             case 'tap' : {
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
@@ -2814,6 +2807,58 @@ class ORGContextMenuManager {
             case 'device-screen-closeup' : {
                 scene.deviceScreenCloseup();
             } break;
+        }
+    }
+
+    _menuItemsForScreen() {
+        let controller = ORG.deviceController;
+        var items = {};
+        if (controller.type === 'ORG') {
+            items["tap"] = {name: "Tap"};
+            items["long-press"] = {name: "Long Press"};
+            items["swipe"] = {
+                name: "Swipe",
+                items: {
+                    "swipe-left": {name: "Left"},
+                    "swipe-right": {name: "Right"},
+                    "swipe-up": {name: "Up"},
+                    "swipe-down": {name: "Down"},
+                }
+            }
+        }
+
+        if (controller.type === 'WDA') {
+            if (Object.keys(items).length) {
+                items["separator-press"] = { "type": "cm_separator" };
+            }
+            items["press-home"] = {name: "Press Home"};
+            items["lock-device"] = {name: "Lock"};
+            items["unlock-device"] = {name: "Unlock"};
+        }
+
+        if (controller.type === 'ORG') {
+            if (Object.keys(items).length) {
+                items["separator-look"] = { "type": "cm_separator" };
+            }
+            items["look-at"] = {name: "Look at"};
+            items["look-front-at"] = {name: "Look Front at"};
+        }
+
+        if (controller.type === 'WDA') {
+            if (Object.keys(items).length) {
+                items["separator-refresh"] = { "type": "cm_separator" };
+            }
+            items["refresh-screen"] = {name: "Refresh Screen"};
+        }
+
+        return items;
+    }
+
+    _menuItemsForOutOfScreen() {
+        return {
+            "reset-camera-position": {name: "Reset Camera Position"},
+            "reset-device-position": {name: "Reset Device Position"},
+            "device-screen-closeup": {name: "Device Screen Closeup"}
         }
     }
 }
@@ -4291,16 +4336,15 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             actionType: 'wda-session-closed'
         });
 
-        /* THIS IS NOT WORKING
-         const _this = this;
-         var endpointURL = this.RESTPrefix + "/";
-         this.xhr.open("DELETE", endpointURL, true);
-         this.xhr.onreadystatechange = function() {
-         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-         _this._sessionInfo = null;
-         }
-         }
-         this.xhr.send();*/
+        const _this = this;
+        var endpointURL = this.RESTPrefix + "";
+        this.xhr.open("DELETE", endpointURL, true);
+        this.xhr.onreadystatechange = function() {
+            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                _this._sessionInfo = null;
+            }
+        }
+        this.xhr.send();
     }
 
     getDeviceInformation() {
@@ -4312,7 +4356,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                     const orientaton = result;
 
                     // Get device screen size.
-                    this.requestWindowSize().then(
+                    this.getWindowSize().then(
                         (result) => {
                             const screenSizePortrait = ORGDevice.screenSizeInPortrait(result);
                             var device = this._deviceInfoFromWindowSize(screenSizePortrait);
@@ -4346,100 +4390,108 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     getDeviceOrientation() {
-        return new Promise((resolve, reject) => {
-            var endpointURL = this.RESTPrefixWithSession + "orientation";
-            this.xhr.open("GET", endpointURL, true);
-            this.xhr.onload = () => {
-                var response = JSON.parse(this.xhr.responseText);
-                if (response.status == 0) {
-                    var orientation = ORGDevice.ORIENTATION_PORTRAIT;
-                    switch (response.value) {
-                        case "PORTRAIT": break;
-                        case "LANDSCAPE": orientation = ORGDevice.ORIENTATION_LANDSCAPE_LEFT; break;
-                        case "UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT": orientation = ORGDevice.ORIENTATION_LANDSCAPE_RIGHT; break;
-                        case "UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN": orientation = ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN; break;
-                    }
-                    resolve(orientation);
-                } else {
-                    reject(response.value);
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "orientation", "GET");
+                let orientation = ORGDevice.ORIENTATION_PORTRAIT;
+                switch (result) {
+                    case "PORTRAIT": break;
+                    case "LANDSCAPE": orientation = ORGDevice.ORIENTATION_LANDSCAPE_LEFT; break;
+                    case "UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT": orientation = ORGDevice.ORIENTATION_LANDSCAPE_RIGHT; break;
+                    case "UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN": orientation = ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN; break;
                 }
+                resolve(orientation);
+            } catch (err) {
+                reject(err);
             }
-            this.xhr.onerror = () => reject(this.xhr.statusText);
-            this.xhr.onreadystatechange = () => {
-                // Solution to get connection errors. Pitty there is no proper way to something so important.
-                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
-                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
-                }
-            }
-            this.xhr.send();
-        });
+        })
     }
 
     getScreenshot() {
-        return new Promise((resolve, reject) => {
-            var endpointURL = this.RESTPrefix + "screenshot";
-            this.xhr.open("GET", endpointURL, true);
-            this.xhr.onload = () => {
-                var response = JSON.parse(this.xhr.responseText);
-                if (response.status == 0) {
-                    const base64Img = response.value;
-                    if (base64Img && Object.keys(base64Img).length) {
-                        var img = new Image();
-                        img.src = "data:image/jpg;base64," + base64Img;
-                        img.onload = () => {
-                            resolve(img);
-                        }
-                    } else {
-                        reject(new ORGError(ORGERR.ERR_GENERAL, "Could not get screenshot."));
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefix + "screenshot", "GET");
+                const base64Img = result;
+                if (base64Img && Object.keys(base64Img).length) {
+                    var img = new Image();
+                    img.src = "data:image/jpg;base64," + base64Img;
+                    img.onload = () => {
+                        resolve(img);
                     }
                 } else {
-                    reject(response.value);
+                    reject(new ORGError(ORGERR.ERR_GENERAL, "Could not get screenshot."));
                 }
+            } catch (err) {
+                reject(err);
             }
-            this.xhr.onerror = () => reject(this.xhr.statusText);
-            this.xhr.onreadystatechange = () => {
-                // Solution to get connection errors. Pitty there is no proper way to something so important.
-                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
-                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
-                }
-            }
-            this.xhr.send();
-        });
+        })
     }
 
     getElementTree() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefix + "source?format=json", "GET");
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    getWindowSize() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "window/size", "GET");
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    sendPressHome() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefix + "wda/homescreen", "POST");
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    sendLock() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefix + "wda/lock", "POST");
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    sendUnlock() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefix + "wda/unlock", "POST");
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    _sendCommand(command, method) {
         return new Promise((resolve, reject) => {
-            var endpointURL = this.RESTPrefix + "source?format=json";
-            this.xhr.open("GET", endpointURL, true);
+            //var endpointURL = this.RESTPrefix + command;
+            this.xhr.open(method, command, true);
             this.xhr.onload = () => {
-                var response = JSON.parse(this.xhr.responseText);
+                let response = JSON.parse(this.xhr.responseText);
                 if (response.status == 0) {
                     resolve(response.value);
                 } else {
                     reject(response.value);
-                }
-            }
-            this.xhr.onerror = () => reject(this.xhr.statusText);
-            this.xhr.onreadystatechange = () => {
-                // Solution to get connection errors. Pitty there is no proper way to something so important.
-                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
-                    reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
-                }
-            }
-            this.xhr.send();
-        });
-    }
-
-    requestWindowSize() {
-        return new Promise((resolve, reject) => {
-            var endpointURL = this.RESTPrefixWithSession + "window/size";
-            this.xhr.open("GET", endpointURL, true);
-            this.xhr.onload = () => {
-                var response = JSON.parse(this.xhr.responseText);
-                if (response.status == 0) {
-                    resolve(response.value);
-                } else {
-                    reject(response.status);
                 }
             }
             this.xhr.onerror = () => {
@@ -7734,6 +7786,41 @@ class ORGConnectionActions {
             bootbox.hideAll();
         } catch(err) {
             bootbox.hideAll();
+            this._handleError(err);
+        }
+    }
+
+    static async pressHome() {
+        try {
+            await ORG.deviceController.sendPressHome();
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+    static async lockDevice() {
+        try {
+            await ORG.deviceController.sendLock();
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+    static async unlockDevice() {
+        try {
+            await ORG.deviceController.sendUnlock();
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+    static async refreshScreen() {
+        try {
+            let screenshot = await ORG.deviceController.getScreenshot();
+            if (screenshot) {
+                ORG.dispatcher.dispatch({
+                    actionType: 'screenshot-update',
+                    image: screenshot
+                });
+            }
+        } catch(err) {
             this._handleError(err);
         }
     }

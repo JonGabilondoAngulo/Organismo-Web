@@ -32,31 +32,12 @@ class ORGContextMenuManager {
             build: ($trigger, e) => {
                 if (this._selectedThreeObject) {
                     return {
-                        items: {
-                            "tap": {name: "Tap"},
-                            "long-press": {name: "Long Press"},
-                            "swipe": {
-                                name: "Swipe",
-                                items: {
-                                    "swipe-left": {name: "Left"},
-                                    "swipe-right": {name: "Right"},
-                                    "swipe-up": {name: "Up"},
-                                    "swipe-down": {name: "Down"},
-                                }
-                            },
-                            "-": {name: "-"},
-                            "look-at": {name: "Look at"},
-                            "look-front-at": {name: "Look Front at"}
-                        }
-                    };
+                        items: this._menuItemsForScreen()
+                    }
                 } else {
                     return {
-                        items: {
-                            "reset-camera-position": {name: "Reset Camera Position"},
-                            "reset-device-position": {name: "Reset Device Position"},
-                            "device-screen-closeup": {name: "Device Screen Closeup"}
-                        }
-                    };
+                        items: this._menuItemsForOutOfScreen()
+                    }
                 }
             },
             callback: (key, options) => {
@@ -109,6 +90,18 @@ class ORGContextMenuManager {
         const parameters = {location:{x:appX, y:appY}};
 
         switch (menuOptionKey) {
+            case 'press-home' : {
+                ORGConnectionActions.pressHome();
+            } break;
+            case 'lock-device' : {
+                ORGConnectionActions.lockDevice();
+            } break;
+            case 'unlock-device' : {
+                ORGConnectionActions.unlockDevice();
+            } break;
+            case 'refresh-screen' : {
+                ORGConnectionActions.refreshScreen();
+            } break;
             case 'tap' : {
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
@@ -159,6 +152,58 @@ class ORGContextMenuManager {
             case 'device-screen-closeup' : {
                 scene.deviceScreenCloseup();
             } break;
+        }
+    }
+
+    _menuItemsForScreen() {
+        let controller = ORG.deviceController;
+        var items = {};
+        if (controller.type === 'ORG') {
+            items["tap"] = {name: "Tap"};
+            items["long-press"] = {name: "Long Press"};
+            items["swipe"] = {
+                name: "Swipe",
+                items: {
+                    "swipe-left": {name: "Left"},
+                    "swipe-right": {name: "Right"},
+                    "swipe-up": {name: "Up"},
+                    "swipe-down": {name: "Down"},
+                }
+            }
+        }
+
+        if (controller.type === 'WDA') {
+            if (Object.keys(items).length) {
+                items["separator-press"] = { "type": "cm_separator" };
+            }
+            items["press-home"] = {name: "Press Home"};
+            items["lock-device"] = {name: "Lock"};
+            items["unlock-device"] = {name: "Unlock"};
+        }
+
+        if (controller.type === 'ORG') {
+            if (Object.keys(items).length) {
+                items["separator-look"] = { "type": "cm_separator" };
+            }
+            items["look-at"] = {name: "Look at"};
+            items["look-front-at"] = {name: "Look Front at"};
+        }
+
+        if (controller.type === 'WDA') {
+            if (Object.keys(items).length) {
+                items["separator-refresh"] = { "type": "cm_separator" };
+            }
+            items["refresh-screen"] = {name: "Refresh Screen"};
+        }
+
+        return items;
+    }
+
+    _menuItemsForOutOfScreen() {
+        return {
+            "reset-camera-position": {name: "Reset Camera Position"},
+            "reset-device-position": {name: "Reset Device Position"},
+            "device-screen-closeup": {name: "Device Screen Closeup"}
         }
     }
 }
