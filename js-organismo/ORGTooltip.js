@@ -110,7 +110,7 @@ class ORGTooltip {
         }
 
         var content = "<div>" + elementInfo.class;
-        for (var key in elementInfo){
+        for (let key in elementInfo){
             if ( key == "screenshot" || key == "class" || key == "subviews" || key == "threeObj" || key == "originalWorldZPosition" || key == "zPosition") {
                 continue;
             }
@@ -153,7 +153,7 @@ class ORGTooltip {
 
     _serializeDictionary( dictionary ) {
         var content = "";
-        for (var key in dictionary){
+        for (let key in dictionary){
             content += "<br><span class='ui-tooltip-key'>" + key + ": </span>" + "<span class='ui-tooltip-value'>" + dictionary[key] + "</span>";
         }
         return content;
@@ -185,7 +185,7 @@ class ORGTooltip {
 
     _serializeSegues( segues ) {
         var content = "";
-        for ( var i=0; i<segues.length; i++ ) {
+        for ( let i=0; i<segues.length; i++ ) {
             content += this._serializeSegue( segues[i] );
         }
         return content;
@@ -193,7 +193,7 @@ class ORGTooltip {
 
     _serializeSegue( segue ) {
         var content = "";
-        for (var key in segue) {
+        for (let key in segue) {
             if ( content.length) {
                 content += ", ";
             }

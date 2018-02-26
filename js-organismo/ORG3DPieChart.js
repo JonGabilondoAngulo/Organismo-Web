@@ -41,8 +41,7 @@ class ORG3DPieChart {
         var rotationAngle;
         var sectorMesh;
 
-        for ( let i in sectorsDescription) {
-            sectorDesc = sectorsDescription[i];
+        for (let sectorDesc of sectorsDescription) {
             rotationAngle = sectorDesc.percent * 2 * Math.PI;
             sectorMesh = this._createSector( radius, height, kSegments, startAngle, rotationAngle, sectorDesc.color);
             sectorMesh.name = "ORG.Chart.Sector";

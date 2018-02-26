@@ -50,7 +50,7 @@ class ORGUIJSONWDATreeAdaptor {
             description += "<h4><b>" + className + "</b></h4>";
         }
 
-        for (let key of Object.keys(node)) {
+        for (let key in node) {
             if (this.ignoreNodeKey(key)) {
                 continue;
             }

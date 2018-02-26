@@ -56,7 +56,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 }
             }
             this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'com.apple.mobilephone'}}));
-        });
+        })
     }
 
     closeSession() {
@@ -109,7 +109,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                     reject(err);
                 }
             )
-        });
+        })
     }
 
     getAppInformation() {
@@ -211,9 +211,52 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         })
     }
 
-    _sendCommand(command, method) {
+    elementUsing(using, value) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "element", "POST", JSON.stringify({using: using, value: value}));
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    tapElementWithId(elementId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "element/" + elementId + "/click", "POST");
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    longPressElementWithId(elementId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "wda/element/" + elementId + "/touchAndHold", "POST", JSON.stringify({duration: 1.0}));
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    swipeElementWithId(elementId, direction) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "wda/element/" + elementId + "/swipe", "POST", JSON.stringify({direction: direction}));
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    _sendCommand(command, method, parameters) {
         return new Promise((resolve, reject) => {
-            //var endpointURL = this.RESTPrefix + command;
             this.xhr.open(method, command, true);
             this.xhr.onload = () => {
                 let response = JSON.parse(this.xhr.responseText);
@@ -235,8 +278,8 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
                 }
             }
-            this.xhr.send();
-        });
+            this.xhr.send(!!parameters ?parameters :null);
+        })
     }
 
     _deviceInfoFromTree(tree) {

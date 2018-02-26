@@ -162,6 +162,39 @@ class ORGConnectionActions {
         }
     }
 
+    static async tapOnXpath(xpath) {
+        try {
+            let result = await ORG.deviceController.elementUsing("xpath", xpath);
+            if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
+                await ORG.deviceController.tapElementWithId(result["ELEMENT"]);
+            }
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+
+    static async longPressOnXpath(xpath) {
+        try {
+            let result = await ORG.deviceController.elementUsing("xpath", xpath);
+            if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
+                await ORG.deviceController.longPressElementWithId(result["ELEMENT"]);
+            }
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+
+    static async swipeOnXpath(xpath, direction) {
+        try {
+            let result = await ORG.deviceController.elementUsing("xpath", xpath);
+            if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
+                await ORG.deviceController.swipeElementWithId(result["ELEMENT"], direction);
+            }
+        } catch(err) {
+            this._handleError(err);
+        }
+    }
+
     static addDeviceToScene(model, screenshot) {
         if (model) {
             ORG.scene.addDevice3DModel(model);
@@ -209,6 +242,11 @@ class ORGConnectionActions {
             bootbox.alert({
                 title: "Error",
                 message: safeErrorText
+            });
+        } else if (typeof err === "object") {
+            bootbox.alert({
+                title: "Error",
+                message: JSON.stringify(err, null, 2)
             });
         } else {
             bootbox.alert({

@@ -87,7 +87,7 @@ class ORG3DSceneTooltip {
         }
 
         var content = "<div>" + elementInfo.class;
-        for (var key in elementInfo){
+        for (let key in elementInfo){
             if ( key == "screenshot" || key == "class" || key == "subviews" || key == "threeObj" || key == "originalWorldZPosition" || key == "zPosition") {
                 continue;
             }

@@ -55,6 +55,12 @@ class ORGUIJSONTreeManager {
         $(this._nodePlaceholder).html("");
     }
 
+    nodeParent(node) {
+        let parents = $(this._treePlaceholder).treeview('getParents', [node]);
+        return (parents.length ?parents[0] :null);
+    }
+
+
     showClassHierarchy(classHierarchy) {
         var html = "<h4><b>" + "Hierarchy" + "</b></h4>";
 

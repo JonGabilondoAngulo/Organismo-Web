@@ -42,7 +42,7 @@ class ORGDeviceMetrics {
      * @returns {ProductName String}
      */
     static deviceWithScreenPoints(size) {
-        for (let key of Object.keys(ORG.DeviceMetrics)) {
+        for (let key in ORG.DeviceMetrics) {
             if (ORG.DeviceMetrics[key].Points.X == size.width && ORG.DeviceMetrics[key].Points.Y == size.height) {
                 return ORG.DeviceMetrics[key].ProductName;
             }

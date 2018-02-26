@@ -92,9 +92,9 @@ class ORG3DUITreeRaycaster {
                 const parent = elementToHilite.parent; // parent must be a group, holds edgesHelper and the uiobject plane
                 elementToHilite = null;
                 if ( parent ) {
-                    for ( let i in parent.children ) {
-                        if ( parent.children[i].type === "Mesh" ) {
-                            elementToHilite = parent.children[i];
+                    for ( let child of parent.children ) {
+                        if ( child.type === "Mesh" ) {
+                            elementToHilite = child;
                             break;
                         }
                     }
