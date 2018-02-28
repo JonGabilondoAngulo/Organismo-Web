@@ -52,7 +52,7 @@ class ORGContextMenuManager {
      * @param event
      */
     onContextMenu(event) {
-        if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
+        if (!ORG.deviceController || ORG.deviceController.isConnected === false) {
             return;
         }
         $(this._contextElement).contextMenu({x:event.clientX, y:event.clientY});
@@ -90,45 +90,51 @@ class ORGContextMenuManager {
         const parameters = {location:{x:appX, y:appY}};
 
         switch (menuOptionKey) {
-            case 'press-home' : {
+            case ORG.Actions.PRESS_HOME : {
                 ORGConnectionActions.pressHome();
             } break;
-            case 'lock-device' : {
+            case ORG.Actions.LOCK_DEVICE : {
                 ORGConnectionActions.lockDevice();
             } break;
-            case 'unlock-device' : {
+            case ORG.Actions.UNLOCK_DEVICE : {
                 ORGConnectionActions.unlockDevice();
             } break;
-            case 'refresh-screen' : {
+            case ORG.Actions.REFRESH_SCREEN : {
                 ORGConnectionActions.refreshScreen();
             } break;
-            case 'tap' : {
+            case ORGDevice.ORIENTATION_PORTRAIT:
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN:
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                ORGConnectionActions.setOrientation(menuOptionKey);
+            } break;
+            case ORG.Actions.TAP : {
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'long-press' : {
+            case ORG.Actions.LONG_PRESS : {
                 parameters.duration = 0.5;
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-left' : {
+            case ORG.Actions.SWIPE_LEFT : {
                 parameters.direction = "left";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-right' : {
+            case ORG.Actions.SWIPE_RIGHT : {
                 parameters.direction = "right";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-up' : {
+            case ORG.Actions.SWIPE_UP : {
                 parameters.direction = "up";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-down' : {
+            case ORG.Actions.SWIPE_DOWN : {
                 parameters.direction = "down";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'look-at' : {
+            case ORG.Actions.LOOK_AT : {
                 scene.lookAtObject( threeObj );
             } break;
-            case 'look-front-at' : {
+            case ORG.Actions.LOOK_FRONT_AT : {
                 scene.lookFrontAtObject( threeObj );
             } break;
         }
@@ -143,13 +149,13 @@ class ORGContextMenuManager {
     _processMenuSelectionOnVoid(menuOptionKey, scene) {
 
         switch (menuOptionKey) {
-            case 'reset-camera-position' : {
+            case ORG.Actions.RESET_CAMERA_POSITION : {
                 scene.resetCameraPosition();
             } break;
-            case 'reset-device-position' : {
+            case ORG.Actions.RESET_DEVICE_POSITION : {
                 scene.resetDevicePosition();
             } break;
-            case 'device-screen-closeup' : {
+            case ORG.Actions.SCREEN_CLOSEUP : {
                 scene.deviceScreenCloseup();
             } break;
         }
@@ -159,15 +165,15 @@ class ORGContextMenuManager {
         let controller = ORG.deviceController;
         var items = {};
         if (controller.type === 'ORG') {
-            items["tap"] = {name: "Tap"};
-            items["long-press"] = {name: "Long Press"};
-            items["swipe"] = {
+            items[ORG.Actions.TAP] = {name: "Tap"};
+            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
+            items[ORG.Actions.SWIPE] = {
                 name: "Swipe",
                 items: {
-                    "swipe-left": {name: "Left"},
-                    "swipe-right": {name: "Right"},
-                    "swipe-up": {name: "Up"},
-                    "swipe-down": {name: "Down"},
+                    [ORG.Device.SWIPE_LEFT]: {name: "Left"},
+                    [ORG.Device.SWIPE_RIGHT]: {name: "Right"},
+                    [ORG.Device.SWIPE_UP]: {name: "Up"},
+                    [ORG.Device.SWIPE_DOWN]: {name: "Down"},
                 }
             }
         }
@@ -176,24 +182,33 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-press"] = { "type": "cm_separator" };
             }
-            items["press-home"] = {name: "Press Home"};
-            items["lock-device"] = {name: "Lock"};
-            items["unlock-device"] = {name: "Unlock"};
+            items[ORG.Actions.PRESS_HOME] = {name: "Press Home"};
+            items[ORG.Actions.LOCK_DEVICE] = {name: "Lock"};
+            items[ORG.Actions.UNLOCK_DEVICE] = {name: "Unlock"};
+            items[ORG.Actions.SET_ORIENTATION] = {
+                name: "Set Orientation",
+                items: {
+                    [ORGDevice.ORIENTATION_PORTRAIT]: {name: "Portrait"},
+                    [ORGDevice.ORIENTATION_LANDSCAPE_LEFT]: {name: "Landscape Left"},
+                    [ORGDevice.ORIENTATION_LANDSCAPE_RIGHT]: {name: "Landscape Right"},
+                    [ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN]: {name: "Upside Down"}
+                }
+            }
         }
 
         if (controller.type === 'ORG') {
             if (Object.keys(items).length) {
                 items["separator-look"] = { "type": "cm_separator" };
             }
-            items["look-at"] = {name: "Look at"};
-            items["look-front-at"] = {name: "Look Front at"};
+            items[ORG.Actions.LOOK_AT] = {name: "Look at"};
+            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"};
         }
 
         if (controller.type === 'WDA') {
             if (Object.keys(items).length) {
                 items["separator-refresh"] = { "type": "cm_separator" };
             }
-            items["refresh-screen"] = {name: "Refresh Screen"};
+            items[ORG.Actions.REFRESH_SCREEN] = {name: "Refresh Screen"};
         }
 
         return items;
@@ -201,9 +216,9 @@ class ORGContextMenuManager {
 
     _menuItemsForOutOfScreen() {
         return {
-            "reset-camera-position": {name: "Reset Camera Position"},
-            "reset-device-position": {name: "Reset Device Position"},
-            "device-screen-closeup": {name: "Device Screen Closeup"}
+            [ORG.Actions.RESET_CAMERA_POSITION]: {name: "Reset Camera Position"},
+            [ORG.Actions.RESET_DEVICE_POSITION]: {name: "Reset Device Position"},
+            [ORG.Actions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"}
         }
     }
 }

@@ -4,7 +4,7 @@
 
 ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, rightPanel) {
 
-	var callback	= function() {
+	let callback	= function() {
 
 		// Canvas
         const rect = canvas.getBoundingClientRect();
@@ -14,16 +14,16 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
         canvas.style.height = canvasHeight  + 'px'; //otherwise the canvas is not adapting to the renderer area
 
 		// Right Panel
-        //const contentRect = contentPanel.getBoundingClientRect();
-        //const leftPanelRect = leftPanel.getBoundingClientRect();
-        //const rightPanelWidth = contentRect.width - leftPanelRect.width;
-        //rightPanel.style.width = rightPanelWidth - 4  + 'px';
-        //
+        const contentRect = contentPanel.getBoundingClientRect();
+        const leftPanelRect = leftPanel.getBoundingClientRect();
+        const rightPanelWidth = contentRect.width - leftPanelRect.width - 20;
+        rightPanel.style.width = rightPanelWidth + 'px';
+
         //// Renderer & Camera
         renderer.setSize( canvas.offsetWidth, canvasHeight);
         camera.aspect = canvas.offsetWidth / canvasHeight;
 		camera.updateProjectionMatrix();
-        //
+
 		// UI Tree
         document.getElementById('ui-json-tree').style.height = canvasHeight-115 + 'px';
         document.getElementById('ui-json-tree-node').style.height = canvasHeight-60 + 'px';

@@ -66,9 +66,9 @@ ORG.UI.buttonResetItinerary = $('#reset-itinerary');
 ORG.UI.checkButtonShowDevice.change(function () {
     ORG.scene.flagShowDevice3DModel = $(this).is(':checked');
     if (ORG.scene.flagShowDevice3DModel) {
-        ORG.scene.showDevice3DModel();
+        ORGConnectionActions.showDevice3DModel();
     } else {
-        ORG.scene.hideDevice3DModel();
+        ORGConnectionActions.hideDevice3DModel();
     }
 });
 
@@ -151,7 +151,11 @@ ORG.UI.buttonAddBeacon.click(function () {
 });
 
 ORG.UI.buttonExpand.click(function () {
-    if ( !ORG.deviceController.isConnected) {
+    if (!ORG.deviceController.isConnected) {
+        return;
+    }
+    if (ORG.deviceController.type === "WDA") {
+        alert("Not implemented.")
         return;
     }
     if (ORG.scene.isExpanded) {

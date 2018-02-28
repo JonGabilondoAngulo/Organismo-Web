@@ -42,8 +42,8 @@ class ORG3DDeviceModel {
             return;
         }
 
-        var b = new THREE.Box3().setFromObject(this.threeObj);
-        var position = b.getCenter();
+        let b = new THREE.Box3().setFromObject(this.threeObj);
+        let position = b.getCenter();
         this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
 
         switch(orientation) {
@@ -66,39 +66,11 @@ class ORG3DDeviceModel {
             return;
         }
 
-        //const positionBackup = this.threeObj.position.clone();
-        //this.threeObj.position.set(positionBackup.x, positionBackup.y, -positionBackup.z);
-        //
-        /*switch (orientation) {
-            case ORGDevice.ORIENTATION_PORTRAIT: {
-                this.threeObj.rotation.set(0, 0, 0);
-            } break;
-            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
-                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(180));
-            } break;
-            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
-                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(-90));
-            } break;
-            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
-                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(90));
-                break;
-        }*/
-        //this.threeObj.position.copy(positionBackup);
-
-
-        // Make the rotation at 0, 0, 0.
-        //const b = new THREE.Box3().setFromObject(this.threeObj);
-        //const position = b.getCenter();
-        ////this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
-        //
-
-        var rotation = this.threeObj.rotation;
+        let rotation = this.threeObj.rotation;
         this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
 
         switch (orientation) {
             case ORGDevice.ORIENTATION_PORTRAIT: {
-                //var rotation = this.threeObj.rotation;
-                //this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
             } break;
             case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
                 this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(180)));
@@ -110,7 +82,6 @@ class ORG3DDeviceModel {
                 this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad(90)));
                 break;
         }
-        //this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
     }
 
     getBoundingBox() {

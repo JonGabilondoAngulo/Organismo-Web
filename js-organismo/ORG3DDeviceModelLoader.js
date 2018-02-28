@@ -39,9 +39,8 @@ class ORG3DDeviceModelLoader {
 // PRIVATE
 
     static _load_iPhone_5(scene, device) {
-
         return new Promise((resolve, reject) => {
-            var mtlLoader = new THREE.MTLLoader();
+            let mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('3DModels/iPhone_5/');
             mtlLoader.load('iPhone_5.mtl',
                 (materials) => {
@@ -59,8 +58,6 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
-                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            //scene.setDeviceOrientation2(device.orientation);
                             resolve(deviceModel);
                         },
                         null, //on progress
@@ -77,9 +74,8 @@ class ORG3DDeviceModelLoader {
     }
 
     static _load_iPhone_6(scene, device) {
-
         return new Promise((resolve, reject) => {
-            var mtlLoader = new THREE.MTLLoader();
+            let mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('3DModels/iPhone_6/');
             mtlLoader.load('iPhone_6.mtl',
                 (materials) => {
@@ -97,8 +93,6 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
-                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            //scene.setDeviceOrientation2(device.orientation);
                             resolve(deviceModel);
                         },
                         null, /*on progress*/

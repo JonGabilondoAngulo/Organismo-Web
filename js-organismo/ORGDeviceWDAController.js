@@ -18,7 +18,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     get isConnected() {
-        return (this._sessionInfo != null);
+        return (this._sessionInfo !== null);
     }
 
     get RESTPrefix() {
@@ -34,9 +34,9 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             var endpointURL = this.RESTPrefix + "session";
             this.xhr.open("POST", endpointURL, true);
             this.xhr.onload = () => {
-                if (this.xhr.status == 200) {
+                if (this.xhr.status === 200) {
                     const response = JSON.parse(this.xhr.responseText);
-                    if (response.status == 0) {
+                    if (response.status === 0) {
                         this._sessionInfo = JSON.parse(this.xhr.responseText);
                         resolve(this._sessionInfo);
                     } else {
@@ -51,7 +51,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             }
             this.xhr.onreadystatechange = () => {
                 // Solution to get connection errors. Pitty there is no proper way to something so basic.
-                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                if (this.xhr.readyState === 4 && this.xhr.status === 0) {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error opening session."));
                 }
             }
@@ -69,7 +69,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         var endpointURL = this.RESTPrefix + "";
         this.xhr.open("DELETE", endpointURL, true);
         this.xhr.onreadystatechange = function() {
-            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 _this._sessionInfo = null;
             }
         }
@@ -88,7 +88,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                     this.getWindowSize().then(
                         (result) => {
                             const screenSizePortrait = ORGDevice.screenSizeInPortrait(result);
-                            var device = this._deviceInfoFromWindowSize(screenSizePortrait);
+                            let device = this._deviceInfoFromWindowSize(screenSizePortrait);
                             device.orientation = orientaton;
                             resolve(device);
                         },
@@ -142,7 +142,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 let result = await this._sendCommand(this.RESTPrefix + "screenshot", "GET");
                 const base64Img = result;
                 if (base64Img && Object.keys(base64Img).length) {
-                    var img = new Image();
+                    let img = new Image();
                     img.src = "data:image/jpg;base64," + base64Img;
                     img.onload = () => {
                         resolve(img);
@@ -255,12 +255,29 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         })
     }
 
+    setOrientation(orientation) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let wdaOrientation = "PORTRAIT";
+                switch (orientation) {
+                    case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {wdaOrientation = "UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN"} break;
+                    case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: {wdaOrientation = "LANDSCAPE"} break;
+                    case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {wdaOrientation = "UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT"} break;
+                }
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "orientation" , "POST", JSON.stringify({orientation: wdaOrientation}));
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
     _sendCommand(command, method, parameters) {
         return new Promise((resolve, reject) => {
             this.xhr.open(method, command, true);
             this.xhr.onload = () => {
                 let response = JSON.parse(this.xhr.responseText);
-                if (response.status == 0) {
+                if (response.status === 0) {
                     resolve(response.value);
                 } else {
                     reject(response.value);
@@ -274,7 +291,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             }
             this.xhr.onreadystatechange = () => {
                 // Solution to get connection errors. Pitty there is no proper way to something so important.
-                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                if (this.xhr.readyState === 4 && this.xhr.status === 0) {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
                 }
             }

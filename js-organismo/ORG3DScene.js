@@ -351,7 +351,7 @@ class ORG3DScene {
         this.devicePositionHasChanged();
     }
 
-    showDevice3DModel() {
+/*    showDevice3DModel() {
         return new Promise((resolve, reject) => {
             this.hideDevice3DModel();
 
@@ -365,9 +365,9 @@ class ORG3DScene {
                 },
                 (error) => {
                     reject(error);
-                });
-        });
-    }
+                })
+        })
+    }*/
 
     hideDevice3DModel() {
         if ( !!this._device3DModel ) {
@@ -403,26 +403,16 @@ class ORG3DScene {
 
         // Recreate the screen with new size
         if (this._deviceScreen) {
-            const screenSize = ORG.device.displaySizeWithOrientation;
-            this.removeDeviceScreen();
-            this.createDeviceScreen( screenSize.width, screenSize.height, 0);
-            this.createRaycasterForDeviceScreen();
+            const newScreenSize = ORG.device.displaySizeWithOrientation;
+            if (this._deviceScreen.screenSize.width != newScreenSize.width) {
+                this.removeDeviceScreen();
+                this.createDeviceScreen(newScreenSize.width, newScreenSize.height, 0);
+                this.createRaycasterForDeviceScreen();
+            }
         }
 
         // Rotate the device
-        this._device3DModel.setOrientation2(ORG.device.orientation);
-
-        //var rotation = 0;
-        //switch (ORG.device.orientation) {
-        //    case ORGDevice.ORIENTATION_PORTRAIT: break;
-        //    case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: rotation = THREE.Math.degToRad(180); break;
-        //    case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: rotation = THREE.Math.degToRad(90); break;
-        //    case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: rotation = THREE.Math.degToRad(-90); break;
-        //}
-        //const positionBackup = this._THREEDeviceAndScreenGroup.position;
-        //this._THREEDeviceAndScreenGroup.position.set(0, 0, 0);
-        //this._THREEDeviceAndScreenGroup.rotation.set(0, 0, rotation);
-        //this._THREEDeviceAndScreenGroup.position.set(positionBackup.x, positionBackup.y, positionBackup.z);
+        this._device3DModel.setOrientation2(orientation);
     }
 
 

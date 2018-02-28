@@ -48,31 +48,22 @@ class ORGUITreeContextMenuManager {
     _processMenuSelection(menuOptionKey) {
 
         switch (menuOptionKey) {
-            case 'tap': {
-                ORGConnectionActions.tapOnXpath(this._getElementXPath(this._node));
+            case ORG.Actions.TAP:
+            case ORG.Actions.LONG_PRESS:
+            case ORG.Actions.SWIPE_LEFT:
+            case ORG.Actions.SWIPE_RIGHT:
+            case ORG.Actions.SWIPE_UP:
+            case ORG.Actions.SWIPE_DOWN:
+            {
+                ORGConnectionActions.playGesture(menuOptionKey, this._getElementXPath(this._node));
             } break;
-            case 'long-press': {
-                ORGConnectionActions.longPressOnXpath(this._getElementXPath(this._node));
-            } break;
-            case 'swipe-left': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "left");
-            } break;
-            case 'swipe-right': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "right");
-            } break;
-            case 'swipe-up': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "up");
-            } break;
-            case 'swipe-down': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "down");
-            } break;
-            case 'look-at' : {
+            case ORG.Actions.LOOK_AT : {
                 alert('Not implemented');
             } break;
-            case 'look-front-at': {
+            case ORG.Actions.LOOK_FRONT_AT: {
                 alert('Not implemented');
             } break;
-            case 'show-class-hierarchy': {
+            case ORG.Actions.SHOW_CLASS_HIERARCHY: {
                 if (this._node && (typeof this._node.representedNode.class !== undefined)) {
                     ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.representedNode.class));
                 }
@@ -85,24 +76,24 @@ class ORGUITreeContextMenuManager {
         var items = {};
 
         if (controller.type === "WDA") {
-            items["tap"] = {name: "Tap"};
-            items["long-press"] = {name: "Long Press"};
-            items["swipe"] = {
+            items[ORG.Actions.TAP] = {name: "Tap"};
+            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
+            items[ORG.Actions.SWIPE] = {
                 name: "Swipe",
                 items: {
-                    "swipe-left": {name: "Left"},
-                    "swipe-right": {name: "Right"},
-                    "swipe-up": {name: "Up"},
-                    "swipe-down": {name: "Down"},
+                    [ORG.Actions.SWIPE_LEFT]: {name: "Left"},
+                    [ORG.Actions.SWIPE_RIGHT]: {name: "Right"},
+                    [ORG.Actions.SWIPE_UP]: {name: "Up"},
+                    [ORG.Actions.SWIPE_DOWN]: {name: "Down"},
                 }
             }
         }
 
         if (controller.type === "ORG") {
-            items["show-class-hierarchy"] = {name: "Class Hierarchy"}
+            items[ORG.Actions.SHOW_CLASS_HIERARCHY] = {name: "Class Hierarchy"}
             items["separator-look"] = { "type": "cm_separator" };
-            items["look-at"] = {name: "Look at"}
-            items["look-front-at"] = {name: "Look Front at"}
+            items[ORG.Actions.LOOK_AT] = {name: "Look at"}
+            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"}
         }
 
         return items;

@@ -11,7 +11,6 @@ const sources = [
     'js-organismo/ORG.Namespaces.js',
     'js-organismo/ORG.Constants.js',
     'js-organismo/ORG.DeviceMetrics.js',
-    'js-organismo/ORGConstants.js',
     'js-organismo/ORGError.js',
     'js-organismo/ORGWebSocket.js',
     'js-organismo/ORGScenario.js',

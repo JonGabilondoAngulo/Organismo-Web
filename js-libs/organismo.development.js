@@ -20,6 +20,30 @@ ORG.Request = {
     ClassHierarchy : "class-hierarchy"
 };
 
+
+ORG.Actions = {
+    PRESS_HOME: "press-jome",
+    LOCK_DEVICE: "lock-device",
+    UNLOCK_DEVICE: "unlock-device",
+    REFRESH_SCREEN: "refresh-screen",
+    SET_ORIENTATION: "set-orientation",
+
+    TAP: "tap",
+    LONG_PRESS: "long-press",
+    SWIPE: "swipe",
+    SWIPE_LEFT: "swipe-left",
+    SWIPE_RIGHT: "swipe-right",
+    SWIPE_UP: "swipe-up",
+    SWIPE_DOWN: "swipe-down",
+
+    LOOK_AT: "look-at",
+    LOOK_FRONT_AT: "look-front-at",
+
+    RESET_CAMERA_POSITION: "reset-camera-position",
+    RESET_DEVICE_POSITION: "reset-device-position",
+    SCREEN_CLOSEUP: "device-screen-closeup",
+    SHOW_CLASS_HIERARCHY: "show-class-hierarchy"
+}
 /**
  * Created by jongabilondo on 24/01/2018.
  */
@@ -73,15 +97,6 @@ class ORGDeviceMetrics {
     }
 }
 
-/**
- * Created by jongabilondo on 01/07/2016.
- */
-
-
-// var ORGRequest_AppInfo = "app-info";
-// var ORGRequest_deviceInfo = "device-info";
-// var ORGRequest_screenshot = "screenshot";
-// var ORGRequest_elementTree = "element-tree";
 /**
  * Created by jongabilondo on 09/02/2018.
  */
@@ -1775,7 +1790,7 @@ class ORG3DScene {
         this.devicePositionHasChanged();
     }
 
-    showDevice3DModel() {
+/*    showDevice3DModel() {
         return new Promise((resolve, reject) => {
             this.hideDevice3DModel();
 
@@ -1789,9 +1804,9 @@ class ORG3DScene {
                 },
                 (error) => {
                     reject(error);
-                });
-        });
-    }
+                })
+        })
+    }*/
 
     hideDevice3DModel() {
         if ( !!this._device3DModel ) {
@@ -1827,26 +1842,16 @@ class ORG3DScene {
 
         // Recreate the screen with new size
         if (this._deviceScreen) {
-            const screenSize = ORG.device.displaySizeWithOrientation;
-            this.removeDeviceScreen();
-            this.createDeviceScreen( screenSize.width, screenSize.height, 0);
-            this.createRaycasterForDeviceScreen();
+            const newScreenSize = ORG.device.displaySizeWithOrientation;
+            if (this._deviceScreen.screenSize.width != newScreenSize.width) {
+                this.removeDeviceScreen();
+                this.createDeviceScreen(newScreenSize.width, newScreenSize.height, 0);
+                this.createRaycasterForDeviceScreen();
+            }
         }
 
         // Rotate the device
-        this._device3DModel.setOrientation2(ORG.device.orientation);
-
-        //var rotation = 0;
-        //switch (ORG.device.orientation) {
-        //    case ORGDevice.ORIENTATION_PORTRAIT: break;
-        //    case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: rotation = THREE.Math.degToRad(180); break;
-        //    case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: rotation = THREE.Math.degToRad(90); break;
-        //    case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: rotation = THREE.Math.degToRad(-90); break;
-        //}
-        //const positionBackup = this._THREEDeviceAndScreenGroup.position;
-        //this._THREEDeviceAndScreenGroup.position.set(0, 0, 0);
-        //this._THREEDeviceAndScreenGroup.rotation.set(0, 0, rotation);
-        //this._THREEDeviceAndScreenGroup.position.set(positionBackup.x, positionBackup.y, positionBackup.z);
+        this._device3DModel.setOrientation2(orientation);
     }
 
 
@@ -2745,45 +2750,51 @@ class ORGContextMenuManager {
         const parameters = {location:{x:appX, y:appY}};
 
         switch (menuOptionKey) {
-            case 'press-home' : {
+            case ORG.Actions.PRESS_HOME : {
                 ORGConnectionActions.pressHome();
             } break;
-            case 'lock-device' : {
+            case ORG.Actions.LOCK_DEVICE : {
                 ORGConnectionActions.lockDevice();
             } break;
-            case 'unlock-device' : {
+            case ORG.Actions.UNLOCK_DEVICE : {
                 ORGConnectionActions.unlockDevice();
             } break;
-            case 'refresh-screen' : {
+            case ORG.Actions.REFRESH_SCREEN : {
                 ORGConnectionActions.refreshScreen();
             } break;
-            case 'tap' : {
+            case ORGDevice.ORIENTATION_PORTRAIT:
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN:
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                ORGConnectionActions.setOrientation(menuOptionKey);
+            } break;
+            case ORG.Actions.TAP : {
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'long-press' : {
+            case ORG.Actions.LONG_PRESS : {
                 parameters.duration = 0.5;
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-left' : {
+            case ORG.Actions.SWIPE_LEFT : {
                 parameters.direction = "left";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-right' : {
+            case ORG.Actions.SWIPE_RIGHT : {
                 parameters.direction = "right";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-up' : {
+            case ORG.Actions.SWIPE_UP : {
                 parameters.direction = "up";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'swipe-down' : {
+            case ORG.Actions.SWIPE_DOWN : {
                 parameters.direction = "down";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case 'look-at' : {
+            case ORG.Actions.LOOK_AT : {
                 scene.lookAtObject( threeObj );
             } break;
-            case 'look-front-at' : {
+            case ORG.Actions.LOOK_FRONT_AT : {
                 scene.lookFrontAtObject( threeObj );
             } break;
         }
@@ -2798,13 +2809,13 @@ class ORGContextMenuManager {
     _processMenuSelectionOnVoid(menuOptionKey, scene) {
 
         switch (menuOptionKey) {
-            case 'reset-camera-position' : {
+            case ORG.Actions.RESET_CAMERA_POSITION : {
                 scene.resetCameraPosition();
             } break;
-            case 'reset-device-position' : {
+            case ORG.Actions.RESET_DEVICE_POSITION : {
                 scene.resetDevicePosition();
             } break;
-            case 'device-screen-closeup' : {
+            case ORG.Actions.SCREEN_CLOSEUP : {
                 scene.deviceScreenCloseup();
             } break;
         }
@@ -2814,15 +2825,15 @@ class ORGContextMenuManager {
         let controller = ORG.deviceController;
         var items = {};
         if (controller.type === 'ORG') {
-            items["tap"] = {name: "Tap"};
-            items["long-press"] = {name: "Long Press"};
-            items["swipe"] = {
+            items[ORG.Actions.TAP] = {name: "Tap"};
+            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
+            items[ORG.Actions.SWIPE] = {
                 name: "Swipe",
                 items: {
-                    "swipe-left": {name: "Left"},
-                    "swipe-right": {name: "Right"},
-                    "swipe-up": {name: "Up"},
-                    "swipe-down": {name: "Down"},
+                    [ORG.Device.SWIPE_LEFT]: {name: "Left"},
+                    [ORG.Device.SWIPE_RIGHT]: {name: "Right"},
+                    [ORG.Device.SWIPE_UP]: {name: "Up"},
+                    [ORG.Device.SWIPE_DOWN]: {name: "Down"},
                 }
             }
         }
@@ -2831,24 +2842,33 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-press"] = { "type": "cm_separator" };
             }
-            items["press-home"] = {name: "Press Home"};
-            items["lock-device"] = {name: "Lock"};
-            items["unlock-device"] = {name: "Unlock"};
+            items[ORG.Actions.PRESS_HOME] = {name: "Press Home"};
+            items[ORG.Actions.LOCK_DEVICE] = {name: "Lock"};
+            items[ORG.Actions.UNLOCK_DEVICE] = {name: "Unlock"};
+            items[ORG.Actions.SET_ORIENTATION] = {
+                name: "Set Orientation",
+                items: {
+                    [ORGDevice.ORIENTATION_PORTRAIT]: {name: "Portrait"},
+                    [ORGDevice.ORIENTATION_LANDSCAPE_LEFT]: {name: "Landscape Left"},
+                    [ORGDevice.ORIENTATION_LANDSCAPE_RIGHT]: {name: "Landscape Right"},
+                    [ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN]: {name: "Upside Down"}
+                }
+            }
         }
 
         if (controller.type === 'ORG') {
             if (Object.keys(items).length) {
                 items["separator-look"] = { "type": "cm_separator" };
             }
-            items["look-at"] = {name: "Look at"};
-            items["look-front-at"] = {name: "Look Front at"};
+            items[ORG.Actions.LOOK_AT] = {name: "Look at"};
+            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"};
         }
 
         if (controller.type === 'WDA') {
             if (Object.keys(items).length) {
                 items["separator-refresh"] = { "type": "cm_separator" };
             }
-            items["refresh-screen"] = {name: "Refresh Screen"};
+            items[ORG.Actions.REFRESH_SCREEN] = {name: "Refresh Screen"};
         }
 
         return items;
@@ -2856,9 +2876,9 @@ class ORGContextMenuManager {
 
     _menuItemsForOutOfScreen() {
         return {
-            "reset-camera-position": {name: "Reset Camera Position"},
-            "reset-device-position": {name: "Reset Device Position"},
-            "device-screen-closeup": {name: "Device Screen Closeup"}
+            [ORG.Actions.RESET_CAMERA_POSITION]: {name: "Reset Camera Position"},
+            [ORG.Actions.RESET_DEVICE_POSITION]: {name: "Reset Device Position"},
+            [ORG.Actions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"}
         }
     }
 }
@@ -2889,7 +2909,7 @@ class ORGUITreeContextMenuManager {
             callback: (key, options) => {
                 this._processMenuSelection(key);
             }
-        });
+        })
     }
 
 
@@ -2912,31 +2932,22 @@ class ORGUITreeContextMenuManager {
     _processMenuSelection(menuOptionKey) {
 
         switch (menuOptionKey) {
-            case 'tap': {
-                ORGConnectionActions.tapOnXpath(this._getElementXPath(this._node));
+            case ORG.Actions.TAP:
+            case ORG.Actions.LONG_PRESS:
+            case ORG.Actions.SWIPE_LEFT:
+            case ORG.Actions.SWIPE_RIGHT:
+            case ORG.Actions.SWIPE_UP:
+            case ORG.Actions.SWIPE_DOWN:
+            {
+                ORGConnectionActions.playGesture(menuOptionKey, this._getElementXPath(this._node));
             } break;
-            case 'long-press': {
-                ORGConnectionActions.longPressOnXpath(this._getElementXPath(this._node));
-            } break;
-            case 'swipe-left': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "left");
-            } break;
-            case 'swipe-right': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "right");
-            } break;
-            case 'swipe-up': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "up");
-            } break;
-            case 'swipe-down': {
-                ORGConnectionActions.swipeOnXpath(this._getElementXPath(this._node), "down");
-            } break;
-            case 'look-at' : {
+            case ORG.Actions.LOOK_AT : {
                 alert('Not implemented');
             } break;
-            case 'look-front-at': {
+            case ORG.Actions.LOOK_FRONT_AT: {
                 alert('Not implemented');
             } break;
-            case 'show-class-hierarchy': {
+            case ORG.Actions.SHOW_CLASS_HIERARCHY: {
                 if (this._node && (typeof this._node.representedNode.class !== undefined)) {
                     ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.representedNode.class));
                 }
@@ -2949,24 +2960,24 @@ class ORGUITreeContextMenuManager {
         var items = {};
 
         if (controller.type === "WDA") {
-            items["tap"] = {name: "Tap"};
-            items["long-press"] = {name: "Long Press"};
-            items["swipe"] = {
+            items[ORG.Actions.TAP] = {name: "Tap"};
+            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
+            items[ORG.Actions.SWIPE] = {
                 name: "Swipe",
                 items: {
-                    "swipe-left": {name: "Left"},
-                    "swipe-right": {name: "Right"},
-                    "swipe-up": {name: "Up"},
-                    "swipe-down": {name: "Down"},
+                    [ORG.Actions.SWIPE_LEFT]: {name: "Left"},
+                    [ORG.Actions.SWIPE_RIGHT]: {name: "Right"},
+                    [ORG.Actions.SWIPE_UP]: {name: "Up"},
+                    [ORG.Actions.SWIPE_DOWN]: {name: "Down"},
                 }
             }
         }
 
         if (controller.type === "ORG") {
-            items["show-class-hierarchy"] = {name: "Class Hierarchy"}
+            items[ORG.Actions.SHOW_CLASS_HIERARCHY] = {name: "Class Hierarchy"}
             items["separator-look"] = { "type": "cm_separator" };
-            items["look-at"] = {name: "Look at"}
-            items["look-front-at"] = {name: "Look Front at"}
+            items[ORG.Actions.LOOK_AT] = {name: "Look at"}
+            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"}
         }
 
         return items;
@@ -3859,10 +3870,10 @@ class ORGDevice {
 
 }
 
-ORGDevice.ORIENTATION_PORTRAIT = 0;
-ORGDevice.ORIENTATION_LANDSCAPE_LEFT = 1;
-ORGDevice.ORIENTATION_LANDSCAPE_RIGHT = 2;
-ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN = 3;
+ORGDevice.ORIENTATION_PORTRAIT = "portrait";
+ORGDevice.ORIENTATION_LANDSCAPE_LEFT = "landscape-left";
+ORGDevice.ORIENTATION_LANDSCAPE_RIGHT = "landscape-right";
+ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN = "upside-down";
 
 /**
  * Created by jongabilondo on 22/09/2017.
@@ -4554,6 +4565,23 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         })
     }
 
+    setOrientation(orientation) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let wdaOrientation = "PORTRAIT";
+                switch (orientation) {
+                    case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {wdaOrientation = "UIA_DEVICE_ORIENTATION_PORTRAIT_UPSIDEDOWN"} break;
+                    case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: {wdaOrientation = "LANDSCAPE"} break;
+                    case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {wdaOrientation = "UIA_DEVICE_ORIENTATION_LANDSCAPERIGHT"} break;
+                }
+                let result = await this._sendCommand(this.RESTPrefixWithSession + "orientation" , "POST", JSON.stringify({orientation: wdaOrientation}));
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
     _sendCommand(command, method, parameters) {
         return new Promise((resolve, reject) => {
             this.xhr.open(method, command, true);
@@ -4768,7 +4796,6 @@ class ORG3DDeviceModelLoader {
 // PRIVATE
 
     static _load_iPhone_5(scene, device) {
-
         return new Promise((resolve, reject) => {
             var mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('3DModels/iPhone_5/');
@@ -4788,8 +4815,6 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
-                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            //scene.setDeviceOrientation2(device.orientation);
                             resolve(deviceModel);
                         },
                         null, //on progress
@@ -4806,7 +4831,6 @@ class ORG3DDeviceModelLoader {
     }
 
     static _load_iPhone_6(scene, device) {
-
         return new Promise((resolve, reject) => {
             var mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('3DModels/iPhone_6/');
@@ -4826,8 +4850,6 @@ class ORG3DDeviceModelLoader {
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
                             var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
-                            //scene.addDevice3DModel(new ORG3DDeviceModel(scene.THREEScene, object));
-                            //scene.setDeviceOrientation2(device.orientation);
                             resolve(deviceModel);
                         },
                         null, /*on progress*/
@@ -4912,39 +4934,11 @@ class ORG3DDeviceModel {
             return;
         }
 
-        //const positionBackup = this.threeObj.position.clone();
-        //this.threeObj.position.set(positionBackup.x, positionBackup.y, -positionBackup.z);
-        //
-        /*switch (orientation) {
-            case ORGDevice.ORIENTATION_PORTRAIT: {
-                this.threeObj.rotation.set(0, 0, 0);
-            } break;
-            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
-                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(180));
-            } break;
-            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
-                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(-90));
-            } break;
-            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
-                this.threeObj.rotation.set(0, 0, THREE.Math.degToRad(90));
-                break;
-        }*/
-        //this.threeObj.position.copy(positionBackup);
-
-
-        // Make the rotation at 0, 0, 0.
-        //const b = new THREE.Box3().setFromObject(this.threeObj);
-        //const position = b.getCenter();
-        ////this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
-        //
-
-        var rotation = this.threeObj.rotation;
+        let rotation = this.threeObj.rotation;
         this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
 
         switch (orientation) {
             case ORGDevice.ORIENTATION_PORTRAIT: {
-                //var rotation = this.threeObj.rotation;
-                //this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
             } break;
             case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
                 this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(180)));
@@ -4956,7 +4950,6 @@ class ORG3DDeviceModel {
                 this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad(90)));
                 break;
         }
-        //this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
     }
 
     getBoundingBox() {
@@ -6531,12 +6524,17 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
         //const leftPanelRect = leftPanel.getBoundingClientRect();
         //const rightPanelWidth = contentRect.width - leftPanelRect.width;
         //rightPanel.style.width = rightPanelWidth - 4  + 'px';
-        //
+
+        const contentRect = contentPanel.getBoundingClientRect();
+        const leftPanelRect = leftPanel.getBoundingClientRect();
+        const rightPanelWidth = contentRect.width - leftPanelRect.width - 20;
+        rightPanel.style.width = rightPanelWidth + 'px';
+
         //// Renderer & Camera
         renderer.setSize( canvas.offsetWidth, canvasHeight);
         camera.aspect = canvas.offsetWidth / canvasHeight;
 		camera.updateProjectionMatrix();
-        //
+
 		// UI Tree
         document.getElementById('ui-json-tree').style.height = canvasHeight-115 + 'px';
         document.getElementById('ui-json-tree-node').style.height = canvasHeight-60 + 'px';
@@ -6693,9 +6691,9 @@ ORG.UI.buttonResetItinerary = $('#reset-itinerary');
 ORG.UI.checkButtonShowDevice.change(function () {
     ORG.scene.flagShowDevice3DModel = $(this).is(':checked');
     if (ORG.scene.flagShowDevice3DModel) {
-        ORG.scene.showDevice3DModel();
+        ORGConnectionActions.showDevice3DModel();
     } else {
-        ORG.scene.hideDevice3DModel();
+        ORGConnectionActions.hideDevice3DModel();
     }
 });
 
@@ -6778,7 +6776,11 @@ ORG.UI.buttonAddBeacon.click(function () {
 });
 
 ORG.UI.buttonExpand.click(function () {
-    if ( !ORG.deviceController.isConnected) {
+    if (!ORG.deviceController.isConnected) {
+        return;
+    }
+    if (ORG.deviceController.type === "WDA") {
+        alert("Not implemented.")
         return;
     }
     if (ORG.scene.isExpanded) {
@@ -7818,7 +7820,7 @@ class ORGConnectionActions {
             var screenshot = await controller.getScreenshot();
 
             // 5. Get device 3D model
-            var model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, this, kORGDevicePositionY);//this.getDeviceModel();
+            var model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, ORG.scene, kORGDevicePositionY);
 
             // 6. Add device with screenshot to scene
             this.addDeviceToScene(model, screenshot);
@@ -7901,37 +7903,54 @@ class ORGConnectionActions {
         }
     }
 
-    static async tapOnXpath(xpath) {
+    static async playGesture(gesture, xpath) {
         try {
             let result = await ORG.deviceController.elementUsing("xpath", xpath);
             if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
-                await ORG.deviceController.tapElementWithId(result["ELEMENT"]);
+                let elementID = result["ELEMENT"];
+                switch (gesture) {
+                    case ORG.Actions.TAP: await ORG.deviceController.tapElementWithId(elementID); break;
+                    case ORG.Actions.LONG_PRESS: await ORG.deviceController.longPressElementWithId(elementID); break;
+                    case ORG.Actions.SWIPE_LEFT: await ORG.deviceController.swipeElementWithId(elementID, "left"); break;
+                    case ORG.Actions.SWIPE_RIGHT: await ORG.deviceController.swipeElementWithId(elementID, "right"); break;
+                    case ORG.Actions.SWIPE_UP: await ORG.deviceController.swipeElementWithId(elementID, "up"); break;
+                    case ORG.Actions.SWIPE_DOWN: await ORG.deviceController.swipeElementWithId(elementID, "down"); break;
+                }
             }
         } catch(err) {
             this._handleError(err);
         }
     }
 
-    static async longPressOnXpath(xpath) {
+    static async showDevice3DModel() {
         try {
-            let result = await ORG.deviceController.elementUsing("xpath", xpath);
-            if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
-                await ORG.deviceController.longPressElementWithId(result["ELEMENT"]);
+            let model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, ORG.scene, kORGDevicePositionY);
+            if (model) {
+                ORG.scene.addDevice3DModel(model);
+                ORG.scene.setDeviceOrientation2(ORG.device.orientation);
             }
         } catch(err) {
             this._handleError(err);
         }
     }
 
-    static async swipeOnXpath(xpath, direction) {
+    static async setOrientation(orientation) {
         try {
-            let result = await ORG.deviceController.elementUsing("xpath", xpath);
-            if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
-                await ORG.deviceController.swipeElementWithId(result["ELEMENT"], direction);
-            }
+            let result = await ORG.deviceController.setOrientation(orientation);
+            ORG.device.orientation = orientation;
+            var screenshot = await ORG.deviceController.getScreenshot();
+            ORG.scene.setDeviceOrientation2(orientation);
+            ORG.dispatcher.dispatch({
+                actionType: 'screenshot-update',
+                image: screenshot
+            });
         } catch(err) {
             this._handleError(err);
         }
+    }
+
+    static hideDevice3DModel() {
+        ORG.scene.hideDevice3DModel();
     }
 
     static addDeviceToScene(model, screenshot) {
@@ -7940,6 +7959,7 @@ class ORGConnectionActions {
             ORG.scene.setDeviceOrientation2(ORG.device.orientation);
         }
         ORG.scene.createDeviceScreen(ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
+        ORG.scene.createRaycasterForDeviceScreen();
         ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
         ORG.scene.devicePositionHasChanged();
         ORG.scene.setDeviceOrientation2(ORG.device.orientation);
