@@ -8,8 +8,7 @@ ORG.UI = {};
  * Created by jongabilondo on 14/02/2018.
  */
 
-// Constants
-ORG.Request = {
+const ORGRequest = {
     Request : "request",
     Update : "update",
     AppInfo : "app-info",
@@ -21,7 +20,7 @@ ORG.Request = {
 };
 
 
-ORG.Actions = {
+const ORGActions = {
     PRESS_HOME: "press-jome",
     LOCK_DEVICE: "lock-device",
     UNLOCK_DEVICE: "unlock-device",
@@ -460,15 +459,14 @@ class ORG3DUITreeModel {
     }
 
     setExpandedTreeLayersDistance( distanceUnits ) {
-
         this._planeDistance = kORGMinimalPlaneDistance + (distanceUnits/100.0 * kORGMaxPlaneDistance); // new plane distance
 
-        if ( this._THREEElementTreeGroup ) {
+        if (this._THREEElementTreeGroup) {
             const allElements = this._THREEElementTreeGroup.children;
             let firstPosition = 0;
-            for ( let i in allElements ) {
+            for (let i in allElements) {
                 let currentElementGroup = allElements[i];
-                if ( i === 0 ) {
+                if (i === 0) {
                     firstPosition = currentElementGroup.position;
                     continue;
                 }
@@ -486,13 +484,14 @@ class ORG3DUITreeModel {
     setExpandedTreeLayersVisibleRange( maxVisibleLayer ) {
         // Traverse all Tree elements and set their visibility
         // Every element is a Group with 2 children, a Mesh and a BoxHelper.
-
-        const allElements = this._THREEElementTreeGroup.children;
-        for ( let currentElementGroup of allElements ) {
-            if ( currentElementGroup.type === "Group" ) {
-                const nodeData = currentElementGroup.userData;
-                if ( !!nodeData ) {
-                    currentElementGroup.visible = ( nodeData.expandedTreeLayer < maxVisibleLayer );
+        if (this._THREEElementTreeGroup) {
+            const allElements = this._THREEElementTreeGroup.children;
+            for ( let currentElementGroup of allElements ) {
+                if (currentElementGroup.type === "Group") {
+                    const nodeData = currentElementGroup.userData;
+                    if (!!nodeData) {
+                        currentElementGroup.visible = (nodeData.expandedTreeLayer < maxVisibleLayer);
+                    }
                 }
             }
         }
@@ -2297,8 +2296,7 @@ class ORG3DScene {
     }
 
     _createLights() {
-        // LIGHTS
-        var light;
+        let light;
 
         light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(500,-500,500);
@@ -2343,9 +2341,9 @@ class ORG3DScene {
     }
 
     _adjustLocationMarkerPosition(deviceBoundingBox) {
-        if ( deviceBoundingBox && this._locationMarker) {
-            this._locationMarker.setPositionY(deviceBoundingBox.min.y - 50);
-        }
+        //if ( deviceBoundingBox && this._locationMarker) {
+        //    this._locationMarker.setPositionY(deviceBoundingBox.min.y - 50);
+        //}
     }
 
     _addDeviceAndScreenGroup() {
@@ -2560,9 +2558,9 @@ class ORGMessageBuilder {
 
     static deviceInfo() {
         var msg = {
-            type: ORG.Request.Request,
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.DeviceInfo
+                request: ORGRequest.DeviceInfo
             }
         };
         return JSON.stringify(msg);
@@ -2570,9 +2568,9 @@ class ORGMessageBuilder {
 
     static systemInfo() {
         var msg = {
-            type: ORG.Request.Request,
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.SystemInfo
+                request: ORGRequest.SystemInfo
             }
         };
         return JSON.stringify(msg);
@@ -2580,9 +2578,9 @@ class ORGMessageBuilder {
 
     static appInfo() {
         var msg = {
-            type: ORG.Request.Request,
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.AppInfo
+                request: ORGRequest.AppInfo
             }
         };
         return JSON.stringify(msg);
@@ -2590,9 +2588,9 @@ class ORGMessageBuilder {
 
     static takeScreenshot() {
         var msg = {
-            type: ORG.Request.Request,
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.Screenshot
+                request: ORGRequest.Screenshot
             }
         };
         return JSON.stringify(msg);
@@ -2600,9 +2598,9 @@ class ORGMessageBuilder {
 
     static elementTree(parameters) {
         var msg = {
-            type: ORG.Request.Request,
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.ElementTree,
+                request: ORGRequest.ElementTree,
                 parameters: parameters
             }
         };
@@ -2611,7 +2609,7 @@ class ORGMessageBuilder {
 
     static gesture(gesture, parameters) {
         var msg = {
-            type: ORG.Request.Request,
+            type: ORGRequest.Request,
             data: {
                 request: gesture,
                 parameters:parameters
@@ -2622,7 +2620,7 @@ class ORGMessageBuilder {
 
     static locationUpdate(location, elevation) {
         var msg = {
-            type: ORG.Request.Update,
+            type: ORGRequest.Update,
             data: {
             }
         };
@@ -2637,7 +2635,7 @@ class ORGMessageBuilder {
 
     static attitudeUpdate(quaternion) {
         var msg = {
-            type: ORG.Request.Update,
+            type: ORGRequest.Update,
             data: {
             }
         };
@@ -2649,9 +2647,9 @@ class ORGMessageBuilder {
 
     static classHierarchy(className) {
         var msg = {
-            type: ORG.Request.Request,
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.ClassHierarchy,
+                request: ORGRequest.ClassHierarchy,
                 parameters:{className: className}
             }
         };
@@ -2712,7 +2710,7 @@ class ORGContextMenuManager {
      * @param event
      */
     onContextMenu(event) {
-        if (!ORG.deviceController || ORG.deviceController.isConnected == false) {
+        if (!ORG.deviceController || ORG.deviceController.isConnected === false) {
             return;
         }
         $(this._contextElement).contextMenu({x:event.clientX, y:event.clientY});
@@ -2750,16 +2748,16 @@ class ORGContextMenuManager {
         const parameters = {location:{x:appX, y:appY}};
 
         switch (menuOptionKey) {
-            case ORG.Actions.PRESS_HOME : {
+            case ORGActions.PRESS_HOME : {
                 ORGConnectionActions.pressHome();
             } break;
-            case ORG.Actions.LOCK_DEVICE : {
+            case ORGActions.LOCK_DEVICE : {
                 ORGConnectionActions.lockDevice();
             } break;
-            case ORG.Actions.UNLOCK_DEVICE : {
+            case ORGActions.UNLOCK_DEVICE : {
                 ORGConnectionActions.unlockDevice();
             } break;
-            case ORG.Actions.REFRESH_SCREEN : {
+            case ORGActions.REFRESH_SCREEN : {
                 ORGConnectionActions.refreshScreen();
             } break;
             case ORGDevice.ORIENTATION_PORTRAIT:
@@ -2768,33 +2766,33 @@ class ORGContextMenuManager {
             case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
                 ORGConnectionActions.setOrientation(menuOptionKey);
             } break;
-            case ORG.Actions.TAP : {
+            case ORGActions.TAP : {
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.LONG_PRESS : {
+            case ORGActions.LONG_PRESS : {
                 parameters.duration = 0.5;
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_LEFT : {
+            case ORGActions.SWIPE_LEFT : {
                 parameters.direction = "left";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_RIGHT : {
+            case ORGActions.SWIPE_RIGHT : {
                 parameters.direction = "right";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_UP : {
+            case ORGActions.SWIPE_UP : {
                 parameters.direction = "up";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_DOWN : {
+            case ORGActions.SWIPE_DOWN : {
                 parameters.direction = "down";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.LOOK_AT : {
+            case ORGActions.LOOK_AT : {
                 scene.lookAtObject( threeObj );
             } break;
-            case ORG.Actions.LOOK_FRONT_AT : {
+            case ORGActions.LOOK_FRONT_AT : {
                 scene.lookFrontAtObject( threeObj );
             } break;
         }
@@ -2809,13 +2807,13 @@ class ORGContextMenuManager {
     _processMenuSelectionOnVoid(menuOptionKey, scene) {
 
         switch (menuOptionKey) {
-            case ORG.Actions.RESET_CAMERA_POSITION : {
+            case ORGActions.RESET_CAMERA_POSITION : {
                 scene.resetCameraPosition();
             } break;
-            case ORG.Actions.RESET_DEVICE_POSITION : {
+            case ORGActions.RESET_DEVICE_POSITION : {
                 scene.resetDevicePosition();
             } break;
-            case ORG.Actions.SCREEN_CLOSEUP : {
+            case ORGActions.SCREEN_CLOSEUP : {
                 scene.deviceScreenCloseup();
             } break;
         }
@@ -2825,9 +2823,9 @@ class ORGContextMenuManager {
         let controller = ORG.deviceController;
         var items = {};
         if (controller.type === 'ORG') {
-            items[ORG.Actions.TAP] = {name: "Tap"};
-            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
-            items[ORG.Actions.SWIPE] = {
+            items[ORGActions.TAP] = {name: "Tap"};
+            items[ORGActions.LONG_PRESS] = {name: "Long Press"};
+            items[ORGActions.SWIPE] = {
                 name: "Swipe",
                 items: {
                     [ORG.Device.SWIPE_LEFT]: {name: "Left"},
@@ -2842,10 +2840,10 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-press"] = { "type": "cm_separator" };
             }
-            items[ORG.Actions.PRESS_HOME] = {name: "Press Home"};
-            items[ORG.Actions.LOCK_DEVICE] = {name: "Lock"};
-            items[ORG.Actions.UNLOCK_DEVICE] = {name: "Unlock"};
-            items[ORG.Actions.SET_ORIENTATION] = {
+            items[ORGActions.PRESS_HOME] = {name: "Press Home"};
+            items[ORGActions.LOCK_DEVICE] = {name: "Lock"};
+            items[ORGActions.UNLOCK_DEVICE] = {name: "Unlock"};
+            items[ORGActions.SET_ORIENTATION] = {
                 name: "Set Orientation",
                 items: {
                     [ORGDevice.ORIENTATION_PORTRAIT]: {name: "Portrait"},
@@ -2860,15 +2858,15 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-look"] = { "type": "cm_separator" };
             }
-            items[ORG.Actions.LOOK_AT] = {name: "Look at"};
-            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"};
+            items[ORGActions.LOOK_AT] = {name: "Look at"};
+            items[ORGActions.LOOK_FRONT_AT] = {name: "Look Front at"};
         }
 
         if (controller.type === 'WDA') {
             if (Object.keys(items).length) {
                 items["separator-refresh"] = { "type": "cm_separator" };
             }
-            items[ORG.Actions.REFRESH_SCREEN] = {name: "Refresh Screen"};
+            items[ORGActions.REFRESH_SCREEN] = {name: "Refresh Screen"};
         }
 
         return items;
@@ -2876,9 +2874,9 @@ class ORGContextMenuManager {
 
     _menuItemsForOutOfScreen() {
         return {
-            [ORG.Actions.RESET_CAMERA_POSITION]: {name: "Reset Camera Position"},
-            [ORG.Actions.RESET_DEVICE_POSITION]: {name: "Reset Device Position"},
-            [ORG.Actions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"}
+            [ORGActions.RESET_CAMERA_POSITION]: {name: "Reset Camera Position"},
+            [ORGActions.RESET_DEVICE_POSITION]: {name: "Reset Device Position"},
+            [ORGActions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"}
         }
     }
 }
@@ -2932,22 +2930,22 @@ class ORGUITreeContextMenuManager {
     _processMenuSelection(menuOptionKey) {
 
         switch (menuOptionKey) {
-            case ORG.Actions.TAP:
-            case ORG.Actions.LONG_PRESS:
-            case ORG.Actions.SWIPE_LEFT:
-            case ORG.Actions.SWIPE_RIGHT:
-            case ORG.Actions.SWIPE_UP:
-            case ORG.Actions.SWIPE_DOWN:
+            case ORGActions.TAP:
+            case ORGActions.LONG_PRESS:
+            case ORGActions.SWIPE_LEFT:
+            case ORGActions.SWIPE_RIGHT:
+            case ORGActions.SWIPE_UP:
+            case ORGActions.SWIPE_DOWN:
             {
                 ORGConnectionActions.playGesture(menuOptionKey, this._getElementXPath(this._node));
             } break;
-            case ORG.Actions.LOOK_AT : {
-                alert('Not implemented');
+            case ORGActions.LOOK_AT : {
+                alert('Not implemented.');
             } break;
-            case ORG.Actions.LOOK_FRONT_AT: {
-                alert('Not implemented');
+            case ORGActions.LOOK_FRONT_AT: {
+                alert('Not implemented.');
             } break;
-            case ORG.Actions.SHOW_CLASS_HIERARCHY: {
+            case ORGActions.SHOW_CLASS_HIERARCHY: {
                 if (this._node && (typeof this._node.representedNode.class !== undefined)) {
                     ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.representedNode.class));
                 }
@@ -2960,24 +2958,24 @@ class ORGUITreeContextMenuManager {
         var items = {};
 
         if (controller.type === "WDA") {
-            items[ORG.Actions.TAP] = {name: "Tap"};
-            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
-            items[ORG.Actions.SWIPE] = {
+            items[ORGActions.TAP] = {name: "Tap"};
+            items[ORGActions.LONG_PRESS] = {name: "Long Press"};
+            items[ORGActions.SWIPE] = {
                 name: "Swipe",
                 items: {
-                    [ORG.Actions.SWIPE_LEFT]: {name: "Left"},
-                    [ORG.Actions.SWIPE_RIGHT]: {name: "Right"},
-                    [ORG.Actions.SWIPE_UP]: {name: "Up"},
-                    [ORG.Actions.SWIPE_DOWN]: {name: "Down"},
+                    [ORGActions.SWIPE_LEFT]: {name: "Left"},
+                    [ORGActions.SWIPE_RIGHT]: {name: "Right"},
+                    [ORGActions.SWIPE_UP]: {name: "Up"},
+                    [ORGActions.SWIPE_DOWN]: {name: "Down"},
                 }
             }
         }
 
         if (controller.type === "ORG") {
-            items[ORG.Actions.SHOW_CLASS_HIERARCHY] = {name: "Class Hierarchy"}
+            items[ORGActions.SHOW_CLASS_HIERARCHY] = {name: "Class Hierarchy"}
             items["separator-look"] = { "type": "cm_separator" };
-            items[ORG.Actions.LOOK_AT] = {name: "Look at"}
-            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"}
+            items[ORGActions.LOOK_AT] = {name: "Look at"}
+            items[ORGActions.LOOK_FRONT_AT] = {name: "Look Front at"}
         }
 
         return items;
@@ -4307,6 +4305,10 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true };
         this.requestElementTree(requestFlags);
     }
+
+    getSystemInfo() {
+        this.sendRequest(ORGMessageBuilder.systemInfo( ));
+    }
 }
 /**
  * Created by jongabilondo on 26/02/2017.
@@ -4328,7 +4330,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     get isConnected() {
-        return (this._sessionInfo != null);
+        return (this._sessionInfo !== null);
     }
 
     get RESTPrefix() {
@@ -4344,9 +4346,9 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             var endpointURL = this.RESTPrefix + "session";
             this.xhr.open("POST", endpointURL, true);
             this.xhr.onload = () => {
-                if (this.xhr.status == 200) {
+                if (this.xhr.status === 200) {
                     const response = JSON.parse(this.xhr.responseText);
-                    if (response.status == 0) {
+                    if (response.status === 0) {
                         this._sessionInfo = JSON.parse(this.xhr.responseText);
                         resolve(this._sessionInfo);
                     } else {
@@ -4361,7 +4363,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             }
             this.xhr.onreadystatechange = () => {
                 // Solution to get connection errors. Pitty there is no proper way to something so basic.
-                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                if (this.xhr.readyState === 4 && this.xhr.status === 0) {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error opening session."));
                 }
             }
@@ -4370,20 +4372,19 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     closeSession() {
-        // UI updates
         ORG.dispatcher.dispatch({
             actionType: 'wda-session-closed'
         });
 
-        const _this = this;
-        var endpointURL = this.RESTPrefix + "";
+       /* DOESNT WORK !
+       const endpointURL = this.RESTPrefix + "";
         this.xhr.open("DELETE", endpointURL, true);
-        this.xhr.onreadystatechange = function() {
-            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-                _this._sessionInfo = null;
+        this.xhr.onreadystatechange = () => {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                this._sessionInfo = null;
             }
         }
-        this.xhr.send();
+        this.xhr.send();*/
     }
 
     getDeviceInformation() {
@@ -4398,7 +4399,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                     this.getWindowSize().then(
                         (result) => {
                             const screenSizePortrait = ORGDevice.screenSizeInPortrait(result);
-                            var device = this._deviceInfoFromWindowSize(screenSizePortrait);
+                            let device = this._deviceInfoFromWindowSize(screenSizePortrait);
                             device.orientation = orientaton;
                             resolve(device);
                         },
@@ -4452,7 +4453,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 let result = await this._sendCommand(this.RESTPrefix + "screenshot", "GET");
                 const base64Img = result;
                 if (base64Img && Object.keys(base64Img).length) {
-                    var img = new Image();
+                    let img = new Image();
                     img.src = "data:image/jpg;base64," + base64Img;
                     img.onload = () => {
                         resolve(img);
@@ -4582,12 +4583,19 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         })
     }
 
+    getSystemInfo() {
+        // not implemented
+    }
+
+    sendLocationUpdate(lat, lng) {
+        // not implemented
+    }
     _sendCommand(command, method, parameters) {
         return new Promise((resolve, reject) => {
             this.xhr.open(method, command, true);
             this.xhr.onload = () => {
                 let response = JSON.parse(this.xhr.responseText);
-                if (response.status == 0) {
+                if (response.status === 0) {
                     resolve(response.value);
                 } else {
                     reject(response.value);
@@ -4601,7 +4609,7 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             }
             this.xhr.onreadystatechange = () => {
                 // Solution to get connection errors. Pitty there is no proper way to something so important.
-                if (this.xhr.readyState == 4 && this.xhr.status == 0) {
+                if (this.xhr.readyState === 4 && this.xhr.status === 0) {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error requesting orientation."));
                 }
             }
@@ -4770,9 +4778,7 @@ class ORG3DDeviceModelLoader {
      * @param scene the ORG.scene to add the 3D model to.
      */
     static loadDevice3DModel(device, scene, yPosition) {
-
         return new Promise((resolve, reject) => {
-
             if (device.productName.startsWith('iPhone 5')) {
                 this._load_iPhone_5(scene,device).then(
                     function(result) {
@@ -4797,7 +4803,7 @@ class ORG3DDeviceModelLoader {
 
     static _load_iPhone_5(scene, device) {
         return new Promise((resolve, reject) => {
-            var mtlLoader = new THREE.MTLLoader();
+            let mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('3DModels/iPhone_5/');
             mtlLoader.load('iPhone_5.mtl',
                 (materials) => {
@@ -4832,7 +4838,7 @@ class ORG3DDeviceModelLoader {
 
     static _load_iPhone_6(scene, device) {
         return new Promise((resolve, reject) => {
-            var mtlLoader = new THREE.MTLLoader();
+            let mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('3DModels/iPhone_6/');
             mtlLoader.load('iPhone_6.mtl',
                 (materials) => {
@@ -4910,8 +4916,8 @@ class ORG3DDeviceModel {
             return;
         }
 
-        var b = new THREE.Box3().setFromObject(this.threeObj);
-        var position = b.getCenter();
+        let b = new THREE.Box3().setFromObject(this.threeObj);
+        let position = b.getCenter();
         this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
 
         switch(orientation) {
@@ -5270,37 +5276,37 @@ class ORGWebSocketDelegate {
 	 */
 	_processResponse(messageJSON) {
 		switch (messageJSON.request) {
-			case ORG.Request.DeviceInfo: {
+			case ORGRequest.DeviceInfo: {
                 this._processResponseDeviceInfo(messageJSON.data);
             } break;
-			case ORG.Request.AppInfo: {
+			case ORGRequest.AppInfo: {
                 this._processResponseAppInfo(messageJSON);
             } break;
-			case ORG.Request.Screenshot: {
+			case ORGRequest.Screenshot: {
                 this._processReportScreenshot(messageJSON);
             } break;
-			case ORG.Request.ElementTree: {
+			case ORGRequest.ElementTree: {
                 this._processReportElementTree(messageJSON);
             }break;
-			case ORG.Request.SystemInfo: {
+			case ORGRequest.SystemInfo: {
                 this._processReportSystemInfo(messageJSON);
             } break;
-            case ORG.Request.ClassHierarchy: {
+            case ORGRequest.ClassHierarchy: {
                 this._processResponseClassHierarchy(messageJSON);
             } break;
 			default: {
 				console.debug('Unknown response from Device.');
 			}
 		}
-		/*if ( messageJSON.request == ORG.Request.DeviceInfo) {
+		/*if ( messageJSON.request == ORGRequest.DeviceInfo) {
 			this._processResponseDeviceInfo(messageJSON.data);
-		} else if ( messageJSON.request == ORG.Request.AppInfo) {
+		} else if ( messageJSON.request == ORGRequest.AppInfo) {
             this._processResponseAppInfo(messageJSON);
-		} else if ( messageJSON.request == ORG.Request.Screenshot) {
+		} else if ( messageJSON.request == ORGRequest.Screenshot) {
             this._processReportScreenshot( messageJSON);
-        } else if ( messageJSON.request == ORG.Request.ElementTree) {
+        } else if ( messageJSON.request == ORGRequest.ElementTree) {
             this._processReportElementTree(messageJSON);
-        } else if ( messageJSON.request == ORG.Request.SystemInfo) {
+        } else if ( messageJSON.request == ORGRequest.SystemInfo) {
             this._processReportSystemInfo(messageJSON);
 		}*/
 	}
@@ -6510,7 +6516,7 @@ ORG.SplitterResize	= function(paneSep, contentPanel, leftPane, rightPane, scene)
 
 ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, rightPanel) {
 
-	var callback	= function() {
+	let callback	= function() {
 
 		// Canvas
         const rect = canvas.getBoundingClientRect();
@@ -6520,11 +6526,6 @@ ORG.WindowResize	= function(renderer, camera, canvas, contentPanel, leftPanel, r
         canvas.style.height = canvasHeight  + 'px'; //otherwise the canvas is not adapting to the renderer area
 
 		// Right Panel
-        //const contentRect = contentPanel.getBoundingClientRect();
-        //const leftPanelRect = leftPanel.getBoundingClientRect();
-        //const rightPanelWidth = contentRect.width - leftPanelRect.width;
-        //rightPanel.style.width = rightPanelWidth - 4  + 'px';
-
         const contentRect = contentPanel.getBoundingClientRect();
         const leftPanelRect = leftPanel.getBoundingClientRect();
         const rightPanelWidth = contentRect.width - leftPanelRect.width - 20;
@@ -6780,7 +6781,7 @@ ORG.UI.buttonExpand.click(function () {
         return;
     }
     if (ORG.deviceController.type === "WDA") {
-        alert("Not implemented.")
+        alert("Not implemented for WDA driver.")
         return;
     }
     if (ORG.scene.isExpanded) {
@@ -6860,30 +6861,34 @@ class ORG3DLocationMarker {
     //-------------
 
     _createMarker(anchorPoint) {
-        const radiusTop = 30;
-        const radiusBottom = 30;
-        const height = 10;
-        const radialSegments = 30;
-        const heightSegments = 8;
-        const openEnded = false;
-        const cylinderGeo = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded);
-        var meshMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ee });
-        meshMaterial.side = THREE.DoubleSide;
-        var marker = THREE.SceneUtils.createMultiMaterialObject(cylinderGeo, [meshMaterial]);
+        const kRadiusTop = 0.1;
+        const kRadiusBottom = kRadiusTop;
+        const kHeight = kRadiusTop * 0.3;
+        const kRadialSegments = 30;
+        const kHeightSegments = 1;
+        const kOpenEnded = false;
+        const cylinderGeo = new THREE.CylinderGeometry(kRadiusTop, kRadiusBottom, kHeight, kRadialSegments, kHeightSegments, kOpenEnded);
+        let material = new THREE.MeshPhongMaterial({ color: 0x0000ee });
+        material.side = THREE.DoubleSide;
+        //let marker = THREE.SceneUtils.createMultiMaterialObject(cylinderGeo, [meshMaterial]);
+        let marker = new THREE.Mesh(cylinderGeo, material);
         marker.position.setY( anchorPoint.y);
         return marker;
     }
 
     _createDescriptor(address) {
-
+        const kFontSize = 0.1;
+        const kFontHeight = kFontSize * 0.2;
+        const kBevelThickness = kFontSize * 0.1;
+        const kBevelSize = kFontSize * 0.1;
         const addressGeom = new THREE.TextGeometry(address, {
             font: ORG.font_helvetiker_regular,
-            size: 40,
-            height: 5,
+            size: kFontSize,
+            height: kFontHeight,
             curveSegments: 12,
             bevelEnabled: false,
-            bevelThickness: 10,
-            bevelSize: 8,
+            bevelThickness: kBevelThickness,
+            bevelSize: kBevelSize,
             bevelSegments: 5
         });
 
@@ -6909,14 +6914,15 @@ class ORG3DLocationMarker {
 
     _placeDescriptor(textMesh) {
         if (this._marker && textMesh) {
-            const kTextOffset = 100;
+            this._marker.geometry.computeBoundingBox();
+            const markerMaxZ = this._marker.geometry.boundingBox.max.z;
 
             textMesh.position.set( 0, 0, 0 );
             textMesh.rotation.set( THREE.Math.degToRad( -90 ), 0, 0 );
             textMesh.updateMatrix();
             textMesh.geometry.computeBoundingBox();
             const centerPoint = textMesh.geometry.boundingBox.getCenter();
-            textMesh.position.set( -centerPoint.x, this._marker.position.y, kTextOffset );
+            textMesh.position.set( -centerPoint.x, this._marker.position.y, markerMaxZ +  textMesh.geometry.boundingBox.getSize().y);
         }
     }
 }
@@ -7214,28 +7220,23 @@ class ORGItineraryRunner extends ORGLocationProvider {
 class ORGSystemInfoManager {
 
     constructor( scene ) {
-
         this._scene = scene;
         //this._lastUpdateTime = null;
         this._enabled = false;
         //this._updateInterval = 60000; // ms
         this._waitingForResponse = false;
         this._lastsSystemInfo = null;
-
     }
 
     start() {
-
         if ( ORG.deviceController ) {
             this._lastsSystemInfo = null;
             this._create3DCPUUsageBarChart();
             this._enabled = true;
         }
-
     }
 
     stop() {
-
         if ( this._enabled ) {
             this._enabled = false;
             this._lastsSystemInfo = null;
@@ -7245,7 +7246,6 @@ class ORGSystemInfoManager {
             this._remove3DDiskChart();
             this._remove3DCPUUsageBarChart();
         }
-
     }
 
     update() {
@@ -7264,27 +7264,22 @@ class ORGSystemInfoManager {
     }
 
     dataUpdate( systemInfoData ) {
-
         // prepare for update() to do the chart update.
         if ( this._enabled ) {
             this._lastsSystemInfo = systemInfoData;
         }
-
     }
 
     // PRIVATE
 
     _requestSystemInfo() {
-
         if ( ORG.deviceController ) {
-            ORG.deviceController.sendRequest( ORGMessageBuilder.systemInfo( ) );
+            ORG.deviceController.getSystemInfo();
             this._waitingForResponse = true;
         }
-
     }
 
     _updateChart( systemInfoData ) {
-
         this._remove3DBattery();
         this._create3DBattery( systemInfoData );
         this._remove3DMemoryChart();
@@ -7296,85 +7291,65 @@ class ORGSystemInfoManager {
     }
 
     _create3DBattery( batteryData ) {
-
         this._battery = new ORG3DBattery( 0.005, 0.03, batteryData.BatteryLevel / 100.0);
         this._battery.position = new THREE.Vector3( -0.05, 1.45, 0);
         this._scene.THREEScene.add( this._battery.THREEModel );
-
     }
 
     _remove3DBattery() {
-
         if ( this._battery ) {
             this._scene.THREEScene.remove( this._battery.THREEModel );
             this._battery = null;
         }
-
     }
 
     _create3DMemoryChart( memoryData ) {
-
         this._memoryChart = new ORG3DMemoryChart( memoryData );
         this._memoryChart.position = new THREE.Vector3( 0.065, 1.45, 0);
         this._scene.THREEScene.add( this._memoryChart.THREEModel );
-
     }
 
     _remove3DMemoryChart(  ) {
-
         if ( this._memoryChart ) {
             this._scene.THREEScene.remove( this._memoryChart.THREEModel );
             this._memoryChart = null;
         }
-
     }
 
     _create3DDiskChart( diskData ) {
-
         this._diskChart = new ORG3DDiskChart( diskData );
         this._diskChart.position = new THREE.Vector3( 0.065, 1.50, 0);
         this._scene.THREEScene.add( this._diskChart.THREEModel );
-
     }
 
     _remove3DDiskChart(  ) {
-
         if ( this._diskChart ) {
             this._scene.THREEScene.remove( this._diskChart.THREEModel );
             this._diskChart = null;
         }
-
     }
 
     _create3DCPUUsageBarChart( ) {
-
         this._cpuUsageChart = new ORG3DCPUUsageBarChart( new THREE.Vector3( 0.002, 0.03, 0.002 ) );
         this._cpuUsageChart.position = new THREE.Vector3( 0.065, 1.52, 0);
         this._scene.THREEScene.add( this._cpuUsageChart.THREEModel );
-
     }
 
     _remove3DCPUUsageBarChart(  ) {
-
         if ( this._cpuUsageChart ) {
             this._scene.THREEScene.remove( this._cpuUsageChart.THREEModel );
             this._cpuUsageChart = null;
         }
-
     }
 
     _update3DCPUUsageBarChart( cpuData ) {
-
         if ( this._cpuUsageChart ) {
             this._cpuUsageChart.usageUpdate( cpuData );
         }
-
     }
 
     _needsUpdate() {
-
         return ( this._enabled && !this._waitingForResponse );
-
     }
 
 }
@@ -7747,22 +7722,22 @@ class ORGConnectionActions {
 
     static connect() {
         const serverUrl = $('#device-url');
-        var deviceURL = serverUrl.val();
+        let deviceURL = serverUrl.val();
         if (deviceURL == "") {
             deviceURL = "localhost";
         }
 
         // Create the controller for the selected protocol.
         const driverName = ORG.UI.dropdownDriver.text().split(' ');
-        if (driverName[0] == "Organismo") {
+        if (driverName[0] === "Organismo") {
             if (! (ORG.deviceController instanceof ORGDeviceController)) {
                 ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
             }
-        } else if (driverName[0] == "iDeviceControlProxy") {
+        } else if (driverName[0] === "iDeviceControlProxy") {
             if (! (ORG.deviceController instanceof ORGiMobileDeviceController)) {
                 ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
             }
-        } else if (driverName[0] == "WDA") {
+        } else if (driverName[0] === "WDA") {
             if (! (ORG.deviceController instanceof ORGDeviceWDAController)) {
                 ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
             }
@@ -7792,15 +7767,15 @@ class ORGConnectionActions {
 
     static async connectWithController(controller) {
         try {
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</h4></div>' }); // Progress alert
             // 1. Open session
-            var session = await controller.openSession();
+            let session = await controller.openSession();
             ORG.dispatcher.dispatch({
                 actionType: 'wda-session-open'
             });
 
             bootbox.hideAll();
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Getting device information...</h4></div>' }); // Progress alert
 
             // 2. Get device info
             ORG.device = await controller.getDeviceInformation();
@@ -7817,10 +7792,10 @@ class ORGConnectionActions {
             });
 
             // 4. Get screenshot
-            var screenshot = await controller.getScreenshot();
+            let screenshot = await controller.getScreenshot();
 
             // 5. Get device 3D model
-            var model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, ORG.scene, kORGDevicePositionY);
+            let model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, ORG.scene, kORGDevicePositionY);
 
             // 6. Add device with screenshot to scene
             this.addDeviceToScene(model, screenshot);
@@ -7838,20 +7813,20 @@ class ORGConnectionActions {
     }
 
     static async refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</div>' });
+        bootbox.dialog({ message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h4></div>' });
 
         try {
-            var controller = ORG.deviceController;
-            var orientation = await controller.getDeviceOrientation();
-            var tree = await controller.getElementTree();
-            var screenshot = await controller.getScreenshot();
+            let controller = ORG.deviceController;
+            let orientation = await controller.getDeviceOrientation();
+            let tree = await controller.getElementTree();
+            let screenshot = await controller.getScreenshot();
 
             ORG.dispatcher.dispatch({
                 actionType: 'ui-json-tree-update',
                 tree: tree.children,
                 treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
             });
-            if (orientation != ORG.device.orientation) {
+            if (orientation !== ORG.device.orientation) {
                 ORG.dispatcher.dispatch({
                     actionType: 'device-orientation-changed',
                     orientation: orientation
@@ -7909,12 +7884,12 @@ class ORGConnectionActions {
             if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
                 let elementID = result["ELEMENT"];
                 switch (gesture) {
-                    case ORG.Actions.TAP: await ORG.deviceController.tapElementWithId(elementID); break;
-                    case ORG.Actions.LONG_PRESS: await ORG.deviceController.longPressElementWithId(elementID); break;
-                    case ORG.Actions.SWIPE_LEFT: await ORG.deviceController.swipeElementWithId(elementID, "left"); break;
-                    case ORG.Actions.SWIPE_RIGHT: await ORG.deviceController.swipeElementWithId(elementID, "right"); break;
-                    case ORG.Actions.SWIPE_UP: await ORG.deviceController.swipeElementWithId(elementID, "up"); break;
-                    case ORG.Actions.SWIPE_DOWN: await ORG.deviceController.swipeElementWithId(elementID, "down"); break;
+                    case ORGActions.TAP: await ORG.deviceController.tapElementWithId(elementID); break;
+                    case ORGActions.LONG_PRESS: await ORG.deviceController.longPressElementWithId(elementID); break;
+                    case ORGActions.SWIPE_LEFT: await ORG.deviceController.swipeElementWithId(elementID, "left"); break;
+                    case ORGActions.SWIPE_RIGHT: await ORG.deviceController.swipeElementWithId(elementID, "right"); break;
+                    case ORGActions.SWIPE_UP: await ORG.deviceController.swipeElementWithId(elementID, "up"); break;
+                    case ORGActions.SWIPE_DOWN: await ORG.deviceController.swipeElementWithId(elementID, "down"); break;
                 }
             }
         } catch(err) {
@@ -7938,7 +7913,7 @@ class ORGConnectionActions {
         try {
             let result = await ORG.deviceController.setOrientation(orientation);
             ORG.device.orientation = orientation;
-            var screenshot = await ORG.deviceController.getScreenshot();
+            const screenshot = await ORG.deviceController.getScreenshot();
             ORG.scene.setDeviceOrientation2(orientation);
             ORG.dispatcher.dispatch({
                 actionType: 'screenshot-update',
@@ -7997,7 +7972,7 @@ class ORGConnectionActions {
                 message: err.message
             });
         } else if (typeof err === "string") {
-            const safeErrorText = (err.length < 2000 ? ((err.length == 0) ? "Unknown error" : err) : err.substring(0, 2000));
+            const safeErrorText = (err.length < 2000 ? ((err.length === 0) ? "Unknown error" : err) : err.substring(0, 2000));
             bootbox.alert({
                 title: "Error",
                 message: safeErrorText

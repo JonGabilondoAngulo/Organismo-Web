@@ -155,7 +155,7 @@ ORG.UI.buttonExpand.click(function () {
         return;
     }
     if (ORG.deviceController.type === "WDA") {
-        alert("Not implemented.")
+        alert("Not implemented for WDA driver.")
         return;
     }
     if (ORG.scene.isExpanded) {

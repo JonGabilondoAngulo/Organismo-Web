@@ -7,7 +7,7 @@ class ORGConnectionActions {
     static connect() {
         const serverUrl = $('#device-url');
         let deviceURL = serverUrl.val();
-        if (deviceURL == "") {
+        if (deviceURL === "") {
             deviceURL = "localhost";
         }
 
@@ -51,7 +51,7 @@ class ORGConnectionActions {
 
     static async connectWithController(controller) {
         try {
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</h4></div>' }); // Progress alert
             // 1. Open session
             let session = await controller.openSession();
             ORG.dispatcher.dispatch({
@@ -59,7 +59,7 @@ class ORGConnectionActions {
             });
 
             bootbox.hideAll();
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Getting device information...</div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Getting device information...</h4></div>' }); // Progress alert
 
             // 2. Get device info
             ORG.device = await controller.getDeviceInformation();
@@ -97,7 +97,7 @@ class ORGConnectionActions {
     }
 
     static async refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</div>' });
+        bootbox.dialog({ message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h4></div>' });
 
         try {
             let controller = ORG.deviceController;
@@ -168,12 +168,12 @@ class ORGConnectionActions {
             if (typeof result === 'object' && result["ELEMENT"] !== undefined) {
                 let elementID = result["ELEMENT"];
                 switch (gesture) {
-                    case ORG.Actions.TAP: await ORG.deviceController.tapElementWithId(elementID); break;
-                    case ORG.Actions.LONG_PRESS: await ORG.deviceController.longPressElementWithId(elementID); break;
-                    case ORG.Actions.SWIPE_LEFT: await ORG.deviceController.swipeElementWithId(elementID, "left"); break;
-                    case ORG.Actions.SWIPE_RIGHT: await ORG.deviceController.swipeElementWithId(elementID, "right"); break;
-                    case ORG.Actions.SWIPE_UP: await ORG.deviceController.swipeElementWithId(elementID, "up"); break;
-                    case ORG.Actions.SWIPE_DOWN: await ORG.deviceController.swipeElementWithId(elementID, "down"); break;
+                    case ORGActions.TAP: await ORG.deviceController.tapElementWithId(elementID); break;
+                    case ORGActions.LONG_PRESS: await ORG.deviceController.longPressElementWithId(elementID); break;
+                    case ORGActions.SWIPE_LEFT: await ORG.deviceController.swipeElementWithId(elementID, "left"); break;
+                    case ORGActions.SWIPE_RIGHT: await ORG.deviceController.swipeElementWithId(elementID, "right"); break;
+                    case ORGActions.SWIPE_UP: await ORG.deviceController.swipeElementWithId(elementID, "up"); break;
+                    case ORGActions.SWIPE_DOWN: await ORG.deviceController.swipeElementWithId(elementID, "down"); break;
                 }
             }
         } catch(err) {

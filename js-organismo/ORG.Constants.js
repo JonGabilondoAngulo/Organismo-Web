@@ -2,8 +2,7 @@
  * Created by jongabilondo on 14/02/2018.
  */
 
-// Constants
-ORG.Request = {
+const ORGRequest = {
     Request : "request",
     Update : "update",
     AppInfo : "app-info",
@@ -15,7 +14,7 @@ ORG.Request = {
 };
 
 
-ORG.Actions = {
+const ORGActions = {
     PRESS_HOME: "press-jome",
     LOCK_DEVICE: "lock-device",
     UNLOCK_DEVICE: "unlock-device",

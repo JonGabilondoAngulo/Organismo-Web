@@ -8,50 +8,50 @@
 class ORGMessageBuilder {
 
     static deviceInfo() {
-        var msg = {
-            type: ORG.Request.Request,
+        const msg = {
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.DeviceInfo
+                request: ORGRequest.DeviceInfo
             }
         };
         return JSON.stringify(msg);
     }
 
     static systemInfo() {
-        var msg = {
-            type: ORG.Request.Request,
+        const msg = {
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.SystemInfo
+                request: ORGRequest.SystemInfo
             }
         };
         return JSON.stringify(msg);
     }
 
     static appInfo() {
-        var msg = {
-            type: ORG.Request.Request,
+        const msg = {
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.AppInfo
+                request: ORGRequest.AppInfo
             }
         };
         return JSON.stringify(msg);
     }
 
     static takeScreenshot() {
-        var msg = {
-            type: ORG.Request.Request,
+        const msg = {
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.Screenshot
+                request: ORGRequest.Screenshot
             }
         };
         return JSON.stringify(msg);
     }
 
     static elementTree(parameters) {
-        var msg = {
-            type: ORG.Request.Request,
+        const msg = {
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.ElementTree,
+                request: ORGRequest.ElementTree,
                 parameters: parameters
             }
         };
@@ -59,8 +59,8 @@ class ORGMessageBuilder {
     }
 
     static gesture(gesture, parameters) {
-        var msg = {
-            type: ORG.Request.Request,
+        const msg = {
+            type: ORGRequest.Request,
             data: {
                 request: gesture,
                 parameters:parameters
@@ -70,8 +70,8 @@ class ORGMessageBuilder {
     }
 
     static locationUpdate(location, elevation) {
-        var msg = {
-            type: ORG.Request.Update,
+        let msg = {
+            type: ORGRequest.Update,
             data: {
             }
         };
@@ -85,8 +85,8 @@ class ORGMessageBuilder {
     }
 
     static attitudeUpdate(quaternion) {
-        var msg = {
-            type: ORG.Request.Update,
+        let msg = {
+            type: ORGRequest.Update,
             data: {
             }
         };
@@ -97,10 +97,10 @@ class ORGMessageBuilder {
     }
 
     static classHierarchy(className) {
-        var msg = {
-            type: ORG.Request.Request,
+        const msg = {
+            type: ORGRequest.Request,
             data: {
-                request: ORG.Request.ClassHierarchy,
+                request: ORGRequest.ClassHierarchy,
                 parameters:{className: className}
             }
         };

@@ -168,15 +168,14 @@ class ORG3DUITreeModel {
     }
 
     setExpandedTreeLayersDistance( distanceUnits ) {
-
         this._planeDistance = kORGMinimalPlaneDistance + (distanceUnits/100.0 * kORGMaxPlaneDistance); // new plane distance
 
-        if ( this._THREEElementTreeGroup ) {
+        if (this._THREEElementTreeGroup) {
             const allElements = this._THREEElementTreeGroup.children;
             let firstPosition = 0;
-            for ( let i in allElements ) {
+            for (let i in allElements) {
                 let currentElementGroup = allElements[i];
-                if ( i === 0 ) {
+                if (i === 0) {
                     firstPosition = currentElementGroup.position;
                     continue;
                 }
@@ -194,13 +193,14 @@ class ORG3DUITreeModel {
     setExpandedTreeLayersVisibleRange( maxVisibleLayer ) {
         // Traverse all Tree elements and set their visibility
         // Every element is a Group with 2 children, a Mesh and a BoxHelper.
-
-        const allElements = this._THREEElementTreeGroup.children;
-        for ( let currentElementGroup of allElements ) {
-            if ( currentElementGroup.type === "Group" ) {
-                const nodeData = currentElementGroup.userData;
-                if ( !!nodeData ) {
-                    currentElementGroup.visible = ( nodeData.expandedTreeLayer < maxVisibleLayer );
+        if (this._THREEElementTreeGroup) {
+            const allElements = this._THREEElementTreeGroup.children;
+            for ( let currentElementGroup of allElements ) {
+                if (currentElementGroup.type === "Group") {
+                    const nodeData = currentElementGroup.userData;
+                    if (!!nodeData) {
+                        currentElementGroup.visible = (nodeData.expandedTreeLayer < maxVisibleLayer);
+                    }
                 }
             }
         }

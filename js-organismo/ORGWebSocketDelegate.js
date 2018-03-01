@@ -136,37 +136,37 @@ class ORGWebSocketDelegate {
 	 */
 	_processResponse(messageJSON) {
 		switch (messageJSON.request) {
-			case ORG.Request.DeviceInfo: {
+			case ORGRequest.DeviceInfo: {
                 this._processResponseDeviceInfo(messageJSON.data);
             } break;
-			case ORG.Request.AppInfo: {
+			case ORGRequest.AppInfo: {
                 this._processResponseAppInfo(messageJSON);
             } break;
-			case ORG.Request.Screenshot: {
+			case ORGRequest.Screenshot: {
                 this._processReportScreenshot(messageJSON);
             } break;
-			case ORG.Request.ElementTree: {
+			case ORGRequest.ElementTree: {
                 this._processReportElementTree(messageJSON);
             }break;
-			case ORG.Request.SystemInfo: {
+			case ORGRequest.SystemInfo: {
                 this._processReportSystemInfo(messageJSON);
             } break;
-            case ORG.Request.ClassHierarchy: {
+            case ORGRequest.ClassHierarchy: {
                 this._processResponseClassHierarchy(messageJSON);
             } break;
 			default: {
 				console.debug('Unknown response from Device.');
 			}
 		}
-		/*if ( messageJSON.request == ORG.Request.DeviceInfo) {
+		/*if ( messageJSON.request == ORGRequest.DeviceInfo) {
 			this._processResponseDeviceInfo(messageJSON.data);
-		} else if ( messageJSON.request == ORG.Request.AppInfo) {
+		} else if ( messageJSON.request == ORGRequest.AppInfo) {
             this._processResponseAppInfo(messageJSON);
-		} else if ( messageJSON.request == ORG.Request.Screenshot) {
+		} else if ( messageJSON.request == ORGRequest.Screenshot) {
             this._processReportScreenshot( messageJSON);
-        } else if ( messageJSON.request == ORG.Request.ElementTree) {
+        } else if ( messageJSON.request == ORGRequest.ElementTree) {
             this._processReportElementTree(messageJSON);
-        } else if ( messageJSON.request == ORG.Request.SystemInfo) {
+        } else if ( messageJSON.request == ORGRequest.SystemInfo) {
             this._processReportSystemInfo(messageJSON);
 		}*/
 	}

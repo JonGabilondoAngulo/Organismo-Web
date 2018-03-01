@@ -39,7 +39,7 @@
     <script type="text/javascript" src="./js-third-party/jQuery-contextMenu/dist/jquery.contextMenu.min.js"></script>
     <script type="text/javascript" src="./js-third-party/jQuery-contextMenu/dist/jquery.ui.position.min.js"></script>
 
-    <!--<script type="text/javascript" src="http://www.google.com/jsapi"></script>-->
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEOb3RWpe6hbK1CbkMTZ3hpFQ-cdVbfkI&libraries=places&callback=initMap""></script>-->
 
     <!--THREE JS-->
@@ -140,9 +140,9 @@
                         <li class="active">
                             <a href="#tab-settings" data-toggle="tab">Control</a>
                         </li>
-                        <!--<li>-->
-                            <!--<a href="#tab-map" data-toggle="tab">Map</a>-->
-                        <!--</li>-->
+                        <li>
+                            <a href="#tab-map" data-toggle="tab">Map</a>
+                        </li>
                         <li>
                             <a href="#tab-tree" data-toggle="tab">UI Tree</a>
                         </li>
@@ -160,22 +160,22 @@
                                     <div class="panel-body">
                                         <div class='smallCheckboxDiv'>
                                             <input type='checkbox' id="show-device" value="true" title="show-device" checked/>
-                                            <div class='inlineCheckboxLabel'>Show Device</div>
+                                            <div class='inlineCheckboxLabel'>Device Body</div>
                                         </div>
                                         <br>
                                         <div class='smallCheckboxDiv'>
                                             <input type='checkbox' id="show-floor" value="true" title="show-floor" checked/>
-                                            <div class='inlineCheckboxLabel'>Show Floor</div>
+                                            <div class='inlineCheckboxLabel'>Floor</div>
                                         </div>
                                         <br>
                                         <div class='smallCheckboxDiv'>
                                             <input type='checkbox' id="show-location" value="true" title="show-location" checked/>
-                                            <div class='inlineCheckboxLabel'>Show Location</div>
+                                            <div class='inlineCheckboxLabel'>Location</div>
                                         </div>
                                         <br>
                                         <div class='smallCheckboxDiv'>
                                             <input type='checkbox' id="show-system-info" value="false" title="show-system-info"/>
-                                            <div class='inlineCheckboxLabel'>Show System Info</div>
+                                            <div class='inlineCheckboxLabel'>System Info</div>
                                         </div>
                                         <br>
                                         <div class='smallCheckboxDiv'>
@@ -272,127 +272,125 @@
 
                             </div>
                         </div>
-                        <!--<div class="tab-pane" id="tab-map">-->
-                            <!--<input id="pac-input" class="map-controls" type="text" placeholder="Search Box">-->
+                        <div class="tab-pane" id="tab-map">
+                            <input id="pac-input" class="map-controls" type="text" placeholder="Search Box">
 
-                            <!--<div id="map"></div>-->
+                            <div id="map"></div>
 
-                            <!--&lt;!&ndash;Create Map on Tab selection&ndash;&gt;-->
-                            <!--<script>-->
-                                <!--$("a[href='#tab-map']").on('shown.bs.tab', function (e) {-->
-                                    <!--//console.log('shown - after the tab has been shown');-->
-                                    <!--if (!ORG.map) {-->
-                                        <!--ORG.map = new ORGMap();-->
-                                        <!--ORG.map.addListener( ORG.locationManager );-->
-                                    <!--}-->
-                                <!--});-->
-                            <!--</script>-->
+                            <!--Create Map on Tab selection-->
+                            <script>
+                                $("a[href='#tab-map']").on('shown.bs.tab', function (e) {
+                                    //console.log('shown - after the tab has been shown');
+                                    if (!ORG.map) {
+                                        ORG.map = new ORGMap();
+                                        ORG.map.addListener( ORG.locationManager );
+                                    }
+                                });
+                            </script>
 
-                            <!--<div id="chart_div" style="width:100%" onmouseout=""></div>-->
+                            <div id="chart_div" style="width:100%" onmouseout=""></div>
 
-
-                            <!--<div>-->
+                            <div>
                                 <!--<label type="button" class="btn btn-primary" id="reset-itinerary">Reset</label>-->
-                                <!--&lt;!&ndash;<button id="reset-itinerary" class="btn btn-default">Reset</button>&ndash;&gt;-->
-                                <!--<label class="checkbox-inline"><input type="checkbox" value="true">Autocenter</label>-->
-                                <!--<span class="location-small-values"><span class="glyphicon glyphicon-road" aria-hidden="true"></span><small id="label-distance"></small> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><small id="label-duration"></small> </span>-->
-                            <!--</div>-->
+                                <button id='reset-itinerary' class="ui-button ui-widget ui-corner-all not-focusable">Reset</button>
+                                <!--<button id="reset-itinerary" class="btn btn-default">Reset</button>-->
+                                <label class="checkbox-inline"><input type="checkbox" value="true">Autocenter</label>
+                                <span class="location-small-values"><span class="glyphicon glyphicon-road" aria-hidden="true"></span><small id="label-distance"></small> <span class="glyphicon glyphicon-time" aria-hidden="true"></span><small id="label-duration"></small> </span>
+                            </div>
 
-                            <!--<br/>-->
+                            <br/>
 
-                                    <!--&lt;!&ndash;<label>Distance:</label>&nbsp; &nbsp; <label id="label-distance">&nbsp; &nbsp; </label><br/>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<label>Heading:</label>&nbsp; &nbsp; <label id="label-heading">&nbsp; &nbsp; </label><br/>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<label>Pressure:</label>&nbsp; &nbsp; <label id="label-pressure">&nbsp; &nbsp; </label><br/>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<label>Speed:</label>&nbsp; &nbsp; <label id="label-speed">&nbsp; &nbsp; </label><br/>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<label>Orientation:&nbsp;</label><label id="label-orientation"></label><br/>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<label>Attitude:&nbsp;</label><label id="label-attitude"></label><br/>&ndash;&gt;-->
+                                    <!--<label>Distance:</label>&nbsp; &nbsp; <label id="label-distance">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Heading:</label>&nbsp; &nbsp; <label id="label-heading">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Pressure:</label>&nbsp; &nbsp; <label id="label-pressure">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Speed:</label>&nbsp; &nbsp; <label id="label-speed">&nbsp; &nbsp; </label><br/>-->
+                                    <!--<label>Orientation:&nbsp;</label><label id="label-orientation"></label><br/>-->
+                                    <!--<label>Attitude:&nbsp;</label><label id="label-attitude"></label><br/>-->
 
-                            <!--<label for="start-point">Start</label>-->
-                            <!--<span id='button-send-location' role='button' class="glyphicon glyphicon-phone"></span>-->
-                            <!--&lt;!&ndash;<div id="TrashButton" class="glyphicon glyphicon-phone" style="cursor:pointer"></div>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<button class="btn btn-info" type="button"> <span class="glyphicon glyphicon-phone"></span> </button>&ndash;&gt;-->
+                            <label for="start-point">Start</label>
+                            <span id='button-send-location' role='button' class="glyphicon glyphicon-phone"></span>
+                            <!--<div id="TrashButton" class="glyphicon glyphicon-phone" style="cursor:pointer"></div>-->
+                            <!--<button class="btn btn-info" type="button"> <span class="glyphicon glyphicon-phone"></span> </button>-->
 
-                            <!--<span class="location-small-values">-->
-                                <!--<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>-->
-                                <!--<small id="label-lat"></small>  &nbsp;-->
-                                <!--<small id="label-lng">&nbsp;</small>-->
-                                <!--<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>-->
-                                <!--<small id="label-altitude">&nbsp;</small>-->
-                            <!--</span>-->
-                            <!--<input id="start-point" class="form-control" placeholder="Origin" type="text"/>-->
+                            <span class="location-small-values">
+                                <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                                <small id="label-lat"></small>  &nbsp;
+                                <small id="label-lng">&nbsp;</small>
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                <small id="label-altitude">&nbsp;</small>
+                            </span>
+                            <input id="start-point" class="form-control" placeholder="Origin" type="text"/>
 
-                            <!--<br/>-->
+                            <br/>
 
-                            <!--<label for="end-point">End</label>-->
-                            <!--<span class="location-small-values">-->
-                                <!--<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>-->
-                                <!--<small id="label-lat-end"></small>  &nbsp;-->
-                                <!--<small id="label-lng-end">&nbsp;</small>-->
-                                <!--<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>-->
-                                <!--<small id="label-altitude-end">&nbsp;</small>-->
-                            <!--</span>-->
-                            <!--<input id="end-point" class="form-control" placeholder="Destination" type="text"/><br/>-->
-
-
-                            <!--<div class="btn-group">-->
-                                <!--<button id="travel-mode-dropdown" type="button" class="btn btn-default" value="DRIVING">Driving</button>-->
-                                <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                                    <!--<span class="caret"></span>-->
-                                    <!--<span class="sr-only">Toggle Dropdown</span>-->
-                                <!--</button>-->
-                                <!--<ul class="dropdown-menu">-->
-                                    <!--<li><a href="#" data-value="DRIVING">Driving</a></li>-->
-                                    <!--<li><a href="#" data-value="WALKING">Walking</a></li>-->
-                                    <!--<li><a href="#" data-value="BICYCLING">Bicycling</a></li>-->
-                                    <!--<li><a href="#" data-value="TRANSIT">Transit</a></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-
-                            <!--<div class="btn-group">-->
-                                <!--<button id="travel-speed-dropdown" type="button" class="btn btn-default">Real Time</button>-->
-                                <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                                    <!--<span class="caret"></span>-->
-                                    <!--<span class="sr-only">Toggle Dropdown</span>-->
-                                <!--</button>-->
-                                <!--<ul class="dropdown-menu">-->
-                                    <!--<li><a href="#">Real Time</a></li>-->
-                                    <!--<li><a href="#">x2</a></li>-->
-                                    <!--<li><a href="#">x5</a></li>-->
-                                    <!--<li><a href="#">x10</a></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-
-                            <!--<input id="startDate" type="datetime" value="" placeholder="Now"/>-->
-                            <!--<br/>-->
-
-                            <!--<br/>-->
-
-                            <!--<div>-->
-                                <!--Report:-->
-                                <!--&lt;!&ndash;<form action="">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<input type="checkbox" name="reporting" value="Location">Location&ndash;&gt;-->
-                                <!--&lt;!&ndash;<input type="checkbox" name="reporting" value="Elevation">Elevation&ndash;&gt;-->
-                                <!--&lt;!&ndash;<input type="checkbox" name="reporting" value="Location">Orientation&ndash;&gt;-->
-                                <!--&lt;!&ndash;<input type="checkbox" name="reporting" value="Attitude">Attitude&ndash;&gt;-->
-                                <!--&lt;!&ndash;</form>&ndash;&gt;-->
-
-                                <!--<label class="checkbox-inline"><input type="checkbox" value="true" checked="checked">Location</label>-->
-                                <!--<label class="checkbox-inline"><input type="checkbox" value="true" checked="checked">Elevation</label>-->
-                                <!--<label class="checkbox-inline"><input type="checkbox" value="" disabled>Orientation</label>-->
-                                <!--<label class="checkbox-inline"><input type="checkbox" value="" disabled>Attitude</label>-->
-                            <!--</div>-->
-
-                            <!--<br/>-->
-
-                            <!--<div class="text-center">-->
-                                <!--<label type="button" class="btn btn-primary" id="itinerary-run">Run</label>-->
-                                <!--<label type="button" class="btn btn-primary" id="itinerary-pause">Pause</label>-->
-                                <!--<label type="button" class="btn btn-primary" id="itinerary-resume">Resume</label>-->
-                                <!--<label type="button" class="btn btn-primary" id="itinerary-stop">Stop</label>-->
-                            <!--</div>-->
+                            <label for="end-point">End</label>
+                            <span class="location-small-values">
+                                <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                                <small id="label-lat-end"></small>  &nbsp;
+                                <small id="label-lng-end">&nbsp;</small>
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                <small id="label-altitude-end">&nbsp;</small>
+                            </span>
+                            <input id="end-point" class="form-control" placeholder="Destination" type="text"/><br/>
 
 
-                        <!--</div>-->
+                            <div class="btn-group">
+                                <button id="travel-mode-dropdown" type="button" class="btn btn-default" value="DRIVING">Driving</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" data-value="DRIVING">Driving</a></li>
+                                    <li><a href="#" data-value="WALKING">Walking</a></li>
+                                    <li><a href="#" data-value="BICYCLING">Bicycling</a></li>
+                                    <li><a href="#" data-value="TRANSIT">Transit</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="btn-group">
+                                <button id="travel-speed-dropdown" type="button" class="btn btn-default">Real Time</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Real Time</a></li>
+                                    <li><a href="#">x2</a></li>
+                                    <li><a href="#">x5</a></li>
+                                    <li><a href="#">x10</a></li>
+                                </ul>
+                            </div>
+
+                            <input id="startDate" type="datetime" value="" placeholder="Now"/>
+                            <br/>
+
+                            <br/>
+
+                            <div>
+                                Report:
+                                <!--<form action="">-->
+                                <!--<input type="checkbox" name="reporting" value="Location">Location-->
+                                <!--<input type="checkbox" name="reporting" value="Elevation">Elevation-->
+                                <!--<input type="checkbox" name="reporting" value="Location">Orientation-->
+                                <!--<input type="checkbox" name="reporting" value="Attitude">Attitude-->
+                                <!--</form>-->
+
+                                <label class="checkbox-inline"><input type="checkbox" value="true" checked="checked">Location</label>
+                                <label class="checkbox-inline"><input type="checkbox" value="true" checked="checked">Elevation</label>
+                                <label class="checkbox-inline"><input type="checkbox" value="" disabled>Orientation</label>
+                                <label class="checkbox-inline"><input type="checkbox" value="" disabled>Attitude</label>
+                            </div>
+
+                            <br/>
+
+                            <div class="text-center">
+                                <label type="button" class="btn btn-primary" id="itinerary-run">Run</label>
+                                <label type="button" class="btn btn-primary" id="itinerary-pause">Pause</label>
+                                <label type="button" class="btn btn-primary" id="itinerary-resume">Resume</label>
+                                <label type="button" class="btn btn-primary" id="itinerary-stop">Stop</label>
+                            </div>
+                        </div>
                         <div class="tab-pane" id="tab-tree">
                             <div class="container-fluid" style="padding-right: 2px; padding-left: 2px;">
                                 <div class="row">
@@ -412,16 +410,12 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </main>

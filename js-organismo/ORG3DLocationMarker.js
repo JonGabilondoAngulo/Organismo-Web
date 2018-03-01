@@ -47,30 +47,34 @@ class ORG3DLocationMarker {
     //-------------
 
     _createMarker(anchorPoint) {
-        const radiusTop = 30;
-        const radiusBottom = 30;
-        const height = 10;
-        const radialSegments = 30;
-        const heightSegments = 8;
-        const openEnded = false;
-        const cylinderGeo = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded);
-        var meshMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ee });
-        meshMaterial.side = THREE.DoubleSide;
-        var marker = THREE.SceneUtils.createMultiMaterialObject(cylinderGeo, [meshMaterial]);
+        const kRadiusTop = 0.1;
+        const kRadiusBottom = kRadiusTop;
+        const kHeight = kRadiusTop * 0.3;
+        const kRadialSegments = 30;
+        const kHeightSegments = 1;
+        const kOpenEnded = false;
+        const cylinderGeo = new THREE.CylinderGeometry(kRadiusTop, kRadiusBottom, kHeight, kRadialSegments, kHeightSegments, kOpenEnded);
+        let material = new THREE.MeshPhongMaterial({ color: 0x0000ee });
+        material.side = THREE.DoubleSide;
+        //let marker = THREE.SceneUtils.createMultiMaterialObject(cylinderGeo, [meshMaterial]);
+        let marker = new THREE.Mesh(cylinderGeo, material);
         marker.position.setY( anchorPoint.y);
         return marker;
     }
 
     _createDescriptor(address) {
-
+        const kFontSize = 0.1;
+        const kFontHeight = kFontSize * 0.2;
+        const kBevelThickness = kFontSize * 0.1;
+        const kBevelSize = kFontSize * 0.1;
         const addressGeom = new THREE.TextGeometry(address, {
             font: ORG.font_helvetiker_regular,
-            size: 40,
-            height: 5,
+            size: kFontSize,
+            height: kFontHeight,
             curveSegments: 12,
             bevelEnabled: false,
-            bevelThickness: 10,
-            bevelSize: 8,
+            bevelThickness: kBevelThickness,
+            bevelSize: kBevelSize,
             bevelSegments: 5
         });
 
@@ -96,14 +100,15 @@ class ORG3DLocationMarker {
 
     _placeDescriptor(textMesh) {
         if (this._marker && textMesh) {
-            const kTextOffset = 100;
+            this._marker.geometry.computeBoundingBox();
+            const markerMaxZ = this._marker.geometry.boundingBox.max.z;
 
             textMesh.position.set( 0, 0, 0 );
             textMesh.rotation.set( THREE.Math.degToRad( -90 ), 0, 0 );
             textMesh.updateMatrix();
             textMesh.geometry.computeBoundingBox();
             const centerPoint = textMesh.geometry.boundingBox.getCenter();
-            textMesh.position.set( -centerPoint.x, this._marker.position.y, kTextOffset );
+            textMesh.position.set( -centerPoint.x, this._marker.position.y, markerMaxZ +  textMesh.geometry.boundingBox.getSize().y);
         }
     }
 }

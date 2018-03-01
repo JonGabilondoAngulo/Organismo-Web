@@ -90,16 +90,16 @@ class ORGContextMenuManager {
         const parameters = {location:{x:appX, y:appY}};
 
         switch (menuOptionKey) {
-            case ORG.Actions.PRESS_HOME : {
+            case ORGActions.PRESS_HOME : {
                 ORGConnectionActions.pressHome();
             } break;
-            case ORG.Actions.LOCK_DEVICE : {
+            case ORGActions.LOCK_DEVICE : {
                 ORGConnectionActions.lockDevice();
             } break;
-            case ORG.Actions.UNLOCK_DEVICE : {
+            case ORGActions.UNLOCK_DEVICE : {
                 ORGConnectionActions.unlockDevice();
             } break;
-            case ORG.Actions.REFRESH_SCREEN : {
+            case ORGActions.REFRESH_SCREEN : {
                 ORGConnectionActions.refreshScreen();
             } break;
             case ORGDevice.ORIENTATION_PORTRAIT:
@@ -108,33 +108,33 @@ class ORGContextMenuManager {
             case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
                 ORGConnectionActions.setOrientation(menuOptionKey);
             } break;
-            case ORG.Actions.TAP : {
+            case ORGActions.TAP : {
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.LONG_PRESS : {
+            case ORGActions.LONG_PRESS : {
                 parameters.duration = 0.5;
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_LEFT : {
+            case ORGActions.SWIPE_LEFT : {
                 parameters.direction = "left";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_RIGHT : {
+            case ORGActions.SWIPE_RIGHT : {
                 parameters.direction = "right";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_UP : {
+            case ORGActions.SWIPE_UP : {
                 parameters.direction = "up";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.SWIPE_DOWN : {
+            case ORGActions.SWIPE_DOWN : {
                 parameters.direction = "down";
                 ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
-            case ORG.Actions.LOOK_AT : {
+            case ORGActions.LOOK_AT : {
                 scene.lookAtObject( threeObj );
             } break;
-            case ORG.Actions.LOOK_FRONT_AT : {
+            case ORGActions.LOOK_FRONT_AT : {
                 scene.lookFrontAtObject( threeObj );
             } break;
         }
@@ -149,13 +149,13 @@ class ORGContextMenuManager {
     _processMenuSelectionOnVoid(menuOptionKey, scene) {
 
         switch (menuOptionKey) {
-            case ORG.Actions.RESET_CAMERA_POSITION : {
+            case ORGActions.RESET_CAMERA_POSITION : {
                 scene.resetCameraPosition();
             } break;
-            case ORG.Actions.RESET_DEVICE_POSITION : {
+            case ORGActions.RESET_DEVICE_POSITION : {
                 scene.resetDevicePosition();
             } break;
-            case ORG.Actions.SCREEN_CLOSEUP : {
+            case ORGActions.SCREEN_CLOSEUP : {
                 scene.deviceScreenCloseup();
             } break;
         }
@@ -165,9 +165,9 @@ class ORGContextMenuManager {
         let controller = ORG.deviceController;
         var items = {};
         if (controller.type === 'ORG') {
-            items[ORG.Actions.TAP] = {name: "Tap"};
-            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
-            items[ORG.Actions.SWIPE] = {
+            items[ORGActions.TAP] = {name: "Tap"};
+            items[ORGActions.LONG_PRESS] = {name: "Long Press"};
+            items[ORGActions.SWIPE] = {
                 name: "Swipe",
                 items: {
                     [ORG.Device.SWIPE_LEFT]: {name: "Left"},
@@ -182,10 +182,10 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-press"] = { "type": "cm_separator" };
             }
-            items[ORG.Actions.PRESS_HOME] = {name: "Press Home"};
-            items[ORG.Actions.LOCK_DEVICE] = {name: "Lock"};
-            items[ORG.Actions.UNLOCK_DEVICE] = {name: "Unlock"};
-            items[ORG.Actions.SET_ORIENTATION] = {
+            items[ORGActions.PRESS_HOME] = {name: "Press Home"};
+            items[ORGActions.LOCK_DEVICE] = {name: "Lock"};
+            items[ORGActions.UNLOCK_DEVICE] = {name: "Unlock"};
+            items[ORGActions.SET_ORIENTATION] = {
                 name: "Set Orientation",
                 items: {
                     [ORGDevice.ORIENTATION_PORTRAIT]: {name: "Portrait"},
@@ -200,15 +200,15 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-look"] = { "type": "cm_separator" };
             }
-            items[ORG.Actions.LOOK_AT] = {name: "Look at"};
-            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"};
+            items[ORGActions.LOOK_AT] = {name: "Look at"};
+            items[ORGActions.LOOK_FRONT_AT] = {name: "Look Front at"};
         }
 
         if (controller.type === 'WDA') {
             if (Object.keys(items).length) {
                 items["separator-refresh"] = { "type": "cm_separator" };
             }
-            items[ORG.Actions.REFRESH_SCREEN] = {name: "Refresh Screen"};
+            items[ORGActions.REFRESH_SCREEN] = {name: "Refresh Screen"};
         }
 
         return items;
@@ -216,9 +216,9 @@ class ORGContextMenuManager {
 
     _menuItemsForOutOfScreen() {
         return {
-            [ORG.Actions.RESET_CAMERA_POSITION]: {name: "Reset Camera Position"},
-            [ORG.Actions.RESET_DEVICE_POSITION]: {name: "Reset Device Position"},
-            [ORG.Actions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"}
+            [ORGActions.RESET_CAMERA_POSITION]: {name: "Reset Camera Position"},
+            [ORGActions.RESET_DEVICE_POSITION]: {name: "Reset Device Position"},
+            [ORGActions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"}
         }
     }
 }

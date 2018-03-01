@@ -13,9 +13,7 @@ class ORG3DDeviceModelLoader {
      * @param scene the ORG.scene to add the 3D model to.
      */
     static loadDevice3DModel(device, scene, yPosition) {
-
         return new Promise((resolve, reject) => {
-
             if (device.productName.startsWith('iPhone 5')) {
                 this._load_iPhone_5(scene,device).then(
                     function(result) {

@@ -48,22 +48,22 @@ class ORGUITreeContextMenuManager {
     _processMenuSelection(menuOptionKey) {
 
         switch (menuOptionKey) {
-            case ORG.Actions.TAP:
-            case ORG.Actions.LONG_PRESS:
-            case ORG.Actions.SWIPE_LEFT:
-            case ORG.Actions.SWIPE_RIGHT:
-            case ORG.Actions.SWIPE_UP:
-            case ORG.Actions.SWIPE_DOWN:
+            case ORGActions.TAP:
+            case ORGActions.LONG_PRESS:
+            case ORGActions.SWIPE_LEFT:
+            case ORGActions.SWIPE_RIGHT:
+            case ORGActions.SWIPE_UP:
+            case ORGActions.SWIPE_DOWN:
             {
                 ORGConnectionActions.playGesture(menuOptionKey, this._getElementXPath(this._node));
             } break;
-            case ORG.Actions.LOOK_AT : {
-                alert('Not implemented');
+            case ORGActions.LOOK_AT : {
+                alert('Not implemented.');
             } break;
-            case ORG.Actions.LOOK_FRONT_AT: {
-                alert('Not implemented');
+            case ORGActions.LOOK_FRONT_AT: {
+                alert('Not implemented.');
             } break;
-            case ORG.Actions.SHOW_CLASS_HIERARCHY: {
+            case ORGActions.SHOW_CLASS_HIERARCHY: {
                 if (this._node && (typeof this._node.representedNode.class !== undefined)) {
                     ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.representedNode.class));
                 }
@@ -76,24 +76,24 @@ class ORGUITreeContextMenuManager {
         var items = {};
 
         if (controller.type === "WDA") {
-            items[ORG.Actions.TAP] = {name: "Tap"};
-            items[ORG.Actions.LONG_PRESS] = {name: "Long Press"};
-            items[ORG.Actions.SWIPE] = {
+            items[ORGActions.TAP] = {name: "Tap"};
+            items[ORGActions.LONG_PRESS] = {name: "Long Press"};
+            items[ORGActions.SWIPE] = {
                 name: "Swipe",
                 items: {
-                    [ORG.Actions.SWIPE_LEFT]: {name: "Left"},
-                    [ORG.Actions.SWIPE_RIGHT]: {name: "Right"},
-                    [ORG.Actions.SWIPE_UP]: {name: "Up"},
-                    [ORG.Actions.SWIPE_DOWN]: {name: "Down"},
+                    [ORGActions.SWIPE_LEFT]: {name: "Left"},
+                    [ORGActions.SWIPE_RIGHT]: {name: "Right"},
+                    [ORGActions.SWIPE_UP]: {name: "Up"},
+                    [ORGActions.SWIPE_DOWN]: {name: "Down"},
                 }
             }
         }
 
         if (controller.type === "ORG") {
-            items[ORG.Actions.SHOW_CLASS_HIERARCHY] = {name: "Class Hierarchy"}
+            items[ORGActions.SHOW_CLASS_HIERARCHY] = {name: "Class Hierarchy"}
             items["separator-look"] = { "type": "cm_separator" };
-            items[ORG.Actions.LOOK_AT] = {name: "Look at"}
-            items[ORG.Actions.LOOK_FRONT_AT] = {name: "Look Front at"}
+            items[ORGActions.LOOK_AT] = {name: "Look at"}
+            items[ORGActions.LOOK_FRONT_AT] = {name: "Look Front at"}
         }
 
         return items;

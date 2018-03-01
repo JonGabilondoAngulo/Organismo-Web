@@ -41,4 +41,8 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true };
         this.requestElementTree(requestFlags);
     }
+
+    getSystemInfo() {
+        this.sendRequest(ORGMessageBuilder.systemInfo( ));
+    }
 }

@@ -60,20 +60,19 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
     }
 
     closeSession() {
-        // UI updates
         ORG.dispatcher.dispatch({
             actionType: 'wda-session-closed'
         });
 
-        const _this = this;
-        var endpointURL = this.RESTPrefix + "";
+       /* DOESNT WORK !
+       const endpointURL = this.RESTPrefix + "";
         this.xhr.open("DELETE", endpointURL, true);
-        this.xhr.onreadystatechange = function() {
+        this.xhr.onreadystatechange = () => {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                _this._sessionInfo = null;
+                this._sessionInfo = null;
             }
         }
-        this.xhr.send();
+        this.xhr.send();*/
     }
 
     getDeviceInformation() {
@@ -272,6 +271,13 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         })
     }
 
+    getSystemInfo() {
+        // not implemented
+    }
+
+    sendLocationUpdate(lat, lng) {
+        // not implemented
+    }
     _sendCommand(command, method, parameters) {
         return new Promise((resolve, reject) => {
             this.xhr.open(method, command, true);

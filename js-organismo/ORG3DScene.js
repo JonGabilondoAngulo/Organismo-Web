@@ -858,8 +858,7 @@ class ORG3DScene {
     }
 
     _createLights() {
-        // LIGHTS
-        var light;
+        let light;
 
         light = new THREE.SpotLight(0xaaaaaa);
         light.position.set(500,-500,500);
@@ -904,9 +903,9 @@ class ORG3DScene {
     }
 
     _adjustLocationMarkerPosition(deviceBoundingBox) {
-        if ( deviceBoundingBox && this._locationMarker) {
-            this._locationMarker.setPositionY(deviceBoundingBox.min.y - 50);
-        }
+        //if ( deviceBoundingBox && this._locationMarker) {
+        //    this._locationMarker.setPositionY(deviceBoundingBox.min.y - 50);
+        //}
     }
 
     _addDeviceAndScreenGroup() {
