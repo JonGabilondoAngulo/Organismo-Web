@@ -142,7 +142,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.UI.testAppVersionLabel.text('');
                 ORG.UIJSONTreeManager.remove();
             } break;
-            case 'wda-session-open' :
+            case 'session-open' :
             case 'websocket-open' : {
                 ORG.UI.connectButton.text("Disconnect");
             } break;

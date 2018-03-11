@@ -60,7 +60,7 @@ class ORGSystemInfoManager {
 
     _requestSystemInfo() {
         if ( ORG.deviceController ) {
-            ORG.deviceController.getSystemInfo();
+            ORG.deviceController.requestSystemInfo();
             this._waitingForResponse = true;
         }
     }

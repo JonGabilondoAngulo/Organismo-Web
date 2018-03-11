@@ -469,6 +469,7 @@ class ORG3DScene {
         if (this._deviceScreen && ORG.deviceController.hasContinuousUpdate) {
             if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate) && !this._uiExpanded) {
                 ORG.deviceController.requestScreenshot();
+                //ORGConnectionActions.refreshScreen();
             }
         }
     }
@@ -551,6 +552,7 @@ class ORG3DScene {
                 }
                 if (requestScreenshot) {
                     ORG.deviceController.requestScreenshot(); // keep updating screenshot
+                    //ORGConnectionActions.refreshScreen();
                 }
                 _this.createRaycasterForDeviceScreen();
                 _this._uiExpanded = false;

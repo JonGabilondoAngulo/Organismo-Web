@@ -14,7 +14,7 @@ class ORGDevice {
         this.systemVersion = deviceInfo.systemVersion;
         this.productName = deviceInfo.productName;
         this.screenSize = deviceInfo.screenSize;
-        this._orientation = ORGDevice.ORIENTATION_PORTRAIT;
+        this._orientation = deviceInfo.orientation;
         this._bodySize = this._bodySizeOfModel();
         this._displaySize = this._displaySizeOfModel();
     }
@@ -29,22 +29,22 @@ class ORGDevice {
 
     set orientation(orientation) {
         this._orientation = orientation;
-    };
+    }
     get orientation() {
         return this._orientation;
-    };
+    }
     get isLikeiPhone5() {
         return this.productName.startsWith('iPhone 5');
-    };
+    }
     get isLikeiPhone6() {
         return this.productName == 'iPhone 6' || this.productName == 'iPhone 7' || this.productName == 'iPhone 8';
-    };
+    }
     get isLikeiPhone6Plus() {
         return this.productName == 'iPhone 6+' || this.productName == 'iPhone 7+' || this.productName == 'iPhone 8+';
-    };
+    }
     get isLikeiPhoneX() {
         return this.productName == 'iPhone X';
-    };
+    }
 
     /**
      * Get device physical size. Gets the values from ORG.DeviceMetrics global.
@@ -164,10 +164,11 @@ class ORGDevice {
         const h = w * ratio;
         return { width:w, height:h };
     }
-
 }
 
 ORGDevice.ORIENTATION_PORTRAIT = "portrait";
 ORGDevice.ORIENTATION_LANDSCAPE_LEFT = "landscape-left";
 ORGDevice.ORIENTATION_LANDSCAPE_RIGHT = "landscape-right";
 ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN = "upside-down";
+ORGDevice.ORIENTATION_FACE_UP = "face-up";
+ORGDevice.ORIENTATION_FACE_DOWN = "face-down";

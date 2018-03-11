@@ -32,9 +32,7 @@ class ORGConnectionActions {
             this.disconnect();
         } else {
             switch (ORG.deviceController.type) {
-                case "ORG": {
-                    this.connectWithController(ORG.deviceController);
-                } break;
+                case "ORG":
                 case "WDA": {
                     this.connectWithController(ORG.deviceController);
                 } break;
@@ -51,15 +49,15 @@ class ORGConnectionActions {
 
     static async connectWithController(controller) {
         try {
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</h4></div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</h5></div>' }); // Progress alert
             // 1. Open session
             let session = await controller.openSession();
             ORG.dispatcher.dispatch({
-                actionType: 'wda-session-open'
+                actionType: 'session-open'
             });
 
             bootbox.hideAll();
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Getting device information...</h4></div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i> Getting device information...</h5></div>' }); // Progress alert
 
             // 2. Get device info
             ORG.device = await controller.getDeviceInformation();
@@ -90,6 +88,11 @@ class ORGConnectionActions {
 
             bootbox.hideAll();
 
+            // 7. Start getting screenshots
+            if (controller.hasContinuousUpdate && ORG.scene.flagContinuousScreenshot) {
+                controller.requestScreenshot();
+            }
+
         } catch(err) {
             bootbox.hideAll();
             this._handleError(err);
@@ -97,8 +100,7 @@ class ORGConnectionActions {
     }
 
     static async refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h4></div>' });
-
+        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
         try {
             let controller = ORG.deviceController;
             let orientation = await controller.getDeviceOrientation();
@@ -108,7 +110,7 @@ class ORGConnectionActions {
             ORG.dispatcher.dispatch({
                 actionType: 'ui-json-tree-update',
                 tree: tree.children,
-                treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
+                treeType: (ORG.deviceController.type === "WDA") ?ORGUIJSONTreeManager.TREE_TYPE_WDA :ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO
             });
             if (orientation !== ORG.device.orientation) {
                 ORG.dispatcher.dispatch({
@@ -122,8 +124,8 @@ class ORGConnectionActions {
             });
             bootbox.hideAll();
         } catch(err) {
-            bootbox.hideAll();
-            this._handleError(err);
+            bootbox.hideAll()
+            this._handleError(err)
         }
     }
 

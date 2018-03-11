@@ -16,23 +16,45 @@ class ORGWebSocket {
 		return this._ws;
 	}
 
+    get serverURL() {
+        return this._serverURL;
+    }
+
+    get isConnected() {
+        return !!this._ws && (this._ws.readyState !== this._ws.CLOSED);
+    }
+
 	/**
-	 * Opens a WebSocket to server given a URL and accepts a Delegate.
+	 * Opens a WebSocket to a server given the URL and accepts a Delegate.
 	 * @param inServerURL
-	 * @param inDelegate. An object that can implement the callback methods: onOpen, onCLose, onMessage, onError
+	 * @param inDelegate. An object that implements the callback methods: onOpen, onClose, onMessage, onError
 	 */
 	open(inServerURL, inDelegate) {
-		let _this = this;
-		this._serverURL = inServerURL;
-        this._delegate = inDelegate;
+		return new Promise( (resolve, reject) => {
+			const _this = this;
+            this._serverURL = inServerURL;
+            this._delegate = inDelegate;
 
-		let url = "ws://" + this._serverURL + "/main";
-        this._ws = new WebSocket(url);
-        this._ws.onopen = function () { _this.onOpen();} ;
-        this._ws.onclose = function () { _this.onClose(event);};
-        this._ws.onmessage = function (event) { _this.onMessage(event);};
-        this._ws.onerror = function (event) { _this.onError(event);};
-	};
+            const url = inServerURL;
+            this._ws = new WebSocket(url);
+            this._ws.onopen = function(event) {
+                if (this._delegate) {
+                    this.processMessagesWithDelegate(this._delegate);
+                }
+                resolve(event)
+            }
+            this._ws.onclose = function(event) {
+				reject(event)
+            }
+            this._ws.onmessage = function(event) {
+				resolve(event)
+            }
+            this._ws.onerror = function(event)  {
+                _this._ws = null;
+                reject(new ORGError(ORGERR.ERR_WS_CONNECTION_REFUSED, "Error opening session."));
+            }
+		})
+	}
 
 	/**
 	 * Close the WebSocket.
@@ -41,9 +63,32 @@ class ORGWebSocket {
 		if (this._ws) {
             this._ws.close();
 		} else {
-			console.log('CLOSE requested but there is no ws.')
+			console.debug('CLOSE requested but there is no ws.')
 		}
 	}
+
+    /***
+	 * Sets the delegate that processes the web sockets callbacks.
+	 * Usually to se a non linear async messaging model, where a "send" is not made with "await".
+     * @param delegate
+     */
+	processMessagesWithDelegate(delegate) {
+        this._delegate = delegate;
+
+        let _this = this;
+        this._ws.onopen = function(event) {
+            _this._onOpen(event)
+        }
+        this._ws.onclose = function(event) {
+            _this._onClose(event)
+        }
+        this._ws.onmessage = function(event) {
+            _this._onMessage(event)
+        }
+        this._ws.onerror = function(event)  {
+            _this._onError(event)
+        }
+    }
 
 	/**
 	 * Sends data through the websocket.
@@ -55,20 +100,27 @@ class ORGWebSocket {
 		}
 	}
 
-	/**
-	 * A function that returns of the websocket is connected to the server.
-	 * @returns {boolean}
-	 */
-	isConnected() {
-		return !!this._ws;
-	}
-
-	/**
-	 * A function that returns the URL of the server.
-	 * @returns {*}
-	 */
-	getServerURL() {
-		return this._serverURL;
+	sendAsync(payload) {
+		return new Promise( (resolve, reject) => {
+            this._ws.onclose = (event) => {
+            	this.onClose(event)
+                reject(event)
+            }
+            this._ws.onmessage = (event) => {
+                let messageJSON = JSON.parse(event.data);
+                if (messageJSON) {
+            		resolve(messageJSON)
+				} else {
+                    reject(messageJSON)
+				}
+            }
+            this._ws.onerror = (event) => {
+                reject(event)
+            }
+            if (this._ws) {
+                this._ws.send(payload);
+            }
+		})
 	}
 
 	// Callbacks
@@ -77,42 +129,42 @@ class ORGWebSocket {
 	 * JS WebSocket callback when the socket has opened.
 	 * It will call the Delegate "onOpen".
 	 */
-    onOpen() {
-		console.log('OPENED: ' + this._serverURL);
-		if (!!this._delegate.onOpen) {
+    _onOpen() {
+		console.debug('OPENED: ' + this._serverURL);
+		if (this._delegate && !!this._delegate.onOpen) {
             this._delegate.onOpen(this);
 		}
-	};
+	}
 
 	/**
 	 * JS WebSocket callback when the socket has closed.
 	 * It will call the Delegate "onClose".
 	 */
-	onClose(event) {
-		console.log('CLOSED: ' + this._serverURL);
+	_onClose(event) {
+		console.debug('CLOSED: ' + this._serverURL);
         this._ws = null;
-		if (!!this._delegate.onClose) {
+		if (this._delegate && !!this._delegate.onClose) {
             this._delegate.onClose(event, this);
 		}
-	};
+	}
 
 	/**
 	 * JS WebSocket callback when the socket has received a message.
 	 * It will call the Delegate "onMessage".
 	 */
-	onMessage(event) {
-		if (!!this._delegate.onMessage) {
+	_onMessage(event) {
+		if (this._delegate && !!this._delegate.onMessage) {
             this._delegate.onMessage(event, this);
 		}
-	};
+	}
 
 	/**
 	 * JS WebSocket callback when the socket has detected an error.
 	 * It will call the Delegate "onError".
 	 */
-	onError(event) {
-		console.log('WS Error: ' + JSON.stringify(event));
-		if (!!this._delegate.onError) {
+	_onError(event) {
+		console.debug('WS Error: ' + JSON.stringify(event));
+		if (this._delegate && !!this._delegate.onError) {
             this._delegate.onError(event, this);
 		}
 	}

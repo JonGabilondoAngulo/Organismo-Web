@@ -53,10 +53,12 @@ class ORGMap extends ORGLocationProvider {
     //------------------------------------------------------------------------------------------------------------------
 
     run() {
-        var itinerary = new ORGItinerary(this._directions.routes[0], this._elevations, this._startLocation, this._endLocation);
-        this._itineraryRunner = new ORGItineraryRunner(itinerary);
-        this._itineraryRunner.addListener(ORG.locationManager); // The locationManager will receive location updates
-        this._itineraryRunner.start();
+        if (this._directions) {
+            let itinerary = new ORGItinerary(this._directions.routes[0], this._elevations, this._startLocation, this._endLocation);
+            this._itineraryRunner = new ORGItineraryRunner(itinerary);
+            this._itineraryRunner.addListener(ORG.locationManager); // The locationManager will receive location updates
+            this._itineraryRunner.start();
+        }
     }
 
     pause() {
@@ -143,7 +145,7 @@ class ORGMap extends ORGLocationProvider {
      * @private
      */
     _createMap(onElement, onCurrentLocation) {
-        var map = new google.maps.Map(onElement, {
+        let map = new google.maps.Map(onElement, {
             //center: {lat: -33.8688, lng: 151.2195},
             zoom: 13,
             mapTypeId: 'roadmap'
@@ -174,7 +176,7 @@ class ORGMap extends ORGLocationProvider {
 
         const _this = this;
 
-        var directionsDisplay = new google.maps.DirectionsRenderer({
+        let directionsDisplay = new google.maps.DirectionsRenderer({
             'map': map,
             'preserveViewport': true,
             'draggable': true
@@ -278,7 +280,7 @@ class ORGMap extends ORGLocationProvider {
     _initAutocompleteStartLocation() {
         const _this = this;
         const options = null;
-        var autocomplete = new google.maps.places.Autocomplete(document.getElementById('start-point'), options);
+        let autocomplete = new google.maps.places.Autocomplete(document.getElementById('start-point'), options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             _this._autompleteSelectedStartPoint(autocomplete, _this._map);
@@ -288,7 +290,7 @@ class ORGMap extends ORGLocationProvider {
     _initAutocompleteEndLocation() {
         const _this = this;
         const options = null;
-        var autocomplete = new google.maps.places.Autocomplete(document.getElementById('end-point'), options);
+        let autocomplete = new google.maps.places.Autocomplete(document.getElementById('end-point'), options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             _this._autompleteSelectedEndPoint(autocomplete, _this._map);
@@ -297,7 +299,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _autompleteSelectedStartPoint(autocomplete, map) {
-        var place = autocomplete.getPlace();
+        let place = autocomplete.getPlace();
         const location = place.geometry.location;
         map.panTo(location);
         this._setStartLocationWithAddress(location, place.formatted_address);
@@ -305,7 +307,7 @@ class ORGMap extends ORGLocationProvider {
 
 
     _autompleteSelectedEndPoint(autocomplete, map) {
-        var place = autocomplete.getPlace();
+        let place = autocomplete.getPlace();
         const location = place.geometry.location;
         this._setEndLocationWithAddress(location, place.formatted_address);
     }
@@ -390,7 +392,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _createMarker(location, label) {
-        var marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
             position: location,
             map: this._map,
             animation: google.maps.Animation.DROP,
@@ -460,7 +462,7 @@ class ORGMap extends ORGLocationProvider {
             travelMode: this.travelMode//google.maps.DirectionsTravelMode.DRIVING
         };
 
-        var _this = this;
+        let _this = this;
         this._directionsService.route(request, function (response, status) {
 
             if (status == google.maps.DirectionsStatus.OK) {
@@ -484,7 +486,7 @@ class ORGMap extends ORGLocationProvider {
     _plotElevation(results) {
         const elevations = results;
 
-        var path = [];
+        let path = [];
         for (let i = 0; i < results.length; i++) {
             path.push(elevations[i].location);
             //console.log("elevation:",i,"value:",elevations[i]);
@@ -500,7 +502,7 @@ class ORGMap extends ORGLocationProvider {
         //    strokeColor: "#000000",
         //    map: this.map});
 
-        var data = new google.visualization.DataTable();
+        let data = new google.visualization.DataTable();
         data.addColumn('string', 'Sample');
         data.addColumn('number', 'Elevation');
         for (let i = 0; i < results.length; i++) {
@@ -523,7 +525,7 @@ class ORGMap extends ORGLocationProvider {
 
 
     _handleLocationError(browserHasGeolocation, pos) {
-        var infoWindow = new google.maps.InfoWindow;
+        let infoWindow = new google.maps.InfoWindow;
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
             'Error: The Geolocation service failed.' :
@@ -532,7 +534,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _calculateDistance(directions) {
-        var distance = 0;
+        let distance = 0;
         const nlegs = directions.routes[0].legs.length;
         for (let i = 0; i < nlegs; i++) {
             distance += directions.routes[0].legs[i].distance.value;
@@ -541,7 +543,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _calculateDuration(directions) {
-        var duration = 0;
+        let duration = 0;
         const nlegs = directions.routes[0].legs.length;
         for (let i = 0; i < nlegs; i++) {
             duration += directions.routes[0].legs[i].duration.value;
@@ -570,6 +572,4 @@ class ORGMap extends ORGLocationProvider {
             end_location: this._endLocation,
         });
     }
-
-
 }

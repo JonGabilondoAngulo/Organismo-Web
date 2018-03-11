@@ -138,23 +138,42 @@ class ORGWebSocket {
 		return this._ws;
 	}
 
+    get serverURL() {
+        return this._serverURL;
+    }
+
+    get isConnected() {
+        return !!this._ws && (this._ws.readyState !== this._ws.CLOSED);
+    }
+
 	/**
-	 * Opens a WebSocket to server given a URL and accepts a Delegate.
+	 * Opens a WebSocket to a server given the URL and accepts a Delegate.
 	 * @param inServerURL
-	 * @param inDelegate. An object that can implement the callback methods: onOpen, onCLose, onMessage, onError
+	 * @param inDelegate. An object that implements the callback methods: onOpen, onClose, onMessage, onError
 	 */
 	open(inServerURL, inDelegate) {
-		let _this = this;
-		this._serverURL = inServerURL;
-        this._delegate = inDelegate;
+		return new Promise( (resolve, reject) => {
+			const _this = this;
+            this._serverURL = inServerURL;
+            this._delegate = inDelegate;
 
-		let url = "ws://" + this._serverURL + "/main";
-        this._ws = new WebSocket(url);
-        this._ws.onopen = function () { _this.onOpen();} ;
-        this._ws.onclose = function () { _this.onClose(event);};
-        this._ws.onmessage = function (event) { _this.onMessage(event);};
-        this._ws.onerror = function (event) { _this.onError(event);};
-	};
+            const url = inServerURL;
+            this._ws = new WebSocket(url);
+            this._ws.onopen = function(event) {
+                resolve(event)
+            }
+            this._ws.onclose = function(event) {
+				reject(event)
+            }
+            this._ws.onmessage = function(event) {
+				resolve(event)
+            }
+            this._ws.onerror = function(event)  {
+                _this._ws = null;
+                reject(new ORGError(ORGERR.ERR_WS_CONNECTION_REFUSED, "Error opening session."));
+            }
+		})
+	}
 
 	/**
 	 * Close the WebSocket.
@@ -163,9 +182,32 @@ class ORGWebSocket {
 		if (this._ws) {
             this._ws.close();
 		} else {
-			console.log('CLOSE requested but there is no ws.')
+			console.debug('CLOSE requested but there is no ws.')
 		}
 	}
+
+    /***
+	 * Sets the delegate that processes the web sockets callbacks.
+	 * Usually to se a non linear async messaging model, where a "send" is not made with "await".
+     * @param delegate
+     */
+	processMessagesWithDelegate(delegate) {
+        this._delegate = delegate;
+
+        let _this = this;
+        this._ws.onopen = function(event) {
+            _this._onOpen(event)
+        }
+        this._ws.onclose = function(event) {
+            _this._onClose(event)
+        }
+        this._ws.onmessage = function(event) {
+            _this._onMessage(event)
+        }
+        this._ws.onerror = function(event)  {
+            _this._onError(event)
+        }
+    }
 
 	/**
 	 * Sends data through the websocket.
@@ -177,20 +219,27 @@ class ORGWebSocket {
 		}
 	}
 
-	/**
-	 * A function that returns of the websocket is connected to the server.
-	 * @returns {boolean}
-	 */
-	isConnected() {
-		return !!this._ws;
-	}
-
-	/**
-	 * A function that returns the URL of the server.
-	 * @returns {*}
-	 */
-	getServerURL() {
-		return this._serverURL;
+	sendAsync(payload) {
+		return new Promise( (resolve, reject) => {
+            this._ws.onclose = (event) => {
+            	this.onClose(event)
+                reject(event)
+            }
+            this._ws.onmessage = (event) => {
+                let messageJSON = JSON.parse(event.data);
+                if (messageJSON) {
+            		resolve(messageJSON)
+				} else {
+                    reject(messageJSON)
+				}
+            }
+            this._ws.onerror = (event) => {
+                reject(event)
+            }
+            if (this._ws) {
+                this._ws.send(payload);
+            }
+		})
 	}
 
 	// Callbacks
@@ -199,42 +248,42 @@ class ORGWebSocket {
 	 * JS WebSocket callback when the socket has opened.
 	 * It will call the Delegate "onOpen".
 	 */
-    onOpen() {
-		console.log('OPENED: ' + this._serverURL);
-		if (!!this._delegate.onOpen) {
+    _onOpen() {
+		console.debug('OPENED: ' + this._serverURL);
+		if (this._delegate && !!this._delegate.onOpen) {
             this._delegate.onOpen(this);
 		}
-	};
+	}
 
 	/**
 	 * JS WebSocket callback when the socket has closed.
 	 * It will call the Delegate "onClose".
 	 */
-	onClose(event) {
-		console.log('CLOSED: ' + this._serverURL);
+	_onClose(event) {
+		console.debug('CLOSED: ' + this._serverURL);
         this._ws = null;
-		if (!!this._delegate.onClose) {
+		if (this._delegate && !!this._delegate.onClose) {
             this._delegate.onClose(event, this);
 		}
-	};
+	}
 
 	/**
 	 * JS WebSocket callback when the socket has received a message.
 	 * It will call the Delegate "onMessage".
 	 */
-	onMessage(event) {
-		if (!!this._delegate.onMessage) {
+	_onMessage(event) {
+		if (this._delegate && !!this._delegate.onMessage) {
             this._delegate.onMessage(event, this);
 		}
-	};
+	}
 
 	/**
 	 * JS WebSocket callback when the socket has detected an error.
 	 * It will call the Delegate "onError".
 	 */
-	onError(event) {
-		console.log('WS Error: ' + JSON.stringify(event));
-		if (!!this._delegate.onError) {
+	_onError(event) {
+		console.debug('WS Error: ' + JSON.stringify(event));
+		if (this._delegate && !!this._delegate.onError) {
             this._delegate.onError(event, this);
 		}
 	}
@@ -1907,6 +1956,7 @@ class ORG3DScene {
         if (this._deviceScreen && ORG.deviceController.hasContinuousUpdate) {
             if ((this._sceneVisualFlags & ORGSceneVisualizationMask.ContinuousUpdate) && !this._uiExpanded) {
                 ORG.deviceController.requestScreenshot();
+                //ORGConnectionActions.refreshScreen();
             }
         }
     }
@@ -1989,6 +2039,7 @@ class ORG3DScene {
                 }
                 if (requestScreenshot) {
                     ORG.deviceController.requestScreenshot(); // keep updating screenshot
+                    //ORGConnectionActions.refreshScreen();
                 }
                 _this.createRaycasterForDeviceScreen();
                 _this._uiExpanded = false;
@@ -2557,7 +2608,7 @@ class ORG3DScene {
 class ORGMessageBuilder {
 
     static deviceInfo() {
-        var msg = {
+        const msg = {
             type: ORGRequest.Request,
             data: {
                 request: ORGRequest.DeviceInfo
@@ -2567,7 +2618,7 @@ class ORGMessageBuilder {
     }
 
     static systemInfo() {
-        var msg = {
+        const msg = {
             type: ORGRequest.Request,
             data: {
                 request: ORGRequest.SystemInfo
@@ -2577,7 +2628,7 @@ class ORGMessageBuilder {
     }
 
     static appInfo() {
-        var msg = {
+        const msg = {
             type: ORGRequest.Request,
             data: {
                 request: ORGRequest.AppInfo
@@ -2587,7 +2638,7 @@ class ORGMessageBuilder {
     }
 
     static takeScreenshot() {
-        var msg = {
+        const msg = {
             type: ORGRequest.Request,
             data: {
                 request: ORGRequest.Screenshot
@@ -2597,7 +2648,7 @@ class ORGMessageBuilder {
     }
 
     static elementTree(parameters) {
-        var msg = {
+        const msg = {
             type: ORGRequest.Request,
             data: {
                 request: ORGRequest.ElementTree,
@@ -2608,7 +2659,7 @@ class ORGMessageBuilder {
     }
 
     static gesture(gesture, parameters) {
-        var msg = {
+        const msg = {
             type: ORGRequest.Request,
             data: {
                 request: gesture,
@@ -2619,7 +2670,7 @@ class ORGMessageBuilder {
     }
 
     static locationUpdate(location, elevation) {
-        var msg = {
+        let msg = {
             type: ORGRequest.Update,
             data: {
             }
@@ -2634,7 +2685,7 @@ class ORGMessageBuilder {
     }
 
     static attitudeUpdate(quaternion) {
-        var msg = {
+        let msg = {
             type: ORGRequest.Update,
             data: {
             }
@@ -2646,7 +2697,7 @@ class ORGMessageBuilder {
     }
 
     static classHierarchy(className) {
-        var msg = {
+        const msg = {
             type: ORGRequest.Request,
             data: {
                 request: ORGRequest.ClassHierarchy,
@@ -3179,10 +3230,12 @@ class ORGMap extends ORGLocationProvider {
     //------------------------------------------------------------------------------------------------------------------
 
     run() {
-        var itinerary = new ORGItinerary(this._directions.routes[0], this._elevations, this._startLocation, this._endLocation);
-        this._itineraryRunner = new ORGItineraryRunner(itinerary);
-        this._itineraryRunner.addListener(ORG.locationManager); // The locationManager will receive location updates
-        this._itineraryRunner.start();
+        if (this._directions) {
+            let itinerary = new ORGItinerary(this._directions.routes[0], this._elevations, this._startLocation, this._endLocation);
+            this._itineraryRunner = new ORGItineraryRunner(itinerary);
+            this._itineraryRunner.addListener(ORG.locationManager); // The locationManager will receive location updates
+            this._itineraryRunner.start();
+        }
     }
 
     pause() {
@@ -3269,7 +3322,7 @@ class ORGMap extends ORGLocationProvider {
      * @private
      */
     _createMap(onElement, onCurrentLocation) {
-        var map = new google.maps.Map(onElement, {
+        let map = new google.maps.Map(onElement, {
             //center: {lat: -33.8688, lng: 151.2195},
             zoom: 13,
             mapTypeId: 'roadmap'
@@ -3300,7 +3353,7 @@ class ORGMap extends ORGLocationProvider {
 
         const _this = this;
 
-        var directionsDisplay = new google.maps.DirectionsRenderer({
+        let directionsDisplay = new google.maps.DirectionsRenderer({
             'map': map,
             'preserveViewport': true,
             'draggable': true
@@ -3404,7 +3457,7 @@ class ORGMap extends ORGLocationProvider {
     _initAutocompleteStartLocation() {
         const _this = this;
         const options = null;
-        var autocomplete = new google.maps.places.Autocomplete(document.getElementById('start-point'), options);
+        let autocomplete = new google.maps.places.Autocomplete(document.getElementById('start-point'), options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             _this._autompleteSelectedStartPoint(autocomplete, _this._map);
@@ -3414,7 +3467,7 @@ class ORGMap extends ORGLocationProvider {
     _initAutocompleteEndLocation() {
         const _this = this;
         const options = null;
-        var autocomplete = new google.maps.places.Autocomplete(document.getElementById('end-point'), options);
+        let autocomplete = new google.maps.places.Autocomplete(document.getElementById('end-point'), options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             _this._autompleteSelectedEndPoint(autocomplete, _this._map);
@@ -3423,7 +3476,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _autompleteSelectedStartPoint(autocomplete, map) {
-        var place = autocomplete.getPlace();
+        let place = autocomplete.getPlace();
         const location = place.geometry.location;
         map.panTo(location);
         this._setStartLocationWithAddress(location, place.formatted_address);
@@ -3431,7 +3484,7 @@ class ORGMap extends ORGLocationProvider {
 
 
     _autompleteSelectedEndPoint(autocomplete, map) {
-        var place = autocomplete.getPlace();
+        let place = autocomplete.getPlace();
         const location = place.geometry.location;
         this._setEndLocationWithAddress(location, place.formatted_address);
     }
@@ -3516,7 +3569,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _createMarker(location, label) {
-        var marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
             position: location,
             map: this._map,
             animation: google.maps.Animation.DROP,
@@ -3586,7 +3639,7 @@ class ORGMap extends ORGLocationProvider {
             travelMode: this.travelMode//google.maps.DirectionsTravelMode.DRIVING
         };
 
-        var _this = this;
+        let _this = this;
         this._directionsService.route(request, function (response, status) {
 
             if (status == google.maps.DirectionsStatus.OK) {
@@ -3610,7 +3663,7 @@ class ORGMap extends ORGLocationProvider {
     _plotElevation(results) {
         const elevations = results;
 
-        var path = [];
+        let path = [];
         for (let i = 0; i < results.length; i++) {
             path.push(elevations[i].location);
             //console.log("elevation:",i,"value:",elevations[i]);
@@ -3626,7 +3679,7 @@ class ORGMap extends ORGLocationProvider {
         //    strokeColor: "#000000",
         //    map: this.map});
 
-        var data = new google.visualization.DataTable();
+        let data = new google.visualization.DataTable();
         data.addColumn('string', 'Sample');
         data.addColumn('number', 'Elevation');
         for (let i = 0; i < results.length; i++) {
@@ -3649,7 +3702,7 @@ class ORGMap extends ORGLocationProvider {
 
 
     _handleLocationError(browserHasGeolocation, pos) {
-        var infoWindow = new google.maps.InfoWindow;
+        let infoWindow = new google.maps.InfoWindow;
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
             'Error: The Geolocation service failed.' :
@@ -3658,7 +3711,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _calculateDistance(directions) {
-        var distance = 0;
+        let distance = 0;
         const nlegs = directions.routes[0].legs.length;
         for (let i = 0; i < nlegs; i++) {
             distance += directions.routes[0].legs[i].distance.value;
@@ -3667,7 +3720,7 @@ class ORGMap extends ORGLocationProvider {
     }
 
     _calculateDuration(directions) {
-        var duration = 0;
+        let duration = 0;
         const nlegs = directions.routes[0].legs.length;
         for (let i = 0; i < nlegs; i++) {
             duration += directions.routes[0].legs[i].duration.value;
@@ -3696,8 +3749,6 @@ class ORGMap extends ORGLocationProvider {
             end_location: this._endLocation,
         });
     }
-
-
 }
 /**
  * Created by jongabilondo on 11/12/2016.
@@ -3715,7 +3766,7 @@ class ORGDevice {
         this.systemVersion = deviceInfo.systemVersion;
         this.productName = deviceInfo.productName;
         this.screenSize = deviceInfo.screenSize;
-        this._orientation = ORGDevice.ORIENTATION_PORTRAIT;
+        this._orientation = deviceInfo.orientation;
         this._bodySize = this._bodySizeOfModel();
         this._displaySize = this._displaySizeOfModel();
     }
@@ -3730,22 +3781,22 @@ class ORGDevice {
 
     set orientation(orientation) {
         this._orientation = orientation;
-    };
+    }
     get orientation() {
         return this._orientation;
-    };
+    }
     get isLikeiPhone5() {
         return this.productName.startsWith('iPhone 5');
-    };
+    }
     get isLikeiPhone6() {
         return this.productName == 'iPhone 6' || this.productName == 'iPhone 7' || this.productName == 'iPhone 8';
-    };
+    }
     get isLikeiPhone6Plus() {
         return this.productName == 'iPhone 6+' || this.productName == 'iPhone 7+' || this.productName == 'iPhone 8+';
-    };
+    }
     get isLikeiPhoneX() {
         return this.productName == 'iPhone X';
-    };
+    }
 
     /**
      * Get device physical size. Gets the values from ORG.DeviceMetrics global.
@@ -3865,13 +3916,14 @@ class ORGDevice {
         const h = w * ratio;
         return { width:w, height:h };
     }
-
 }
 
 ORGDevice.ORIENTATION_PORTRAIT = "portrait";
 ORGDevice.ORIENTATION_LANDSCAPE_LEFT = "landscape-left";
 ORGDevice.ORIENTATION_LANDSCAPE_RIGHT = "landscape-right";
 ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN = "upside-down";
+ORGDevice.ORIENTATION_FACE_UP = "face-up";
+ORGDevice.ORIENTATION_FACE_DOWN = "face-down";
 
 /**
  * Created by jongabilondo on 22/09/2017.
@@ -4160,106 +4212,27 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
         super(ip,port);
         this.session = null;
         this.webSocketDelegate = delegate;
-        this.webSocket = new ORGWebSocket();
-        this._ws = null;
+        this._webSocket = null;// ORGWebSocket();
     }
 
     get isConnected() {
-        return this.webSocket.isConnected();
+        return this._webSocket.isConnected
     }
 
     get hasContinuousUpdate() {
-        return true;
-    }
-
-    openSession() {
-        //this.webSocket.open(this.IPandPort, this.webSocketDelegate);
-        return new Promise((resolve, reject) => {
-            const eConnectionRefused = new ORGError(ORGERR.ERR_WS_CONNECTION_REFUSED, "Error opening session.");
-            const url = "ws://" + this.IPandPort + "/main";
-            this._ws = new WebSocket(url);
-            this._ws.onopen = () => {
-                resolve({sessionId: 0});
-            };
-            this._ws.onclose = () => {
-                reject(eConnectionRefused)
-            };
-            this._ws.onmessage = (event) => {
-                reject(eConnectionRefused)
-            };
-            this._ws.onerror = (event) => {
-                reject(eConnectionRefused)
-            };
-        });
-    }
-
-    getDeviceInformation() {
-        return new Promise((resolve, reject) => {
-            this._ws.onopen = null;
-            this._ws.onclose = () => {
-                reject();
-            };
-            this._ws.onmessage = (msg) => {
-                const device = new ORGDevice(msg.data);
-                resolve(device);
-            };
-            this._ws.onerror = (event) => {
-                reject(event);
-            };
-            this._ws.send(ORGMessageBuilder.deviceInfo());
-        });
-    }
-
-    getAppInformation() {
-        return new Promise((resolve, reject) => {
-            this._ws.onopen = null;
-            this._ws.onclose = () => {
-                reject();
-            };
-            this._ws.onmessage = (msg) => {
-                const appInfo = new ORGTestApp(msg.data);
-                resolve(appInfo);
-            };
-            this._ws.onerror = (event) => {
-                reject(event);
-            };
-            this._ws.send(ORGMessageBuilder.appInfo());
-        });
-    }
-
-    getScreenshot() {
-        return new Promise((resolve, reject) => {
-            this._ws.onopen = null;
-            this._ws.onclose = () => {
-                reject();
-            };
-            this._ws.onmessage = (msg) => {
-                var base64Img = msg.data.screenshot;
-                if (base64Img) {
-                    var img = new Image();
-                    img.src = "data:image/jpg;base64," + base64Img;
-                    img.onload = () => {
-                        resolve(img);
-                    }
-                }
-            };
-            this._ws.onerror = (event) => {
-                reject(event);
-            };
-            this._ws.send(ORGMessageBuilder.takeScreenshot());
-        })
+        return false;
     }
 
     closeSession() {
-        this.webSocket.close();
+        this._webSocket.close();
     }
 
     sendRequest(request) {
-        this.webSocket.send(request);
+        this._webSocket.send(request);
     }
 
     sendMessage(message) {
-        this.webSocket.send(message);
+        this._webSocket.send(message);
     }
 }
 /**
@@ -4274,40 +4247,190 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
 class ORGDeviceController extends ORGWebSocketDeviceController {
 
     constructor(ip, port, delegate) {
-        super(ip,port,delegate);
+        super(ip, port, delegate);
+        this._webSocket = new ORGWebSocket();
+        this._secondWebSocket = new ORGWebSocket();
     }
 
     get type() {
         return "ORG";
     }
+    get hasContinuousUpdate() {
+        return true;
+    }
 
-    requestDeviceInfo() {
-        this.webSocket.send(ORGMessageBuilder.deviceInfo());
+    openSession() {
+        return new Promise( async (resolve, reject) => {
+            try {
+                this._webSocket = await this._openMainSocket();
+                this._secondWebSocket = await this._openSecondSocket();
+                this._secondWebSocket.processMessagesWithDelegate(this.webSocketDelegate); // To work in a full duplex way.
+                resolve()
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+   /* requestDeviceInfo() {
+        this.webSocket.send(ORGMessageBuilder.deviceInfo())
     }
 
     requestAppInfo() {
-        this.webSocket.send(ORGMessageBuilder.appInfo());
-    }
+        this.webSocket.send(ORGMessageBuilder.appInfo())
+    }*/
 
     requestScreenshot() {
-        this.webSocket.send(ORGMessageBuilder.takeScreenshot());
+        this._secondWebSocket.send(ORGMessageBuilder.takeScreenshot())
     }
 
-    requestElementTree(parameters) {
-        this.webSocket.send(ORGMessageBuilder.elementTree(parameters));
+    //requestElementTree(parameters) {
+    //    this.sendRequest(ORGMessageBuilder.elementTree(parameters))
+    //}
+
+    requestSystemInfo() {
+        this.sendRequest(ORGMessageBuilder.systemInfo( ))
     }
 
     sendLocationUpdate(lat, lng) {
-        this.webSocket.send(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null));
+        this.sendRequest(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null))
     }
 
-    refreshUITree() {
-        const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true };
-        this.requestElementTree(requestFlags);
+    /*async refreshUITree() {
+
+        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
+
+        const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true }
+        try {
+            let elementTree = await this.getElementTree(requestFlags);
+            ORG.UIJSONTreeManager.update(elementTree, ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO);
+            if (ORG.scene.expanding || ORG.scene.isExpanded) {
+                ORG.scene.updateUITreeModel(elementTree);
+            }
+            bootbox.hideAll();
+        } catch (err) {
+            console.debug("Error getting ui tree.");
+            bootbox.hideAll();
+        }
+    }*/
+
+    getDeviceOrientation() {
+        return new Promise(async (resolve, reject) => {
+            resolve(ORG.device.orientation);
+        })
     }
 
-    getSystemInfo() {
-        this.sendRequest(ORGMessageBuilder.systemInfo( ));
+    getDeviceInformation() {
+        return new Promise( async (resolve, reject) => {
+            try {
+                let response = await this._webSocket.sendAsync(ORGMessageBuilder.deviceInfo());
+                const device = new ORGDevice(this._convertDeviceInfo(response.data));
+                resolve(device);
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    getAppInformation() {
+        return new Promise( async (resolve, reject) => {
+            try {
+                let response = await this._webSocket.sendAsync(ORGMessageBuilder.appInfo());
+                const appInfo = new ORGTestApp(response.data);
+                resolve(appInfo);
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    getScreenshot() {
+        return new Promise( async (resolve, reject) => {
+            try {
+                let response = await this._webSocket.sendAsync(ORGMessageBuilder.takeScreenshot());
+                let base64Img = response.data.screenshot;
+                if (base64Img) {
+                    let img = new Image();
+                    img.src = "data:image/jpg;base64," + base64Img;
+                    img.onload = () => {
+                        resolve(img);
+                    }
+                } else {
+                    reject("Missing image in screenshot.");
+                }
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    getElementTree(parameters) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let response = await this._webSocket.sendAsync(ORGMessageBuilder.elementTree(parameters))
+                resolve(response)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    _openMainSocket() {
+        return new Promise( async (resolve, reject) => {
+            try {
+                this._webSocket = new ORGWebSocket();
+                const url = "ws://" + this.IPandPort + "/main";
+                let openResult = await this._webSocket.open(url);
+                if (!!openResult) {
+                    resolve(this._webSocket)
+                } else {
+                    reject()
+                }
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    _openSecondSocket() {
+        return new Promise( async (resolve, reject) => {
+            try {
+                this._secondWebSocket = new ORGWebSocket();
+                const url = "ws://" + this.IPandPort + "/second";
+                let openResult = await this._secondWebSocket.open(url, this.webSocketDelegate);
+                if (!!openResult) {
+                    resolve(this._secondWebSocket)
+                } else {
+                    reject()
+                }
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    _convertDeviceInfo(data) {
+        let deviceInfo = {}
+        deviceInfo.name = data.name;
+        deviceInfo.model = data.model;
+        deviceInfo.systemVersion = data.systemVersion;
+        deviceInfo.productName = data.productName;
+        deviceInfo.screenSize = data.screenSize;
+        deviceInfo.orientation = this._convertOrientation(data.orientation);
+        return deviceInfo;
+    }
+
+    _convertOrientation(iOSOrientation) {
+        let orientation
+        switch(iOSOrientation) {
+            case "UIDeviceOrientationPortrait": orientation = ORGDevice.ORIENTATION_PORTRAIT; break;
+            case "UIDeviceOrientationPortraitUpsideDown": orientation = ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN; break;
+            case "UIDeviceOrientationLandscapeRight": orientation = ORGDevice.ORIENTATION_LANDSCAPE_RIGHT; break;
+            case "UIDeviceOrientationLandscapeLeft": orientation = ORGDevice.ORIENTATION_LANDSCAPE_LEFT; break;
+            case "UIDeviceOrientationFaceUp": orientation = ORGDevice.ORIENTATION_FACE_UP; break;
+            case "UIDeviceOrientationFaceDown": orientation = ORGDevice.ORIENTATION_FACE_DOWN; break;
+        }
+        return orientation;
     }
 }
 /**
@@ -4386,6 +4509,37 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
         }
         this.xhr.send();*/
     }
+
+    /*async refreshUITree() {
+        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
+
+        try {
+            let controller = ORG.deviceController;
+            let orientation = await controller.getDeviceOrientation();
+            let tree = await controller.getElementTree();
+            let screenshot = await controller.getScreenshot();
+
+            ORG.dispatcher.dispatch({
+                actionType: 'ui-json-tree-update',
+                tree: tree.children,
+                treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
+            });
+            if (orientation !== ORG.device.orientation) {
+                ORG.dispatcher.dispatch({
+                    actionType: 'device-orientation-changed',
+                    orientation: orientation
+                });
+            }
+            ORG.dispatcher.dispatch({
+                actionType: 'screenshot-update',
+                image: screenshot
+            });
+            bootbox.hideAll();
+        } catch(err) {
+            bootbox.hideAll();
+            this._handleError(err);
+        }
+    }*/
 
     getDeviceInformation() {
         return new Promise((resolve, reject) => {
@@ -6421,7 +6575,7 @@ class ORGFluxStore extends FluxUtils.Store {
                 ORG.UI.testAppVersionLabel.text('');
                 ORG.UIJSONTreeManager.remove();
             } break;
-            case 'wda-session-open' :
+            case 'session-open' :
             case 'websocket-open' : {
                 ORG.UI.connectButton.text("Disconnect");
             } break;
@@ -7274,7 +7428,7 @@ class ORGSystemInfoManager {
 
     _requestSystemInfo() {
         if ( ORG.deviceController ) {
-            ORG.deviceController.getSystemInfo();
+            ORG.deviceController.requestSystemInfo();
             this._waitingForResponse = true;
         }
     }
@@ -7723,7 +7877,7 @@ class ORGConnectionActions {
     static connect() {
         const serverUrl = $('#device-url');
         let deviceURL = serverUrl.val();
-        if (deviceURL == "") {
+        if (deviceURL === "") {
             deviceURL = "localhost";
         }
 
@@ -7748,9 +7902,7 @@ class ORGConnectionActions {
             this.disconnect();
         } else {
             switch (ORG.deviceController.type) {
-                case "ORG": {
-                    this.connectWithController(ORG.deviceController);
-                } break;
+                case "ORG":
                 case "WDA": {
                     this.connectWithController(ORG.deviceController);
                 } break;
@@ -7767,15 +7919,15 @@ class ORGConnectionActions {
 
     static async connectWithController(controller) {
         try {
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</h4></div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</h5></div>' }); // Progress alert
             // 1. Open session
             let session = await controller.openSession();
             ORG.dispatcher.dispatch({
-                actionType: 'wda-session-open'
+                actionType: 'session-open'
             });
 
             bootbox.hideAll();
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i> Getting device information...</h4></div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i> Getting device information...</h5></div>' }); // Progress alert
 
             // 2. Get device info
             ORG.device = await controller.getDeviceInformation();
@@ -7806,6 +7958,8 @@ class ORGConnectionActions {
 
             bootbox.hideAll();
 
+            controller.requestScreenshot(); // start getting screenshots
+
         } catch(err) {
             bootbox.hideAll();
             this._handleError(err);
@@ -7813,8 +7967,7 @@ class ORGConnectionActions {
     }
 
     static async refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h4></div>' });
-
+        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
         try {
             let controller = ORG.deviceController;
             let orientation = await controller.getDeviceOrientation();
@@ -7824,7 +7977,7 @@ class ORGConnectionActions {
             ORG.dispatcher.dispatch({
                 actionType: 'ui-json-tree-update',
                 tree: tree.children,
-                treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
+                treeType: (ORG.deviceController.type === "WDA") ?ORGUIJSONTreeManager.TREE_TYPE_WDA :ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO
             });
             if (orientation !== ORG.device.orientation) {
                 ORG.dispatcher.dispatch({
@@ -7838,8 +7991,8 @@ class ORGConnectionActions {
             });
             bootbox.hideAll();
         } catch(err) {
-            bootbox.hideAll();
-            this._handleError(err);
+            bootbox.hideAll()
+            this._handleError(err)
         }
     }
 
