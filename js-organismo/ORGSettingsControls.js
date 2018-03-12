@@ -33,13 +33,9 @@ ORG.UI.sliderTreeLayersRange = $('#ex2');
 ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
-ORG.UI.refreshUITree.click(function () {
-    if (ORG.deviceController.type === "WDA") {
-        ORGConnectionActions.refreshUITree();
-    } else {
-        ORG.deviceController.refreshUITree();
-    }
-});
+ORG.UI.refreshUITree.click( () => {
+    ORGConnectionActions.refreshUITree()
+})
 
 // Sliders
 ORG.UI.sliderTreeLayersDistance.bootstrapSlider();
@@ -160,10 +156,10 @@ ORG.UI.buttonExpand.click(function () {
     }
     if (ORG.scene.isExpanded) {
         ORG.UI.buttonExpand.text("Expand");
-        ORG.scene.collapse();
+        ORGConnectionActions.collapseScreenUI();
     } else {
         ORG.UI.buttonExpand.text("Collapse");
-        ORG.scene.expand();
+        ORGConnectionActions.extrudeScreenUI();
     }
 });
 

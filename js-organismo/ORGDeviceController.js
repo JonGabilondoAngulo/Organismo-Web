@@ -11,8 +11,8 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
 
     constructor(ip, port, delegate) {
         super(ip, port, delegate);
-        this._webSocket = null;
-        this._secondWebSocket = null;
+        this._webSocket = null; // For async await calls
+        this._secondWebSocket = null; // For async non await calls. Delegate processes responses.
     }
 
     get type() {
@@ -23,11 +23,21 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         return true;
     }
 
+    get isConnected() {
+        if (!this._webSocket || !this._webSocket.isConnected) {
+            return false
+        }
+        if (!this._secondWebSocket || !this._secondWebSocket.isConnected) {
+            return false
+        }
+        return true
+    }
+
     openSession() {
         return new Promise( async (resolve, reject) => {
             try {
-                this._webSocket = await this._openMainSocket();
-                this._secondWebSocket = await this._openSecondSocket();
+                this._webSocket = await this._openMainSocket()
+                this._secondWebSocket = await this._openSecondSocket()
                 resolve()
             } catch (err) {
                 reject(err)
@@ -35,51 +45,30 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         })
     }
 
-   /* requestDeviceInfo() {
-        this.webSocket.send(ORGMessageBuilder.deviceInfo())
+    closeSession() {
+        if (this._webSocket) {
+            this._webSocket.close()
+        }
+        if (this._secondWebSocket) {
+            this._secondWebSocket.close()
+        }
     }
-
-    requestAppInfo() {
-        this.webSocket.send(ORGMessageBuilder.appInfo())
-    }*/
 
     requestScreenshot() {
         this._secondWebSocket.send(ORGMessageBuilder.takeScreenshot())
     }
 
-    //requestElementTree(parameters) {
-    //    this.sendRequest(ORGMessageBuilder.elementTree(parameters))
-    //}
-
     requestSystemInfo() {
-        this.sendRequest(ORGMessageBuilder.systemInfo( ))
+        this._secondWebSocket.send(ORGMessageBuilder.systemInfo( ))
     }
 
     sendLocationUpdate(lat, lng) {
-        this.sendRequest(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null))
+        this._secondWebSocket.send(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null))
     }
-
-    /*async refreshUITree() {
-
-        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
-
-        const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true }
-        try {
-            let elementTree = await this.getElementTree(requestFlags);
-            ORG.UIJSONTreeManager.update(elementTree, ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO);
-            if (ORG.scene.expanding || ORG.scene.isExpanded) {
-                ORG.scene.updateUITreeModel(elementTree);
-            }
-            bootbox.hideAll();
-        } catch (err) {
-            console.debug("Error getting ui tree.");
-            bootbox.hideAll();
-        }
-    }*/
 
     getDeviceOrientation() {
         return new Promise(async (resolve, reject) => {
-            resolve(ORG.device.orientation);
+            resolve(ORG.device.orientation)
         })
     }
 
@@ -131,11 +120,26 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         return new Promise(async (resolve, reject) => {
             try {
                 let response = await this._webSocket.sendAsync(ORGMessageBuilder.elementTree(parameters))
+                resolve(response.data)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    getClassHierarchy(className) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let response = await this._webSocket.sendAsync(ORGMessageBuilder.classHierarchy(className))
                 resolve(response)
             } catch (err) {
                 reject(err)
             }
         })
+    }
+
+    send(message) {
+        this._webSocket.send(message);
     }
 
     _openMainSocket() {

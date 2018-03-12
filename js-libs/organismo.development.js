@@ -160,6 +160,9 @@ class ORGWebSocket {
             const url = inServerURL;
             this._ws = new WebSocket(url);
             this._ws.onopen = function(event) {
+                if (_this._delegate) {
+                    _this.processMessagesWithDelegate(_this._delegate);
+                }
                 resolve(event)
             }
             this._ws.onclose = function(event) {
@@ -1511,7 +1514,7 @@ const kORGCameraPositionZ = 0.2; // m
  */
 class ORG3DScene {
 
-    constructor( domContainer, screenSize) {
+    constructor(domContainer, screenSize) {
 
         this._sceneFloor = null; // a ORG3DSceneFloor
         this._deviceScreen = null; // a ORG3DDeviceScreen
@@ -1550,7 +1553,7 @@ class ORG3DScene {
             ORGTreeVisualizationMask.ShowPrivate |
             ORGTreeVisualizationMask.ShowScreenshots;
 
-        this._uiTreeModel = new ORG3DUITreeModel( this._treeVisualizationFlags);
+        this._uiTreeModel = new ORG3DUITreeModel(this._treeVisualizationFlags);
         this.expanding = false;
         this._initialize(domContainer, this.flagShowFloor);
     }
@@ -1632,7 +1635,7 @@ class ORG3DScene {
         return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowTooltips;
     }
 
-    set flagShowTooltips( show) {
+    set flagShowTooltips(show) {
         if (show) {
             this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowTooltips;
         } else {
@@ -1655,7 +1658,7 @@ class ORG3DScene {
         return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowFloor;
     }
 
-    set flagShowFloor(show ) {
+    set flagShowFloor(show) {
         if (show) {
             this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowFloor;
         } else {
@@ -1667,7 +1670,7 @@ class ORG3DScene {
         return this._sceneVisualFlags & ORGSceneVisualizationMask.ShowLocation;
     }
 
-    set flagShowLocation(show ) {
+    set flagShowLocation(show) {
         if (show) {
             this._sceneVisualFlags |= ORGSceneVisualizationMask.ShowLocation;
         } else {
@@ -1679,10 +1682,10 @@ class ORG3DScene {
      * Tree flags
      */
     get flagShowPrivateClasses() {
-        return ( this._treeVisualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
+        return (this._treeVisualizationFlags & ORGTreeVisualizationMask.ShowPrivate);
     }
 
-    set flagShowPrivateClasses( flag ) {
+    set flagShowPrivateClasses(flag) {
         if (flag) {
             this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowPrivate;
         } else {
@@ -1690,7 +1693,7 @@ class ORG3DScene {
         }
     }
 
-    set flagShowKeyboardWindow( flag ) {
+    set flagShowKeyboardWindow(flag) {
         if (flag) {
             this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowKeyboardWindow;
         } else {
@@ -1698,7 +1701,7 @@ class ORG3DScene {
         }
     }
 
-    set flagShowHiddenViews( flag) {
+    set flagShowHiddenViews(flag) {
         if (flag) {
             this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowHiddenViews;
         } else {
@@ -1706,7 +1709,7 @@ class ORG3DScene {
         }
     }
 
-    set flagShowNonInteractiveViews( flag) {
+    set flagShowNonInteractiveViews(flag) {
         if (flag) {
             this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowNonInteractiveViews;
         } else {
@@ -1714,7 +1717,7 @@ class ORG3DScene {
         }
     }
 
-    set flagShowInteractiveViews( flag) {
+    set flagShowInteractiveViews(flag) {
         if (flag) {
             this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowInteractiveViews;
         } else {
@@ -1722,7 +1725,7 @@ class ORG3DScene {
         }
     }
 
-    set flagShowScreenshots( flag) {
+    set flagShowScreenshots(flag) {
         if (flag) {
             this._treeVisualizationFlags |= ORGTreeVisualizationMask.ShowScreenshots;
         } else {
@@ -1755,13 +1758,13 @@ class ORG3DScene {
         }
     };
 
-    updateUITreeModel( treeJson ) {
+    updateUITreeModel(treeJson) {
 
         // First destroy the raycaster for the screen
         this.removeRaycasterForDeviceScreen();
-        this.hideDeviceScreen( );
+        this.hideDeviceScreen();
 
-        if ( this.flagShowTooltips) {
+        if (this.flagShowTooltips) {
             this.disableTooltips();
         }
 
@@ -1771,17 +1774,17 @@ class ORG3DScene {
         this.isExpanded = true;
         this.expanding = false;
         this._uiTreeModel.visualizationFlags = this._treeVisualizationFlags; // update the flags
-        this._uiTreeModel.updateUITreeModel( treeJson, this._THREEScene, ORG.device.screenSize, ORG.device.displaySize, ORG.device.displayScale, this._THREEDeviceAndScreenGroup.position);
+        this._uiTreeModel.updateUITreeModel(treeJson, this._THREEScene, ORG.device.screenSize, ORG.device.displaySize, ORG.device.displayScale, this._THREEDeviceAndScreenGroup.position);
 
         this.createRaycasterFor3DTreeModel(); // Create Raycaster for the 3D UI Model object
 
-        if ( this.flagShowTooltips) {
+        if (this.flagShowTooltips) {
             this.enableTooltips();
         }
     };
 
-    removeUITreeModel( ) {
-        this._uiTreeModel.removeUITreeModel( this._THREEScene);
+    removeUITreeModel() {
+        this._uiTreeModel.removeUITreeModel(this._THREEScene);
     }
 
     //--
@@ -1790,11 +1793,11 @@ class ORG3DScene {
     createDeviceScreen(width, height, zPosition) {
         this._addDeviceAndScreenGroup();
         this._deviceScreen = new ORG3DDeviceScreen(width, height, 0/*kORGDevicePositionY*/, zPosition, this._THREEScene);
-        this._THREEDeviceAndScreenGroup.add( this._deviceScreen.screenPlane );
+        this._THREEDeviceAndScreenGroup.add(this._deviceScreen.screenPlane);
     }
 
     removeDeviceScreen() {
-        if ( this._deviceScreen) {
+        if (this._deviceScreen) {
             this.removeRaycasterForDeviceScreen();
             this._THREEDeviceAndScreenGroup.remove(this._deviceScreen.screenPlane);
             this._deviceScreen.destroy();
@@ -1803,7 +1806,7 @@ class ORG3DScene {
     }
 
     setDeviceScreenSize(width, height) {
-        if ( this._deviceScreen) {
+        if (this._deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
             this.devicePositionHasChanged();
@@ -1812,13 +1815,13 @@ class ORG3DScene {
     }
 
     hideDeviceScreen() {
-        if ( this._deviceScreen) {
+        if (this._deviceScreen) {
             this._deviceScreen.hide();
         }
     }
 
     showDeviceScreen() {
-        if ( this._deviceScreen) {
+        if (this._deviceScreen) {
             this._deviceScreen.show();
         }
     }
@@ -1857,7 +1860,7 @@ class ORG3DScene {
     }*/
 
     hideDevice3DModel() {
-        if ( !!this._device3DModel ) {
+        if (!!this._device3DModel) {
             this._THREEDeviceAndScreenGroup.remove(this._device3DModel.THREEObject);
             this._device3DModel.destroy();
             this._device3DModel = null;
@@ -1866,18 +1869,18 @@ class ORG3DScene {
     }
 
     setDeviceOrientation(orientation, width, height) {
-        if ( this._uiExpanded && this._uiTreeModel) {
-            this._uiTreeModel.removeUITreeModel( this._THREEScene);
+        if (this._uiExpanded && this._uiTreeModel) {
+            this._uiTreeModel.removeUITreeModel(this._THREEScene);
             this._uiExpanded = false;
             ORG.UI.buttonExpand.text("Expand");
         }
 
-        if ( this._deviceScreen) {
+        if (this._deviceScreen) {
             this.removeDeviceScreen();
             this.createDeviceScreen(width, height, 0);
             this.createRaycasterForDeviceScreen();
         }
-        if ( this._device3DModel) {
+        if (this._device3DModel) {
             this._device3DModel.setOrientation(orientation);
         }
         this.devicePositionHasChanged();
@@ -1904,49 +1907,49 @@ class ORG3DScene {
 
 
     createRaycasterFor3DTreeModel() {
-        this._uiTreeModelRaycaster = new ORG3DUITreeRaycaster( this._rendererDOMElement, this._THREECamera, this._uiTreeModel.treeGroup);
-        this._uiTreeModelRaycaster.addDelegate( new ORG3DUIElementHighlight()); // attach a hiliter
-        this._uiTreeModelRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
+        this._uiTreeModelRaycaster = new ORG3DUITreeRaycaster(this._rendererDOMElement, this._THREECamera, this._uiTreeModel.treeGroup);
+        this._uiTreeModelRaycaster.addDelegate(new ORG3DUIElementHighlight()); // attach a hiliter
+        this._uiTreeModelRaycaster.addDelegate(this._contextMenuManager); // attach a context menu manager, needs to know what three obj is the mouse on
 
         // Activate mouse listener to feed the raycaster
         if (this._mouseListener) {
-            this._mouseListener.addDelegate( this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
+            this._mouseListener.addDelegate(this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
             this._mouseListener.enable();
         }
     }
 
     destroyRaycasterFor3DTreeModel() {
-        if ( this._uiTreeModelRaycaster ) {
+        if (this._uiTreeModelRaycaster) {
             if (this._tooltiper) {
-                this._uiTreeModelRaycaster.removeDelegate( this._tooltiper); // Detach tooltiper from the raycaster
+                this._uiTreeModelRaycaster.removeDelegate(this._tooltiper); // Detach tooltiper from the raycaster
             }
             if (this._mouseListener) {
-                this._mouseListener.removeDelegate( this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
+                this._mouseListener.removeDelegate(this._uiTreeModelRaycaster); // send the mouse events to the Raycaster
             }
             this._uiTreeModelRaycaster = null;
         }
     }
 
     createRaycasterForScene() {
-        this._sceneRaycaster = new ORG3DSceneRaycaster( this._rendererDOMElement, this._THREECamera, this._THREEScene);
+        this._sceneRaycaster = new ORG3DSceneRaycaster(this._rendererDOMElement, this._THREECamera, this._THREEScene);
 
         // Activate mouse listener
-        this._mouseListener.addDelegate( this._sceneRaycaster); // send the mouse events to the Raycaster
+        this._mouseListener.addDelegate(this._sceneRaycaster); // send the mouse events to the Raycaster
         this._mouseListener.enable();
     }
 
     createRaycasterForDeviceScreen() {
-        this._screenRaycaster = new ORG3DUITreeRaycaster( this._rendererDOMElement, this._THREECamera, this._deviceScreen.screenPlane);
-        this._screenRaycaster.addDelegate( this._contextMenuManager); // attach a context menu manager
+        this._screenRaycaster = new ORG3DUITreeRaycaster(this._rendererDOMElement, this._THREECamera, this._deviceScreen.screenPlane);
+        this._screenRaycaster.addDelegate(this._contextMenuManager); // attach a context menu manager
 
         // Activate mouse listener
-        this._mouseListener.addDelegate( this._screenRaycaster); // send the mouse events to the Raycaster
+        this._mouseListener.addDelegate(this._screenRaycaster); // send the mouse events to the Raycaster
         this._mouseListener.enable();
     }
 
     removeRaycasterForDeviceScreen() {
-        if ( this._screenRaycaster ) {
-            this._mouseListener.removeDelegate( this._screenRaycaster);
+        if (this._screenRaycaster) {
+            this._mouseListener.removeDelegate(this._screenRaycaster);
             this._screenRaycaster = null;
         }
     }
@@ -1971,27 +1974,27 @@ class ORG3DScene {
     }
 
     enableTooltips() {
-        if ( !this._tooltiper) {
-            this._tooltiper = new ORGTooltip( this._rendererDOMElement);
+        if (!this._tooltiper) {
+            this._tooltiper = new ORGTooltip(this._rendererDOMElement);
             if (this._uiTreeModelRaycaster) {
-                this._uiTreeModelRaycaster.addDelegate( this._tooltiper); // Attach it to the raycaster
+                this._uiTreeModelRaycaster.addDelegate(this._tooltiper); // Attach it to the raycaster
             }
         }
     }
 
     disableTooltips() {
-        if ( this._tooltiper) {
-            if ( this._uiTreeModelRaycaster) {
-                this._uiTreeModelRaycaster.removeDelegate( this._tooltiper); // Detach it from the raycaster
+        if (this._tooltiper) {
+            if (this._uiTreeModelRaycaster) {
+                this._uiTreeModelRaycaster.removeDelegate(this._tooltiper); // Detach it from the raycaster
             }
-            this._tooltiper.destroy( );
+            this._tooltiper.destroy();
             this._tooltiper = null;
         }
     }
 
     createFloor() {
         if (!this._sceneFloor) {
-            this._sceneFloor = this._createFloor( this._THREEScene);
+            this._sceneFloor = this._createFloor(this._THREEScene);
             this.devicePositionHasChanged();
         }
     };
@@ -2006,7 +2009,7 @@ class ORG3DScene {
         if (!this._uiExpanded) {
             bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>Expanding UI elements...</div>' }); // Progress alert
 
-            ORG.deviceController.requestElementTree({
+            ORG.deviceController.getElementTree({
                 "status-bar": true,
                 "keyboard": true,
                 "alert": true,
@@ -2018,12 +2021,12 @@ class ORG3DScene {
 
     collapseAndExpandAnimated() {
         const _this = this;
-        this.collapse( () => {
+        this.collapse(() => {
             _this.expand();
-        } )
+        })
     }
 
-    collapse(completionCallback ) {
+    collapse(completionCallback) {
         if (this.isExpanded) {
             // we dont need the mouse listener and the raycaster anymore
             //this._mouseListener.disable();
@@ -2033,7 +2036,7 @@ class ORG3DScene {
             const _this = this;
             const requestScreenshot = this.flagContinuousScreenshot;
 
-            this._uiTreeModel.collapseWithCompletion( () => {
+            this._uiTreeModel.collapseWithCompletion(() => {
                 if (_this._deviceScreen) {
                     _this._deviceScreen.show();
                 }
@@ -2060,7 +2063,7 @@ class ORG3DScene {
         }
     }
 
-    showHideBeaconTransformControls( THREEBeacon) {
+    showHideBeaconTransformControls(THREEBeacon) {
         if (this._beaconTransformControl) {
             this._beaconTransformControl.destroy();
             this._beaconTransformControl = null;
@@ -2075,7 +2078,7 @@ class ORG3DScene {
         var new3DBeacon = new ORG3DBeacon(newBeacon);
         ORG.scenario.addBeacon(newBeacon);
 
-        this._THREEScene.add( new3DBeacon.model );
+        this._THREEScene.add(new3DBeacon.model);
         new3DBeacon.animateCore();
     }
 
@@ -2090,12 +2093,12 @@ class ORG3DScene {
         }
 
         const _this = this;
-        new TWEEN.Tween( this._THREECamera.position ).to( {
+        new TWEEN.Tween(this._THREECamera.position).to({
             x: 0,
             y: kORGDevicePositionY,
             z: kORGCameraPositionZ}, kORGCameraTWEENDuration)
             .easing(TWEEN.Easing.Quadratic.InOut)
-            .onComplete( () => {
+            .onComplete(() => {
                 if (liveScreen) {
                     _this.setLiveScreen(true);
                 }
@@ -2103,7 +2106,7 @@ class ORG3DScene {
 
         // TWEEN camera lookAt. But we can't do it setting camera.lookAt ! Due to collision with OrbitControls !
         // We must use the OrbitControl.target instead.
-        new TWEEN.Tween( _this._THREEOrbitControls.target ).to( {
+        new TWEEN.Tween(_this._THREEOrbitControls.target).to({
             x: 0,
             y: kORGDevicePositionY,
             z: 0}, kORGCameraTWEENDuration)
@@ -2116,8 +2119,8 @@ class ORG3DScene {
      */
     resetDevicePosition() {
         if (this._THREEDeviceAndScreenGroup) {
-            this._THREEDeviceAndScreenGroup.rotation.set( 0, 0, 0 );
-            this._THREEDeviceAndScreenGroup.position.set( 0, kORGDevicePositionY, 0);
+            this._THREEDeviceAndScreenGroup.rotation.set(0, 0, 0);
+            this._THREEDeviceAndScreenGroup.position.set(0, kORGDevicePositionY, 0);
         }
     }
 
@@ -2136,17 +2139,17 @@ class ORG3DScene {
 
         // Avoid flickering by stopping screen updates
         const liveScreen = this.flagContinuousScreenshot;
-        if ( liveScreen) {
+        if (liveScreen) {
             this.setLiveScreen(false);
         }
 
         const _this = this;
-        new TWEEN.Tween(this._THREECamera.position).to( {
+        new TWEEN.Tween(this._THREECamera.position).to({
             x: 0,
             y: kORGDevicePositionY,
             z: distance}, kORGCameraTWEENDuration)
             .easing(TWEEN.Easing.Quintic.InOut)
-            .onComplete( () => {
+            .onComplete(() => {
                 if (liveScreen) {
                     _this.setLiveScreen(true);
                 }
@@ -2157,34 +2160,34 @@ class ORG3DScene {
      * Set the camera looking at the given THREE object.
      * @param threeObject
      */
-    lookAtObject( threeObject ) {
+    lookAtObject(threeObject) {
         // We can't do it setting camera.lookAt ! Due to collision with OrbitControls !
         // We must use the OrbitControl.target instead.
-        new TWEEN.Tween( this._THREEOrbitControls.target ).to( {
+        new TWEEN.Tween(this._THREEOrbitControls.target).to({
             x: threeObject.position.x,
             y: threeObject.position.y,
             z: threeObject.position.z}, kORGCameraTWEENDuration)
-            .easing( TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quadratic.InOut)
             .start();
 
     }
 
-    lookFrontAtObject( threeObject ) {
+    lookFrontAtObject(threeObject) {
         // We can't do it setting camera.lookAt ! Due to collision with OrbitControls !
         // We must use the OrbitControl.target instead.
 
-        new TWEEN.Tween( this._THREECamera.position ).to( {
+        new TWEEN.Tween(this._THREECamera.position).to({
             x: threeObject.position.x,
             y: threeObject.position.y,
             z: 900}, kORGCameraTWEENDuration)
-            .easing( TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quadratic.InOut)
             .start();
 
-        new TWEEN.Tween( this._THREEOrbitControls.target ).to( {
+        new TWEEN.Tween(this._THREEOrbitControls.target).to({
             x: threeObject.position.x,
             y: threeObject.position.y,
             z: threeObject.position.z}, kORGCameraTWEENDuration)
-            .easing( TWEEN.Easing.Quadratic.InOut)
+            .easing(TWEEN.Easing.Quadratic.InOut)
             .start();
 
     }
@@ -2194,7 +2197,7 @@ class ORG3DScene {
 
         if (!this._locationMarker) {
             const floorPosition = this._calculateFloorPosition();
-            this._locationMarker = new ORG3DLocationMarker( floorPosition, this._lastLocationName, this._THREEScene);
+            this._locationMarker = new ORG3DLocationMarker(floorPosition, this._lastLocationName, this._THREEScene);
         }
     }
 
@@ -2219,20 +2222,20 @@ class ORG3DScene {
     }
 
     resize(newSize) {
-        this._THREERenderer.setSize( newSize.width, this._THREERenderer.getSize().height);
+        this._THREERenderer.setSize(newSize.width, this._THREERenderer.getSize().height);
         this._THREECamera.aspect	= newSize.width / this._THREERenderer.getSize().height;
         this._THREECamera.updateProjectionMatrix();
     }
 
-    setExpandedTreeLayersDistance( distanceUnits ) {
-        if ( this._uiTreeModel ) {
-            this._uiTreeModel.setExpandedTreeLayersDistance( distanceUnits );
+    setExpandedTreeLayersDistance(distanceUnits) {
+        if (this._uiTreeModel) {
+            this._uiTreeModel.setExpandedTreeLayersDistance(distanceUnits);
         }
     }
 
-    setExpandedTreeLayersVisibleRange( maxVisibleLayer ) {
-        if ( this._uiTreeModel ) {
-            this._uiTreeModel.setExpandedTreeLayersVisibleRange( maxVisibleLayer );
+    setExpandedTreeLayersVisibleRange(maxVisibleLayer) {
+        if (this._uiTreeModel) {
+            this._uiTreeModel.setExpandedTreeLayersVisibleRange(maxVisibleLayer);
         }
     }
 
@@ -2253,7 +2256,7 @@ class ORG3DScene {
     //  DELEGATES
     //------------------------------------------------------------------------------------------------------------------
 
-    locationUpdate( location, locationName, elevation) {
+    locationUpdate(location, locationName, elevation) {
 
         if (locationName) {
             this._lastLocationName = locationName;
@@ -2264,7 +2267,7 @@ class ORG3DScene {
         if (this.flagShowLocation) {
             if (!this._locationMarker) {
                 const floorPosition = this._calculateFloorPosition();
-                this._locationMarker = new ORG3DLocationMarker( floorPosition, this._lastLocationName, this._THREEScene);
+                this._locationMarker = new ORG3DLocationMarker(floorPosition, this._lastLocationName, this._THREEScene);
             } else {
                 this._locationMarker.updateDescriptor(this._lastLocationName);
             }
@@ -2283,7 +2286,7 @@ class ORG3DScene {
         const rendererCanvasHeight = this._canvasDomElement.clientHeight;
 
         this._THREEScene = new THREE.Scene();
-        //this._THREEScene.add( this._THREEDeviceAndScreenGroup );
+        //this._THREEScene.add(this._THREEDeviceAndScreenGroup);
 
         this._THREECamera = new THREE.PerspectiveCamera(65, (rendererCanvasWidth / rendererCanvasHeight), 0.001, 10000);
         this._THREERenderer = new THREE.WebGLRenderer({antialias: true /*, alpha:true (if transparency wanted)*/});
@@ -2292,11 +2295,11 @@ class ORG3DScene {
         //_THREERenderer.domElement.style.zIndex = 0;
         //_THREERenderer.setClearColor(0x000000);
 
-        this._THREERenderer.setSize( rendererCanvasWidth, rendererCanvasHeight);
-        this._canvasDomElement.appendChild( this._THREERenderer.domElement);
+        this._THREERenderer.setSize(rendererCanvasWidth, rendererCanvasHeight);
+        this._canvasDomElement.appendChild(this._THREERenderer.domElement);
         this._rendererDOMElement = this._THREERenderer.domElement; // the DOM element for the renderer
 
-        this._THREEOrbitControls = new THREE.OrbitControls( this._THREECamera, this._THREERenderer.domElement);//this._canvasDomElement);
+        this._THREEOrbitControls = new THREE.OrbitControls(this._THREECamera, this._THREERenderer.domElement);//this._canvasDomElement);
         this._keyboardState = new KeyboardState();
 
         if (showFloor) {
@@ -2305,9 +2308,9 @@ class ORG3DScene {
 
         this._createLights();
 
-        this._THREECamera.position.set( 0, kORGDevicePositionY, kORGCameraPositionZ);
-        this._THREEOrbitControls.target.set( 0, kORGDevicePositionY, 0 );
-        //this._THREECamera.lookAt( new THREE.Vector3( 0, kORGDevicePositionY, 0 )); // not working, must use this._THREEOrbitControls.target
+        this._THREECamera.position.set(0, kORGDevicePositionY, kORGCameraPositionZ);
+        this._THREEOrbitControls.target.set(0, kORGDevicePositionY, 0);
+        //this._THREECamera.lookAt(new THREE.Vector3(0, kORGDevicePositionY, 0)); // not working, must use this._THREEOrbitControls.target
 
         this._threeClock = new THREE.Clock();
 
@@ -2315,12 +2318,12 @@ class ORG3DScene {
         this._contextMenuManager = new ORGContextMenuManager(this, '#threejs-canvas');
 
         // Create a mouse event listener and associate delegates
-        this._mouseListener = new ORGMouseListener( this._rendererDOMElement);
-        this._mouseListener.addDelegate( this._contextMenuManager);
+        this._mouseListener = new ORGMouseListener(this._rendererDOMElement);
+        this._mouseListener.addDelegate(this._contextMenuManager);
         this._mouseListener.enable();
 
         this._render();
-        //ORG.WindowResize( this._THREERenderer, this._THREECamera, this._canvasDomElement);
+        //ORG.WindowResize(this._THREERenderer, this._THREECamera, this._canvasDomElement);
 
         this.createRaycasterForScene();
     }
@@ -2333,7 +2336,7 @@ class ORG3DScene {
         }
     }
 
-    _createFloor( threeScene ) {
+    _createFloor(threeScene) {
         const floorSize = 1000;
         const tileSize = 100;
         return new ORG3DSceneFloor(floorSize, tileSize, true, threeScene, kORGFloorPositionY);
@@ -2365,18 +2368,18 @@ class ORG3DScene {
         light.position.set(-500,500,-500);
         this._THREEScene.add(light);
 
-        //light = new THREE.DirectionalLight( 0xaaaaaa, 0.5  );
-        //light.position.copy(  new THREE.Vector3(0.0, 1.0, -1.0));
-        //this._THREEScene.add( light );
+        //light = new THREE.DirectionalLight(0xaaaaaa, 0.5 );
+        //light.position.copy( new THREE.Vector3(0.0, 1.0, -1.0));
+        //this._THREEScene.add(light);
         //
-        //light = new THREE.DirectionalLight( 0xaaaaaa, 0.5  );
-        //light.position.copy(  new THREE.Vector3(1.0, 1.0, 1.0));
-        //this._THREEScene.add( light );
+        //light = new THREE.DirectionalLight(0xaaaaaa, 0.5 );
+        //light.position.copy( new THREE.Vector3(1.0, 1.0, 1.0));
+        //this._THREEScene.add(light);
 
-        //light = new THREE.HemisphereLight(   );
-        //this._THREEScene.add( light );
+        //light = new THREE.HemisphereLight( );
+        //this._THREEScene.add(light);
         //
-        //light = new THREE.AmbientLight( 0xffffff, 0.9);
+        //light = new THREE.AmbientLight(0xffffff, 0.9);
         //this._THREEScene.add(light);
     }
 
@@ -2392,7 +2395,7 @@ class ORG3DScene {
     }
 
     _adjustLocationMarkerPosition(deviceBoundingBox) {
-        //if ( deviceBoundingBox && this._locationMarker) {
+        //if (deviceBoundingBox && this._locationMarker) {
         //    this._locationMarker.setPositionY(deviceBoundingBox.min.y - 50);
         //}
     }
@@ -2415,8 +2418,8 @@ class ORG3DScene {
 
         const _this = this;
 
-        requestAnimationFrame( () => {
-            _this._THREERenderer.render( _this._THREEScene, _this._THREECamera);
+        requestAnimationFrame(() => {
+            _this._THREERenderer.render(_this._THREEScene, _this._THREECamera);
             _this._THREEOrbitControls.update();
             _this._updateScene();
             TWEEN.update();
@@ -2436,87 +2439,87 @@ class ORG3DScene {
         if (this._beaconTransformControl) {
             this._beaconTransformControl.update(); // important to update the controls size while changing POV
         }
-        if ( ORG.systemInfoManager ) {
+        if (ORG.systemInfoManager) {
             ORG.systemInfoManager.update();
         }
 /*
         _keyboardState.update();
 
         // Expand/Collapse UI
-        if ( _keyboardState.down("E") ) {
+        if (_keyboardState.down("E")) {
             ORG.scene.expandCollapse();
         }
-        else if ( _keyboardState.down("F") ) {
+        else if (_keyboardState.down("F")) {
             checkButtonShowFloor.click();
             ORG.scene.setShowFloor(checkButtonShowFloor.is(':checked'));
         }
-        else if ( _keyboardState.down("P") ) {
+        else if (_keyboardState.down("P")) {
             checkButtonShowPrivate.click();
             ORG.scene.setShowPrivate(checkButtonShowPrivate.is(':checked'));
         }
-        else if ( _keyboardState.down("L") ) {
+        else if (_keyboardState.down("L")) {
             checkButtonLiveScreen.click();
             ORG.scene.setLiveScreen(checkButtonLiveScreen.is(':checked'));
          }
-        else if ( _keyboardState.down("T") ) {
+        else if (_keyboardState.down("T")) {
             checkButtonShowTooltips.click();
             ORG.scene.setShowTooltips(checkButtonShowTooltips.is(':checked'));
          }
 */
         // rotate left/right/up/down
 
-        //if ( keyboard.down("left") ) {
-        //    //iPhone5Object.translateX( -50 );
-        //    threeScreenPlane.translateX( -50 );
+        //if (keyboard.down("left")) {
+        //    //iPhone5Object.translateX(-50);
+        //    threeScreenPlane.translateX(-50);
         //}
-        //if ( keyboard.down("right") ) {
-        //    //iPhone5Object.translateX(  50 );
-        //    threeScreenPlane.translateX( 50 );
+        //if (keyboard.down("right")) {
+        //    //iPhone5Object.translateX( 50);
+        //    threeScreenPlane.translateX(50);
         //}
-        //if ( keyboard.pressed("up") ) {
-        //    //iPhone5Object.translateZ( -50 );
-        //    threeScreenPlane.translateZ( -50 );
+        //if (keyboard.pressed("up")) {
+        //    //iPhone5Object.translateZ(-50);
+        //    threeScreenPlane.translateZ(-50);
         //}
-        //if ( keyboard.pressed("down") ) {
-        //    //iPhone5Object.translateZ(  50 );
-        //    threeScreenPlane.translateZ( 50 );
+        //if (keyboard.pressed("down")) {
+        //    //iPhone5Object.translateZ( 50);
+        //    threeScreenPlane.translateZ(50);
         //}
 
         //var rotation_matrix = new THREE.Matrix4().identity();
         /*
-        if ( _keyboardState.pressed("A") ) {
-            //iPhone5Object.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+        if (_keyboardState.pressed("A")) {
+            //iPhone5Object.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
             if (!!threeScreenPlane) {
-                threeScreenPlane.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+                threeScreenPlane.rotateOnAxis(new THREE.Vector3(0,1,0), rotateAngle);
             }
             deviceMotionChanged = true;
         }
-        if ( keyboard.pressed("D") ) {
-            //iPhone5Object.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-            threeScreenPlane.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+        if (keyboard.pressed("D")) {
+            //iPhone5Object.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
+            threeScreenPlane.rotateOnAxis(new THREE.Vector3(0,1,0), -rotateAngle);
             deviceMotionChanged = true;
         }
-        if ( keyboard.pressed("R") ) {
-            //iPhone5Object.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-            threeScreenPlane.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+        if (keyboard.pressed("R")) {
+            //iPhone5Object.rotateOnAxis(new THREE.Vector3(1,0,0), rotateAngle);
+            threeScreenPlane.rotateOnAxis(new THREE.Vector3(1,0,0), rotateAngle);
             deviceMotionChanged = true;
         }
-        if ( keyboard.pressed("F") ) {
-            //iPhone5Object.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
-            threeScreenPlane.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+        if (keyboard.pressed("F")) {
+            //iPhone5Object.rotateOnAxis(new THREE.Vector3(1,0,0), -rotateAngle);
+            threeScreenPlane.rotateOnAxis(new THREE.Vector3(1,0,0), -rotateAngle);
             deviceMotionChanged = true;
         }
-        if ( keyboard.pressed("Q") ) {
-            //iPhone5Object.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle);
-            threeScreenPlane.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle);
+        if (keyboard.pressed("Q")) {
+            //iPhone5Object.rotateOnAxis(new THREE.Vector3(0,0,1), rotateAngle);
+            threeScreenPlane.rotateOnAxis(new THREE.Vector3(0,0,1), rotateAngle);
             deviceMotionChanged = true;
         }
-        if ( keyboard.pressed("W") ) {
-            //iPhone5Object.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle);
-            threeScreenPlane.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle);
+        if (keyboard.pressed("W")) {
+            //iPhone5Object.rotateOnAxis(new THREE.Vector3(0,0,1), -rotateAngle);
+            threeScreenPlane.rotateOnAxis(new THREE.Vector3(0,0,1), -rotateAngle);
             deviceMotionChanged = true;
         }
-        if ( keyboard.pressed("Z") ) {
+        if (keyboard.pressed("Z")) {
             //iPhone5Object.position.set(0,0,0);
             //iPhone5Object.rotation.set(0,0,0);
             threeScreenPlane.position.set(0,0,0);
@@ -2543,7 +2546,7 @@ class ORG3DScene {
 
         //var timeOffset = uniforms.time.value + attributes.customOffset.value[ v ];
         //particleGeometry.vertices[v] = position(timeOffset);
-        //iPhone5Object.setPosition( position(timeOffset));
+        //iPhone5Object.setPosition(position(timeOffset));
     }
 
     /**
@@ -2564,7 +2567,7 @@ class ORG3DScene {
                         // Translate device to 0
                         var b = new THREE.Box3().setFromObject(this._device3DModel.THREEObject);
                         var position = b.getCenter();
-                        this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
+                        this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation(-position.x, -position.y, -position.z));
 
                         // reset rotation of device
                         var deviceMatrix = new THREE.Matrix4();
@@ -2579,7 +2582,7 @@ class ORG3DScene {
                         this._device3DModel.THREEObject.applyMatrix(screenMatrix);
 
                         // translate device back to original pos
-                        this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, position.z ) );
+                        this._device3DModel.THREEObject.applyMatrix(new THREE.Matrix4().makeTranslation(position.x, position.y, position.z));
 
                         // Broadscast Attitude
                         if (ORG.deviceController) {
@@ -2818,27 +2821,27 @@ class ORGContextMenuManager {
                 ORGConnectionActions.setOrientation(menuOptionKey);
             } break;
             case ORGActions.TAP : {
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.LONG_PRESS : {
                 parameters.duration = 0.5;
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_LEFT : {
                 parameters.direction = "left";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_RIGHT : {
                 parameters.direction = "right";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_UP : {
                 parameters.direction = "up";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_DOWN : {
                 parameters.direction = "down";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.LOOK_AT : {
                 scene.lookAtObject( threeObj );
@@ -2998,7 +3001,7 @@ class ORGUITreeContextMenuManager {
             } break;
             case ORGActions.SHOW_CLASS_HIERARCHY: {
                 if (this._node && (typeof this._node.representedNode.class !== undefined)) {
-                    ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.representedNode.class));
+                    ORGConnectionActions.getElementClassHierarchy(this._node.representedNode.class);
                 }
             } break;
         }
@@ -4210,30 +4213,13 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
      */
     constructor(ip, port, delegate) {
         super(ip,port);
-        this.session = null;
-        this.webSocketDelegate = delegate;
-        this._webSocket = null;// ORGWebSocket();
+        this._webSocketDelegate = delegate;
     }
 
-    get isConnected() {
-        return this._webSocket.isConnected
+    get webSocketDelegate() {
+        return this._webSocketDelegate;
     }
 
-    get hasContinuousUpdate() {
-        return false;
-    }
-
-    closeSession() {
-        this._webSocket.close();
-    }
-
-    sendRequest(request) {
-        this._webSocket.send(request);
-    }
-
-    sendMessage(message) {
-        this._webSocket.send(message);
-    }
 }
 /**
  * Created by jongabilondo on 26/02/2017.
@@ -4248,23 +4234,33 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
 
     constructor(ip, port, delegate) {
         super(ip, port, delegate);
-        this._webSocket = new ORGWebSocket();
-        this._secondWebSocket = new ORGWebSocket();
+        this._webSocket = null; // For async await calls
+        this._secondWebSocket = null; // For async non await calls. Delegate processes responses.
     }
 
     get type() {
         return "ORG";
     }
+
     get hasContinuousUpdate() {
         return true;
+    }
+
+    get isConnected() {
+        if (!this._webSocket || !this._webSocket.isConnected) {
+            return false
+        }
+        if (!this._secondWebSocket || !this._secondWebSocket.isConnected) {
+            return false
+        }
+        return true
     }
 
     openSession() {
         return new Promise( async (resolve, reject) => {
             try {
-                this._webSocket = await this._openMainSocket();
-                this._secondWebSocket = await this._openSecondSocket();
-                this._secondWebSocket.processMessagesWithDelegate(this.webSocketDelegate); // To work in a full duplex way.
+                this._webSocket = await this._openMainSocket()
+                this._secondWebSocket = await this._openSecondSocket()
                 resolve()
             } catch (err) {
                 reject(err)
@@ -4272,51 +4268,30 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         })
     }
 
-   /* requestDeviceInfo() {
-        this.webSocket.send(ORGMessageBuilder.deviceInfo())
+    closeSession() {
+        if (this._webSocket) {
+            this._webSocket.close()
+        }
+        if (this._secondWebSocket) {
+            this._secondWebSocket.close()
+        }
     }
-
-    requestAppInfo() {
-        this.webSocket.send(ORGMessageBuilder.appInfo())
-    }*/
 
     requestScreenshot() {
         this._secondWebSocket.send(ORGMessageBuilder.takeScreenshot())
     }
 
-    //requestElementTree(parameters) {
-    //    this.sendRequest(ORGMessageBuilder.elementTree(parameters))
-    //}
-
     requestSystemInfo() {
-        this.sendRequest(ORGMessageBuilder.systemInfo( ))
+        this._secondWebSocket.send(ORGMessageBuilder.systemInfo( ))
     }
 
     sendLocationUpdate(lat, lng) {
-        this.sendRequest(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null))
+        this._secondWebSocket.send(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null))
     }
-
-    /*async refreshUITree() {
-
-        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
-
-        const requestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true }
-        try {
-            let elementTree = await this.getElementTree(requestFlags);
-            ORG.UIJSONTreeManager.update(elementTree, ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO);
-            if (ORG.scene.expanding || ORG.scene.isExpanded) {
-                ORG.scene.updateUITreeModel(elementTree);
-            }
-            bootbox.hideAll();
-        } catch (err) {
-            console.debug("Error getting ui tree.");
-            bootbox.hideAll();
-        }
-    }*/
 
     getDeviceOrientation() {
         return new Promise(async (resolve, reject) => {
-            resolve(ORG.device.orientation);
+            resolve(ORG.device.orientation)
         })
     }
 
@@ -4368,11 +4343,26 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         return new Promise(async (resolve, reject) => {
             try {
                 let response = await this._webSocket.sendAsync(ORGMessageBuilder.elementTree(parameters))
+                resolve(response.data)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
+
+    getClassHierarchy(className) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let response = await this._webSocket.sendAsync(ORGMessageBuilder.classHierarchy(className))
                 resolve(response)
             } catch (err) {
                 reject(err)
             }
         })
+    }
+
+    send(message) {
+        this._webSocket.send(message);
     }
 
     _openMainSocket() {
@@ -4397,7 +4387,7 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
             try {
                 this._secondWebSocket = new ORGWebSocket();
                 const url = "ws://" + this.IPandPort + "/second";
-                let openResult = await this._secondWebSocket.open(url, this.webSocketDelegate);
+                let openResult = await this._secondWebSocket.open(url, this.webSocketDelegate); // Process messages in delegate. Do not use async calls with "await". Not used in a REST async style.
                 if (!!openResult) {
                     resolve(this._secondWebSocket)
                 } else {
@@ -4499,47 +4489,16 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             actionType: 'wda-session-closed'
         });
 
-       /* DOESNT WORK !
-       const endpointURL = this.RESTPrefix + "";
-        this.xhr.open("DELETE", endpointURL, true);
-        this.xhr.onreadystatechange = () => {
-            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                this._sessionInfo = null;
-            }
-        }
-        this.xhr.send();*/
+        /* DOESNT WORK !
+         const endpointURL = this.RESTPrefix + "";
+         this.xhr.open("DELETE", endpointURL, true);
+         this.xhr.onreadystatechange = () => {
+         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+         this._sessionInfo = null;
+         }
+         }
+         this.xhr.send();*/
     }
-
-    /*async refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
-
-        try {
-            let controller = ORG.deviceController;
-            let orientation = await controller.getDeviceOrientation();
-            let tree = await controller.getElementTree();
-            let screenshot = await controller.getScreenshot();
-
-            ORG.dispatcher.dispatch({
-                actionType: 'ui-json-tree-update',
-                tree: tree.children,
-                treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
-            });
-            if (orientation !== ORG.device.orientation) {
-                ORG.dispatcher.dispatch({
-                    actionType: 'device-orientation-changed',
-                    orientation: orientation
-                });
-            }
-            ORG.dispatcher.dispatch({
-                actionType: 'screenshot-update',
-                image: screenshot
-            });
-            bootbox.hideAll();
-        } catch(err) {
-            bootbox.hideAll();
-            this._handleError(err);
-        }
-    }*/
 
     getDeviceInformation() {
         return new Promise((resolve, reject) => {
@@ -5452,17 +5411,6 @@ class ORGWebSocketDelegate {
 				console.debug('Unknown response from Device.');
 			}
 		}
-		/*if ( messageJSON.request == ORGRequest.DeviceInfo) {
-			this._processResponseDeviceInfo(messageJSON.data);
-		} else if ( messageJSON.request == ORGRequest.AppInfo) {
-            this._processResponseAppInfo(messageJSON);
-		} else if ( messageJSON.request == ORGRequest.Screenshot) {
-            this._processReportScreenshot( messageJSON);
-        } else if ( messageJSON.request == ORGRequest.ElementTree) {
-            this._processReportElementTree(messageJSON);
-        } else if ( messageJSON.request == ORGRequest.SystemInfo) {
-            this._processReportSystemInfo(messageJSON);
-		}*/
 	}
 
 	/**
@@ -5598,7 +5546,6 @@ class ORGWebSocketDelegate {
             }
         }
     }
-
 
     _createDeviceScreenWithSnapshot(device) {
         ORG.scene.createDeviceScreen(device.displaySize.width, device.displaySize.height, 0);
@@ -6813,13 +6760,9 @@ ORG.UI.sliderTreeLayersRange = $('#ex2');
 ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
-ORG.UI.refreshUITree.click(function () {
-    if (ORG.deviceController.type === "WDA") {
-        ORGConnectionActions.refreshUITree();
-    } else {
-        ORG.deviceController.refreshUITree();
-    }
-});
+ORG.UI.refreshUITree.click( () => {
+    ORGConnectionActions.refreshUITree()
+})
 
 // Sliders
 ORG.UI.sliderTreeLayersDistance.bootstrapSlider();
@@ -6940,10 +6883,10 @@ ORG.UI.buttonExpand.click(function () {
     }
     if (ORG.scene.isExpanded) {
         ORG.UI.buttonExpand.text("Expand");
-        ORG.scene.collapse();
+        ORGConnectionActions.collapseScreenUI();
     } else {
         ORG.UI.buttonExpand.text("Collapse");
-        ORG.scene.expand();
+        ORGConnectionActions.extrudeScreenUI();
     }
 });
 
@@ -7958,7 +7901,10 @@ class ORGConnectionActions {
 
             bootbox.hideAll();
 
-            controller.requestScreenshot(); // start getting screenshots
+            // 7. Start getting screenshots
+            if (controller.hasContinuousUpdate && ORG.scene.flagContinuousScreenshot) {
+                controller.requestScreenshot();
+            }
 
         } catch(err) {
             bootbox.hideAll();
@@ -7970,13 +7916,26 @@ class ORGConnectionActions {
         bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
         try {
             let controller = ORG.deviceController;
+
+            // 1. Orientation
             let orientation = await controller.getDeviceOrientation();
-            let tree = await controller.getElementTree();
+
+            // 2. Tree
+            let treeRequestFlags = null;
+            switch (ORG.deviceController.type) {
+                case "ORG" : treeRequestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true }; break;
+            }
+            let treeResponse = await controller.getElementTree(treeRequestFlags);
+            let tree = treeResponse;
+            switch (ORG.deviceController.type) {
+                case "WDA" : tree = treeResponse.children; break; // in WDA mode we need the children array
+            }
+            // 3. Screenshot
             let screenshot = await controller.getScreenshot();
 
             ORG.dispatcher.dispatch({
                 actionType: 'ui-json-tree-update',
-                tree: tree.children,
+                tree: tree,
                 treeType: (ORG.deviceController.type === "WDA") ?ORGUIJSONTreeManager.TREE_TYPE_WDA :ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO
             });
             if (orientation !== ORG.device.orientation) {
@@ -8093,8 +8052,36 @@ class ORGConnectionActions {
         ORG.scene.setDeviceOrientation2(ORG.device.orientation);
     }
 
-    static getElementClassHierarchy(element) {
-        ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(element.className));
+    static async getElementClassHierarchy(className) {
+        if (ORG.deviceController.type === "ORG") {
+            try {
+                let classHierarchy = await ORG.deviceController.getClassHierarchy(className);
+                ORG.UIJSONTreeManager.showClassHierarchy(classHierarchy.data);
+            } catch(err) {
+                this._handleError(err);
+            }
+        }
+    }
+
+    static async extrudeScreenUI() {
+        bootbox.dialog({message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>Expanding UI elements...</div>'}) // Progress alert
+        try {
+            let tree = await ORG.deviceController.getElementTree({
+                "status-bar": true,
+                "keyboard": true,
+                "alert": true,
+                "normal": true
+            })
+            ORG.UIJSONTreeManager.update(tree, ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO)
+            ORG.scene.updateUITreeModel(tree)
+        } catch (err) {
+
+        }
+        bootbox.hideAll()
+    }
+
+    static async collapseScreenUI() {
+        ORG.scene.collapse();
     }
 
     static _handleError(err) {

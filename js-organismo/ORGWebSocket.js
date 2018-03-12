@@ -38,8 +38,8 @@ class ORGWebSocket {
             const url = inServerURL;
             this._ws = new WebSocket(url);
             this._ws.onopen = function(event) {
-                if (this._delegate) {
-                    this.processMessagesWithDelegate(this._delegate);
+                if (_this._delegate) {
+                    _this.processMessagesWithDelegate(_this._delegate);
                 }
                 resolve(event)
             }

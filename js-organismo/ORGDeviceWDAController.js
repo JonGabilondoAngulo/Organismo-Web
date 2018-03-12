@@ -64,47 +64,16 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             actionType: 'wda-session-closed'
         });
 
-       /* DOESNT WORK !
-       const endpointURL = this.RESTPrefix + "";
-        this.xhr.open("DELETE", endpointURL, true);
-        this.xhr.onreadystatechange = () => {
-            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                this._sessionInfo = null;
-            }
-        }
-        this.xhr.send();*/
+        /* DOESNT WORK !
+         const endpointURL = this.RESTPrefix + "";
+         this.xhr.open("DELETE", endpointURL, true);
+         this.xhr.onreadystatechange = () => {
+         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+         this._sessionInfo = null;
+         }
+         }
+         this.xhr.send();*/
     }
-
-    /*async refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
-
-        try {
-            let controller = ORG.deviceController;
-            let orientation = await controller.getDeviceOrientation();
-            let tree = await controller.getElementTree();
-            let screenshot = await controller.getScreenshot();
-
-            ORG.dispatcher.dispatch({
-                actionType: 'ui-json-tree-update',
-                tree: tree.children,
-                treeType: ORGUIJSONTreeManager.TREE_TYPE_WDA
-            });
-            if (orientation !== ORG.device.orientation) {
-                ORG.dispatcher.dispatch({
-                    actionType: 'device-orientation-changed',
-                    orientation: orientation
-                });
-            }
-            ORG.dispatcher.dispatch({
-                actionType: 'screenshot-update',
-                image: screenshot
-            });
-            bootbox.hideAll();
-        } catch(err) {
-            bootbox.hideAll();
-            this._handleError(err);
-        }
-    }*/
 
     getDeviceInformation() {
         return new Promise((resolve, reject) => {

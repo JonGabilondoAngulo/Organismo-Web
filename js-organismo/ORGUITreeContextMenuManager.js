@@ -65,7 +65,7 @@ class ORGUITreeContextMenuManager {
             } break;
             case ORGActions.SHOW_CLASS_HIERARCHY: {
                 if (this._node && (typeof this._node.representedNode.class !== undefined)) {
-                    ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(this._node.representedNode.class));
+                    ORGConnectionActions.getElementClassHierarchy(this._node.representedNode.class);
                 }
             } break;
         }

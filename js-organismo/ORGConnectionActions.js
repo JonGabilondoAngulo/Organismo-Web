@@ -103,13 +103,26 @@ class ORGConnectionActions {
         bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
         try {
             let controller = ORG.deviceController;
+
+            // 1. Orientation
             let orientation = await controller.getDeviceOrientation();
-            let tree = await controller.getElementTree();
+
+            // 2. Tree
+            let treeRequestFlags = null;
+            switch (ORG.deviceController.type) {
+                case "ORG" : treeRequestFlags = { "status-bar": true, "keyboard": true, "alert": true, "normal": true }; break;
+            }
+            let treeResponse = await controller.getElementTree(treeRequestFlags);
+            let tree = treeResponse;
+            switch (ORG.deviceController.type) {
+                case "WDA" : tree = treeResponse.children; break; // in WDA mode we need the children array
+            }
+            // 3. Screenshot
             let screenshot = await controller.getScreenshot();
 
             ORG.dispatcher.dispatch({
                 actionType: 'ui-json-tree-update',
-                tree: tree.children,
+                tree: tree,
                 treeType: (ORG.deviceController.type === "WDA") ?ORGUIJSONTreeManager.TREE_TYPE_WDA :ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO
             });
             if (orientation !== ORG.device.orientation) {
@@ -226,8 +239,36 @@ class ORGConnectionActions {
         ORG.scene.setDeviceOrientation2(ORG.device.orientation);
     }
 
-    static getElementClassHierarchy(element) {
-        ORG.deviceController.sendRequest(ORGMessageBuilder.classHierarchy(element.className));
+    static async getElementClassHierarchy(className) {
+        if (ORG.deviceController.type === "ORG") {
+            try {
+                let classHierarchy = await ORG.deviceController.getClassHierarchy(className);
+                ORG.UIJSONTreeManager.showClassHierarchy(classHierarchy.data);
+            } catch(err) {
+                this._handleError(err);
+            }
+        }
+    }
+
+    static async extrudeScreenUI() {
+        bootbox.dialog({message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>Expanding UI elements...</div>'}) // Progress alert
+        try {
+            let tree = await ORG.deviceController.getElementTree({
+                "status-bar": true,
+                "keyboard": true,
+                "alert": true,
+                "normal": true
+            })
+            ORG.UIJSONTreeManager.update(tree, ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO)
+            ORG.scene.updateUITreeModel(tree)
+        } catch (err) {
+
+        }
+        bootbox.hideAll()
+    }
+
+    static async collapseScreenUI() {
+        ORG.scene.collapse();
     }
 
     static _handleError(err) {

@@ -158,17 +158,6 @@ class ORGWebSocketDelegate {
 				console.debug('Unknown response from Device.');
 			}
 		}
-		/*if ( messageJSON.request == ORGRequest.DeviceInfo) {
-			this._processResponseDeviceInfo(messageJSON.data);
-		} else if ( messageJSON.request == ORGRequest.AppInfo) {
-            this._processResponseAppInfo(messageJSON);
-		} else if ( messageJSON.request == ORGRequest.Screenshot) {
-            this._processReportScreenshot( messageJSON);
-        } else if ( messageJSON.request == ORGRequest.ElementTree) {
-            this._processReportElementTree(messageJSON);
-        } else if ( messageJSON.request == ORGRequest.SystemInfo) {
-            this._processReportSystemInfo(messageJSON);
-		}*/
 	}
 
 	/**
@@ -304,7 +293,6 @@ class ORGWebSocketDelegate {
             }
         }
     }
-
 
     _createDeviceScreenWithSnapshot(device) {
         ORG.scene.createDeviceScreen(device.displaySize.width, device.displaySize.height, 0);

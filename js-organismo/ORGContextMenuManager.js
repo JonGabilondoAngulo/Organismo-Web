@@ -109,27 +109,27 @@ class ORGContextMenuManager {
                 ORGConnectionActions.setOrientation(menuOptionKey);
             } break;
             case ORGActions.TAP : {
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.LONG_PRESS : {
                 parameters.duration = 0.5;
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_LEFT : {
                 parameters.direction = "left";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_RIGHT : {
                 parameters.direction = "right";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_UP : {
                 parameters.direction = "up";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.SWIPE_DOWN : {
                 parameters.direction = "down";
-                ORG.deviceController.sendRequest(ORGMessageBuilder.gesture(menuOptionKey, parameters));
+                ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
             } break;
             case ORGActions.LOOK_AT : {
                 scene.lookAtObject( threeObj );

@@ -15,28 +15,11 @@ class ORGWebSocketDeviceController extends ORGDeviceBaseController {
      */
     constructor(ip, port, delegate) {
         super(ip,port);
-        this.session = null;
-        this.webSocketDelegate = delegate;
-        this._webSocket = null;// ORGWebSocket();
+        this._webSocketDelegate = delegate;
     }
 
-    get isConnected() {
-        return this._webSocket.isConnected
+    get webSocketDelegate() {
+        return this._webSocketDelegate;
     }
 
-    get hasContinuousUpdate() {
-        return false;
-    }
-
-    closeSession() {
-        this._webSocket.close();
-    }
-
-    sendRequest(request) {
-        this._webSocket.send(request);
-    }
-
-    sendMessage(message) {
-        this._webSocket.send(message);
-    }
 }
