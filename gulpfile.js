@@ -27,6 +27,7 @@ const sources = [
     'js-organismo/ORGLocationProvider.js',
     'js-organismo/ORGMap.js',
     'js-organismo/ORGDevice.js',
+    'js-organismo/ORG3DDevice.js',
     'js-organismo/ORGBeacon.js',
     'js-organismo/ORG3DBeaconTransformControl.js',
     'js-organismo/ORG3DDeviceTransformControl.js',
@@ -69,7 +70,9 @@ const sources = [
     'js-organismo/ORGUIJSONTreeManager.js',
     'js-organismo/ORGUIJSONWDATreeAdaptor.js',
     'js-organismo/ORGUIJSONOrganismoTreeAdaptor.js',
-    'js-organismo/ORGConnectionActions.js',
+    'js-organismo/ORGActionsCenter.js',
+    'js-organismo/ORG3DNetPoint.js',
+    'js-organismo/ORG3DNetPointDescriptor.js',
     'js-third-party/dist.js',
     'js-third-party/epoly.js'
 ];

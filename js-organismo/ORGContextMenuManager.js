@@ -91,22 +91,28 @@ class ORGContextMenuManager {
 
         switch (menuOptionKey) {
             case ORGActions.PRESS_HOME : {
-                ORGConnectionActions.pressHome();
+                ORGActionsCenter.pressHome();
             } break;
             case ORGActions.LOCK_DEVICE : {
-                ORGConnectionActions.lockDevice();
+                ORGActionsCenter.lockDevice();
             } break;
             case ORGActions.UNLOCK_DEVICE : {
-                ORGConnectionActions.unlockDevice();
+                ORGActionsCenter.unlockDevice();
             } break;
             case ORGActions.REFRESH_SCREEN : {
-                ORGConnectionActions.refreshScreen();
+                ORGActionsCenter.refreshScreen();
+            } break;
+            case ORGActions.TRANSLATE_DEVICE : {
+                ORGActionsCenter.translateDevice();
+            } break;
+            case ORGActions.ROTATE_DEVICE : {
+                ORGActionsCenter.rotateDevice();
             } break;
             case ORGDevice.ORIENTATION_PORTRAIT:
             case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN:
             case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
             case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
-                ORGConnectionActions.setOrientation(menuOptionKey);
+                ORGActionsCenter.setOrientation(menuOptionKey);
             } break;
             case ORGActions.TAP : {
                 ORG.deviceController.send(ORGMessageBuilder.gesture(menuOptionKey, parameters));
@@ -158,6 +164,9 @@ class ORGContextMenuManager {
             case ORGActions.SCREEN_CLOSEUP : {
                 scene.deviceScreenCloseup();
             } break;
+            case ORGActions.LOOK_AT_DEVICE : {
+                ORGActionsCenter.lookAtDevice();
+            } break;
         }
     }
 
@@ -170,10 +179,10 @@ class ORGContextMenuManager {
             items[ORGActions.SWIPE] = {
                 name: "Swipe",
                 items: {
-                    [ORG.Device.SWIPE_LEFT]: {name: "Left"},
-                    [ORG.Device.SWIPE_RIGHT]: {name: "Right"},
-                    [ORG.Device.SWIPE_UP]: {name: "Up"},
-                    [ORG.Device.SWIPE_DOWN]: {name: "Down"},
+                    [ORGActions.SWIPE_LEFT]: {name: "Left"},
+                    [ORGActions.SWIPE_RIGHT]: {name: "Right"},
+                    [ORGActions.SWIPE_UP]: {name: "Up"},
+                    [ORGActions.SWIPE_DOWN]: {name: "Down"},
                 }
             }
         }
@@ -200,8 +209,12 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-look"] = { "type": "cm_separator" };
             }
+            items[ORGActions.TRANSLATE_DEVICE] = {name: "Translate Device"};
+            items[ORGActions.ROTATE_DEVICE] = {name: "Rotate Device"};
+/*
             items[ORGActions.LOOK_AT] = {name: "Look at"};
             items[ORGActions.LOOK_FRONT_AT] = {name: "Look Front at"};
+*/
         }
 
         if (controller.type === 'WDA') {
@@ -218,7 +231,8 @@ class ORGContextMenuManager {
         return {
             [ORGActions.RESET_CAMERA_POSITION]: {name: "Reset Camera Position"},
             [ORGActions.RESET_DEVICE_POSITION]: {name: "Reset Device Position"},
-            [ORGActions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"}
+            [ORGActions.SCREEN_CLOSEUP]: {name: "Device Screen Closeup"},
+            [ORGActions.LOOK_AT_DEVICE]: {name: "Look At Device"}
         }
     }
 }

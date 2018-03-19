@@ -25,6 +25,19 @@ class ORGDeviceBaseController {
     get hasContinuousUpdate() {
         return false;
     }
+    get hasOrientationUpdate() {
+        return false;
+    }
+    get hasLocationUpdate() {
+        return false;
+    }
+    get hasSystemInfo() {
+        return false;
+    }
+
+    requestSystemInfo() {
+        this._throwError();
+    }
 
     openSession() {
         this._throwError();

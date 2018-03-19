@@ -18,5 +18,5 @@ $(".dropdown-menu a").click(function(){
 });
 
 ORG.UI.connectButton.click(function() {
-    ORGConnectionActions.connect();
+    ORGActionsCenter.connect();
 });

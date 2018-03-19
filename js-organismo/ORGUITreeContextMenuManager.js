@@ -55,7 +55,7 @@ class ORGUITreeContextMenuManager {
             case ORGActions.SWIPE_UP:
             case ORGActions.SWIPE_DOWN:
             {
-                ORGConnectionActions.playGesture(menuOptionKey, this._getElementXPath(this._node));
+                ORGActionsCenter.playGesture(menuOptionKey, this._getElementXPath(this._node));
             } break;
             case ORGActions.LOOK_AT : {
                 alert('Not implemented.');
@@ -64,8 +64,8 @@ class ORGUITreeContextMenuManager {
                 alert('Not implemented.');
             } break;
             case ORGActions.SHOW_CLASS_HIERARCHY: {
-                if (this._node && (typeof this._node.representedNode.class !== undefined)) {
-                    ORGConnectionActions.getElementClassHierarchy(this._node.representedNode.class);
+                if (this._node && this._node.representedNode && (typeof this._node.representedNode.class !== undefined)) {
+                    ORGActionsCenter.getElementClassHierarchy(this._node.representedNode.class);
                 }
             } break;
         }
@@ -95,7 +95,6 @@ class ORGUITreeContextMenuManager {
             items[ORGActions.LOOK_AT] = {name: "Look at"}
             items[ORGActions.LOOK_FRONT_AT] = {name: "Look Front at"}
         }
-
         return items;
     }
 

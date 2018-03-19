@@ -9,9 +9,9 @@ class ORGMessageBuilder {
 
     static deviceInfo() {
         const msg = {
-            type: ORGRequest.Request,
+            type: ORGMessage.REQUEST,
             data: {
-                request: ORGRequest.DeviceInfo
+                request: ORGRequest.DEVICE_INFO
             }
         };
         return JSON.stringify(msg);
@@ -19,9 +19,9 @@ class ORGMessageBuilder {
 
     static systemInfo() {
         const msg = {
-            type: ORGRequest.Request,
+            type: ORGMessage.REQUEST,
             data: {
-                request: ORGRequest.SystemInfo
+                request: ORGRequest.SYSTEM_INFO
             }
         };
         return JSON.stringify(msg);
@@ -29,9 +29,9 @@ class ORGMessageBuilder {
 
     static appInfo() {
         const msg = {
-            type: ORGRequest.Request,
+            type: ORGMessage.REQUEST,
             data: {
-                request: ORGRequest.AppInfo
+                request: ORGRequest.APP_INFO
             }
         };
         return JSON.stringify(msg);
@@ -39,9 +39,31 @@ class ORGMessageBuilder {
 
     static takeScreenshot() {
         const msg = {
-            type: ORGRequest.Request,
+            type: ORGMessage.REQUEST,
             data: {
-                request: ORGRequest.Screenshot
+                request: ORGRequest.SCREENSHOT
+            }
+        };
+        return JSON.stringify(msg);
+    }
+
+    static requestOrientationUpdates(enable) {
+        const msg = {
+            type: ORGMessage.REQUEST,
+            data: {
+                request: ORGRequest.ORIENTATION_UPDATES,
+                parameters: {'enable': enable}
+            }
+        };
+        return JSON.stringify(msg);
+    }
+
+    static requestLocationUpdates(enable) {
+        const msg = {
+            type: ORGMessage.REQUEST,
+            data: {
+                request: ORGRequest.LOCATION_UPDATES,
+                parameters: {'enable': enable}
             }
         };
         return JSON.stringify(msg);
@@ -49,9 +71,9 @@ class ORGMessageBuilder {
 
     static elementTree(parameters) {
         const msg = {
-            type: ORGRequest.Request,
+            type: ORGMessage.REQUEST,
             data: {
-                request: ORGRequest.ElementTree,
+                request: ORGRequest.ELEMENT_TREE,
                 parameters: parameters
             }
         };
@@ -60,7 +82,7 @@ class ORGMessageBuilder {
 
     static gesture(gesture, parameters) {
         const msg = {
-            type: ORGRequest.Request,
+            type: ORGMessage.REQUEST,
             data: {
                 request: gesture,
                 parameters:parameters
@@ -71,7 +93,7 @@ class ORGMessageBuilder {
 
     static locationUpdate(location, elevation) {
         let msg = {
-            type: ORGRequest.Update,
+            type: ORGMessage.UPDATE,
             data: {
             }
         };
@@ -86,7 +108,7 @@ class ORGMessageBuilder {
 
     static attitudeUpdate(quaternion) {
         let msg = {
-            type: ORGRequest.Update,
+            type: ORGMessage.UPDATE,
             data: {
             }
         };
@@ -98,9 +120,9 @@ class ORGMessageBuilder {
 
     static classHierarchy(className) {
         const msg = {
-            type: ORGRequest.Request,
+            type: ORGMessage.REQUEST,
             data: {
-                request: ORGRequest.ClassHierarchy,
+                request: ORGRequest.CLASS_HIERARCHY,
                 parameters:{className: className}
             }
         };

@@ -13,15 +13,11 @@ class ORG3DDeviceModel {
      * Constructor
      * @param threeObj - A THREE.Group representing the Device.
      */
-    constructor( scene, threeObj ) {
+    constructor(scene, threeObj) {
         this.threeObj = threeObj; // It is a THREE.Group. Don't have geometry to compute bbox.
         this.threeScene = scene;
     }
 
-
-    /**
-     * Removes the object from the 3D scene and disposes the object.
-     */
     destroy() {
         this.removeFromScene();
         this.threeObj = null;
@@ -33,35 +29,11 @@ class ORG3DDeviceModel {
 
     removeFromScene() {
         if (this.threeScene && this.threeObj) {
-            this.threeScene.remove( this.threeObj);
+            this.threeScene.remove(this.threeObj);
         }
     }
 
-    setOrientation( orientation ) {
-        if (!this.threeObj) {
-            return;
-        }
-
-        let b = new THREE.Box3().setFromObject(this.threeObj);
-        let position = b.getCenter();
-        this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( -position.x, -position.y, -position.z ) );
-
-        switch(orientation) {
-            case "portrait" :
-                var rotation = this.threeObj.rotation;
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( -rotation.z ));
-                break;
-            case "landscapeLeft" :
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad( -90 ) ));
-                break;
-            case "landscapeRight" :
-                this.threeObj.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad( 90 ) ));
-                break;
-        }
-        this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation( position.x, position.y, -position.z ) );
-    }
-
-    setOrientation2(orientation) {
+    setOrientation(orientation) {
         if (!this.threeObj) {
             return;
         }

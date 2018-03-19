@@ -2,7 +2,7 @@
  * Created by jongabilondo on 05/02/2018.
  */
 
-class ORGConnectionActions {
+class ORGActionsCenter {
 
     static connect() {
         const serverUrl = $('#device-url');
@@ -49,7 +49,7 @@ class ORGConnectionActions {
 
     static async connectWithController(controller) {
         try {
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i> Connecting to device ...</h5></div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Connecting to device ...</h4></div>' }); // Progress alert
             // 1. Open session
             let session = await controller.openSession();
             ORG.dispatcher.dispatch({
@@ -57,7 +57,7 @@ class ORGConnectionActions {
             });
 
             bootbox.hideAll();
-            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i> Getting device information...</h5></div>' }); // Progress alert
+            bootbox.dialog({ closeButton: false, message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h4></div>' }); // Progress alert
 
             // 2. Get device info
             ORG.device = await controller.getDeviceInformation();
@@ -93,6 +93,16 @@ class ORGConnectionActions {
                 controller.requestScreenshot();
             }
 
+            // 8. Start getting orientation updates
+            if (controller.hasOrientationUpdate) {
+                controller.requestOrientationUpdates(true);
+            }
+
+            // 9. Enable location updates (location related updates coming from the device)
+            if (controller.hasLocationUpdate) {
+                controller.requestLocationUpdates(true);
+            }
+
         } catch(err) {
             bootbox.hideAll();
             this._handleError(err);
@@ -100,7 +110,7 @@ class ORGConnectionActions {
     }
 
     static async refreshUITree() {
-        bootbox.dialog({ message: '<div class="text-center"><h5><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h5></div>' });
+        bootbox.dialog({ message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Getting device information...</h4></div>' });
         try {
             let controller = ORG.deviceController;
 
@@ -201,7 +211,7 @@ class ORGConnectionActions {
             let model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, ORG.scene, kORGDevicePositionY);
             if (model) {
                 ORG.scene.addDevice3DModel(model);
-                ORG.scene.setDeviceOrientation2(ORG.device.orientation);
+                ORG.scene.setDeviceOrientation(ORG.device.orientation);
             }
         } catch(err) {
             this._handleError(err);
@@ -213,7 +223,7 @@ class ORGConnectionActions {
             let result = await ORG.deviceController.setOrientation(orientation);
             ORG.device.orientation = orientation;
             const screenshot = await ORG.deviceController.getScreenshot();
-            ORG.scene.setDeviceOrientation2(orientation);
+            ORG.scene.setDeviceOrientation(orientation);
             ORG.dispatcher.dispatch({
                 actionType: 'screenshot-update',
                 image: screenshot
@@ -230,13 +240,13 @@ class ORGConnectionActions {
     static addDeviceToScene(model, screenshot) {
         if (model) {
             ORG.scene.addDevice3DModel(model);
-            ORG.scene.setDeviceOrientation2(ORG.device.orientation);
+            //ORG.scene.setDeviceOrientation(ORG.device.orientation);
         }
         ORG.scene.createDeviceScreen(ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
         ORG.scene.createRaycasterForDeviceScreen();
         ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
         ORG.scene.devicePositionHasChanged();
-        ORG.scene.setDeviceOrientation2(ORG.device.orientation);
+        ORG.scene.setDeviceOrientation(ORG.device.orientation);
     }
 
     static async getElementClassHierarchy(className) {
@@ -250,8 +260,8 @@ class ORGConnectionActions {
         }
     }
 
-    static async extrudeScreenUI() {
-        bootbox.dialog({message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i>Expanding UI elements...</div>'}) // Progress alert
+    static async expandScreenUI() {
+        bootbox.dialog({message: '<div class="text-center"><h4><i class="fa fa-spin fa-spinner"></i>&nbsp;Expanding UI elements...</h4></div>'}) // Progress alert
         try {
             let tree = await ORG.deviceController.getElementTree({
                 "status-bar": true,
@@ -269,6 +279,18 @@ class ORGConnectionActions {
 
     static async collapseScreenUI() {
         ORG.scene.collapse();
+    }
+
+    static rotateDevice() {
+        ORG.scene.showHideDeviceTransformControls("rotate");
+    }
+
+    static translateDevice() {
+        ORG.scene.showHideDeviceTransformControls("translate");
+    }
+
+    static lookAtDevice() {
+        ORG.scene.lookAtDevice();
     }
 
     static _handleError(err) {

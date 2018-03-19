@@ -34,7 +34,7 @@ ORG.UI.refreshUITree = $('#ui-tree-refresh');
 
 // UI Tree
 ORG.UI.refreshUITree.click( () => {
-    ORGConnectionActions.refreshUITree()
+    ORGActionsCenter.refreshUITree()
 })
 
 // Sliders
@@ -62,9 +62,9 @@ ORG.UI.buttonResetItinerary = $('#reset-itinerary');
 ORG.UI.checkButtonShowDevice.change(function () {
     ORG.scene.flagShowDevice3DModel = $(this).is(':checked');
     if (ORG.scene.flagShowDevice3DModel) {
-        ORGConnectionActions.showDevice3DModel();
+        ORGActionsCenter.showDevice3DModel();
     } else {
-        ORGConnectionActions.hideDevice3DModel();
+        ORGActionsCenter.hideDevice3DModel();
     }
 });
 
@@ -156,10 +156,10 @@ ORG.UI.buttonExpand.click(function () {
     }
     if (ORG.scene.isExpanded) {
         ORG.UI.buttonExpand.text("Expand");
-        ORGConnectionActions.collapseScreenUI();
+        ORGActionsCenter.collapseScreenUI();
     } else {
         ORG.UI.buttonExpand.text("Collapse");
-        ORGConnectionActions.extrudeScreenUI();
+        ORGActionsCenter.expandScreenUI();
     }
 });
 

@@ -23,6 +23,18 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         return true;
     }
 
+    get hasOrientationUpdate() {
+        return true;
+    }
+
+    get hasLocationUpdate() {
+        return true;
+    }
+
+    get hasSystemInfo() {
+        return true;
+    }
+
     get isConnected() {
         if (!this._webSocket || !this._webSocket.isConnected) {
             return false
@@ -54,8 +66,17 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         }
     }
 
+    // SECOND SOCKET MESSAGES
     requestScreenshot() {
         this._secondWebSocket.send(ORGMessageBuilder.takeScreenshot())
+    }
+
+    requestOrientationUpdates(enable) {
+        this._secondWebSocket.send(ORGMessageBuilder.requestOrientationUpdates(enable))
+    }
+
+    requestLocationUpdates(enable) {
+        this._secondWebSocket.send(ORGMessageBuilder.requestLocationUpdates(enable))
     }
 
     requestSystemInfo() {
@@ -66,6 +87,11 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
         this._secondWebSocket.send(ORGMessageBuilder.locationUpdate( new google.maps.LatLng(lat, lng), null))
     }
 
+    sendDeviceAttitudeUpdate(msg) {
+        this._secondWebSocket.send(msg)
+    }
+
+    // ASYNC MAIN SOCKET CALLS
     getDeviceOrientation() {
         return new Promise(async (resolve, reject) => {
             resolve(ORG.device.orientation)
@@ -140,6 +166,19 @@ class ORGDeviceController extends ORGWebSocketDeviceController {
 
     send(message) {
         this._webSocket.send(message);
+    }
+
+    convertInterfaceOrientation(iOSOrientation) {
+        let orientation
+        switch(iOSOrientation) {
+            case "UIInterfaceOrientationPortrait": orientation = ORGDevice.ORIENTATION_PORTRAIT; break;
+            case "UIInterfaceOrientationPortraitUpsideDown": orientation = ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN; break;
+            case "UIInterfaceOrientationLandscapeRight": orientation = ORGDevice.ORIENTATION_LANDSCAPE_RIGHT; break;
+            case "UIInterfaceOrientationLandscapeLeft": orientation = ORGDevice.ORIENTATION_LANDSCAPE_LEFT; break;
+            case "UIInterfaceOrientationFaceUp": orientation = ORGDevice.ORIENTATION_FACE_UP; break;
+            case "UIInterfaceOrientationFaceDown": orientation = ORGDevice.ORIENTATION_FACE_DOWN; break;
+        }
+        return orientation;
     }
 
     _openMainSocket() {

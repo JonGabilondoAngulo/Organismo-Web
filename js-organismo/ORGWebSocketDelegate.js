@@ -20,7 +20,7 @@ class ORGWebSocketDelegate {
         ORG.dispatcher.dispatch({
             actionType: 'websocket-open'
         });
-    };
+    }
 
 	/**
 	 * Callback for the closing of the websocket.
@@ -91,7 +91,7 @@ class ORGWebSocketDelegate {
                 reason = 'The connection was closed due to a failure to perform a TLS handshake';
                 break;
         }*/
-	};
+	}
 
 	/**
 	 * Callback for when the websocket has received a message from the Device.
@@ -109,15 +109,15 @@ class ORGWebSocketDelegate {
 			return;
 		}
 		if (messageJSON) {
-			if (messageJSON.type === "response") {
+			if (messageJSON.type.toLowerCase() === ORGInboundMessage.RESPONSE) {
 				this._processResponse(messageJSON);
-			} else if (messageJSON.type === "notification") {
+			} else if (messageJSON.type.toLowerCase() === ORGInboundMessage.NOTIFICATION) {
 				this._processNotification(messageJSON.body);
-			} else if (messageJSON.command === "CoreMotionFeed") {
+			} else if (messageJSON.command.toLowerCase() === ORGInboundMessage.CORE_MOTION_FEED) {
 				this._processMotionFeedMessage(messageJSON.content);
 			}
 		}
-	};
+	}
 
 	/**
 	 * Callback for when an error has been occurred in the websocket.
@@ -136,22 +136,22 @@ class ORGWebSocketDelegate {
 	 */
 	_processResponse(messageJSON) {
 		switch (messageJSON.request) {
-			case ORGRequest.DeviceInfo: {
+			case ORGRequest.DEVICE_INFO: {
                 this._processResponseDeviceInfo(messageJSON.data);
             } break;
-			case ORGRequest.AppInfo: {
+			case ORGRequest.APP_INFO: {
                 this._processResponseAppInfo(messageJSON);
             } break;
-			case ORGRequest.Screenshot: {
+			case ORGRequest.SCREENSHOT: {
                 this._processReportScreenshot(messageJSON);
             } break;
-			case ORGRequest.ElementTree: {
+			case ORGRequest.ELEMENT_TREE: {
                 this._processReportElementTree(messageJSON);
             }break;
-			case ORGRequest.SystemInfo: {
+			case ORGRequest.SYSTEM_INFO: {
                 this._processReportSystemInfo(messageJSON);
             } break;
-            case ORGRequest.ClassHierarchy: {
+            case ORGRequest.CLASS_HIERARCHY: {
                 this._processResponseClassHierarchy(messageJSON);
             } break;
 			default: {
@@ -161,11 +161,11 @@ class ORGWebSocketDelegate {
 	}
 
 	/**
-	 * Method to process a message of type "notification" tath arrived from the Device.
+	 * Method to process a message of type "notification" that arrived from the Device.
 	 * @param messageBody
 	 */
 	_processNotification(messageBody) {
-		if ( messageBody.notification === "orientation-change") {
+		if (messageBody.notification === "orientation-change") {
             this._processNotificationOrientationChanged(messageBody.parameters);
 		}
 	}
@@ -176,10 +176,16 @@ class ORGWebSocketDelegate {
 	 */
 	_processNotificationOrientationChanged(notificationParameters) {
 		if (notificationParameters) {
-			var newSize = notificationParameters.screenSize;
-			var newOrientation = notificationParameters.orientation;
+			const newSize = notificationParameters.screenSize;
+            let newOrientation = ORG.deviceController.convertInterfaceOrientation(notificationParameters.orientation);
 			if (newSize && newOrientation) {
-				ORG.scene.setDeviceOrientation(newOrientation, newSize.width, newSize.height);
+                if (newOrientation !== ORG.device.orientation) {
+                    ORG.dispatcher.dispatch({
+                        actionType: 'device-orientation-changed',
+                        orientation: newOrientation
+                    })
+                }
+				//ORG.scene.setDeviceOrientation(newOrientation, newSize.width, newSize.height);
 			}
 		}
 	}
@@ -191,7 +197,7 @@ class ORGWebSocketDelegate {
 	_processResponseDeviceInfo(deviceInfo) {
 
 		// The connection to the device its on place. We got information about the device.
-		ORG.device = new ORGDevice( deviceInfo );
+		ORG.device = new ORGDevice(deviceInfo);
 
 		// UI
         ORG.dispatcher.dispatch({
@@ -204,16 +210,10 @@ class ORGWebSocketDelegate {
                 (result) => {
                     this._createDeviceScreenWithSnapshot(ORG.device);
                 }
-            );
+           );
         } else {
             this._createDeviceScreenWithSnapshot(ORG.device);
 		}
-        //ORG.scene.createDeviceScreen( ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
-        //ORG.scene.devicePositionHasChanged();
-        //ORG.scene.createRaycasterForDeviceScreen();
-        //
-        //// ask for the first screenshot
-        //ORG.deviceController.requestScreenshot();
     }
 
 	/**
@@ -221,17 +221,13 @@ class ORGWebSocketDelegate {
 	 * @param messageJSON
 	 */
 	_processResponseAppInfo(messageJSON) {
-		ORG.testApp = new ORGTestApp( messageJSON.data );
+		ORG.testApp = new ORGTestApp(messageJSON.data);
 
         // UI updates
         ORG.dispatcher.dispatch({
             actionType: 'app-info-update',
             app: ORG.testApp
-        });
-
-        //ORG.UI.testAppNameLabel.text( ORG.testApp.name );
-        //ORG.UI.testAppVersionLabel.text( ORG.testApp.version );
-        //ORG.UI.testAppBundleIdLabel.text( ORG.testApp.bundleIdentifier );
+        })
 	}
 
     /***
@@ -247,7 +243,7 @@ class ORGWebSocketDelegate {
 	 * Method to process a message response with screenshot information.
 	 * @param messageJSON
 	 */
-	_processReportScreenshot( messageJSON) {
+	_processReportScreenshot(messageJSON) {
 		let base64Img = messageJSON.data.screenshot;
 		if (base64Img) {
 			var img = new Image();
@@ -271,7 +267,7 @@ class ORGWebSocketDelegate {
 	 * @param reportData
 	 */
 	_processReportElementTree(reportData) {
-		var jsonTree = reportData.data;
+		let jsonTree = reportData.data;
 		if (!!jsonTree) {
             ORG.UIJSONTreeManager.update(jsonTree, ORGUIJSONTreeManager.TREE_TYPE_ORGANISMO);
             if (ORG.scene.expanding || ORG.scene.isExpanded) {
@@ -285,11 +281,11 @@ class ORGWebSocketDelegate {
      * Method to process a message response with the system information of the iDevice.
      * @param reportData
      */
-    _processReportSystemInfo( reportData ) {
-        var systemInfoData = reportData.data;
-        if ( !!systemInfoData ) {
+    _processReportSystemInfo(reportData) {
+        let systemInfoData = reportData.data;
+        if (!!systemInfoData) {
 			if (ORG.systemInfoManager) {
-				ORG.systemInfoManager.dataUpdate( systemInfoData );
+				ORG.systemInfoManager.dataUpdate(systemInfoData);
             }
         }
     }

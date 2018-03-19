@@ -8,24 +8,18 @@
  */
 class ORG3DDeviceScreen {
 
-    constructor(width, height, yPosition, zPosition, threeScene) {
+    constructor(width, height, position, threeScene) {
         this._removeHighlight = false;
         this._nextHighlightPlane = null;
         this._currentHighlightPlane = null;
         this._threeScreenPlane = null;
         this._nextScreenshotImage = null;
 
-        this._deviceScreenSize = { width:width, height:height};
+        this._deviceScreenSize = {width:width, height:height};
         this._THREEScene = threeScene;
 
-        var geometry = new THREE.PlaneBufferGeometry(width, height, 1, 1);
-        geometry.dynamic = true;
-        var material = new THREE.MeshBasicMaterial({ map : null , color: 0xffffff, side: THREE.DoubleSide});
-        this._threeScreenPlane = new THREE.Mesh(geometry, material );
-        this._threeScreenPlane.position.set(0 , yPosition, zPosition );
-        this._threeScreenPlane.name = "screen";
-        threeScene.add( this._threeScreenPlane );
-        this._threeScreenPlane.geometry.computeBoundingBox ();
+        this._threeScreenPlane = this._createScreenPlane(this._deviceScreenSize, position);
+        threeScene.add(this._threeScreenPlane);
     }
 
     destroy() {
@@ -60,8 +54,7 @@ class ORG3DDeviceScreen {
     }
 
     get screenWorldPosition() {
-        //return this._threeScreenPlane.matrixWorld.getPosition();
-        var position = this.screenPosition.clone();
+        let position = this.screenPosition.clone();
         position.setFromMatrixPosition(this._threeScreenPlane.matrixWorld);
         return position;
     }
@@ -73,7 +66,6 @@ class ORG3DDeviceScreen {
     set rotationZ(degrees) {
         this._threeScreenPlane.rotation.set(0,0,degrees);
     }
-
 
     hide() {
         if (this._threeScreenPlane) {
@@ -88,16 +80,37 @@ class ORG3DDeviceScreen {
     }
 
     setScreenshot(image) {
-        var screenshotTexture = new THREE.Texture( image );
+        let screenshotTexture = new THREE.Texture(image);
         screenshotTexture.minFilter = THREE.NearestFilter;
-        var thisScreen = this;
+
         // the image should be loaded by now
-        //image.onload = function () {
-            screenshotTexture.needsUpdate = true;
-            thisScreen._threeScreenPlane.material.map = screenshotTexture;
-            thisScreen._threeScreenPlane.material.needsUpdate = true;
-            thisScreen._threeScreenPlane.needsUpdate = true;
-        //};
+        screenshotTexture.needsUpdate = true;
+        this._threeScreenPlane.material.map = screenshotTexture;
+        this._threeScreenPlane.material.needsUpdate = true;
+        this._threeScreenPlane.needsUpdate = true;
+    }
+
+    setOrientation(orientation) {
+        if (!this._threeScreenPlane) {
+            return;
+        }
+
+        let rotation = this._threeScreenPlane.rotation;
+        this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
+
+        switch (orientation) {
+            case ORGDevice.ORIENTATION_PORTRAIT: {
+            } break;
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+                this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(180)));
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(-90)));
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+                this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad(90)));
+                break;
+        }
     }
 
     /***
@@ -152,6 +165,17 @@ class ORG3DDeviceScreen {
         }
     }
 
+    _createScreenPlane(size, position) {
+        let geometry = new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1);
+        geometry.dynamic = true;
+        let material = new THREE.MeshBasicMaterial({ map : null , color: 0xffffff, side: THREE.DoubleSide});
+        let screenPlane = new THREE.Mesh(geometry, material );
+        screenPlane.position.copy(position);
+        screenPlane.name = "screen";
+        screenPlane.geometry.computeBoundingBox();
+        return screenPlane;
+    }
+
     /***
      * Create a THREE plane that will be used as a highlight on top of the screen.
      * @param size. Vector2
@@ -160,14 +184,13 @@ class ORG3DDeviceScreen {
      * @private
      */
     _createHighlightPlane(size, position) {
-        var geometry, material, highlightPlane;
         const kOpacity = 0.5;
         const kColor = 0xee82ee; // FFC0CB FFE4E1 FB6C1 FF69B4
 
-        geometry = new THREE.PlaneBufferGeometry( size.width, size.height, 1, 1);
-        material = new THREE.MeshBasicMaterial({ map : null , color: kColor, side: THREE.DoubleSide, transparent: true, opacity: kOpacity});
-        highlightPlane = new THREE.Mesh( geometry, material );
-        highlightPlane.position.copy( position );
+        let geometry = new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1);
+        let material = new THREE.MeshBasicMaterial({ map : null , color: kColor, side: THREE.DoubleSide, transparent: true, opacity: kOpacity});
+        let highlightPlane = new THREE.Mesh(geometry, material);
+        highlightPlane.position.copy(position);
 
         return highlightPlane;
     }

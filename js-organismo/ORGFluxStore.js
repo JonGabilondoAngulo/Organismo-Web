@@ -32,7 +32,7 @@ class ORGFluxStore extends FluxUtils.Store {
                     ORG.device.orientation = payload.orientation;
                 }
                 if (ORG.scene) {
-                    ORG.scene.setDeviceOrientation2(payload.orientation);
+                    ORG.scene.setDeviceOrientation(payload.orientation);
                 }
             } break;
 

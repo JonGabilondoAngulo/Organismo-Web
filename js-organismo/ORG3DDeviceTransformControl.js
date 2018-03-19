@@ -20,13 +20,13 @@ class ORG3DDeviceTransformControl {
 
         this._THREETransformControl = new THREE.TransformControls( scene.THREECamera, scene.rendererDOMElement);
         this._THREETransformControl.setMode( mode );
-        this._THREETransformControl.setSpace( 'local' );
-        this._THREETransformControl.addEventListener( 'change', function() {
+        this._THREETransformControl.setSpace('local');
+        this._THREETransformControl.addEventListener('change', function() {
             _this._transformControlChanged();
         } );
 
         // add it all to the scene
-        this._THREETransformControl.attach( this._scene.THREEDeviceAndScreenGroup );
+        this._THREETransformControl.attach(this._scene.THREEDeviceAndScreenGroup);
         this._THREEScene.add( this._THREETransformControl );
     }
 
@@ -70,7 +70,7 @@ class ORG3DDeviceTransformControl {
                         // Broadcast Attitude
                         if (ORG.deviceController) {
                             const msg = ORGMessageBuilder.attitudeUpdate(THREETransformedObject.quaternion);
-                            ORG.deviceController.sendMessage(msg);
+                            ORG.deviceController.sendDeviceAttitudeUpdate(msg);
                         }
 
                     } else if (this._THREETransformControl.getMode() == "translate") {

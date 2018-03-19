@@ -32,8 +32,8 @@ class ORGWebSocket {
 	open(inServerURL, inDelegate) {
 		return new Promise( (resolve, reject) => {
 			const _this = this;
-            this._serverURL = inServerURL;
-            this._delegate = inDelegate;
+            this._serverURL = inServerURL || null;
+            this._delegate = inDelegate || null;
 
             const url = inServerURL;
             this._ws = new WebSocket(url);
@@ -73,7 +73,7 @@ class ORGWebSocket {
      * @param delegate
      */
 	processMessagesWithDelegate(delegate) {
-        this._delegate = delegate;
+        this._delegate = delegate || null;
 
         let _this = this;
         this._ws.onopen = function(event) {
@@ -103,7 +103,7 @@ class ORGWebSocket {
 	sendAsync(payload) {
 		return new Promise( (resolve, reject) => {
             this._ws.onclose = (event) => {
-            	this.onClose(event)
+            	this._onClose(event)
                 reject(event)
             }
             this._ws.onmessage = (event) => {
@@ -131,7 +131,7 @@ class ORGWebSocket {
 	 */
     _onOpen() {
 		console.debug('OPENED: ' + this._serverURL);
-		if (this._delegate && !!this._delegate.onOpen) {
+		if (!!this._delegate && !!this._delegate.onOpen) {
             this._delegate.onOpen(this);
 		}
 	}
@@ -143,7 +143,7 @@ class ORGWebSocket {
 	_onClose(event) {
 		console.debug('CLOSED: ' + this._serverURL);
         this._ws = null;
-		if (this._delegate && !!this._delegate.onClose) {
+		if (!!this._delegate && !!this._delegate.onClose) {
             this._delegate.onClose(event, this);
 		}
 	}
@@ -153,7 +153,7 @@ class ORGWebSocket {
 	 * It will call the Delegate "onMessage".
 	 */
 	_onMessage(event) {
-		if (this._delegate && !!this._delegate.onMessage) {
+		if (!!this._delegate && !!this._delegate.onMessage) {
             this._delegate.onMessage(event, this);
 		}
 	}
@@ -164,7 +164,7 @@ class ORGWebSocket {
 	 */
 	_onError(event) {
 		console.debug('WS Error: ' + JSON.stringify(event));
-		if (this._delegate && !!this._delegate.onError) {
+		if (!!this._delegate && !!this._delegate.onError) {
             this._delegate.onError(event, this);
 		}
 	}

@@ -2,17 +2,30 @@
  * Created by jongabilondo on 14/02/2018.
  */
 
-const ORGRequest = {
-    Request : "request",
-    Update : "update",
-    AppInfo : "app-info",
-    DeviceInfo : "device-info",
-    SystemInfo : "system-info",
-    Screenshot : "screenshot",
-    ElementTree : "element-tree",
-    ClassHierarchy : "class-hierarchy"
-};
+// Outbound Message types
+const ORGMessage = {
+    REQUEST : "request",
+    UPDATE : "update"
+}
 
+// Outbound Request types
+const ORGRequest = {
+    APP_INFO : "app-info",
+    DEVICE_INFO : "device-info",
+    SYSTEM_INFO : "system-info",
+    SCREENSHOT : "screenshot",
+    ELEMENT_TREE : "element-tree",
+    CLASS_HIERARCHY : "class-hierarchy",
+    ORIENTATION_UPDATES : "device-orientation-feed",
+    LOCATION_UPDATES : "core-motion-feed"
+}
+
+// Inbound Message types
+const ORGInboundMessage = {
+    RESPONSE : "response",
+    NOTIFICATION : "notification",
+    CORE_MOTION_FEED: "core-motion-feed"
+}
 
 const ORGActions = {
     PRESS_HOME: "press-jome",
@@ -35,5 +48,9 @@ const ORGActions = {
     RESET_CAMERA_POSITION: "reset-camera-position",
     RESET_DEVICE_POSITION: "reset-device-position",
     SCREEN_CLOSEUP: "device-screen-closeup",
-    SHOW_CLASS_HIERARCHY: "show-class-hierarchy"
+    SHOW_CLASS_HIERARCHY: "show-class-hierarchy",
+
+    LOOK_AT_DEVICE: "look-at-device",
+    ROTATE_DEVICE: "rotate-device",
+    TRANSLATE_DEVICE: "translate-device"
 }
