@@ -18,23 +18,9 @@ class ORG3DDeviceScreen {
         this._deviceScreenSize = {width:width, height:height};
         this._THREEScene = threeScene;
 
-        this._threeScreenPlane = this._createScreenPlane(this._deviceScreenSize, position);
-        threeScene.add(this._threeScreenPlane);
-    }
-
-    destroy() {
-        if (!this._THREEScene) {
-            return;
-        }
-        if (this._threeScreenPlane) {
-            this._THREEScene.remove(this._threeScreenPlane);
-        }
-        if (this._currentHighlightPlane) {
-            this._THREEScene.remove(this._currentHighlightPlane);
-        }
-        this._threeScreenPlane = null;
-        this._nextHighlightPlane = null;
-        this._currentHighlightPlane = null;
+        this.create(this._deviceScreenSize, position)
+        //this._threeScreenPlane = this._createScreenPlane(this._deviceScreenSize, position);
+        //threeScene.add(this._threeScreenPlane);
     }
 
     get screenPlane() {
@@ -67,6 +53,26 @@ class ORG3DDeviceScreen {
         this._threeScreenPlane.rotation.set(0,0,degrees);
     }
 
+    destroy() {
+        if (!this._THREEScene) {
+            return;
+        }
+        if (this._threeScreenPlane) {
+            this._THREEScene.remove(this._threeScreenPlane);
+        }
+        if (this._currentHighlightPlane) {
+            this._THREEScene.remove(this._currentHighlightPlane);
+        }
+        this._threeScreenPlane = null;
+        this._nextHighlightPlane = null;
+        this._currentHighlightPlane = null;
+    }
+
+    create(size, position) {
+        this._threeScreenPlane = this._createScreenPlane(size, position);
+        this._THREEScene.add(this._threeScreenPlane);
+    }
+
     hide() {
         if (this._threeScreenPlane) {
             this._threeScreenPlane.visible = false;
@@ -95,22 +101,56 @@ class ORG3DDeviceScreen {
             return;
         }
 
-        let rotation = this._threeScreenPlane.rotation;
-        this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
+        // There are different experiences with the screenshot when rotating, sometimes they come portrait sometimes landscape.
+        // When portrait better use the  lower rotation code.
+        // Lately are coming landscape so we have to recreate the plane not to ratate.
 
-        switch (orientation) {
-            case ORGDevice.ORIENTATION_PORTRAIT: {
-            } break;
-            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
-                this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(180)));
-            } break;
-            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
-                this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(-90)));
-            } break;
-            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
-                this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ( THREE.Math.degToRad(90)));
-                break;
+        // Recreate the screen with new size
+        if (true) {
+            const backupPosition = this.screenPosition;
+            const newScreenSize = this._displaySizeWithOrientation(orientation);
+            if (this._deviceScreenSize.width != newScreenSize.width) {
+                this._deviceScreenSize = newScreenSize;
+                // changing geometry on the fly is not straight forward
+                this._threeScreenPlane.geometry.dispose();
+                this._threeScreenPlane.geometry = new THREE.PlaneBufferGeometry(this._deviceScreenSize.width, this._deviceScreenSize.height, 1, 1);
+                this._threeScreenPlane.geometry.dynamic = true;
+                this._threeScreenPlane.geometry.computeBoundingBox();
+                this._threeScreenPlane.needsUpdate = true;
+            }
+        } else {
+            let rotation = this._threeScreenPlane.rotation;
+            this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(-rotation.z));
+
+            switch (orientation) {
+                case ORGDevice.ORIENTATION_PORTRAIT: {
+                } break;
+                case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+                    this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(180)));
+                } break;
+                case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+                    this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(-90)));
+                } break;
+                case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: {
+                    this._threeScreenPlane.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(90)));
+                } break;
+            }
         }
+    }
+
+    _displaySizeWithOrientation(orientation) {
+        const portraitSize = {width: Math.min(this._deviceScreenSize.width, this._deviceScreenSize.height), height:Math.max(this._deviceScreenSize.width, this._deviceScreenSize.height)};
+        let orientedSize = portraitSize;
+        switch (orientation) {
+            case ORGDevice.ORIENTATION_PORTRAIT:
+            case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+            } break;
+            case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT:
+            case ORGDevice.ORIENTATION_LANDSCAPE_LEFT: {
+                orientedSize = {width: portraitSize.height, height: portraitSize.width};
+            } break;
+        }
+        return orientedSize;
     }
 
     /***
@@ -138,7 +178,6 @@ class ORG3DDeviceScreen {
      * Time to update the 3D model. Called by the render loop.
      */
     renderUpdate() {
-
         // update screenshot
         if (this._nextScreenshotImage) {
             this.setScreenshot(this._nextScreenshotImage);
@@ -169,7 +208,7 @@ class ORG3DDeviceScreen {
         let geometry = new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1);
         geometry.dynamic = true;
         let material = new THREE.MeshBasicMaterial({ map : null , color: 0xffffff, side: THREE.DoubleSide});
-        let screenPlane = new THREE.Mesh(geometry, material );
+        let screenPlane = new THREE.Mesh(geometry, material);
         screenPlane.position.copy(position);
         screenPlane.name = "screen";
         screenPlane.geometry.computeBoundingBox();

@@ -13,8 +13,8 @@ class ORG3DDevice {
     constructor() {
         this._deviceScreen = null; // a ORG3DDeviceScreen
         this._deviceBody = null; // a ORG3DDeviceModel
-        this._bodyAndScreenGroup = null; // THREE.Group to hold the screen and the device model
-        this._transformControl = null; // ORG3DDeviceTransformControl
+        this._bodyAndScreenGroup = null; // a THREE.Group to hold the screen and the device model
+        this._transformControl = null; // a RG3DDeviceTransformControl
     }
 
     get deviceScreen() {
@@ -114,12 +114,12 @@ class ORG3DDevice {
         }
     }
 
-    showHideDeviceTransformControls(mode) {
+    showHideDeviceTransformControls(scene, mode) {
         if (this._transformControl) {
             this._transformControl.destroy();
             this._transformControl = null;
         } else {
-            this._transformControl = new ORG3DDeviceTransformControl(this, mode);
+            this._transformControl = new ORG3DDeviceTransformControl(scene, mode);
         }
     }
 

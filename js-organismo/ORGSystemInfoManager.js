@@ -58,7 +58,7 @@ class ORGSystemInfoManager {
     // PRIVATE
 
     _requestSystemInfo() {
-        if (ORG.deviceController && ORG.hasSystemInfo) {
+        if (ORG.deviceController && ORG.deviceController.hasSystemInfo) {
             ORG.deviceController.requestSystemInfo();
             this._waitingForResponse = true;
         }

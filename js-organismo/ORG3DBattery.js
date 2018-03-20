@@ -5,7 +5,7 @@
 
 class ORG3DBattery {
 
-    constructor( radius, height, percent ) {
+    constructor(radius, height, percent) {
         this._THREEModel = this._createModel( radius, height, percent );
     }
 
@@ -13,7 +13,7 @@ class ORG3DBattery {
         return this._THREEModel;
     }
 
-    set position( position ) {
+    set position(position) {
         if ( this._THREEModel ) {
             this._THREEModel.position.copy( position );
         }
@@ -21,7 +21,7 @@ class ORG3DBattery {
 
     // PRIVATE
 
-    _createModel( radius, batteryHeight, percent ) {
+    _createModel(radius, batteryHeight, percent) {
 
         const kSegments = 24;
         const kGreenHeight = batteryHeight * percent;
@@ -54,21 +54,21 @@ class ORG3DBattery {
         }
 
         // Label
-        var textGeometry = new THREE.TextGeometry( percent * 100 + "%", {
+        var textGeometry = new THREE.TextGeometry(Math.floor(percent * 100) + "%", {
             font: ORG.font_helvetiker_regular,
             size: kFontSize,
             height: kFontHeight,
             curveSegments: kCurveSegments
         });
-        var textMesh = new THREE.Mesh( textGeometry, new THREE.MeshStandardMaterial({color: 0xeeeeee, metalness: kMetalness }));
-        const labelPosition = this._calculatePositionForLabel(  textMesh, batteryHeight, kFontSize );
-        textMesh.position.copy( labelPosition );
+        var textMesh = new THREE.Mesh(textGeometry, new THREE.MeshStandardMaterial({color: 0xeeeeee, metalness: kMetalness }));
+        const labelPosition = this._calculatePositionForLabel(textMesh, batteryHeight, kFontSize);
+        textMesh.position.copy(labelPosition);
         group.add( textMesh );
 
         return group;
     }
 
-    _calculatePositionForLabel( textMesh, batteryHeight, fontSize ) {
+    _calculatePositionForLabel(textMesh, batteryHeight, fontSize) {
 
         textMesh.geometry.computeBoundingBox();
         const bbox = textMesh.geometry.boundingBox;

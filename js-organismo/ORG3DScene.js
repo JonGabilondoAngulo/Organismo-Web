@@ -577,7 +577,7 @@ class ORG3DScene {
     }
 
     showHideDeviceTransformControls(mode) {
-        this._device.showHideDeviceTransformControls(mode);
+        this._device.showHideDeviceTransformControls(this, mode);
 /*
         if (this._transformControl) {
             this._transformControl.destroy();

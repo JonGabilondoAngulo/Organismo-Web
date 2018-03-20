@@ -62,15 +62,15 @@ class ORGFluxStore extends FluxUtils.Store {
             // 3D UI TREE
             //************************************************************
             case 'uitree-expanded': {
-                ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setAttribute', 'min', 0);
-                ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setAttribute', 'max', payload.ui_tree.layerCount);
-                ORG.UI.sliderTreeLayersRange.bootstrapSlider( 'setValue', payload.ui_tree.layerCount);
+                ORG.UI.sliderTreeLayersRange.bootstrapSlider('setAttribute', 'min', 0);
+                ORG.UI.sliderTreeLayersRange.bootstrapSlider('setAttribute', 'max', payload.ui_tree.layerCount);
+                ORG.UI.sliderTreeLayersRange.bootstrapSlider('setValue', payload.ui_tree.layerCount);
             } break;
             case 'uitree-layer-range-change': {
-                ORG.scene.setExpandedTreeLayersVisibleRange( payload.value );
+                ORG.scene.setExpandedTreeLayersVisibleRange(payload.value );
             } break;
             case 'uitree-layer-spacing-change': {
-                ORG.scene.setExpandedTreeLayersDistance( payload.value );
+                ORG.scene.setExpandedTreeLayersDistance(payload.value );
             } break;
 
 
