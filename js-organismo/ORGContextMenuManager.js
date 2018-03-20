@@ -209,8 +209,8 @@ class ORGContextMenuManager {
             if (Object.keys(items).length) {
                 items["separator-look"] = { "type": "cm_separator" };
             }
-            items[ORGActions.TRANSLATE_DEVICE] = {name: "Translate Device"};
-            items[ORGActions.ROTATE_DEVICE] = {name: "Rotate Device"};
+            items[ORGActions.TRANSLATE_DEVICE] = {name: "Translate Device [ON/OFF]"};
+            items[ORGActions.ROTATE_DEVICE] = {name: "Rotate Device [ON/OFF]"};
 /*
             items[ORGActions.LOOK_AT] = {name: "Look at"};
             items[ORGActions.LOOK_FRONT_AT] = {name: "Look Front at"};
