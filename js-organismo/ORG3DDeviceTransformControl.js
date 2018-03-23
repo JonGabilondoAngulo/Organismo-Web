@@ -14,28 +14,14 @@ class ORG3DDeviceTransformControl {
      * @param mode - "translate" | "rotate"
      */
     constructor(scene, mode) {
-        const _this = this;
         this._scene = scene;
         this._THREEScene = scene.THREEScene;
         this._sprite = null;
         this._controlMoving = false;
 
-        this._THREETransformControl = new THREE.TransformControls( scene.THREECamera, scene.rendererDOMElement);
-        this._THREETransformControl.setMode( mode );
-        this._THREETransformControl.setSpace('local');
-        this._THREETransformControl.addEventListener('change', () => {
-            _this._transformControlChange();
-        });
-        this._THREETransformControl.addEventListener('mouseUp', () => {
-            _this._transformControlEnd();
-        });
-        this._THREETransformControl.addEventListener('mouseDown', () => {
-            _this._transformControlBegin();
-        });
-
-        // add it all to the scene
+        this._THREETransformControl = this._createTransformControl(scene, mode);
         this._THREETransformControl.attach(this._scene.THREEDeviceAndScreenGroup);
-        this._THREEScene.add( this._THREETransformControl );
+        this._THREEScene.add(this._THREETransformControl);
     }
 
     /**
@@ -43,11 +29,6 @@ class ORG3DDeviceTransformControl {
      */
     destroy() {
         this._removeTextSprite();
-
-        //var screenPosition = this._scene.deviceScreen.screenPlane.position;
-        //var devicePosition = this._scene.device3DModel.THREEObject.position;
-        //var quaternion = this._scene.deviceScreen.screenPlane.quaternion;
-
         if (this._THREETransformControl) {
             this._THREETransformControl.detach();
             this._THREETransformControl = null;
@@ -64,6 +45,22 @@ class ORG3DDeviceTransformControl {
     }
 
     // PRIVATE
+
+    _createTransformControl(scene, mode) {
+        let transformControl = new THREE.TransformControls( scene.THREECamera, scene.rendererDOMElement);
+        transformControl.setMode( mode );
+        transformControl.setSpace('local');
+        transformControl.addEventListener('change', () => {
+            this._transformControlChange();
+        });
+        transformControl.addEventListener('mouseUp', () => {
+            this._transformControlEnd();
+        });
+        transformControl.addEventListener('mouseDown', () => {
+            this._transformControlBegin();
+        });
+        return transformControl;
+    }
 
     _transformControlBegin() {
         this._controlMoving = true;
@@ -88,14 +85,11 @@ class ORG3DDeviceTransformControl {
         }
         const THREETransformedObject = this._THREETransformControl.object;
         if (THREETransformedObject) {
-            if (this._THREETransformControl.getMode() == "rotate") {
-
-                // Broadcast Attitude
+            if (this._THREETransformControl.getMode() === "rotate") {
                 if (ORG.deviceController) {
-                    ORG.deviceController.sendDeviceAttitudeUpdate(ORGMessageBuilder.attitudeUpdate(THREETransformedObject.quaternion));
+                    ORG.deviceController.sendDeviceAttitudeUpdate(ORGMessageBuilder.attitudeUpdate(THREETransformedObject.quaternion)); // Broadcast Attitude
                 }
-
-            } else if (this._THREETransformControl.getMode() == "translate") {
+            } else if (this._THREETransformControl.getMode() === "translate") {
                 ORG.scenario.devicePointUpdate(THREETransformedObject.position);
                 this._showPositionSprite(THREETransformedObject.position);
             }
@@ -104,11 +98,11 @@ class ORG3DDeviceTransformControl {
 
     _showPositionSprite(position) {
         this._removeTextSprite();
-        this._sprite = this._createaSpriteModel("X: " + position.x.toFixed(2) + "m\nY: " + position.y.toFixed(2) + "m\nZ: " + position.z.toFixed(2) + "m", position);
+        this._sprite = this._createTextSprite("X: " + position.x.toFixed(2) + "m\nY: " + position.y.toFixed(2) + "m\nZ: " + position.z.toFixed(2) + "m", position);
         this._THREEScene.add(this._sprite);
     }
 
-    _createaSpriteModel(text, position) {
+    _createTextSprite(text, position) {
         let texture = new THREE.TextTexture({
             text: text,
             fontStyle: 'italic',

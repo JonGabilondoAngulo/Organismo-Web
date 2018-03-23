@@ -34,9 +34,9 @@ class ORG3DLocationMarker {
         this._THREEScene.add( this._descriptor );
     }
 
-    setPositionY(y) {
+    setPosition(position) {
         if (this._marker) {
-            this._marker.position.setY(y);
+            this._marker.position.copy(position);
         }
         this._placeDescriptor(this._descriptor);
     }
@@ -47,7 +47,7 @@ class ORG3DLocationMarker {
     //-------------
 
     _createMarker(anchorPoint) {
-        const kRadiusTop = 0.1;
+        const kRadiusTop = 0.01;
         const kRadiusBottom = kRadiusTop;
         const kHeight = kRadiusTop * 0.3;
         const kRadialSegments = 30;
@@ -63,7 +63,7 @@ class ORG3DLocationMarker {
     }
 
     _createDescriptor(address) {
-        const kFontSize = 0.1;
+        const kFontSize = 0.01;
         const kFontHeight = kFontSize * 0.2;
         const kBevelThickness = kFontSize * 0.1;
         const kBevelSize = kFontSize * 0.1;

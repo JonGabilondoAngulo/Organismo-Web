@@ -16,18 +16,18 @@ class ORG3DDeviceModelLoader {
         return new Promise((resolve, reject) => {
             if (device.productName.startsWith('iPhone 5')) {
                 this._load_iPhone_5(scene,device).then(
-                    function(result) {
+                    (result) => {
                         resolve(result);
                     },
-                    function(error) {
+                    (error) => {
                         reject(error);
                     });
             } else { //if ( device.productName.startsWith('iPhone 6')) {
                 this._load_iPhone_6(scene,device).then(
-                    function(result) {
+                    (result) => {
                         resolve(result);
                     },
-                    function(error) {
+                    (error) => {
                         reject(error);
                     });
             }
@@ -44,18 +44,18 @@ class ORG3DDeviceModelLoader {
                 (materials) => {
                     materials.preload();
 
-                    var objLoader = new THREE.OBJLoader();
+                    let objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
                     objLoader.setPath( '3DModels/iPhone_5/' );
                     objLoader.load( "iPhone_5.obj",
                         (object) => {
                             // model loaded, scale and translate
-                            var deviceBox =  new THREE.Box3().setFromObject(object);
+                            let deviceBox =  new THREE.Box3().setFromObject(object);
                             const scale = device.bodySize.height / deviceBox.getSize().y;
                             object.scale.set( scale, scale, scale );
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set( 0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                            var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
+                            let deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
                             resolve(deviceModel);
                         },
                         null, //on progress
@@ -79,18 +79,18 @@ class ORG3DDeviceModelLoader {
                 (materials) => {
                     materials.preload();
 
-                    var objLoader = new THREE.OBJLoader();
+                    let objLoader = new THREE.OBJLoader();
                     objLoader.setPath('3DModels/iPhone_6/');
                     objLoader.setMaterials(materials);
                     objLoader.load("iPhone_6.obj",
                         (object) => {
                             // model loaded, scale and translate
-                            var deviceBox =  new THREE.Box3().setFromObject(object);
+                            let deviceBox =  new THREE.Box3().setFromObject(object);
                             const scale = device.bodySize.height / deviceBox.getSize().y;
                             object.scale.set(scale, scale, scale);
                             deviceBox =  new THREE.Box3().setFromObject(object);
                             object.position.set(0, - deviceBox.getSize().y/2.0, - ((deviceBox.getSize().z/2.0) + 0.0005) ); // Place device 0.5mm behind the screen
-                            var deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
+                            let deviceModel = new ORG3DDeviceModel(scene.THREEScene, object)
                             resolve(deviceModel);
                         },
                         null, /*on progress*/

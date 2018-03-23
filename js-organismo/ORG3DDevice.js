@@ -43,6 +43,12 @@ class ORG3DDevice {
         return bBox;
     }
 
+    addToScene(scene) {
+        if (scene) {
+            scene.add(this.bodyAndScreenGroup);
+        }
+    }
+
     removeFromScene(scene) {
         this.removeDeviceBody();
         this.removeDeviceScreen();
@@ -51,8 +57,10 @@ class ORG3DDevice {
     }
 
     addDeviceBody(device3DModel) {
-        this._deviceBody = device3DModel;
-        this.bodyAndScreenGroup.add(this._deviceBody.THREEObject);
+        if (device3DModel) {
+            this._deviceBody = device3DModel;
+            this.bodyAndScreenGroup.add(this._deviceBody.THREEObject);
+        }
     }
 
     removeDeviceBody() {
@@ -75,8 +83,8 @@ class ORG3DDevice {
         }
     }
 
-    createDeviceScreen(width, height, position, scene) {
-        this._deviceScreen = new ORG3DDeviceScreen(width, height, position, scene);
+    createDeviceScreen(size, position, scene) {
+        this._deviceScreen = new ORG3DDeviceScreen(size, position, scene);
         this.bodyAndScreenGroup.add(this._deviceScreen.screenPlane);
     }
 

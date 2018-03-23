@@ -77,10 +77,13 @@ class ORGActionsCenter {
             let screenshot = await controller.getScreenshot();
 
             // 5. Get device 3D model
-            let model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, ORG.scene, kORGDevicePositionY);
+            let model = null;
+            if (ORG.scene.flagShowDevice3DModel) {
+                model = await ORG3DDeviceModelLoader.loadDevice3DModel(ORG.device, ORG.scene, kORGDevicePositionY);
+            }
 
             // 6. Add device with screenshot to scene
-            this.addDeviceToScene(model, screenshot);
+            ORG.scene.addDeviceToScene(ORG.device.displaySize, model, ORG.device.orientation)
             ORG.dispatcher.dispatch({
                 actionType: 'screenshot-update',
                 image: screenshot
@@ -235,18 +238,6 @@ class ORGActionsCenter {
 
     static hideDevice3DModel() {
         ORG.scene.hideDevice3DModel();
-    }
-
-    static addDeviceToScene(model, screenshot) {
-        if (model) {
-            ORG.scene.addDevice3DModel(model);
-            //ORG.scene.setDeviceOrientation(ORG.device.orientation);
-        }
-        ORG.scene.createDeviceScreen(ORG.device.displaySize.width, ORG.device.displaySize.height, 0);
-        ORG.scene.createRaycasterForDeviceScreen();
-        ORG.scene.positionDeviceAndScreenInRealWorld(); // 1.5 m in Y
-        ORG.scene.devicePositionHasChanged();
-        ORG.scene.setDeviceOrientation(ORG.device.orientation);
     }
 
     static async getElementClassHierarchy(className) {

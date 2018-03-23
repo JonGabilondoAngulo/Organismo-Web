@@ -8,19 +8,17 @@
  */
 class ORG3DDeviceScreen {
 
-    constructor(width, height, position, threeScene) {
+    constructor(size, position, threeScene) {
         this._removeHighlight = false;
         this._nextHighlightPlane = null;
         this._currentHighlightPlane = null;
         this._threeScreenPlane = null;
         this._nextScreenshotImage = null;
 
-        this._deviceScreenSize = {width:width, height:height};
+        this._deviceScreenSize = size;
         this._THREEScene = threeScene;
 
         this.create(this._deviceScreenSize, position)
-        //this._threeScreenPlane = this._createScreenPlane(this._deviceScreenSize, position);
-        //threeScene.add(this._threeScreenPlane);
     }
 
     get screenPlane() {
@@ -49,9 +47,9 @@ class ORG3DDeviceScreen {
         this._nextScreenshotImage = image;
     }
 
-    set rotationZ(degrees) {
+   /* set rotationZ(degrees) {
         this._threeScreenPlane.rotation.set(0,0,degrees);
-    }
+    }*/
 
     destroy() {
         if (!this._THREEScene) {
