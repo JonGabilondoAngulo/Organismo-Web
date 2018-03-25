@@ -8,6 +8,8 @@
 class ORG3DLocationMarker {
 
     constructor(anchorPoint, text, threeScene) {
+        this._kCoreAnimationScale = 0.3;
+        this._kCoreAnimationTime = 1000; //ms
         this._descriptor = null;
         this._marker = null;
 
@@ -18,6 +20,8 @@ class ORG3DLocationMarker {
         this._THREEScene.add(this._marker);
 
         this.updateDescriptor(text);
+
+        this._scaleDown().start();
     }
 
     destructor() {
@@ -31,7 +35,7 @@ class ORG3DLocationMarker {
         }
         this._removeDescriptor();
         this._descriptor = this._createDescriptor(text);
-        this._THREEScene.add( this._descriptor );
+        this._THREEScene.add(this._descriptor);
     }
 
     setPosition(position) {
@@ -58,7 +62,7 @@ class ORG3DLocationMarker {
         material.side = THREE.DoubleSide;
         //let marker = THREE.SceneUtils.createMultiMaterialObject(cylinderGeo, [meshMaterial]);
         let marker = new THREE.Mesh(cylinderGeo, material);
-        marker.position.setY( anchorPoint.y);
+        marker.position.copy(anchorPoint);
         return marker;
     }
 
@@ -101,14 +105,55 @@ class ORG3DLocationMarker {
     _placeDescriptor(textMesh) {
         if (this._marker && textMesh) {
             this._marker.geometry.computeBoundingBox();
-            const markerMaxZ = this._marker.geometry.boundingBox.max.z;
+            const markerRadius = this._marker.geometry.boundingBox.getSize().z;
 
-            textMesh.position.set( 0, 0, 0 );
-            textMesh.rotation.set( THREE.Math.degToRad( -90 ), 0, 0 );
+            //textMesh.position.set( 0, 0, 0 );
             textMesh.updateMatrix();
             textMesh.geometry.computeBoundingBox();
-            const centerPoint = textMesh.geometry.boundingBox.getCenter();
-            textMesh.position.set( -centerPoint.x, this._marker.position.y, markerMaxZ +  textMesh.geometry.boundingBox.getSize().y);
+            const textSizeX = textMesh.geometry.boundingBox.getSize().x;
+            textMesh.position.set(
+                this._marker.position.x - textSizeX/2,
+                this._marker.position.y,
+                this._marker.position.z + markerRadius + textMesh.geometry.boundingBox.getSize().y);
+            textMesh.rotation.set(THREE.Math.degToRad( -90 ), 0, 0);
         }
+    }
+
+    _scaleUp() {
+        if (!this._marker) {
+            return null;
+        }
+        const _this = this;
+        return new TWEEN.Tween(this._marker.scale).to ({
+            x : 1,
+            y : 1,
+            z : 1
+        }, this._kCoreAnimationTime).onUpdate( () => {
+            //
+        }).onComplete( () => {
+            let tween = _this._scaleDown();
+            if (tween) {
+                tween.start();
+            }
+        })
+    }
+
+    _scaleDown() {
+        if (!this._marker) {
+            return null;
+        }
+        const _this = this;
+        return new TWEEN.Tween(this._marker.scale).to ({
+            x : this._kCoreAnimationScale,
+            y : 1,
+            z : this._kCoreAnimationScale
+        }, this._kCoreAnimationTime).onUpdate( function()  {
+            //
+        }).onComplete( function()  {
+            let tween = _this._scaleUp();
+            if (tween) {
+                tween.start();
+            }
+        })
     }
 }

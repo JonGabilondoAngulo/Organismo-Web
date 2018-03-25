@@ -95,7 +95,7 @@ class ORG3DBeacon {
         }).onComplete(function () {
             _this._scaleDown().start();
         });
-    };
+    }
 
     /**
      * Animates the Scale down of the beacon core, it launches the scale up on completion.
@@ -111,6 +111,6 @@ class ORG3DBeacon {
         }).onComplete(function () {
             _this._scaleUp().start();
         });
-    };
+    }
 
 }

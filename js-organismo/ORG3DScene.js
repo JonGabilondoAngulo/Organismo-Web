@@ -94,7 +94,6 @@ class ORG3DScene {
     }
 
     get deviceScreenBoundingBox() {
-        //return this._deviceScreen.boundingBox;
         return this._device.deviceScreen.boundingBox;
     }
 
@@ -575,15 +574,11 @@ class ORG3DScene {
     }
 
     /**
-     * Function to reset the rotation of the Device.
+     * Function to reset the rotation and position of the Device to the default values.
      */
     resetDevicePosition() {
-        //if (this._THREEDeviceAndScreenGroup) {
-        //    this._THREEDeviceAndScreenGroup.rotation.set(0, 0, 0);
-        //    this._THREEDeviceAndScreenGroup.position.set(0, kORGDevicePositionY, 0);
-        this._device.bodyAndScreenGroup.rotation.set(0, 0, 0);
-        this._device.bodyAndScreenGroup.position.set(0, kORGDevicePositionY, 0);
-        //}
+        this._device.resetDevicePosition(new THREE.Vector3(0, kORGDevicePositionY, 0));
+        this.devicePositionHasChanged();
     }
 
 
@@ -684,8 +679,7 @@ class ORG3DScene {
         this.flagShowLocation = true;
 
         if (!this._locationMarker) {
-            //const position = this._calculateFloorPosition();
-            const position = this._calculatePositionForLocationMarker();
+            const position = this._calculateLocationMarkerPosition();
             this._locationMarker = new ORG3DLocationMarker(position, this._lastLocationName, this._THREEScene);
         }
     }
@@ -871,10 +865,6 @@ class ORG3DScene {
         //this._THREEScene.add(light);
     }
 
-    _deviceBoundingBox() {
-        return (this._device ?this._device.deviceBoundingBox :null);
-    }
-
     _adjustLocationMarkerPosition() {
         if (this._locationMarker) {
             this._locationMarker.setPosition(this._calculateLocationMarkerPosition());
@@ -885,7 +875,7 @@ class ORG3DScene {
         const kOffsetFromDeviceBottom = 0.02;
         let position = (this._sceneFloor ?this._sceneFloor.position :new THREE.Vector3(0, 0, 0));
         if (this._device) {
-            let deviceBoundingBox = this._deviceBoundingBox();
+            let deviceBoundingBox = this._device.deviceBoundingBox;
             if (deviceBoundingBox) {
                 let center = deviceBoundingBox.getCenter();
                 let size = deviceBoundingBox.getSize();
@@ -895,15 +885,7 @@ class ORG3DScene {
         return position;
     }
 
-    //_addDeviceAndScreenGroup() {
-    //    this._THREEScene.add(this._device.bodyAndScreenGroup);
-    //}
-
     _removeDeviceAndScreenGroup() {
-        //if (this._THREEDeviceAndScreenGroup) {
-        //    this._THREEScene.remove(this._THREEDeviceAndScreenGroup);
-        //    this._THREEDeviceAndScreenGroup = null;
-        //}
         this._device.removeFromScene(this._THREEScene);
     }
 

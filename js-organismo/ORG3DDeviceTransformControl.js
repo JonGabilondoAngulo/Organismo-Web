@@ -91,6 +91,7 @@ class ORG3DDeviceTransformControl {
                 }
             } else if (this._THREETransformControl.getMode() === "translate") {
                 ORG.scenario.devicePointUpdate(THREETransformedObject.position);
+                ORG.scene.devicePositionHasChanged();
                 this._showPositionSprite(THREETransformedObject.position);
             }
         }

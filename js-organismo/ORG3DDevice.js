@@ -131,6 +131,24 @@ class ORG3DDevice {
         }
     }
 
+    resetDevicePosition(position) {
+        this.bodyAndScreenGroup.rotation.set(0, 0, 0);
+        this.bodyAndScreenGroup.position.copy(position);
+
+/*
+        This is not helping to solve the problem of relocating location after this operation, the bbox of the body is not updated yet
+        if (this._deviceScreen) {
+            this._deviceScreen.screenPlane.updateMatrix();
+            this._deviceScreen.screenPlane.computeBoundingBox();
+        }
+        if (this._deviceBody) {
+            this._deviceBody.THREEObject.updateMatrix();
+            this._deviceBody.THREEObject.computeBoundingBox();
+        }
+        this.bodyAndScreenGroup.updateMatrix();
+*/
+    }
+
     renderUpdate() {
         if (this._deviceScreen) {
             this._deviceScreen.renderUpdate();
