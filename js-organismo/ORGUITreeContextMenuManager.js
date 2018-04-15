@@ -114,12 +114,16 @@ class ORGUITreeContextMenuManager {
                 }
             }
         } else {
-            idx = 1;
+            let tree = ORG.UIJSONTreeManager.tree()
+            for (let treeNode of tree) {
+                if (treeNode.representedNode.type === node.representedNode.type) {
+                    idx++;
+                }
+                if (treeNode.nodeId === node.nodeId) {
+                    break;
+                }
+            }
         }
-
-        return this._getElementXPath(parent) +
-            '/' +
-            'XCUIElementType' + node.representedNode.type + '[' + idx + ']'
+        return this._getElementXPath(parent) +  '/' + 'XCUIElementType' + node.representedNode.type + '[' + idx + ']'
     }
-
 }

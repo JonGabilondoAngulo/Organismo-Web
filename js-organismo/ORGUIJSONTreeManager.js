@@ -35,8 +35,8 @@ class ORGUIJSONTreeManager {
             return;
         }
 
-        var adaptedTree = this._treeAdaptor.adaptTree(jsonTree);
-        var _this = this;
+        let adaptedTree = this._treeAdaptor.adaptTree(jsonTree);
+        let _this = this;
         $(this._treePlaceholder).treeview({
             data: adaptedTree,
             levels: 15,
@@ -60,6 +60,14 @@ class ORGUIJSONTreeManager {
         return (parents.length ?parents[0] :null);
     }
 
+    nodeSiblings(node) {
+        let siblings = $(this._treePlaceholder).treeview('getSiblings', node);
+        return siblings;
+    }
+
+    tree() {
+        return $(this._treePlaceholder).treeview('getTree');
+    }
 
     showClassHierarchy(classHierarchy) {
         var html = "<h4><b>" + "Hierarchy" + "</b></h4>";
