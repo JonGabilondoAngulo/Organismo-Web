@@ -114,8 +114,8 @@ class ORGUITreeContextMenuManager {
                 }
             }
         } else {
-            let tree = ORG.UIJSONTreeManager.tree()
-            for (let treeNode of tree) {
+            let nodes = ORG.UIJSONTreeManager.rootNodes()
+            for (let treeNode of nodes) {
                 if (treeNode.representedNode.type === node.representedNode.type) {
                     idx++;
                 }
