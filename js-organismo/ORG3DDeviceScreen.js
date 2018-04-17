@@ -161,7 +161,8 @@ class ORG3DDeviceScreen {
             const kZOffsetFromScreen = 0.0005;
             const elementBox2InScreen = element3D.getBoundsInDeviceScreen(ORG.device, this);
             const elementSize = elementBox2InScreen.getSize();
-            const elementBox2Center = elementBox2InScreen.getCenter();
+            const elementBox2Center = new THREE.Vector2();
+            elementBox2InScreen.getCenter(elementBox2Center);
             const position = new THREE.Vector3(elementBox2Center.x, elementBox2Center.y, this.screenPosition.z + kZOffsetFromScreen);
 
             // Create the plane

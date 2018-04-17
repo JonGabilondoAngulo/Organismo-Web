@@ -161,11 +161,15 @@ class ORGMap extends ORGLocationProvider {
                     };
                     map.setCenter(pos);
                 }, function () {
-                    _this_.handleLocationError(true, map.getCenter());
+                    let center = new THREE.Vector3();
+                    map.getCenter(center);
+                    _this_.handleLocationError(true, center);
                 });
             } else {
                 // Browser doesn't support Geolocation
-                _this._handleLocationError(false, map.getCenter());
+                let center = new THREE.Vector3();
+                map.getCenter(center);
+                _this._handleLocationError(false, center);
             }
         }
 

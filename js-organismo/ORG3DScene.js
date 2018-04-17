@@ -28,15 +28,11 @@ class ORG3DScene {
 
         this._sceneFloor = null; // a ORG3DSceneFloor
         this._device = null; // a ORG3DDevice
-        //this._deviceScreen = null; // a ORG3DDeviceScreen
-        //this._device3DModel = null; // a ORG3DDeviceModel
-        //this._THREEDeviceAndScreenGroup = null; // Holds the screen and the device model
         this._uiTreeModelRaycaster = null; // a ORG3DUITreeRaycaster
         this._sceneRaycaster = null; // a ORG3DSceneRaycaster
         this._screenRaycaster = null; // a ORG3DUITreeRaycaster
         this._mouseListener = null; // a ORGMouseListener
         this._tooltiper = null; // a ORGTooltip
-        //this._transformControl = null; // ORG3DDeviceTransformControl
         this._beaconTransformControl = null; // ORG3DBeaconTransformControl
         this._THREEScene = null;
         this._THREECamera = null;
@@ -310,7 +306,8 @@ class ORG3DScene {
         if (deviceBodyModel) {
             this._device.addDeviceBody(deviceBodyModel);
         }
-        this._device.bodyAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
+        this._device.resetDevicePosition(new THREE.Vector3(0, kORGDevicePositionY, 0)); // translate to default Y
+        //this._device.bodyAndScreenGroup.translateY(kORGDevicePositionY); // translate to default Y
         this.setDeviceOrientation(orientation);
         this._device.addToScene(this._THREEScene);
         this.devicePositionHasChanged();
@@ -877,7 +874,8 @@ class ORG3DScene {
         if (this._device) {
             let deviceBoundingBox = this._device.deviceBoundingBox;
             if (deviceBoundingBox) {
-                let center = deviceBoundingBox.getCenter();
+                let center = new THREE.Vector3();
+                deviceBoundingBox.getCenter(center);
                 let size = deviceBoundingBox.getSize();
                 position = new THREE.Vector3(center.x, center.y - size.y/2 - kOffsetFromDeviceBottom, center.z);
             }

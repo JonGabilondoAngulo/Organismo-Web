@@ -35,7 +35,7 @@ class ORG3DDevice {
     get deviceBoundingBox() {
         let bBox = null;
         if (this._deviceBody) {
-            bBox = this._deviceBody.getBoundingBox();
+            bBox = this._deviceBody.boundingBox;
         }
         if (!bBox && this._deviceScreen) {
             bBox = this._deviceScreen.boundingBox;
@@ -120,6 +120,29 @@ class ORG3DDevice {
         if (this._deviceBody) {
             this._deviceBody.setOrientation(orientation);
         }
+
+        // It would be nicer to just rotate the device group object but we have a problem with the screen plane and the bitmap, but we have to recreate plane again.
+        //const position = this.bodyAndScreenGroup.position.clone();
+        //
+        //// reset position
+        //this.bodyAndScreenGroup.rotation.set(0, 0, 0);
+        //this.bodyAndScreenGroup.position.set(0, 0, 0);
+        //
+        //switch (orientation) {
+        //    case ORGDevice.ORIENTATION_PORTRAIT: {
+        //    } break;
+        //    case ORGDevice.ORIENTATION_PORTRAIT_UPSIDE_DOWN: {
+        //        this._bodyAndScreenGroup.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(180)));
+        //    } break;
+        //    case ORGDevice.ORIENTATION_LANDSCAPE_RIGHT: {
+        //        this._bodyAndScreenGroup.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(-90)));
+        //    } break;
+        //    case ORGDevice.ORIENTATION_LANDSCAPE_LEFT:
+        //        this._bodyAndScreenGroup.applyMatrix(new THREE.Matrix4().makeRotationZ(THREE.Math.degToRad(90)));
+        //        break;
+        //}
+        //
+        //this.bodyAndScreenGroup.position.copy(position);
     }
 
     showHideDeviceTransformControls(scene, mode) {

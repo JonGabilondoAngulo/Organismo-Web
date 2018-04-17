@@ -417,7 +417,8 @@ class ORG3DUITreeModel {
 
         // create obj at Z = 0. We will animate it to its real position later.
 
-        const center2D = elementWorldBoundsBox2.getCenter();
+        let center2D = new THREE.Vector2();
+        elementWorldBoundsBox2.getCenter(center2D);
         const center3D = new THREE.Vector3(center2D.x, center2D.y, 0.0);
 
         THREEGeometry = new THREE.PlaneBufferGeometry(elementWorldBoundsBox2.getSize().x, elementWorldBoundsBox2.getSize().y, 1, 1);

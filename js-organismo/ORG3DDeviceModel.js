@@ -27,6 +27,11 @@ class ORG3DDeviceModel {
         return this.threeObj;
     }
 
+
+    get boundingBox() {
+        return new THREE.Box3().setFromObject(this.threeObj);
+    }
+
     removeFromScene() {
         if (this.threeScene && this.threeObj) {
             this.threeScene.remove(this.threeObj);
@@ -39,9 +44,10 @@ class ORG3DDeviceModel {
         }
 
         // reset position
-        let bbox = new THREE.Box3().setFromObject(this.threeObj);
-        let currentPosition = bbox.getCenter();
-        this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation(-currentPosition.x, -currentPosition.y, -currentPosition.z ) );
+        let bbox = this.boundingBox;
+        let currentPosition = new THREE.Vector3();
+        bbox.getCenter(currentPosition);
+        //this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation(-currentPosition.x, -currentPosition.y, -currentPosition.z));
 
         // rotate
         let rotation = this.threeObj.rotation;
@@ -61,11 +67,6 @@ class ORG3DDeviceModel {
                 break;
         }
         // return to position
-        this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation(currentPosition.x, currentPosition.y, currentPosition.z ) );
+        //this.threeObj.applyMatrix(new THREE.Matrix4().makeTranslation(currentPosition.x, currentPosition.y, currentPosition.z));
     }
-
-    getBoundingBox() {
-        return new THREE.Box3().setFromObject(this.threeObj);
-    }
-
 }

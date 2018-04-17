@@ -19,7 +19,7 @@ class ORG3DSceneFloor {
         this._yPos = defaultYPos;
 
         if ( showAxis ) {
-            this._THREEAxis = new THREE.AxisHelper(10);
+            this._THREEAxis = new THREE.AxesHelper(10);
             this._THREEAxis.position.set(-size/2, this._yPos,-size/2);
             this._THREEScene.add(this._THREEAxis);
         }
@@ -64,7 +64,7 @@ class ORG3DSceneFloor {
         const origin = new THREE.Vector3( -floorSize/2, 0, floorSize/2 + zOffset);
         const length = floorSize;
         const color = 0xffff00;
-        var arrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 1, 0, 0 ), origin, length, color, length*0.03 );
+        let arrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 1, 0, 0 ), origin, length, color, length*0.03 );
         arrowHelper.position.setY(this._yPos);
         this._THREEScene.add( arrowHelper );
     }
@@ -83,12 +83,13 @@ class ORG3DSceneFloor {
         });
 
         const material = new THREE.MeshPhongMaterial({color: 0xeeeeee});
-        var textMesh = new THREE.Mesh(addressGeom, material);
+        let textMesh = new THREE.Mesh(addressGeom, material);
         textMesh.position.set( 0, 0, 0 );
         textMesh.rotation.set( THREE.Math.degToRad( -90 ), 0, 0 );
         textMesh.updateMatrix();
         textMesh.geometry.computeBoundingBox();
-        const centerPoint = textMesh.geometry.boundingBox.getCenter();
+        let centerPoint = new THREE.Vector3();
+        textMesh.geometry.boundingBox.getCenter(centerPoint);
         textMesh.position.set( -centerPoint.x, this._yPos, floorSize/2 + kORGFloorLabelFontSize + kORGArrowOffset + kORGArrowToTextOffset );
 
         this._THREEScene.add( textMesh );
