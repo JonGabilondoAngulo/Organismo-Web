@@ -12,11 +12,21 @@ ORG.UI.testAppVersionLabel = $('#testapp-version-label');
 ORG.UI.testAppBundleIdLabel = $('#testapp-bundleid-label');
 ORG.UI.dropdownDriver = $('#selected'); // the button that holds the text
 
-$(".dropdown-menu a").click(function(){
-    $(this).parents(".btn-group").children(":first").text($(this).text());
-    $(this).parents(".btn-group").children(":first").val($(this).data("value"));
-});
+$(".dropdown-menu a").click(function () {
+        $(this).parents(".btn-group").children(":first").text($(this).text())
+        $(this).parents(".btn-group").children(":first").val($(this).data("value"))
+
+        switch ($(this).text()) {
+            case "WDA": {
+                $('#device-port').val('8100')
+            } break
+            case "Organismo": {
+                $('#device-port').val('5567')
+            } break
+        }
+    }
+)
 
 ORG.UI.connectButton.click(function() {
-    ORGActionsCenter.connect();
+    ORGActionsCenter.connect($('#device-url').val(), $('#device-port').val());
 });

@@ -4,39 +4,38 @@
 
 class ORGActionsCenter {
 
-    static connect() {
-        const serverUrl = $('#device-url');
-        let deviceURL = serverUrl.val();
-        if (deviceURL === "") {
-            deviceURL = "localhost";
+    static connect(deviceIP, devicePORT) {
+
+        // Disconnect if connected
+        if (ORG.deviceController && ORG.deviceController.isConnected) {
+            this.disconnect();
+            ORG.deviceController = null;
+            return;
+        }
+
+        if (deviceIP === "") {
+            deviceIP = "localhost";
         }
 
         // Create the controller for the selected protocol.
         const driverName = ORG.UI.dropdownDriver.text().split(' ');
         if (driverName[0] === "Organismo") {
             if (! (ORG.deviceController instanceof ORGDeviceController)) {
-                ORG.deviceController = new ORGDeviceController(deviceURL, 5567, new ORGOrganismoWSDelegate());
+                ORG.deviceController = new ORGDeviceController(deviceIP, devicePORT, new ORGOrganismoWSDelegate());
             }
         } else if (driverName[0] === "iDeviceControlProxy") {
-            if (! (ORG.deviceController instanceof ORGiMobileDeviceController)) {
-                ORG.deviceController = new ORGiMobileDeviceController(deviceURL, 8000, new ORGiControlProxyWSDelegate());
-            }
+            ORG.deviceController = new ORGiMobileDeviceController(deviceIP, devicePORT, new ORGiControlProxyWSDelegate());
         } else if (driverName[0] === "WDA") {
-            if (! (ORG.deviceController instanceof ORGDeviceWDAController)) {
-                ORG.deviceController = new ORGDeviceWDAController(deviceURL, 8100);
-            }
+            ORG.deviceController = new ORGDeviceWDAController(deviceIP, devicePORT);
         }
 
-        // Connect / disconnect.
-        if (ORG.deviceController.isConnected) {
-            this.disconnect();
-        } else {
-            switch (ORG.deviceController.type) {
-                case "ORG":
-                case "WDA": {
-                    this.connectWithController(ORG.deviceController);
-                } break;
+        // Connect
+        switch (ORG.deviceController.type) {
+            case "ORG":
+            case "WDA": {
+                this.connectWithController(ORG.deviceController)
             }
+                break
         }
     }
 

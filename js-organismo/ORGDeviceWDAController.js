@@ -34,14 +34,25 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
             var endpointURL = this.RESTPrefix + "session";
             this.xhr.open("POST", endpointURL, true);
             this.xhr.onload = () => {
-                if (this.xhr.status === 200) {
-                    const response = JSON.parse(this.xhr.responseText);
-                    if (response.status === 0) {
-                        this._sessionInfo = JSON.parse(this.xhr.responseText);
-                        resolve(this._sessionInfo);
-                    } else {
-                        reject(this.xhr.responseText);
+                switch (this.xhr.status) {
+                    case 200: {
+                        const response = JSON.parse(this.xhr.responseText);
+                        if (response.status === 0) {
+                            this._sessionInfo = JSON.parse(this.xhr.responseText);
+                            resolve(this._sessionInfo);
+                        } else {
+                            reject(this.xhr.responseText);
+                        }
+                    } break;
+                    case 404: {
+                        reject(new ORGError(ORGERR.ERR_CONNECTION_NOT_FOUND, "No connection found at given IP & PORT."));
+                    } break;
+                    default: {
+                        reject(this.xhr.statusText);
                     }
+                }
+                if (this.xhr.status === 200) {
+
                 } else {
                     reject(this.xhr.statusText);
                 }
@@ -53,6 +64,8 @@ class ORGDeviceWDAController extends ORGDeviceBaseController {
                 // Solution to get connection errors. Pitty there is no proper way to something so basic.
                 if (this.xhr.readyState === 4 && this.xhr.status === 0) {
                     reject(new ORGError(ORGERR.ERR_CONNECTION_REFUSED, "Error opening session."));
+                } else if (this.xhr.readyState === 2 && this.xhr.status === 404) {
+                    reject(new ORGError(ORGERR.ERR_CONNECTION_NOT_FOUND, "No connection found at given IP & PORT."));
                 }
             }
             this.xhr.send(JSON.stringify({desiredCapabilities:{bundleId:'com.apple.mobilephone'}}));
